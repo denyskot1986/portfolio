@@ -91,10 +91,10 @@ const EN: T = {
     points: ["Production-grade source code \u2014 not a demo, not a prototype", "Complete documentation + auto-install", "Full ownership \u2014 no subscriptions, no vendor lock-in", "Optional 1-day integration into your business", "30 days post-integration support"],
   },
   pricingSection: {
-    templateLabel: "Template",
+    templateLabel: "Buy",
     templatePrice: "$499",
     templateDesc: "Get the system. Deploy it yourself.",
-    templateIncludes: ["Full source code", "Documentation & setup guide", "Auto-install included", "Lifetime updates"],
+    templateIncludes: ["Full source code", "Documentation + auto-install", "Lifetime updates"],
     integrationLabel: "Integration",
     integrationPrice: "$2500",
     integrationDesc: "I set it up in your business. In 1 day.",
@@ -113,7 +113,7 @@ const EN: T = {
       { icon: "[#]", title: "Smart Reports", text: "Clear daily summaries: what happened, what's next, what needs your call." },
       { icon: "[^]", title: "Fast Launch", text: "From empty space to operating salon in weeks, not months." },
     ],
-    ctaTemplate: "Get Svetlana AI-admin", ctaIntegration: "Svetlana AI-admin + Integration",
+    ctaTemplate: "Buy Svetlana AI-admin", ctaIntegration: "Svetlana AI-admin + Integration",
     diagramTitle: "How Svetlana AI-admin Works",
   },
   skynetProduct: {
@@ -128,7 +128,7 @@ const EN: T = {
       { icon: "[|]", title: "Your Infrastructure", text: "Runs on your servers. Your data stays yours. No third-party access. Full control." },
       { icon: "[/]", title: "Scale Instantly", text: "Need more agents? Clone the config. From 4 agents to 40 in minutes, not months." },
     ],
-    ctaTemplate: "Get SKYNET Template", ctaIntegration: "SKYNET + Integration",
+    ctaTemplate: "Buy SKYNET", ctaIntegration: "SKYNET + Integration",
     diagramTitle: "SKYNET Architecture",
   },
   callAgent: {
@@ -143,7 +143,7 @@ const EN: T = {
       { icon: "[#]", title: "Call Analytics", text: "Every call transcribed, scored, and summarized." },
       { icon: "[!]", title: "CRM Integration", text: "Syncs with your CRM in real-time. Zero manual data entry." },
     ],
-    ctaTemplate: "Get Call Agent Template", ctaIntegration: "Call Agent + Integration", diagramTitle: "How AI Call Agent Works",
+    ctaTemplate: "Buy Call Agent", ctaIntegration: "Call Agent + Integration", diagramTitle: "How AI Call Agent Works",
   },
   docMind: {
     label: "Document AI", title: "DocMind",
@@ -157,7 +157,7 @@ const EN: T = {
       { icon: "[~]", title: "Chat Interface", text: "Talk to your documents like talking to a colleague who read everything." },
       { icon: "[%]", title: "Auto-Update", text: "Add new documents — the knowledge base updates instantly." },
     ],
-    ctaTemplate: "Get DocMind Template", ctaIntegration: "DocMind + Integration", diagramTitle: "How DocMind Works",
+    ctaTemplate: "Buy DocMind", ctaIntegration: "DocMind + Integration", diagramTitle: "How DocMind Works",
   },
   hiringAutopilot: {
     label: "Multi-Agent HR", title: "Hiring Autopilot",
@@ -171,7 +171,7 @@ const EN: T = {
       { icon: "[#]", title: "Candidate Ranking", text: "Scored, compared, ranked. See who fits best." },
       { icon: "[#]", title: "Pipeline Dashboard", text: "Every stage, every candidate, every metric in real-time." },
     ],
-    ctaTemplate: "Get Hiring Template", ctaIntegration: "Hiring + Integration", diagramTitle: "How Hiring Autopilot Works",
+    ctaTemplate: "Buy Hiring Autopilot", ctaIntegration: "Hiring + Integration", diagramTitle: "How Hiring Autopilot Works",
   },
   leadHunter: {
     label: "Sales AI", title: "LeadHunter AI",
@@ -185,7 +185,7 @@ const EN: T = {
       { icon: "[/]", title: "Conversion Tracking", text: "See which channels convert best. AI optimizes itself." },
       { icon: "[%]", title: "24/7 Prospecting", text: "Never stops. Nights, weekends, holidays." },
     ],
-    ctaTemplate: "Get LeadHunter Template", ctaIntegration: "LeadHunter + Integration", diagramTitle: "How LeadHunter AI Works",
+    ctaTemplate: "Buy LeadHunter", ctaIntegration: "LeadHunter + Integration", diagramTitle: "How LeadHunter AI Works",
   },
   contentFactory: {
     label: "Content AI", title: "ContentFactory",
@@ -199,7 +199,7 @@ const EN: T = {
       { icon: "[*]", title: "Multi-Language", text: "One post, multiple languages. Localized, not just translated." },
       { icon: "[%]", title: "Content Recycling", text: "Top performers get repurposed automatically." },
     ],
-    ctaTemplate: "Get ContentFactory Template", ctaIntegration: "ContentFactory + Integration", diagramTitle: "How ContentFactory Works",
+    ctaTemplate: "Buy ContentFactory", ctaIntegration: "ContentFactory + Integration", diagramTitle: "How ContentFactory Works",
   },
   contact: { label: "Contact", title: "Get In Touch", subtitle: "Ready to deploy an AI system? Choose a template or request personal integration.", templateCta: "Browse Products", integrationCta: "Request Integration" },
   footer: "\u00a9 2026 Finekot Systems \u2014 Denys Kot",
@@ -257,10 +257,10 @@ const RU: T = {
     points: ["Продакшен-код — не демо, не прототип", "Полная документация + авто установка", "Полное владение — без подписок, без замков", "Опциональная интеграция за 1 день", "30 дней поддержки после интеграции"],
   },
   pricingSection: {
-    templateLabel: "\u0428\u0430\u0431\u043b\u043e\u043d",
+    templateLabel: "\u041a\u0443\u043f\u0438\u0442\u044c",
     templatePrice: "$499",
     templateDesc: "\u041f\u043e\u043b\u0443\u0447\u0438\u0442\u0435 \u0441\u0438\u0441\u0442\u0435\u043c\u0443. \u0420\u0430\u0437\u0432\u0435\u0440\u043d\u0438\u0442\u0435 \u0441\u0430\u043c\u0438.",
-    templateIncludes: ["\u041f\u043e\u043b\u043d\u044b\u0439 \u0438\u0441\u0445\u043e\u0434\u043d\u044b\u0439 \u043a\u043e\u0434", "\u0414\u043e\u043a\u0443\u043c\u0435\u043d\u0442\u0430\u0446\u0438\u044f \u0438 \u0433\u0430\u0439\u0434", "\u0418\u043d\u0441\u0442\u0440\u0443\u043a\u0446\u0438\u044f \u043f\u043e \u0434\u0435\u043f\u043b\u043e\u044e", "\u041e\u0431\u043d\u043e\u0432\u043b\u0435\u043d\u0438\u044f \u043d\u0430\u0432\u0441\u0435\u0433\u0434\u0430"],
+    templateIncludes: ["\u041f\u043e\u043b\u043d\u044b\u0439 \u0438\u0441\u0445\u043e\u0434\u043d\u044b\u0439 \u043a\u043e\u0434", "\u0414\u043e\u043a\u0443\u043c\u0435\u043d\u0442\u0430\u0446\u0438\u044f \u0438 \u0433\u0430\u0439\u0434", "\u0410\u0432\u0442\u043e\u0443\u0441\u0442\u0430\u043d\u043e\u0432\u043a\u0430", "\u041e\u0431\u043d\u043e\u0432\u043b\u0435\u043d\u0438\u044f \u043d\u0430\u0432\u0441\u0435\u0433\u0434\u0430"],
     integrationLabel: "\u0418\u043d\u0442\u0435\u0433\u0440\u0430\u0446\u0438\u044f",
     integrationPrice: "$2500",
     integrationDesc: "\u042f \u043d\u0430\u0441\u0442\u0440\u043e\u044e \u0432 \u0432\u0430\u0448\u0435\u043c \u0431\u0438\u0437\u043d\u0435\u0441\u0435. \u0417\u0430 1 \u0434\u0435\u043d\u044c.",
@@ -294,7 +294,7 @@ const RU: T = {
       { icon: "[|]", title: "Ваша инфраструктура", text: "Работает на ваших серверах. Ваши данные остаются вашими. Никакого стороннего доступа. Полный контроль." },
       { icon: "[/]", title: "Масштабируйтесь мгновенно", text: "Нужно больше агентов? Легко! От 4 агентов до 40 за минуты, а не месяцы." },
     ],
-    ctaTemplate: "\u0428\u0430\u0431\u043b\u043e\u043d SKYNET", ctaIntegration: "SKYNET + \u0438\u043d\u0442\u0435\u0433\u0440\u0430\u0446\u0438\u044f",
+    ctaTemplate: "\u041a\u0443\u043f\u0438\u0442\u044c SKYNET", ctaIntegration: "SKYNET + \u0438\u043d\u0442\u0435\u0433\u0440\u0430\u0446\u0438\u044f",
     diagramTitle: "Архитектура SKYNET",
   },
   callAgent: {
@@ -309,7 +309,7 @@ const RU: T = {
       { icon: "[#]", title: "Аналитика звонков", text: "Каждый звонок расшифрован, оценён и суммирован." },
       { icon: "[!]", title: "Интеграция CRM", text: "Синхронизация с вашей CRM в реальном времени. Ноль ручного ввода." },
     ],
-    ctaTemplate: "\u0428\u0430\u0431\u043b\u043e\u043d Call Agent", ctaIntegration: "Call Agent + \u0438\u043d\u0442\u0435\u0433\u0440\u0430\u0446\u0438\u044f", diagramTitle: "Как работает AI Call Agent",
+    ctaTemplate: "\u041a\u0443\u043f\u0438\u0442\u044c Call Agent", ctaIntegration: "Call Agent + \u0438\u043d\u0442\u0435\u0433\u0440\u0430\u0446\u0438\u044f", diagramTitle: "Как работает AI Call Agent",
   },
   docMind: {
     label: "Документ AI", title: "DocMind",
@@ -323,7 +323,7 @@ const RU: T = {
       { icon: "[~]", title: "Чат-интерфейс", text: "Общайтесь с документами как с коллегой, который всё прочитал." },
       { icon: "[%]", title: "Автообновление", text: "Добавили документ — база знаний обновляется мгновенно." },
     ],
-    ctaTemplate: "\u0428\u0430\u0431\u043b\u043e\u043d DocMind", ctaIntegration: "DocMind + \u0438\u043d\u0442\u0435\u0433\u0440\u0430\u0446\u0438\u044f", diagramTitle: "Как работает DocMind",
+    ctaTemplate: "\u041a\u0443\u043f\u0438\u0442\u044c DocMind", ctaIntegration: "DocMind + \u0438\u043d\u0442\u0435\u0433\u0440\u0430\u0446\u0438\u044f", diagramTitle: "Как работает DocMind",
   },
   hiringAutopilot: {
     label: "Мультиагентный HR", title: "Hiring Autopilot",
@@ -337,7 +337,7 @@ const RU: T = {
       { icon: "[#]", title: "Ранжирование", text: "Оценены, сравнены, отранжированы. Видите лучших." },
       { icon: "[#]", title: "Дашборд", text: "Каждый этап, кандидат, метрика в реальном времени." },
     ],
-    ctaTemplate: "\u0428\u0430\u0431\u043b\u043e\u043d Hiring", ctaIntegration: "Hiring + \u0438\u043d\u0442\u0435\u0433\u0440\u0430\u0446\u0438\u044f", diagramTitle: "Как работает Hiring Autopilot",
+    ctaTemplate: "\u041a\u0443\u043f\u0438\u0442\u044c Hiring", ctaIntegration: "Hiring + \u0438\u043d\u0442\u0435\u0433\u0440\u0430\u0446\u0438\u044f", diagramTitle: "Как работает Hiring Autopilot",
   },
   leadHunter: {
     label: "Продажи AI", title: "LeadHunter AI",
@@ -351,7 +351,7 @@ const RU: T = {
       { icon: "[/]", title: "Трекинг конверсий", text: "Какие каналы конвертят лучше. AI оптимизирует себя." },
       { icon: "[%]", title: "Поиск 24/7", text: "Никогда не останавливается." },
     ],
-    ctaTemplate: "\u0428\u0430\u0431\u043b\u043e\u043d LeadHunter", ctaIntegration: "LeadHunter + \u0438\u043d\u0442\u0435\u0433\u0440\u0430\u0446\u0438\u044f", diagramTitle: "Как работает LeadHunter AI",
+    ctaTemplate: "\u041a\u0443\u043f\u0438\u0442\u044c LeadHunter", ctaIntegration: "LeadHunter + \u0438\u043d\u0442\u0435\u0433\u0440\u0430\u0446\u0438\u044f", diagramTitle: "Как работает LeadHunter AI",
   },
   contentFactory: {
     label: "Контент AI", title: "ContentFactory",
@@ -365,7 +365,7 @@ const RU: T = {
       { icon: "[*]", title: "Мульти-язык", text: "Один пост — много языков. Локализовано." },
       { icon: "[%]", title: "Переработка контента", text: "Лучшие публикации переиспользуются автоматически." },
     ],
-    ctaTemplate: "\u0428\u0430\u0431\u043b\u043e\u043d ContentFactory", ctaIntegration: "ContentFactory + \u0438\u043d\u0442\u0435\u0433\u0440\u0430\u0446\u0438\u044f", diagramTitle: "Как работает ContentFactory",
+    ctaTemplate: "\u041a\u0443\u043f\u0438\u0442\u044c ContentFactory", ctaIntegration: "ContentFactory + \u0438\u043d\u0442\u0435\u0433\u0440\u0430\u0446\u0438\u044f", diagramTitle: "Как работает ContentFactory",
   },
   contact: { label: "\u041a\u043e\u043d\u0442\u0430\u043a\u0442", title: "\u0421\u0432\u044f\u0437\u0430\u0442\u044c\u0441\u044f", subtitle: "\u0413\u043e\u0442\u043e\u0432\u044b \u0440\u0430\u0437\u0432\u0435\u0440\u043d\u0443\u0442\u044c AI-\u0441\u0438\u0441\u0442\u0435\u043c\u0443? \u0412\u044b\u0431\u0435\u0440\u0438\u0442\u0435 \u0448\u0430\u0431\u043b\u043e\u043d \u0438\u043b\u0438 \u0437\u0430\u043a\u0430\u0436\u0438\u0442\u0435 \u0438\u043d\u0442\u0435\u0433\u0440\u0430\u0446\u0438\u044e.", templateCta: "\u0421\u043c\u043e\u0442\u0440\u0435\u0442\u044c \u043f\u0440\u043e\u0434\u0443\u043a\u0442\u044b", integrationCta: "\u0417\u0430\u043a\u0430\u0437\u0430\u0442\u044c \u0438\u043d\u0442\u0435\u0433\u0440\u0430\u0446\u0438\u044e" },
   footer: "\u00a9 2026 Finekot Systems \u2014 Denys Kot",
@@ -423,7 +423,7 @@ const UA: T = {
     points: ["Продакшен-код — не демо, не прототип", "Повна документація + авто встановлення", "Повне володіння — без підписок, без замків", "Опціональна інтеграція за 1 день", "30 днів підтримки після інтеграції"],
   },
   pricingSection: {
-    templateLabel: "\u0428\u0430\u0431\u043b\u043e\u043d",
+    templateLabel: "\u041a\u0443\u043f\u0438\u0442\u0438",
     templatePrice: "$499",
     templateDesc: "\u041e\u0442\u0440\u0438\u043c\u0430\u0439\u0442\u0435 \u0441\u0438\u0441\u0442\u0435\u043c\u0443. \u0420\u043e\u0437\u0433\u043e\u0440\u043d\u0456\u0442\u044c \u0441\u0430\u043c\u0456.",
     templateIncludes: ["\u041f\u043e\u0432\u043d\u0438\u0439 \u0432\u0438\u0445\u0456\u0434\u043d\u0438\u0439 \u043a\u043e\u0434", "\u0414\u043e\u043a\u0443\u043c\u0435\u043d\u0442\u0430\u0446\u0456\u044f + \u0433\u0430\u0439\u0434 \u043f\u043e \u043d\u0430\u043b\u0430\u0448\u0442\u0443\u0432\u0430\u043d\u043d\u044e", "\u0410\u0432\u0442\u043e-\u0456\u043d\u0441\u0442\u0430\u043b\u044f\u0446\u0456\u044f", "\u041f\u043e\u0436\u0438\u0442\u0442\u0454\u0432\u0456 \u043e\u043d\u043e\u0432\u043b\u0435\u043d\u043d\u044f"],
@@ -460,7 +460,7 @@ const UA: T = {
       { icon: "[|]", title: "Ваша інфраструктура", text: "Працює на ваших серверах. Ваші дані залишаються вашими. Жодного стороннього доступу. Повний контроль." },
       { icon: "[/]", title: "Масштабуйтесь миттєво", text: "Потрібно більше агентів? Клонуйте конфіг. Від 4 агентів до 40 за хвилини, а не місяці." },
     ],
-    ctaTemplate: "\u0428\u0430\u0431\u043b\u043e\u043d SKYNET", ctaIntegration: "SKYNET + \u0456\u043d\u0442\u0435\u0433\u0440\u0430\u0446\u0456\u044f",
+    ctaTemplate: "\u041a\u0443\u043f\u0438\u0442\u0438 SKYNET", ctaIntegration: "SKYNET + \u0456\u043d\u0442\u0435\u0433\u0440\u0430\u0446\u0456\u044f",
     diagramTitle: "\u0410\u0440\u0445\u0456\u0442\u0435\u043a\u0442\u0443\u0440\u0430 SKYNET",
   },
   callAgent: {
@@ -475,7 +475,7 @@ const UA: T = {
       { icon: "[#]", title: "Аналітика дзвінків", text: "Кожен дзвінок розшифрований, оцінений та підсумований." },
       { icon: "[!]", title: "Інтеграція CRM", text: "Синхронізація з вашою CRM у реальному часі. Нуль ручного вводу." },
     ],
-    ctaTemplate: "\u0428\u0430\u0431\u043b\u043e\u043d Call Agent", ctaIntegration: "Call Agent + \u0456\u043d\u0442\u0435\u0433\u0440\u0430\u0446\u0456\u044f", diagramTitle: "\u042f\u043a \u043f\u0440\u0430\u0446\u044e\u0454 AI Call Agent",
+    ctaTemplate: "\u041a\u0443\u043f\u0438\u0442\u0438 Call Agent", ctaIntegration: "Call Agent + \u0456\u043d\u0442\u0435\u0433\u0440\u0430\u0446\u0456\u044f", diagramTitle: "\u042f\u043a \u043f\u0440\u0430\u0446\u044e\u0454 AI Call Agent",
   },
   docMind: {
     label: "Документ AI", title: "DocMind",
@@ -489,7 +489,7 @@ const UA: T = {
       { icon: "[~]", title: "Чат-інтерфейс", text: "Спілкуйтеся з документами як з колегою." },
       { icon: "[%]", title: "Автооновлення", text: "Додали документ — база знань оновлюється миттєво." },
     ],
-    ctaTemplate: "\u0428\u0430\u0431\u043b\u043e\u043d DocMind", ctaIntegration: "DocMind + \u0456\u043d\u0442\u0435\u0433\u0440\u0430\u0446\u0456\u044f", diagramTitle: "\u042f\u043a \u043f\u0440\u0430\u0446\u044e\u0454 DocMind",
+    ctaTemplate: "\u041a\u0443\u043f\u0438\u0442\u0438 DocMind", ctaIntegration: "DocMind + \u0456\u043d\u0442\u0435\u0433\u0440\u0430\u0446\u0456\u044f", diagramTitle: "\u042f\u043a \u043f\u0440\u0430\u0446\u044e\u0454 DocMind",
   },
   hiringAutopilot: {
     label: "Мультиагентний HR", title: "Hiring Autopilot",
@@ -503,7 +503,7 @@ const UA: T = {
       { icon: "[#]", title: "Ранжування", text: "Оцінені, порівняні, відранжовані." },
       { icon: "[#]", title: "Дашборд", text: "Кожен етап, кандидат, метрика в реальному часі." },
     ],
-    ctaTemplate: "\u0428\u0430\u0431\u043b\u043e\u043d Hiring", ctaIntegration: "Hiring + \u0456\u043d\u0442\u0435\u0433\u0440\u0430\u0446\u0456\u044f", diagramTitle: "\u042f\u043a \u043f\u0440\u0430\u0446\u044e\u0454 Hiring Autopilot",
+    ctaTemplate: "\u041a\u0443\u043f\u0438\u0442\u0438 Hiring", ctaIntegration: "Hiring + \u0456\u043d\u0442\u0435\u0433\u0440\u0430\u0446\u0456\u044f", diagramTitle: "\u042f\u043a \u043f\u0440\u0430\u0446\u044e\u0454 Hiring Autopilot",
   },
   leadHunter: {
     label: "Продажі AI", title: "LeadHunter AI",
@@ -517,7 +517,7 @@ const UA: T = {
       { icon: "[/]", title: "Трекінг конверсій", text: "Які канали конвертять краще." },
       { icon: "[%]", title: "Пошук 24/7", text: "Ніколи не зупиняється." },
     ],
-    ctaTemplate: "\u0428\u0430\u0431\u043b\u043e\u043d LeadHunter", ctaIntegration: "LeadHunter + \u0456\u043d\u0442\u0435\u0433\u0440\u0430\u0446\u0456\u044f", diagramTitle: "\u042f\u043a \u043f\u0440\u0430\u0446\u044e\u0454 LeadHunter AI",
+    ctaTemplate: "\u041a\u0443\u043f\u0438\u0442\u0438 LeadHunter", ctaIntegration: "LeadHunter + \u0456\u043d\u0442\u0435\u0433\u0440\u0430\u0446\u0456\u044f", diagramTitle: "\u042f\u043a \u043f\u0440\u0430\u0446\u044e\u0454 LeadHunter AI",
   },
   contentFactory: {
     label: "Контент AI", title: "ContentFactory",
@@ -531,7 +531,7 @@ const UA: T = {
       { icon: "[*]", title: "Мульти-мова", text: "Один пост — багато мов. Локалізовано." },
       { icon: "[%]", title: "Переробка контенту", text: "Найкращі публікації перевикористовуються." },
     ],
-    ctaTemplate: "\u0428\u0430\u0431\u043b\u043e\u043d ContentFactory", ctaIntegration: "ContentFactory + \u0456\u043d\u0442\u0435\u0433\u0440\u0430\u0446\u0456\u044f", diagramTitle: "\u042f\u043a \u043f\u0440\u0430\u0446\u044e\u0454 ContentFactory",
+    ctaTemplate: "\u041a\u0443\u043f\u0438\u0442\u0438 ContentFactory", ctaIntegration: "ContentFactory + \u0456\u043d\u0442\u0435\u0433\u0440\u0430\u0446\u0456\u044f", diagramTitle: "\u042f\u043a \u043f\u0440\u0430\u0446\u044e\u0454 ContentFactory",
   },
   contact: { label: "\u041a\u043e\u043d\u0442\u0430\u043a\u0442", title: "\u0417\u0432'\u044f\u0437\u0430\u0442\u0438\u0441\u044f", subtitle: "\u0413\u043e\u0442\u043e\u0432\u0456 \u0440\u043e\u0437\u0433\u043e\u0440\u043d\u0443\u0442\u0438 AI-\u0441\u0438\u0441\u0442\u0435\u043c\u0443? \u0412\u0438\u0431\u0435\u0440\u0456\u0442\u044c \u0448\u0430\u0431\u043b\u043e\u043d \u0430\u0431\u043e \u0437\u0430\u043c\u043e\u0432\u0442\u0435 \u0456\u043d\u0442\u0435\u0433\u0440\u0430\u0446\u0456\u044e.", templateCta: "\u041f\u0435\u0440\u0435\u0433\u043b\u044f\u043d\u0443\u0442\u0438 \u043f\u0440\u043e\u0434\u0443\u043a\u0442\u0438", integrationCta: "\u0417\u0430\u043c\u043e\u0432\u0438\u0442\u0438 \u0456\u043d\u0442\u0435\u0433\u0440\u0430\u0446\u0456\u044e" },
   footer: "\u00a9 2026 Finekot Systems \u2014 Denys Kot",
