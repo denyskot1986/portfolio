@@ -334,7 +334,7 @@ export default function Home() {
 
           <motion.h1 initial={{ opacity: 0, y: 30 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.8, delay: 0.2 }}
             className="text-4xl sm:text-5xl md:text-7xl font-bold mb-1 tracking-tight">
-            Fine<span className="gradient-text">kot</span>{" "}<span className="text-pink-400/40 font-light">AI</span>
+            Fine<span className="gradient-text">kot</span>{" "}<span className="text-pink-400/40 font-light">Systems</span>
           </motion.h1>
 
           <motion.p initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.6, delay: 0.35 }}
@@ -413,24 +413,73 @@ export default function Home() {
         </motion.div>
       </section>
 
-      {/* ─── STATS (from 3000 — animated counters) ─── */}
-      <section className="relative z-10 py-16 px-6 border-y border-pink-500/10">
-        <div className="max-w-6xl mx-auto">
-          <div className="grid grid-cols-2 md:grid-cols-4 gap-4 sm:gap-8">
-            {[
-              { value: 17, suffix: "", label: t.stats.products },
-              { value: 149, suffix: "", label: t.stats.startingPrice },
-              { value: 1, suffix: "", label: t.stats.dayIntegration },
-              { value: 17, suffix: "+", label: t.stats.systemsBuilt },
-            ].map((s, i) => (
-              <motion.div key={s.label} initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} transition={{ delay: i * 0.1 }} className="text-center">
-                <div className="text-3xl sm:text-4xl md:text-5xl font-bold gradient-text font-mono mb-2">
-                  <AnimatedNumber value={s.value} suffix={s.suffix} />
+      {/* ─── VALUE PROPOSITION (Comparison + Stats) ─── */}
+      <section className="relative z-10 py-16 sm:py-20 px-6">
+        <div className="max-w-5xl mx-auto">
+
+          {/* Comparison Block */}
+          <motion.div initial={{ opacity: 0, y: 30 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} transition={{ duration: 0.6 }}
+            className="relative rounded-2xl border border-pink-500/10 bg-gradient-to-b from-pink-500/[0.04] to-transparent backdrop-blur-sm overflow-hidden mb-10">
+            <div className="grid grid-cols-2 divide-x divide-pink-500/10">
+              {/* WITHOUT column */}
+              <div className="p-5 sm:p-8">
+                <p className="text-[10px] sm:text-xs uppercase tracking-[0.3em] text-white/20 font-mono mb-5 sm:mb-6">{t.comparison.without}</p>
+                <div className="space-y-3 sm:space-y-4">
+                  {t.comparison.rows.map((row, i) => (
+                    <motion.div key={i} initial={{ opacity: 0, x: -10 }} whileInView={{ opacity: 1, x: 0 }} viewport={{ once: true }} transition={{ delay: i * 0.08 }}
+                      className="flex items-start gap-2 sm:gap-3">
+                      <span className="text-red-400/50 mt-0.5 text-xs sm:text-sm shrink-0">&times;</span>
+                      <span className="text-white/25 text-xs sm:text-sm leading-relaxed">{row.bad}</span>
+                    </motion.div>
+                  ))}
                 </div>
-                <p className="text-[10px] sm:text-xs text-pink-300/50 uppercase tracking-widest font-mono">{s.label}</p>
+              </div>
+
+              {/* WITH column */}
+              <div className="p-5 sm:p-8 bg-pink-500/[0.03]">
+                <p className="text-[10px] sm:text-xs uppercase tracking-[0.3em] text-pink-400/50 font-mono mb-5 sm:mb-6">{t.comparison.with}</p>
+                <div className="space-y-3 sm:space-y-4">
+                  {t.comparison.rows.map((row, i) => (
+                    <motion.div key={i} initial={{ opacity: 0, x: 10 }} whileInView={{ opacity: 1, x: 0 }} viewport={{ once: true }} transition={{ delay: i * 0.08 + 0.15 }}
+                      className="flex items-start gap-2 sm:gap-3">
+                      <span className="text-emerald-400/70 mt-0.5 text-xs sm:text-sm shrink-0">&check;</span>
+                      <span className="text-white/60 text-xs sm:text-sm leading-relaxed font-medium">{row.good}</span>
+                    </motion.div>
+                  ))}
+                </div>
+              </div>
+            </div>
+          </motion.div>
+
+          {/* Stats Glass Cards */}
+          <div className="grid grid-cols-2 md:grid-cols-4 gap-3 sm:gap-4 mb-10">
+            {[
+              { value: 17, suffix: "", prefix: "", label: t.stats.products },
+              { value: 149, suffix: "", prefix: "$", label: t.stats.startingPrice },
+              { value: 1, suffix: "", prefix: "<", label: t.stats.dayIntegration },
+              { value: 17, suffix: "+", prefix: "", label: t.stats.systemsBuilt },
+            ].map((s, i) => (
+              <motion.div key={s.label} initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} transition={{ delay: i * 0.08 }}
+                className="group relative rounded-xl border border-pink-500/10 bg-pink-500/[0.02] p-4 sm:p-5 text-center hover:border-pink-400/25 hover:bg-pink-500/[0.05] transition-all duration-300">
+                <div className="absolute inset-0 rounded-xl bg-gradient-to-b from-pink-500/5 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
+                <div className="relative">
+                  <div className="text-2xl sm:text-3xl md:text-4xl font-bold gradient-text font-mono mb-1">
+                    {s.prefix}<AnimatedNumber value={s.value} suffix={s.suffix} />
+                  </div>
+                  <p className="text-[9px] sm:text-[10px] text-pink-300/35 uppercase tracking-[0.2em] font-mono">{s.label}</p>
+                </div>
               </motion.div>
             ))}
           </div>
+
+          {/* CTA */}
+          <motion.div initial={{ opacity: 0, y: 10 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }}
+            className="text-center">
+            <a href="#projects"
+              className="inline-flex items-center gap-2 px-8 py-3 bg-gradient-to-r from-pink-600 to-pink-500 text-white text-sm font-medium rounded-lg hover:from-pink-500 hover:to-pink-400 hover:shadow-[0_0_30px_rgba(244,114,182,0.3)] transition-all">
+              {t.comparison.cta} <span className="ml-1">&rarr;</span>
+            </a>
+          </motion.div>
         </div>
       </section>
 
