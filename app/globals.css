@@ -1,0 +1,90 @@
+@import "tailwindcss";
+
+:root {
+  --bg: #0a0608;
+  --fg: #ede0e4;
+  --accent: #f472b6;
+  --accent2: #c084fc;
+  --cyan: #22d3ee;
+  --muted: #71717a;
+  --border: #3d1f2a;
+}
+
+body {
+  background: var(--bg);
+  color: var(--fg);
+  font-family: var(--font-geist-sans), system-ui, -apple-system, sans-serif;
+  -webkit-font-smoothing: antialiased;
+  overflow-x: hidden;
+}
+
+html { scroll-behavior: smooth; }
+
+::selection {
+  background: rgba(244, 114, 182, 0.2);
+  color: var(--accent);
+}
+
+/* Gradient text — from 3000 */
+.gradient-text {
+  background: linear-gradient(135deg, #f472b6, #e879a8, #c084fc, #fb923c);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+/* Glass card — from 3002 */
+.glass {
+  background: rgba(255, 255, 255, 0.03);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  border: 1px solid rgba(244, 114, 182, 0.08);
+}
+
+.glass:hover {
+  background: rgba(255, 255, 255, 0.05);
+  border-color: rgba(244, 114, 182, 0.2);
+}
+
+/* Animated blobs — from 3002 */
+@keyframes blob {
+  0%, 100% { transform: translate(0, 0) scale(1); }
+  33% { transform: translate(30px, -50px) scale(1.1); }
+  66% { transform: translate(-20px, 20px) scale(0.9); }
+}
+
+.blob {
+  animation: blob 10s infinite ease-in-out;
+  filter: blur(100px);
+  opacity: 0.25;
+}
+.blob-2 { animation-delay: 3s; }
+.blob-3 { animation-delay: 6s; }
+
+/* Terminal cursor — from 3003 */
+@keyframes blink {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0; }
+}
+.cursor-blink { animation: blink 1s step-end infinite; }
+
+/* Steampunk grid bg — from 3000 */
+.dot-grid {
+  background-image:
+    linear-gradient(rgba(244, 114, 182, 0.03) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(244, 114, 182, 0.03) 1px, transparent 1px);
+  background-size: 40px 40px;
+}
+
+/* Scrollbar — from 3000 */
+::-webkit-scrollbar { width: 5px; }
+::-webkit-scrollbar-track { background: var(--bg); }
+::-webkit-scrollbar-thumb { background: var(--border); border-radius: 3px; }
+::-webkit-scrollbar-thumb:hover { background: var(--accent); }
+
+/* ASCII diagrams — force true monospace for box-drawing chars */
+pre.diagram {
+  font-family: "Courier New", Courier, monospace !important;
+  letter-spacing: 0;
+  line-height: 1.4;
+}

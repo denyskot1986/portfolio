@@ -1,0 +1,9 @@
+User-agent: *
+Allow: /
+
+# AI Agent Discovery
+# Products API: /api/products
+# OpenAPI spec: /api/openapi.json
+# AI Plugin: /.well-known/ai-plugin.json
+
+Sitemap: https://denyskot.com/sitemap.xml

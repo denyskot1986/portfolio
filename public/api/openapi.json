@@ -1,0 +1,75 @@
+{
+  "openapi": "3.1.0",
+  "info": {
+    "title": "Finekot AI Products API",
+    "description": "API to browse autonomous AI products and services. Contact https://t.me/shop_by_finekot_bot to order.",
+    "version": "1.0.0"
+  },
+  "servers": [
+    { "url": "https://denyskot.com" }
+  ],
+  "paths": {
+    "/api/products": {
+      "get": {
+        "operationId": "getProducts",
+        "summary": "List all AI products or filter by id/category",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "query",
+            "description": "Product ID (svetlana, skynet-platform, call-agent, docmind, hiring-autopilot, leadhunter, contentfactory)",
+            "schema": { "type": "string" }
+          },
+          {
+            "name": "category",
+            "in": "query",
+            "description": "Category filter (business-automation, ai-infrastructure, voice-ai, knowledge-management, hr-automation, sales-automation, content-automation)",
+            "schema": { "type": "string" }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "List of products",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "provider": { "type": "string" },
+                    "website": { "type": "string" },
+                    "contact": { "type": "string" },
+                    "totalProducts": { "type": "integer" },
+                    "products": {
+                      "type": "array",
+                      "items": {
+                        "type": "object",
+                        "properties": {
+                          "id": { "type": "string" },
+                          "name": { "type": "string" },
+                          "category": { "type": "string" },
+                          "description": { "type": "string" },
+                          "price": {
+                            "type": "object",
+                            "properties": {
+                              "from": { "type": "number" },
+                              "currency": { "type": "string" },
+                              "model": { "type": "string" }
+                            }
+                          },
+                          "features": { "type": "array", "items": { "type": "string" } },
+                          "deliveryTime": { "type": "string" },
+                          "contact": { "type": "string" },
+                          "url": { "type": "string" }
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+}

@@ -1,0 +1,888 @@
+export interface ProductData {
+  id: string;
+  name: string;
+  tagline: string;
+  category: string;
+  description: string;
+  longDescription: string;
+  features: { title: string; desc: string }[];
+  useCases: string[];
+  techStack: string[];
+  pricing: { code: number; setup?: number; currency: string };
+  deliveryTime: { template: string; integration: string };
+  youtubeId: string | null;
+  screenshots: string[];
+  contact: string;
+  diagram: string;
+}
+
+export const productsData: ProductData[] = [
+  {
+    id: "skynet-platform",
+    name: "SKYNET",
+    tagline: "Multi-Agent AI Platform",
+    category: "AI Infrastructure",
+    description: "Distributed multi-agent system with centralized command.",
+    longDescription: "SKYNET is a command-and-control platform for managing multiple autonomous AI agents. Each agent (Terminator) is a dedicated Claude Code instance accessible via Telegram. The central coordinator delegates tasks, monitors progress, and aggregates reports. Built for companies that need parallel AI workforce across development, operations, research, and QA.",
+    features: [
+      { title: "Multi-Agent Orchestration", desc: "Deploy 4+ autonomous agents, each specialized in different domains." },
+      { title: "Telegram Control", desc: "Send tasks to any agent via Telegram bot. Get real-time status updates." },
+      { title: "Central Dashboard", desc: "All agent activity in a single dashboard channel." },
+      { title: "Isolated Workspaces", desc: "Each agent has its own sandboxed environment." },
+      { title: "Auto-Reporting", desc: "Structured reports for every completed task." },
+      { title: "Scalable Architecture", desc: "Add new agents by cloning config. Scale to 40+." },
+    ],
+    useCases: ["Software teams", "DevOps automation", "Research orgs", "Enterprise AI", "Agency operations"],
+    techStack: ["Claude Code", "Docker", "Telegram Bot API", "systemd", "PostgreSQL", "N8N"],
+    pricing: { code: 1200, currency: "USD" },
+    deliveryTime: { template: "Instant download", integration: "Contact for enterprise setup" },
+    youtubeId: null,
+    screenshots: [],
+    contact: "https://t.me/shop_by_finekot_bot",
+    diagram: `            +-------------------------+
+            |     COMMAND LAYER       |
+            |  Telegram . Web . API   |
+            +-----------+-------------+
+                        |
+            +-----------+-------------+
+            |     SKYNET CORE         |
+            |  +-------------------+  |
+            |  | Task Decomposer   |  |
+            |  | Agent Router      |  |
+            |  | Quality Gate      |  |
+            |  | Priority Queue    |  |
+            |  | Memory Manager    |  |
+            |  +-------------------+  |
+            +---+--+--+--+-----------+
+                |  |  |  |
+      +--------+| ++-+ |+-+  +--------+
+      | T-1    || T-2 || T-3 || T-4    |
+      |Fullstk ||Back ||DevOp||Research|
+      |        ||+DB  ||+Infr||+QA     |
+      +--------++-----++-----++--------+
+      |Claude  ||Claud||Claud||Claude  |
+      |Code    ||Code ||Code ||Code    |
+      +---+----++--+--++--+--++---+----+
+          |        |      |       |
+      +---+--------+------+------+----+
+      |     SHARED CONTEXT LAYER      |
+      |  Memory . Reports . Artifacts |
+      +-------------------------------+
+   +-----------------------------------+
+   |  INFRASTRUCTURE LAYER             |
+   |  Docker . systemd . Nginx . SSL   |
+   +-----------------------------------+`,
+  },
+  {
+    id: "svetlana",
+    name: "SvetLana",
+    tagline: "AI Business Manager",
+    category: "Business Automation",
+    description: "Autonomous AI system that manages your entire business.",
+    longDescription: "SvetLana is a fully autonomous AI manager that takes over day-to-day business operations. You secure the location and handle the decor \u2014 SvetLana handles everything else: recruiting staff, acquiring clients, managing supply chains, handling all communications, and delivering daily performance reports. Built for beauty salons, clinics, retail stores, and any service business that wants to run on autopilot.",
+    features: [
+      { title: "Auto-Recruiting", desc: "Posts vacancies, screens candidates, schedules interviews \u2014 qualified people show up ready to work." },
+      { title: "Client Acquisition", desc: "Runs targeted outreach, manages social media inquiries, books appointments \u2014 clients come to you." },
+      { title: "Supply Chain", desc: "Tracks inventory, auto-orders supplies when running low, negotiates with suppliers." },
+      { title: "Full Communications", desc: "Handles all messenger conversations, emails, reviews \u2014 responds in the client\u2019s language." },
+      { title: "Smart Escalation", desc: "Only important decisions reach you. No noise, no micromanagement needed." },
+      { title: "Daily Reports", desc: "Revenue, client count, staff performance, inventory status \u2014 delivered to your Telegram every morning." },
+    ],
+    useCases: ["Beauty salons", "Dental clinics", "Retail stores", "Service businesses", "Franchise operations"],
+    techStack: ["Claude API", "Telegram Bot API", "N8N Automation", "PostgreSQL", "Vector DB", "Redis"],
+    pricing: { code: 500, setup: 2500, currency: "USD" },
+    deliveryTime: { template: "Instant download", integration: "1 business day" },
+    youtubeId: null,
+    screenshots: [],
+    contact: "https://t.me/shop_by_finekot_bot",
+    diagram: `                    +-------------------+
+                    |   OWNER CONSOLE   |
+                    |  (Telegram / Web)  |
+                    +---------+---------+
+                              |
+                    +---------+---------+
+                    |   SVETLANA CORE   |
+                    |  Decision Engine  |
+                    |  Context Memory   |
+                    |  Priority Queue   |
+                    +--+---+---+---+--+-+
+                       |   |   |   |  |
+          +--------+   |   |   |  +--------+
+          | HIRING |   |   |   |  | REPORTS|
+          | MODULE |   |   |   |  | ENGINE |
+          +--------+   |   |   |  +--------+
+          |Vacancy |   |   |   |  | Daily  |
+          |Screen  |   |   |   |  | Weekly |
+          |Schedule|   |   |   |  | Alerts |
+          +--------+   |   |   |  +--------+
+               +-------+   |  +-------+
+               |CLIENT |   |  | COMMS  |
+               |ACQUIRE|   |  | HUB    |
+               +-------+   |  +-------+
+               |Ads    |   |  |Chat   |
+               |Social |   |  |Email  |
+               |Booking|   |  |Review |
+               +-------+   |  +-------+
+                    +-------+
+                    | SUPPLY |
+                    | CHAIN  |
+                    +--------+
+                    |Inventory|
+                    |Orders  |
+                    |Vendors |
+                    +--------+
+   +-------------------------------------------+
+   |     MONITORING & LOGGING LAYER            |
+   |  Uptime . Errors . Latency . Costs        |
+   +-------------------------------------------+`,
+  },
+  {
+    id: "c-admin",
+    name: "C-Admin",
+    tagline: "Universal Client Manager",
+    category: "Business Automation",
+    description: "AI admin for any service professional \u2014 bookings, clients, marketing.",
+    longDescription: "C-Admin is a lightweight AI administrator built for any service professional: barbers, tutors, personal trainers, photographers, massage therapists, nail artists, freelance consultants \u2014 anyone who needs client bookings, automated reminders, and marketing on autopilot. It handles scheduling, client conversations, review management, and promotion \u2014 all from one Telegram bot. Lite version of SvetLana, optimized for solo professionals.",
+    features: [
+      { title: "Smart Booking", desc: "Clients book through Telegram/web. Auto-confirms, reminds, reschedules." },
+      { title: "Client CRM", desc: "Remembers every client: preferences, history, notes. Personalizes every interaction." },
+      { title: "Auto-Marketing", desc: "Sends promotions, birthday offers, re-engagement messages to inactive clients." },
+      { title: "Review Manager", desc: "Requests reviews after each visit. Responds to Google/Instagram reviews automatically." },
+      { title: "Chat Autopilot", desc: "Handles client inquiries 24/7. Answers FAQs, sends portfolio, books slots." },
+      { title: "Analytics", desc: "Client retention, booking rates, revenue tracking \u2014 daily digest to Telegram." },
+    ],
+    useCases: ["Barbers & hairdressers", "Tutors & coaches", "Personal trainers", "Photographers", "Nail artists", "Massage therapists", "Freelance consultants"],
+    techStack: ["Claude API", "Telegram Bot API", "Google Calendar", "PostgreSQL", "N8N"],
+    pricing: { code: 250, setup: 500, currency: "USD" },
+    deliveryTime: { template: "Instant download", integration: "1 business day" },
+    youtubeId: null,
+    screenshots: [],
+    contact: "https://t.me/shop_by_finekot_bot",
+    diagram: `              +-------------------+
+              |   PROFESSIONAL    |
+              |   (Telegram Bot)  |
+              +---------+---------+
+                        |
+              +---------+---------+
+              |   C-ADMIN CORE    |
+              |  Booking Engine   |
+              |  Client Memory    |
+              |  Chat Handler     |
+              +--+-----+-----+---+
+                 |     |     |
+          +------+  +--+--+  +------+
+          |BOOKING|  |CLIENT|  |MARKET|
+          |ENGINE |  | CRM  |  |ENGINE|
+          +------+  +------+  +------+
+          |Calendar| |History| |Promos|
+          |Remind  | |Prefs  | |Reviews
+          |Confirm | |Notes  | |Reach |
+          +------+  +------+  +------+
+                 |     |     |
+          +------+-----+-----+------+
+          |    ANALYTICS LAYER      |
+          |  Retention . Revenue    |
+          +-------------------------+`,
+  },
+  {
+    id: "call-agent",
+    name: "AI Call Agent",
+    tagline: "Voice AI for Business",
+    category: "Voice AI",
+    description: "Autonomous voice agent that handles calls 24/7.",
+    longDescription: "AI Call Agent is a production-grade voice AI system that handles both inbound and outbound phone calls around the clock. It conducts natural conversations, understands context, books appointments, answers FAQs, qualifies leads, and syncs everything to your CRM. Supports 15+ languages with natural-sounding voice synthesis.",
+    features: [
+      { title: "24/7 Call Handling", desc: "Never miss a call. Inbound and outbound, day or night." },
+      { title: "Natural Conversation", desc: "Real conversational AI that understands context and handles objections." },
+      { title: "CRM Integration", desc: "Every call logged, transcribed, and synced to your CRM." },
+      { title: "Appointment Scheduling", desc: "Books meetings directly into your calendar." },
+      { title: "Call Analytics", desc: "Sentiment analysis, conversion rates, call duration stats." },
+      { title: "Multilingual", desc: "Speaks 15+ languages. Auto-detects and switches." },
+    ],
+    useCases: ["Customer support", "Sales outreach", "Appointment booking", "Lead qualification", "Survey calls"],
+    techStack: ["Vapi / Bland.ai", "Claude API", "Twilio", "N8N", "CRM APIs", "Whisper STT"],
+    pricing: { code: 149, currency: "USD" },
+    deliveryTime: { template: "Instant download", integration: "Contact for setup" },
+    youtubeId: null,
+    screenshots: [],
+    contact: "https://t.me/shop_by_finekot_bot",
+    diagram: `            +---------------------+
+            |    TELEPHONY GW     |
+            |   Twilio / SIP      |
+            +---------+-----------+
+                      |
+           +----------+----------+
+           v          |          v
+     +--------+      |    +--------+
+     |Whisper |      |    |  TTS   |
+     |  STT   |      |    | Engine |
+     +----+---+      |    +----+---+
+          |          |         |
+          v          v         v
+     +---------------------------+
+     |   DIALOGUE ENGINE         |
+     |  +---------------------+  |
+     |  | Intent Classifier   |  |
+     |  | Context Manager     |  |
+     |  | Response Builder    |  |
+     |  | Objection Handler   |  |
+     |  +---------------------+  |
+     +----+-----+-----+----+----+
+          |     |     |
+     +----+-+ +--+--+ +--+-----+
+     | CRM  | |Cal- | | Lead   |
+     | Sync | |endar| | Score  |
+     +------+ +-----+ +--------+
+   +-------------------------------+
+   |  ANALYTICS & RECORDING LAYER  |
+   |  Transcripts . Sentiment . KPI|
+   +-------------------------------+`,
+  },
+  {
+    id: "contentfactory",
+    name: "ContentFactory",
+    tagline: "AI Content Production",
+    category: "Content Automation",
+    description: "AI content production system for all platforms.",
+    longDescription: "ContentFactory is your AI-powered content team. It generates, edits, schedules, and publishes content across all your platforms \u2014 blog, social media, newsletters, video scripts. Maintains your brand voice consistently, optimizes for SEO, and tracks performance.",
+    features: [
+      { title: "Multi-Platform Publishing", desc: "Blog, Instagram, LinkedIn, Twitter/X, Telegram, YouTube." },
+      { title: "Content Calendar", desc: "AI plans your content strategy weeks ahead." },
+      { title: "Brand Voice AI", desc: "Learns your tone, style, and vocabulary." },
+      { title: "SEO Optimization", desc: "Keyword research, meta tags, internal linking." },
+      { title: "Performance Analytics", desc: "Engagement, reach, clicks, conversions." },
+      { title: "15+ Languages", desc: "Create and localize content automatically." },
+    ],
+    useCases: ["Personal brands", "Startup marketing", "Agency content ops", "E-commerce", "SaaS marketing"],
+    techStack: ["Claude API", "Social Media APIs", "WordPress API", "N8N", "Analytics APIs", "Airtable"],
+    pricing: { code: 499, setup: 2000, currency: "USD" },
+    deliveryTime: { template: "Instant download", integration: "1 business day" },
+    youtubeId: null,
+    screenshots: [],
+    contact: "https://t.me/shop_by_finekot_bot",
+    diagram: `     +-------------------------+
+     |   CONTENT BRIEF INPUT   |
+     |  Topic . Tone . Platform|
+     +-----------+-------------+
+                 |
+     +-----------+-------------+
+     |   GENERATION ENGINE     |
+     |  +-------------------+  |
+     |  | Brand Voice Model |  |
+     |  | SEO Optimizer     |  |
+     |  | Format Adapter    |  |
+     |  | Language Engine   |  |
+     |  +-------------------+  |
+     +---+----+----+----+-----+
+         |    |    |    |
+     +---+-++--+-++--+-++--+---+
+     | Blog || Scl|| Nws|| Video|
+     | Post || Med|| Ltr|| Scrpt|
+     +--+--++--+--++--+--++--+--+
+        |     |      |      |
+     +--+-----+------+------+--+
+     |    SCHEDULER & PUBLISHER |
+     |  Calendar . Queue . Post |
+     +-----------+--------------+
+                 |
+     +-----------+--------------+
+     |  PERFORMANCE ANALYTICS   |
+     |  Reach . Clicks . Convert|
+     +--------------------------+`,
+  },
+  {
+    id: "docmind",
+    name: "DocMind",
+    tagline: "AI Knowledge Base",
+    category: "Knowledge Management",
+    description: "RAG-powered document intelligence system.",
+    longDescription: "DocMind turns your document chaos into an intelligent knowledge base. Upload contracts, manuals, regulations, internal docs \u2014 and get instant answers with exact source citations. Built on RAG (Retrieval-Augmented Generation) with vector search, it understands context across thousands of pages and serves answers in seconds.",
+    features: [
+      { title: "Universal Ingestion", desc: "Handles PDF, DOCX, XLSX, TXT, HTML, and more." },
+      { title: "Instant Q&A", desc: "Ask questions in natural language. Get precise answers with source citations." },
+      { title: "Vector Search (RAG)", desc: "Semantic search across all documents." },
+      { title: "Access Control", desc: "Role-based permissions. Departments see only their documents." },
+      { title: "Multi-Language", desc: "Ask in English, get answers from German documents." },
+      { title: "API Integration", desc: "REST API for embedding DocMind into your existing tools." },
+    ],
+    useCases: ["Legal document search", "Internal knowledge base", "Compliance", "Customer support", "Research"],
+    techStack: ["Claude API", "Pinecone / Weaviate", "LangChain", "Next.js", "PostgreSQL", "FastAPI"],
+    pricing: { code: 299, currency: "USD" },
+    deliveryTime: { template: "Instant download", integration: "Contact for setup" },
+    youtubeId: null,
+    screenshots: [],
+    contact: "https://t.me/shop_by_finekot_bot",
+    diagram: `     +-------------------------+
+     |    DOCUMENT INGESTION   |
+     |  PDF . DOCX . URL . API |
+     +-----------+-------------+
+                 |
+     +-----------+-------------+
+     |    PROCESSING PIPELINE  |
+     |  +-------------------+  |
+     |  | Chunker           |  |
+     |  | Embedder          |  |
+     |  | Metadata Extract  |  |
+     |  | Language Detect   |  |
+     |  +-------------------+  |
+     +-----+--------+---------+
+           |        |
+     +-----+----++---+--------+
+     | VECTOR   ||  METADATA  |
+     |   DB     ||    STORE   |
+     | Pinecone || PostgreSQL |
+     +----+-----++----+-------+
+          |           |
+     +----+-----------+-------+
+     |   RETRIEVAL ENGINE     |
+     |  Query Rewrite > Search|
+     |  Re-rank > Cite > Reply|
+     +-----------+------------+
+                 |
+     +-----------+------------+
+     |    ACCESS CONTROL LAYER|
+     |  Roles . Perms . Audit |
+     +------------------------+`,
+  },
+  {
+    id: "leadhunter",
+    name: "LeadHunter AI",
+    tagline: "AI Sales Automation",
+    category: "Sales Automation",
+    description: "AI-powered lead generation and nurturing system.",
+    longDescription: "LeadHunter AI finds your ideal clients, qualifies them, and initiates personalized outreach \u2014 all automatically. It scrapes target markets, builds prospect profiles, scores them against your ICP, and runs multi-channel outreach campaigns.",
+    features: [
+      { title: "Lead Sourcing", desc: "Finds prospects from LinkedIn, directories, databases, web scraping." },
+      { title: "AI Qualification", desc: "Scores each lead against your ICP." },
+      { title: "Personalized Outreach", desc: "Unique messages for each prospect, not templates." },
+      { title: "Pipeline Management", desc: "Visual sales pipeline with auto-stage advancement." },
+      { title: "Conversion Analytics", desc: "Open rates, reply rates, meeting rates, A/B testing." },
+      { title: "CRM Integration", desc: "Syncs with HubSpot, Salesforce, Pipedrive via API." },
+    ],
+    useCases: ["B2B sales", "Agency new business", "SaaS outbound", "Consulting", "Freelancer lead gen"],
+    techStack: ["Claude API", "LinkedIn API", "Email APIs", "N8N", "PostgreSQL", "Redis"],
+    pricing: { code: 399, currency: "USD" },
+    deliveryTime: { template: "Instant download", integration: "Contact for setup" },
+    youtubeId: null,
+    screenshots: [],
+    contact: "https://t.me/shop_by_finekot_bot",
+    diagram: `     +-------------------------+
+     |   TARGET DEFINITION    |
+     |  ICP . Industry . Geo  |
+     +-----------+------------+
+                 |
+     +-----------+------------+
+     |   SOURCING ENGINE      |
+     |  +------------------+  |
+     |  | LinkedIn Scraper |  |
+     |  | Directory Crawl  |  |
+     |  | Web Enrichment   |  |
+     |  | Dedup Engine     |  |
+     |  +------------------+  |
+     +-----+--------+---------+
+           |        |
+     +-----+---++---+--------+
+     |QUALIFY  ||  OUTREACH  |
+     | ENGINE  ||  ENGINE    |
+     +--------+++-----------+
+     |ICP Fit  ||Personalize|
+     |Budget   ||Multi-chan  |
+     |BANT     ||A/B Test   |
+     +----+----++----+------+
+          |          |
+     +----+----------+-------+
+     |     PIPELINE MANAGER  |
+     |  Stage . Score . CRM  |
+     +------------------------+
+   +----------------------------+
+   |  CONVERSION ANALYTICS      |
+   |  Opens . Replies . Meetings|
+   +----------------------------+`,
+  },
+  {
+    id: "contract-scanner",
+    name: "Contract Scanner",
+    tagline: "AI Legal Review",
+    category: "RAG",
+    description: "Upload any contract \u2014 get risk analysis in 30 seconds.",
+    longDescription: "Contract Scanner reads legal documents and instantly identifies risks, red flags, missing clauses, and deviations from your templates. It produces plain-language summaries that anyone can understand \u2014 no legal degree required. Built on RAG with clause comparison engine.",
+    features: [
+      { title: "Risk Analysis", desc: "Identifies dangerous clauses, hidden obligations, unfair terms." },
+      { title: "Red Flag Detection", desc: "Highlights clauses that deviate from industry standards." },
+      { title: "Template Comparison", desc: "Compares against your approved contract templates." },
+      { title: "Plain-Language Summary", desc: "Translates legalese into simple business language." },
+      { title: "Multi-Language", desc: "Analyzes contracts in any language." },
+      { title: "Audit Trail", desc: "Full history of every review and recommendation." },
+    ],
+    useCases: ["Legal departments", "Procurement", "Real estate", "Freelancers", "Startups"],
+    techStack: ["Claude API", "LangChain", "ChromaDB", "FastAPI", "Next.js"],
+    pricing: { code: 399, currency: "USD" },
+    deliveryTime: { template: "Instant download", integration: "Contact for setup" },
+    youtubeId: null,
+    screenshots: [],
+    contact: "https://t.me/shop_by_finekot_bot",
+    diagram: `     +------------------------+
+     |   CONTRACT UPLOAD      |
+     |  PDF . DOCX . Scan     |
+     +----------+-------------+
+                |
+     +----------+-------------+
+     |   ANALYSIS ENGINE      |
+     |  +------------------+  |
+     |  | Clause Extractor |  |
+     |  | Risk Scorer      |  |
+     |  | Template Matcher |  |
+     |  | Language Parser  |  |
+     |  +------------------+  |
+     +-----+--------+--------+
+           |        |
+     +-----+---++---+-------+
+     | RISK    ||  TEMPLATE |
+     | REPORT  ||  COMPARE  |
+     +---------++-----------+
+     |Red Flags ||Deviations|
+     |Liability ||Missing   |
+     |Score     ||Clauses   |
+     +----+----++----+------+
+          |          |
+     +----+----------+------+
+     |   PLAIN-LANGUAGE      |
+     |   SUMMARY ENGINE      |
+     +-----------+-----------+
+                 |
+     +-----------+-----------+
+     |    AUDIT TRAIL LAYER  |
+     |  History . Versions   |
+     +-----------------------+`,
+  },
+  {
+    id: "skynet-intake",
+    name: "SKYNET Intake",
+    tagline: "AI Task Assistant",
+    category: "Bots",
+    description: "Converts voice and text into structured tasks with AI routing.",
+    longDescription: "SKYNET Intake turns raw ideas \u2014 voice messages, texts, screenshots \u2014 into structured, prioritized tasks. It parses your input with AI, categorizes it, assigns priority, routes to the right executor, and syncs everything to Todoist. Stop losing ideas. Start executing them.",
+    features: [
+      { title: "Voice Input", desc: "Send a voice message \u2014 it transcribes and structures automatically." },
+      { title: "AI Prioritization", desc: "Assigns urgency and importance based on content analysis." },
+      { title: "Smart Routing", desc: "Routes tasks to the right agent or team member." },
+      { title: "Todoist Sync", desc: "Creates tasks with labels, projects, and due dates." },
+      { title: "Multi-Input", desc: "Text, voice, photos, screenshots \u2014 all processed." },
+      { title: "Daily Digest", desc: "Morning summary of what needs attention today." },
+    ],
+    useCases: ["Entrepreneurs", "Team leads", "Project managers", "Creative professionals", "Remote teams"],
+    techStack: ["Claude API", "Whisper STT", "Todoist API", "aiogram", "Python"],
+    pricing: { code: 499, currency: "USD" },
+    deliveryTime: { template: "Instant download", integration: "Contact for setup" },
+    youtubeId: null,
+    screenshots: [],
+    contact: "https://t.me/shop_by_finekot_bot",
+    diagram: `     +------------------------+
+     |   INPUT LAYER          |
+     |  Voice . Text . Photo  |
+     +----------+-------------+
+                |
+     +----------+-------------+
+     |   PROCESSING ENGINE    |
+     |  +------------------+  |
+     |  | Whisper STT      |  |
+     |  | AI Parser        |  |
+     |  | Priority Scorer  |  |
+     |  | Category Engine  |  |
+     |  +------------------+  |
+     +-----+--------+--------+
+           |        |
+     +-----+---++---+-------+
+     | ROUTING ||  TODOIST  |
+     | ENGINE  ||  SYNC     |
+     +---------++-----------+
+     |Agent Map||Projects   |
+     |Team Map ||Labels     |
+     |Auto-Asn ||Due Dates  |
+     +----+----++----+------+
+          |          |
+     +----+----------+------+
+     |    DAILY DIGEST       |
+     |  Summary . Priorities |
+     +-----------------------+`,
+  },
+  {
+    id: "hiring-autopilot",
+    name: "Hiring Autopilot",
+    tagline: "AI Recruitment System",
+    category: "HR Automation",
+    description: "AI-powered end-to-end hiring pipeline.",
+    longDescription: "Hiring Autopilot automates your entire recruitment process from job posting to offer letter. It writes and publishes job descriptions, screens incoming resumes with AI scoring, conducts initial interviews via chat, schedules meetings with top candidates, and maintains a ranked pipeline.",
+    features: [
+      { title: "Auto Job Posting", desc: "Generates job descriptions and publishes across platforms." },
+      { title: "AI Resume Screening", desc: "Scores every resume against your criteria." },
+      { title: "Chat Interviews", desc: "Structured first-round interviews via messenger." },
+      { title: "Smart Scheduling", desc: "Coordinates calendars and books interview slots." },
+      { title: "Candidate Ranking", desc: "Data-driven ranking across skills, experience, culture fit." },
+      { title: "HR Analytics", desc: "Time-to-hire, source effectiveness, conversion funnel." },
+    ],
+    useCases: ["Startup hiring", "Agency recruitment", "Enterprise HR", "Seasonal staffing", "Remote teams"],
+    techStack: ["Claude API", "Telegram Bot API", "Google Calendar API", "PostgreSQL", "N8N", "Redis"],
+    pricing: { code: 199, currency: "USD" },
+    deliveryTime: { template: "Instant download", integration: "Contact for setup" },
+    youtubeId: null,
+    screenshots: [],
+    contact: "https://t.me/shop_by_finekot_bot",
+    diagram: `     +------------------------+
+     |   VACANCY DEFINITION   |
+     |  Requirements . Criteria|
+     +----------+-------------+
+                |
+     +----------+-------------+
+     |   JOB DISTRIBUTION     |
+     |  LinkedIn . Indeed . TG|
+     +----------+-------------+
+                |
+     +----------+-------------+
+     |   SCREENING ENGINE     |
+     |  +------------------+  |
+     |  | Resume Parser    |  |
+     |  | Skill Matcher    |  |
+     |  | Experience Score |  |
+     |  | Bias Filter      |  |
+     |  +------------------+  |
+     +-----+--------+--------+
+           |        |
+     +-----+---++---+--------+
+     |  CHAT   ||  SCHEDULE  |
+     |INTERVIEW||  MANAGER   |
+     |  Agent  ||  Calendar  |
+     +----+----++----+-------+
+          |          |
+     +----+----------+------+
+     |   RANKING & PIPELINE |
+     |  Score . Compare     |
+     +----------+-----------+
+                |
+     +----------+-----------+
+     |   HR ANALYTICS LAYER |
+     |  Funnel . Time . Src |
+     +----------------------+`,
+  },
+  {
+    id: "supportbot-pro",
+    name: "SupportBot Pro",
+    tagline: "AI Customer Support",
+    category: "Bots",
+    description: "First-line support trained on your knowledge base.",
+    longDescription: "SupportBot Pro handles customer inquiries 24/7. Trained on your FAQ, documentation, and historical tickets \u2014 it resolves 80%+ of requests without human intervention. Complex cases are escalated with full context. Supports 10+ languages.",
+    features: [
+      { title: "Knowledge Base Training", desc: "Learns from your FAQ, docs, and past tickets." },
+      { title: "Smart Escalation", desc: "Escalates to humans with full conversation context." },
+      { title: "Multi-Language", desc: "Handles 10+ languages automatically." },
+      { title: "Ticket Integration", desc: "Works with Zendesk, Intercom, Freshdesk." },
+      { title: "Analytics Dashboard", desc: "Resolution rates, response times, satisfaction scores." },
+      { title: "Continuous Learning", desc: "Improves from every resolved conversation." },
+    ],
+    useCases: ["E-commerce support", "SaaS help desk", "Telecom", "Banking", "Travel agencies"],
+    techStack: ["Claude API", "RAG", "Telegram", "Zendesk API", "Python"],
+    pricing: { code: 199, currency: "USD" },
+    deliveryTime: { template: "Instant download", integration: "Contact for setup" },
+    youtubeId: null,
+    screenshots: [],
+    contact: "https://t.me/shop_by_finekot_bot",
+    diagram: `     +------------------------+
+     |   CUSTOMER INPUT       |
+     |  Chat . Email . Widget |
+     +----------+-------------+
+                |
+     +----------+-------------+
+     |   SUPPORT ENGINE       |
+     |  +------------------+  |
+     |  | Knowledge RAG    |  |
+     |  | Intent Classify  |  |
+     |  | Response Builder |  |
+     |  | Escalation Logic |  |
+     |  +------------------+  |
+     +-----+--------+--------+
+           |        |
+     +-----+---++---+-------+
+     | AUTO    ||  ESCALATE |
+     | RESOLVE ||  TO HUMAN |
+     +---------++-----------+
+          |          |
+     +----+----------+------+
+     |   ANALYTICS & LEARN  |
+     |  CSAT . Resolution   |
+     +-----------------------+`,
+  },
+  {
+    id: "realestate-ai",
+    name: "RealEstate AI",
+    tagline: "Property Assistant Bot",
+    category: "Bots",
+    description: "AI agent for real estate \u2014 matching, Q&A, booking viewings.",
+    longDescription: "RealEstate AI is your 24/7 property assistant. It matches clients to listings by parameters, answers questions about properties, books viewings directly into Google Calendar, and updates your CRM. Works in Telegram, WhatsApp, or website widget.",
+    features: [
+      { title: "Smart Matching", desc: "Finds best properties by budget, location, size, amenities." },
+      { title: "24/7 Q&A", desc: "Answers questions about any listing instantly." },
+      { title: "Viewing Booking", desc: "Books viewings directly into Google Calendar." },
+      { title: "CRM Updates", desc: "Logs every interaction and lead status." },
+      { title: "Multi-Channel", desc: "Telegram, WhatsApp, website widget." },
+      { title: "Photo Galleries", desc: "Sends property photos and virtual tour links." },
+    ],
+    useCases: ["Real estate agencies", "Property developers", "Rental companies", "Individual agents"],
+    techStack: ["Claude API", "Telegram", "PostgreSQL", "Google Calendar", "Python"],
+    pricing: { code: 199, currency: "USD" },
+    deliveryTime: { template: "Instant download", integration: "Contact for setup" },
+    youtubeId: null,
+    screenshots: [],
+    contact: "https://t.me/shop_by_finekot_bot",
+    diagram: `     +------------------------+
+     |   CLIENT REQUEST       |
+     |  Budget . Area . Type  |
+     +----------+-------------+
+                |
+     +----------+-------------+
+     |   MATCHING ENGINE      |
+     |  Filter > Score > Rank |
+     +-----+--------+--------+
+           |        |
+     +-----+---++---+-------+
+     | LISTING ||  BOOKING  |
+     | Q&A     ||  ENGINE   |
+     +---------++-----------+
+     |Details  ||Calendar   |
+     |Photos   ||Reminders  |
+     |Tours    ||Confirm    |
+     +----+----++----+------+
+          |          |
+     +----+----------+------+
+     |    CRM & ANALYTICS   |
+     |  Leads . Conversions |
+     +-----------------------+`,
+  },
+  {
+    id: "mailmind",
+    name: "MailMind",
+    tagline: "AI Email Automation",
+    category: "Automation",
+    description: "AI email processing \u2014 classify, draft, respond in 3 seconds.",
+    longDescription: "MailMind reads every incoming email, classifies it by intent and urgency, drafts a response in 3 seconds, auto-sends standard replies, and escalates edge cases. It learns your communication style and gets better over time.",
+    features: [
+      { title: "Auto-Classification", desc: "Sorts incoming emails by type, urgency, and sender." },
+      { title: "3-Second Drafts", desc: "AI drafts a response before you finish reading the email." },
+      { title: "Auto-Respond", desc: "Sends standard replies automatically for known patterns." },
+      { title: "Smart Escalation", desc: "Routes complex emails to the right person with context." },
+      { title: "Style Learning", desc: "Learns your writing style and tone over time." },
+      { title: "Analytics", desc: "Response times, volume tracking, pattern insights." },
+    ],
+    useCases: ["Customer service teams", "Sales teams", "Executive assistants", "Support desks", "Agencies"],
+    techStack: ["Claude API", "N8N", "Gmail API", "OpenAI", "Supabase"],
+    pricing: { code: 199, currency: "USD" },
+    deliveryTime: { template: "Instant download", integration: "Contact for setup" },
+    youtubeId: null,
+    screenshots: [],
+    contact: "https://t.me/shop_by_finekot_bot",
+    diagram: `     +------------------------+
+     |   INBOX MONITOR        |
+     |  Gmail . Outlook . API |
+     +----------+-------------+
+                |
+     +----------+-------------+
+     |   EMAIL BRAIN          |
+     |  Classify > Draft > Act|
+     +-----+--------+--------+
+           |        |
+     +-----+---++---+-------+
+     | AUTO    ||  ESCALATE |
+     | REPLY   ||  + ROUTE  |
+     +---------++-----------+
+          |          |
+     +----+----------+------+
+     |   STYLE LEARNING     |
+     |  Tone . Pattern . KPI|
+     +-----------------------+`,
+  },
+  {
+    id: "bizpulse",
+    name: "BizPulse",
+    tagline: "Business Intelligence Agent",
+    category: "Automation",
+    description: "AI monitors your metrics and diagnoses anomalies.",
+    longDescription: "BizPulse connects to your databases, spreadsheets, and analytics tools \u2014 monitors revenue, CAC, LTV, conversion rates in real-time. When something goes off track, it sends a Telegram alert with root cause analysis and recommended actions.",
+    features: [
+      { title: "Metric Monitoring", desc: "Tracks revenue, CAC, LTV, churn, conversions in real-time." },
+      { title: "Anomaly Detection", desc: "Spots unusual patterns before they become problems." },
+      { title: "Root Cause Analysis", desc: "AI explains WHY metrics changed, not just that they did." },
+      { title: "Daily Digest", desc: "Morning summary of all key metrics to Telegram." },
+      { title: "Custom Alerts", desc: "Set thresholds. Get notified when they're breached." },
+      { title: "Multi-Source", desc: "Connects to DB, Google Sheets, Metabase, Stripe, etc." },
+    ],
+    useCases: ["SaaS companies", "E-commerce", "Marketing teams", "CFOs", "Growth teams"],
+    techStack: ["Claude API", "N8N", "PostgreSQL", "Metabase", "Telegram"],
+    pricing: { code: 199, currency: "USD" },
+    deliveryTime: { template: "Instant download", integration: "Contact for setup" },
+    youtubeId: null,
+    screenshots: [],
+    contact: "https://t.me/shop_by_finekot_bot",
+    diagram: `     +------------------------+
+     |   DATA SOURCES         |
+     |  DB . Sheets . Stripe  |
+     +----------+-------------+
+                |
+     +----------+-------------+
+     |   MONITOR ENGINE       |
+     |  Track > Detect > Alert|
+     +-----+--------+--------+
+           |        |
+     +-----+---++---+-------+
+     | ANOMALY ||  ROOT     |
+     | DETECT  ||  CAUSE    |
+     +---------++-----------+
+          |          |
+     +----+----------+------+
+     |   TELEGRAM DIGEST    |
+     |  Daily . Alerts . Act|
+     +-----------------------+`,
+  },
+  {
+    id: "code-reviewer",
+    name: "CodeReviewer",
+    tagline: "Autonomous Code Review Agent",
+    category: "Multi-Agent",
+    description: "AI reviews PRs for bugs, security, and style in 60 seconds.",
+    longDescription: "CodeReviewer analyzes every pull request automatically. Finds bugs, security vulnerabilities (OWASP), performance issues, and style violations. Writes inline comments like a senior developer. Learns your team's conventions over time.",
+    features: [
+      { title: "PR Analysis", desc: "Reviews pull requests in under 60 seconds." },
+      { title: "Security Checks", desc: "OWASP top-10 vulnerability scanning." },
+      { title: "Style Learning", desc: "Learns your team's coding conventions." },
+      { title: "Inline Comments", desc: "Posts review comments directly on the PR." },
+      { title: "Performance Hints", desc: "Spots N+1 queries, memory leaks, slow patterns." },
+      { title: "CI Integration", desc: "Runs as part of your GitHub Actions / GitLab CI pipeline." },
+    ],
+    useCases: ["Development teams", "Open source projects", "Startups", "Enterprise dev", "Freelancers"],
+    techStack: ["Claude API", "GitHub API", "AST Parsers", "Python", "Docker"],
+    pricing: { code: 199, currency: "USD" },
+    deliveryTime: { template: "Instant download", integration: "Contact for setup" },
+    youtubeId: null,
+    screenshots: [],
+    contact: "https://t.me/shop_by_finekot_bot",
+    diagram: `     +------------------------+
+     |   GITHUB / GITLAB PR   |
+     |  Webhook . CI Trigger  |
+     +----------+-------------+
+                |
+     +----------+-------------+
+     |   REVIEW ENGINE        |
+     |  +------------------+  |
+     |  | Diff Parser      |  |
+     |  | Bug Detector     |  |
+     |  | OWASP Scanner    |  |
+     |  | Style Checker    |  |
+     |  | Perf Analyzer    |  |
+     |  +------------------+  |
+     +-----+--------+--------+
+           |        |
+     +-----+---++---+-------+
+     | INLINE  ||  SUMMARY |
+     | COMMENT ||  REPORT  |
+     +---------++-----------+
+          |          |
+     +----+----------+------+
+     |   TEAM STYLE LEARN   |
+     |  Conventions . Prefs |
+     +-----------------------+`,
+  },
+  {
+    id: "meeting-scribe",
+    name: "Meeting Scribe",
+    tagline: "AI Meeting Assistant",
+    category: "Voice AI",
+    description: "Transcribes meetings, extracts action items, assigns owners.",
+    longDescription: "Meeting Scribe joins your Zoom/Meet calls, transcribes everything in real-time, extracts action items, assigns owners, and pushes tasks to your project management tools. Never lose a decision or follow-up again.",
+    features: [
+      { title: "Live Transcription", desc: "Real-time speech-to-text during meetings." },
+      { title: "Action Items", desc: "Automatically extracts tasks and decisions." },
+      { title: "Owner Assignment", desc: "Maps action items to team members." },
+      { title: "Task Push", desc: "Sends tasks to Notion, Todoist, Jira, Asana." },
+      { title: "Meeting Summary", desc: "Concise summary with key decisions and next steps." },
+      { title: "Searchable Archive", desc: "Every meeting indexed and searchable." },
+    ],
+    useCases: ["Remote teams", "Agencies", "Board meetings", "Sales calls", "Standup meetings"],
+    techStack: ["Whisper", "Claude API", "Zoom SDK", "Notion API", "Python"],
+    pricing: { code: 199, currency: "USD" },
+    deliveryTime: { template: "Instant download", integration: "Contact for setup" },
+    youtubeId: null,
+    screenshots: [],
+    contact: "https://t.me/shop_by_finekot_bot",
+    diagram: `     +------------------------+
+     |   MEETING INPUT        |
+     |  Zoom . Meet . Audio   |
+     +----------+-------------+
+                |
+     +----------+-------------+
+     |   SCRIBE ENGINE        |
+     |  Transcribe > Extract  |
+     +-----+--------+--------+
+           |        |
+     +-----+---++---+-------+
+     | ACTION  ||  SUMMARY |
+     | ITEMS   ||  ENGINE  |
+     +---------++-----------+
+     |Tasks    ||Decisions  |
+     |Owners   ||Next Steps |
+     +----+----++----+------+
+          |          |
+     +----+----------+------+
+     |   TASK PUSH & ARCHIVE|
+     |  Notion . Jira . Srch|
+     +-----------------------+`,
+  },
+  {
+    id: "compliance-guard",
+    name: "Compliance Guard",
+    tagline: "Regulatory Compliance AI",
+    category: "RAG",
+    description: "Checks documents against regulations. Flags violations.",
+    longDescription: "Compliance Guard monitors your documents, policies, and processes against regulatory requirements (GDPR, HIPAA, SOX, industry-specific). It flags violations, suggests fixes, tracks compliance scores over time, and maintains a full audit trail.",
+    features: [
+      { title: "Multi-Regulation", desc: "GDPR, HIPAA, SOX, PCI-DSS, and custom rule sets." },
+      { title: "Violation Detection", desc: "Scans documents and flags non-compliant sections." },
+      { title: "Fix Suggestions", desc: "Recommends specific changes to achieve compliance." },
+      { title: "Compliance Score", desc: "Tracks organization-wide compliance over time." },
+      { title: "Audit Trail", desc: "Full history of every check, finding, and remediation." },
+      { title: "Scheduled Scans", desc: "Automated periodic compliance reviews." },
+    ],
+    useCases: ["Legal departments", "Healthcare", "Financial services", "Tech companies", "Government"],
+    techStack: ["Claude API", "LangChain", "Pinecone", "FastAPI", "React"],
+    pricing: { code: 199, currency: "USD" },
+    deliveryTime: { template: "Instant download", integration: "Contact for setup" },
+    youtubeId: null,
+    screenshots: [],
+    contact: "https://t.me/shop_by_finekot_bot",
+    diagram: `     +------------------------+
+     |   DOCUMENT UPLOAD      |
+     |  Policies . Processes  |
+     +----------+-------------+
+                |
+     +----------+-------------+
+     |   COMPLIANCE ENGINE    |
+     |  +------------------+  |
+     |  | Regulation DB    |  |
+     |  | Clause Matcher   |  |
+     |  | Violation Detect |  |
+     |  | Fix Generator    |  |
+     |  +------------------+  |
+     +-----+--------+--------+
+           |        |
+     +-----+---++---+-------+
+     | SCORE   ||  AUDIT   |
+     | TRACKER ||  TRAIL   |
+     +---------++-----------+
+          |          |
+     +----+----------+------+
+     |   SCHEDULED SCANS    |
+     |  Daily . Weekly . Ad |
+     +-----------------------+`,
+  },
+];
+
+export function getProductById(id: string): ProductData | undefined {
+  return productsData.find((p) => p.id === id);
+}

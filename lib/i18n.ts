@@ -1,0 +1,426 @@
+export type Lang = "EN" | "RU" | "UA";
+export const langs: Lang[] = ["EN", "RU", "UA"];
+
+export interface T {
+  nav: { home: string; products: string; projects: string; contact: string; connect: string };
+  heroSubtitle: string;
+  roles: string[];
+  cta: { viewProducts: string; requestIntegration: string };
+  stats: { products: string; startingPrice: string; dayIntegration: string; systemsBuilt: string };
+  projectsSection: { label: string; title: string; shown: string; showMore: string; showLess: string };
+  categories: Record<string, string>;
+  projectUI: { live: string; keyFeatures: string };
+  about: { label: string; title: string; desc: string; boxTitle: string; points: string[] };
+  pricingSection: {
+    templateLabel: string;
+    templatePrice: string;
+    templateDesc: string;
+    templateIncludes: string[];
+    integrationLabel: string;
+    integrationPrice: string;
+    integrationDesc: string;
+    integrationIncludes: string[];
+    recommended: string;
+  };
+  svetlana: { label: string; title: string; subtitle: string; desc: string; features: { icon: string; title: string; text: string }[]; ctaTemplate: string; ctaIntegration: string; diagramTitle: string };
+  skynetProduct: { label: string; title: string; subtitle: string; desc: string; features: { icon: string; title: string; text: string }[]; ctaTemplate: string; ctaIntegration: string; diagramTitle: string };
+  callAgent: { label: string; title: string; subtitle: string; desc: string; features: { icon: string; title: string; text: string }[]; ctaTemplate: string; ctaIntegration: string; diagramTitle: string };
+  docMind: { label: string; title: string; subtitle: string; desc: string; features: { icon: string; title: string; text: string }[]; ctaTemplate: string; ctaIntegration: string; diagramTitle: string };
+  hiringAutopilot: { label: string; title: string; subtitle: string; desc: string; features: { icon: string; title: string; text: string }[]; ctaTemplate: string; ctaIntegration: string; diagramTitle: string };
+  leadHunter: { label: string; title: string; subtitle: string; desc: string; features: { icon: string; title: string; text: string }[]; ctaTemplate: string; ctaIntegration: string; diagramTitle: string };
+  contentFactory: { label: string; title: string; subtitle: string; desc: string; features: { icon: string; title: string; text: string }[]; ctaTemplate: string; ctaIntegration: string; diagramTitle: string };
+  contact: { label: string; title: string; subtitle: string; templateCta: string; integrationCta: string };
+  footer: string;
+}
+
+const EN: T = {
+  nav: { home: "Home", products: "Products", projects: "Projects", contact: "Contact", connect: "Connect" },
+  heroSubtitle: "Production-Ready AI Systems",
+  roles: ["17 AI systems ready to deploy", "From $149 — full source code", "Your AI army. Your rules.", "No subscriptions. You own the code.", "Deploy in minutes, not months", "Built by an engineer, not a committee", "Autopilot for your business"],
+  cta: { viewProducts: "View Products", requestIntegration: "Request Integration" },
+  stats: { products: "Products Available", startingPrice: "Starting Price ($)", dayIntegration: "Day Integration", systemsBuilt: "Systems Built" },
+  projectsSection: { label: "Portfolio", title: "Projects", shown: "shown", showMore: "Show more projects", showLess: "Collapse" },
+  categories: { "All": "All", "Multi-Agent": "Multi-Agent", "Voice AI": "Voice AI", "Bots": "Bots", "Automation": "Automation", "RAG": "RAG" },
+  projectUI: { live: "Live", keyFeatures: "Key Features" },
+  about: {
+    label: "About", title: "AI Systems Store",
+    desc: "17 production AI systems built and battle-tested. Each comes with full source code, documentation, and auto-install. Prices start from $149. Personal setup available for select products. No subscriptions. No vendor lock-in. You own the code.",
+    boxTitle: "What you get",
+    points: ["Production-grade source code \u2014 not a demo, not a prototype", "Complete documentation + auto-install", "Full ownership \u2014 no subscriptions, no vendor lock-in", "Optional 1-day personal integration into your business", "30 days post-integration support"],
+  },
+  pricingSection: {
+    templateLabel: "Template",
+    templatePrice: "$499",
+    templateDesc: "Get the system. Deploy it yourself.",
+    templateIncludes: ["Full source code", "Documentation & setup guide", "Auto-install included", "Lifetime updates"],
+    integrationLabel: "Integration",
+    integrationPrice: "$2500",
+    integrationDesc: "I set it up in your business. In 1 day.",
+    integrationIncludes: ["Everything in Template", "Personal setup by the creator", "Integrated into your infrastructure", "30 days support"],
+    recommended: "Recommended",
+  },
+  svetlana: {
+    label: "AI Business", title: "Agent Svetlana",
+    subtitle: "Buy a Ready-Made Business. AI Runs It For You.",
+    desc: "Pick a location. Set up the decor. Agent Svetlana handles everything else. She finds your staff, brings in clients, orders supplies, manages all communications \u2014 and only bothers you with important questions, handling all routine on her own. No noise. No micromanagement. Just a business that runs itself.",
+    features: [
+      { icon: "[+]", title: "Auto-Hiring", text: "Posts vacancies, screens applicants, schedules interviews. You just say yes." },
+      { icon: "[>]", title: "Client Acquisition", text: "Automated marketing, booking, reminders. Clients come to you \u2014 not the other way around." },
+      { icon: "[=]", title: "Supply Chain", text: "Inventory tracked and reordered semi-automatically. You never run out of stock." },
+      { icon: "[~]", title: "All Communications", text: "Client chats, staff coordination, reviews \u2014 Svetlana handles every message." },
+      { icon: "[#]", title: "Smart Reports", text: "Clear daily summaries: what happened, what's next, what needs your call." },
+      { icon: "[^]", title: "Fast Launch", text: "From empty space to operating salon in weeks, not months." },
+    ],
+    ctaTemplate: "Get Svetlana Template", ctaIntegration: "Svetlana + Integration",
+    diagramTitle: "How Agent Svetlana Works",
+  },
+  skynetProduct: {
+    label: "Product", title: "SKYNET",
+    subtitle: "Your Personal AI Army. Command It From Telegram.",
+    desc: "Stop hiring. Start commanding. SKYNET gives you a team of autonomous AI agents \u2014 each a specialist \u2014 managed by a central coordinator. You text a task in Telegram. The system decomposes it, routes it to the right agent, executes, quality-checks, and delivers. No meetings. No delays. No excuses. Your digital workforce operates 24/7, never sleeps, never quits, and costs a fraction of a human team.",
+    features: [
+      { icon: "[*]", title: "AI Coordinator", text: "A central brain that decomposes any task, picks the best agent, and ensures quality before delivery." },
+      { icon: "[!]", title: "Instant Execution", text: "Send a message in Telegram \u2014 get results back. Code, research, automation, content \u2014 anything." },
+      { icon: "[@]", title: "Specialized Agents", text: "Fullstack dev, backend engineer, DevOps, researcher \u2014 each agent masters their domain." },
+      { icon: "[:]", title: "24/7 Operations", text: "Your agents never sleep, never take vacations, never call in sick. Always on. Always ready." },
+      { icon: "[|]", title: "Your Infrastructure", text: "Runs on your servers. Your data stays yours. No third-party access. Full control." },
+      { icon: "[/]", title: "Scale Instantly", text: "Need more agents? Clone the config. From 4 agents to 40 in minutes, not months." },
+    ],
+    ctaTemplate: "Get SKYNET Template", ctaIntegration: "SKYNET + Integration",
+    diagramTitle: "SKYNET Architecture",
+  },
+  callAgent: {
+    label: "Voice AI", title: "AI Call Agent",
+    subtitle: "Your AI Employee Answers Every Call. 24/7. In Any Language.",
+    desc: "A fully autonomous voice robot that handles incoming and outgoing calls. Qualifies leads, books appointments, answers FAQs, and escalates only when a human is truly needed. Sounds natural. Works around the clock.",
+    features: [
+      { icon: "[>]", title: "Inbound Calls", text: "Answers instantly. Qualifies the caller. Routes or books directly." },
+      { icon: "[<]", title: "Outbound Campaigns", text: "Cold calls, follow-ups, reminders — automated at scale with natural speech." },
+      { icon: "[~]", title: "Human-Like Voice", text: "Advanced speech synthesis. Callers can't tell it's AI." },
+      { icon: "[*]", title: "Multilingual", text: "Speaks the customer's language. Detects and switches automatically." },
+      { icon: "[#]", title: "Call Analytics", text: "Every call transcribed, scored, and summarized." },
+      { icon: "[!]", title: "CRM Integration", text: "Syncs with your CRM in real-time. Zero manual data entry." },
+    ],
+    ctaTemplate: "Get Call Agent Template", ctaIntegration: "Call Agent + Integration", diagramTitle: "How AI Call Agent Works",
+  },
+  docMind: {
+    label: "Document AI", title: "DocMind",
+    subtitle: "Ask Questions. Get Answers From Your Documents. Instantly.",
+    desc: "Upload contracts, manuals, reports — DocMind reads, indexes, and understands them all. Ask in natural language, get precise answers with source references. Your entire knowledge base, queryable in seconds.",
+    features: [
+      { icon: "[=]", title: "Any Document", text: "PDF, DOCX, spreadsheets, presentations — everything gets indexed." },
+      { icon: "[?]", title: "Semantic Search", text: "Not keyword matching. Actual understanding of meaning and context." },
+      { icon: "[!]", title: "Source Citations", text: "Every answer comes with exact page and paragraph references." },
+      { icon: "[|]", title: "Private & Secure", text: "Your documents never leave your infrastructure." },
+      { icon: "[~]", title: "Chat Interface", text: "Talk to your documents like talking to a colleague who read everything." },
+      { icon: "[%]", title: "Auto-Update", text: "Add new documents — the knowledge base updates instantly." },
+    ],
+    ctaTemplate: "Get DocMind Template", ctaIntegration: "DocMind + Integration", diagramTitle: "How DocMind Works",
+  },
+  hiringAutopilot: {
+    label: "Multi-Agent HR", title: "Hiring Autopilot",
+    subtitle: "Post a Vacancy. AI Finds, Screens, and Delivers Candidates.",
+    desc: "A multi-agent system that automates the entire hiring pipeline. Posts job listings, screens resumes with AI, conducts initial interviews via chat, schedules meetings, and ranks candidates. You only meet the top 3.",
+    features: [
+      { icon: "[+]", title: "Auto-Posting", text: "Publishes to job boards, LinkedIn, Telegram — all at once." },
+      { icon: "[@]", title: "AI Screening", text: "Reads every resume. Filters by skills. No human bias." },
+      { icon: "[~]", title: "Chat Interviews", text: "First-round by AI. Natural conversation, real assessment." },
+      { icon: "[:]", title: "Smart Scheduling", text: "Coordinates calendar with top candidates." },
+      { icon: "[#]", title: "Candidate Ranking", text: "Scored, compared, ranked. See who fits best." },
+      { icon: "[#]", title: "Pipeline Dashboard", text: "Every stage, every candidate, every metric in real-time." },
+    ],
+    ctaTemplate: "Get Hiring Template", ctaIntegration: "Hiring + Integration", diagramTitle: "How Hiring Autopilot Works",
+  },
+  leadHunter: {
+    label: "Sales AI", title: "LeadHunter AI",
+    subtitle: "AI Finds Your Clients. Qualifies Them. Delivers Warm Leads.",
+    desc: "An autonomous lead generation system. Monitors target channels, engages prospects in natural conversation, qualifies them against your criteria, and delivers warm leads to your CRM. No cold calling. No manual prospecting.",
+    features: [
+      { icon: "[>]", title: "Target Channels", text: "Monitors Telegram, LinkedIn, forums — wherever your clients are." },
+      { icon: "[~]", title: "Natural Engagement", text: "Starts conversations that feel human. No spam." },
+      { icon: "[v]", title: "Auto-Qualification", text: "Checks budget, timeline, decision-maker — your criteria, automated." },
+      { icon: "[=]", title: "CRM Delivery", text: "Qualified leads appear in your CRM with full context." },
+      { icon: "[/]", title: "Conversion Tracking", text: "See which channels convert best. AI optimizes itself." },
+      { icon: "[%]", title: "24/7 Prospecting", text: "Never stops. Nights, weekends, holidays." },
+    ],
+    ctaTemplate: "Get LeadHunter Template", ctaIntegration: "LeadHunter + Integration", diagramTitle: "How LeadHunter AI Works",
+  },
+  contentFactory: {
+    label: "Content AI", title: "ContentFactory",
+    subtitle: "Feed It Your Brand. Get Posts, Articles, and Ads on Autopilot.",
+    desc: "An AI content pipeline that generates, schedules, and publishes content across all your channels. Blog posts, social media, newsletters, ad copy — all in your brand voice, all on schedule.",
+    features: [
+      { icon: "[+]", title: "Content Generation", text: "Blog posts, captions, newsletters — all in your brand voice." },
+      { icon: "[:]", title: "Auto-Scheduling", text: "Calendar-based publishing. Right content, right time." },
+      { icon: "[*]", title: "Multi-Format", text: "Text, images, carousels, stories — adapts to every platform." },
+      { icon: "[#]", title: "Performance Tracking", text: "See what resonates. AI adjusts strategy." },
+      { icon: "[*]", title: "Multi-Language", text: "One post, multiple languages. Localized, not just translated." },
+      { icon: "[%]", title: "Content Recycling", text: "Top performers get repurposed automatically." },
+    ],
+    ctaTemplate: "Get ContentFactory Template", ctaIntegration: "ContentFactory + Integration", diagramTitle: "How ContentFactory Works",
+  },
+  contact: { label: "Contact", title: "Get In Touch", subtitle: "Ready to deploy an AI system? Choose a template or request personal integration.", templateCta: "Browse Products", integrationCta: "Request Integration" },
+  footer: "\u00a9 2026 Finekot \u2014 AI Systems",
+};
+
+const RU: T = {
+  nav: { home: "\u0413\u043b\u0430\u0432\u043d\u0430\u044f", products: "\u0410\u0433\u0435\u043d\u0442\u044b", projects: "\u041f\u0440\u043e\u0435\u043a\u0442\u044b", contact: "\u041a\u043e\u043d\u0442\u0430\u043a\u0442", connect: "\u0421\u0432\u044f\u0437\u0430\u0442\u044c\u0441\u044f" },
+  heroSubtitle: "\u0413\u043e\u0442\u043e\u0432\u044b\u0435 AI-\u0441\u0438\u0441\u0442\u0435\u043c\u044b",
+  roles: ["17 AI-\u0441\u0438\u0441\u0442\u0435\u043c \u0433\u043e\u0442\u043e\u0432\u044b \u043a \u0437\u0430\u043f\u0443\u0441\u043a\u0443", "\u041e\u0442 $149 \u2014 \u043f\u043e\u043b\u043d\u044b\u0439 \u0438\u0441\u0445\u043e\u0434\u043d\u044b\u0439 \u043a\u043e\u0434", "\u0412\u0430\u0448\u0430 AI-\u0430\u0440\u043c\u0438\u044f. \u0412\u0430\u0448\u0438 \u043f\u0440\u0430\u0432\u0438\u043b\u0430.", "\u0411\u0435\u0437 \u043f\u043e\u0434\u043f\u0438\u0441\u043e\u043a. \u041a\u043e\u0434 \u0432\u0430\u0448.", "\u0417\u0430\u043f\u0443\u0441\u043a \u0437\u0430 \u043c\u0438\u043d\u0443\u0442\u044b, \u043d\u0435 \u043c\u0435\u0441\u044f\u0446\u044b", "\u0421\u043e\u0437\u0434\u0430\u043d\u043e \u0438\u043d\u0436\u0435\u043d\u0435\u0440\u043e\u043c, \u043d\u0435 \u043a\u043e\u043c\u0438\u0442\u0435\u0442\u043e\u043c", "\u0410\u0432\u0442\u043e\u043f\u0438\u043b\u043e\u0442 \u0434\u043b\u044f \u0432\u0430\u0448\u0435\u0433\u043e \u0431\u0438\u0437\u043d\u0435\u0441\u0430"],
+  cta: { viewProducts: "\u0421\u043c\u043e\u0442\u0440\u0435\u0442\u044c \u043f\u0440\u043e\u0434\u0443\u043a\u0442\u044b", requestIntegration: "\u0417\u0430\u043a\u0430\u0437\u0430\u0442\u044c \u0438\u043d\u0442\u0435\u0433\u0440\u0430\u0446\u0438\u044e" },
+  stats: { products: "\u041f\u0440\u043e\u0434\u0443\u043a\u0442\u043e\u0432", startingPrice: "\u0421\u0442\u0430\u0440\u0442\u043e\u0432\u0430\u044f \u0446\u0435\u043d\u0430 ($)", dayIntegration: "\u0414\u0435\u043d\u044c \u0438\u043d\u0442\u0435\u0433\u0440\u0430\u0446\u0438\u0438", systemsBuilt: "\u0421\u0438\u0441\u0442\u0435\u043c \u043f\u043e\u0441\u0442\u0440\u043e\u0435\u043d\u043e" },
+  projectsSection: { label: "\u041f\u043e\u0440\u0442\u0444\u043e\u043b\u0438\u043e", title: "\u041f\u0440\u043e\u0435\u043a\u0442\u044b", shown: "\u043f\u043e\u043a\u0430\u0437\u0430\u043d\u043e", showMore: "\u041f\u043e\u043a\u0430\u0437\u0430\u0442\u044c \u0435\u0449\u0451", showLess: "\u0421\u0432\u0435\u0440\u043d\u0443\u0442\u044c" },
+  categories: { "All": "\u0412\u0441\u0435", "Multi-Agent": "\u041c\u0443\u043b\u044c\u0442\u0438\u0430\u0433\u0435\u043d\u0442", "Voice AI": "\u0413\u043e\u043b\u043e\u0441\u043e\u0432\u043e\u0439 AI", "Bots": "\u0411\u043e\u0442\u044b", "Automation": "\u0410\u0432\u0442\u043e\u043c\u0430\u0442\u0438\u0437\u0430\u0446\u0438\u044f", "RAG": "RAG" },
+  projectUI: { live: "Live", keyFeatures: "\u041a\u043b\u044e\u0447\u0435\u0432\u044b\u0435 \u0444\u0438\u0447\u0438" },
+  about: {
+    label: "Обо мне", title: "\u041c\u0430\u0433\u0430\u0437\u0438\u043d AI-\u0441\u0438\u0441\u0442\u0435\u043c",
+    desc: "17 AI-\u0441\u0438\u0441\u0442\u0435\u043c \u043f\u043e\u0441\u0442\u0440\u043e\u0435\u043d\u043e \u0438 \u043f\u0440\u043e\u0432\u0435\u0440\u0435\u043d\u043e \u0432 \u0431\u043e\u044e. 7 \u0438\u0437 \u043d\u0438\u0445 \u0434\u043e\u0441\u0442\u0443\u043f\u043d\u044b \u043a\u0430\u043a \u0433\u043e\u0442\u043e\u0432\u044b\u0435 \u0448\u0430\u0431\u043b\u043e\u043d\u044b. \u041a\u0430\u0436\u0434\u0430\u044f \u0441\u0438\u0441\u0442\u0435\u043c\u0430 \u2014 \u043f\u043e\u043b\u043d\u044b\u0439 \u0438\u0441\u0445\u043e\u0434\u043d\u044b\u0439 \u043a\u043e\u0434, \u0434\u043e\u043a\u0443\u043c\u0435\u043d\u0442\u0430\u0446\u0438\u044f, \u0433\u0430\u0439\u0434 \u043f\u043e \u0434\u0435\u043f\u043b\u043e\u044e. \u0420\u0430\u0437\u0432\u0435\u0440\u043d\u0438\u0442\u0435 \u0441\u0430\u043c\u0438 \u0437\u0430 $499 \u2014 \u0438\u043b\u0438 \u044f \u043b\u0438\u0447\u043d\u043e \u0438\u043d\u0442\u0435\u0433\u0440\u0438\u0440\u0443\u044e \u0432 \u0432\u0430\u0448 \u0431\u0438\u0437\u043d\u0435\u0441 \u0437\u0430 1 \u0434\u0435\u043d\u044c \u0437\u0430 $2500. \u0411\u0435\u0437 \u043f\u043e\u0434\u043f\u0438\u0441\u043e\u043a. \u041a\u043e\u0434 \u0432\u0430\u0448.",
+    boxTitle: "\u0427\u0442\u043e \u0432\u044b \u043f\u043e\u043b\u0443\u0447\u0430\u0435\u0442\u0435",
+    points: ["\u041f\u0440\u043e\u0434\u0430\u043a\u0448\u0435\u043d-\u043a\u043e\u0434 \u2014 \u043d\u0435 \u0434\u0435\u043c\u043e, \u043d\u0435 \u043f\u0440\u043e\u0442\u043e\u0442\u0438\u043f", "\u041f\u043e\u043b\u043d\u0430\u044f \u0434\u043e\u043a\u0443\u043c\u0435\u043d\u0442\u0430\u0446\u0438\u044f + \u0433\u0430\u0439\u0434 \u043f\u043e \u0434\u0435\u043f\u043b\u043e\u044e", "\u041f\u043e\u043b\u043d\u043e\u0435 \u0432\u043b\u0430\u0434\u0435\u043d\u0438\u0435 \u2014 \u0431\u0435\u0437 \u043f\u043e\u0434\u043f\u0438\u0441\u043e\u043a, \u0431\u0435\u0437 \u0437\u0430\u043c\u043a\u043e\u0432", "\u041e\u043f\u0446\u0438\u043e\u043d\u0430\u043b\u044c\u043d\u0430\u044f \u043b\u0438\u0447\u043d\u0430\u044f \u0438\u043d\u0442\u0435\u0433\u0440\u0430\u0446\u0438\u044f \u0437\u0430 1 \u0434\u0435\u043d\u044c", "30 \u0434\u043d\u0435\u0439 \u043f\u043e\u0434\u0434\u0435\u0440\u0436\u043a\u0438 \u043f\u043e\u0441\u043b\u0435 \u0438\u043d\u0442\u0435\u0433\u0440\u0430\u0446\u0438\u0438"],
+  },
+  pricingSection: {
+    templateLabel: "\u0428\u0430\u0431\u043b\u043e\u043d",
+    templatePrice: "$499",
+    templateDesc: "\u041f\u043e\u043b\u0443\u0447\u0438\u0442\u0435 \u0441\u0438\u0441\u0442\u0435\u043c\u0443. \u0420\u0430\u0437\u0432\u0435\u0440\u043d\u0438\u0442\u0435 \u0441\u0430\u043c\u0438.",
+    templateIncludes: ["\u041f\u043e\u043b\u043d\u044b\u0439 \u0438\u0441\u0445\u043e\u0434\u043d\u044b\u0439 \u043a\u043e\u0434", "\u0414\u043e\u043a\u0443\u043c\u0435\u043d\u0442\u0430\u0446\u0438\u044f \u0438 \u0433\u0430\u0439\u0434", "\u0418\u043d\u0441\u0442\u0440\u0443\u043a\u0446\u0438\u044f \u043f\u043e \u0434\u0435\u043f\u043b\u043e\u044e", "\u041e\u0431\u043d\u043e\u0432\u043b\u0435\u043d\u0438\u044f \u043d\u0430\u0432\u0441\u0435\u0433\u0434\u0430"],
+    integrationLabel: "\u0418\u043d\u0442\u0435\u0433\u0440\u0430\u0446\u0438\u044f",
+    integrationPrice: "$2500",
+    integrationDesc: "\u042f \u043d\u0430\u0441\u0442\u0440\u043e\u044e \u0432 \u0432\u0430\u0448\u0435\u043c \u0431\u0438\u0437\u043d\u0435\u0441\u0435. \u0417\u0430 1 \u0434\u0435\u043d\u044c.",
+    integrationIncludes: ["\u0412\u0441\u0451 \u0438\u0437 \u0448\u0430\u0431\u043b\u043e\u043d\u0430", "\u041b\u0438\u0447\u043d\u0430\u044f \u043d\u0430\u0441\u0442\u0440\u043e\u0439\u043a\u0430 \u0430\u0432\u0442\u043e\u0440\u043e\u043c", "\u0418\u043d\u0442\u0435\u0433\u0440\u0430\u0446\u0438\u044f \u0432 \u0432\u0430\u0448\u0443 \u0438\u043d\u0444\u0440\u0430\u0441\u0442\u0440\u0443\u043a\u0442\u0443\u0440\u0443", "30 \u0434\u043d\u0435\u0439 \u043f\u043e\u0434\u0434\u0435\u0440\u0436\u043a\u0438"],
+    recommended: "\u0420\u0435\u043a\u043e\u043c\u0435\u043d\u0434\u0443\u0435\u043c",
+  },
+  svetlana: {
+    label: "AI-бизнес", title: "Агент Светлана",
+    subtitle: "Купите готовый бизнес. AI управляет им за вас.",
+    desc: "Выберите помещение. Оформите интерьер. Дальше СветЛана берёт всё на себя. Найдёт персонал, приведёт клиентов, закажет продукцию, поведёт все переписки — и будет беспокоить вас только по важным вопросам, решая всю рутину самостоятельно. Никакого шума. Никакого микроменеджмента. Просто бизнес, который работает сам.",
+    features: [
+      { icon: "[+]", title: "Авто-найм", text: "Размещает вакансии, отбирает кандидатов, назначает собеседования. Вам остаётся только одобрить." },
+      { icon: "[>]", title: "Привлечение клиентов", text: "Автоматический маркетинг, бронирование, напоминания. Клиенты приходят сами." },
+      { icon: "[=]", title: "Снабжение", text: "Склад отслеживается, продукция заказывается на полуавтомате. Дефицита не будет." },
+      { icon: "[~]", title: "Все переписки", text: "Чаты с клиентами, координация персонала, отзывы — СветЛана ведёт каждое сообщение." },
+      { icon: "[#]", title: "Умные отчёты", text: "Понятные ежедневные сводки: что было, что дальше, что требует вашего решения." },
+      { icon: "[^]", title: "Быстрый запуск", text: "От пустого помещения до работающего салона за недели, а не месяцы." },
+    ],
+    ctaTemplate: "\u0428\u0430\u0431\u043b\u043e\u043d Svetlana", ctaIntegration: "Svetlana + \u0438\u043d\u0442\u0435\u0433\u0440\u0430\u0446\u0438\u044f",
+    diagramTitle: "Как работает СветЛана",
+  },
+  skynetProduct: {
+    label: "Продукт", title: "SKYNET",
+    subtitle: "Ваша личная армия AI. Командуйте из Telegram.",
+    desc: "Хватит нанимать. Начните командовать. SKYNET даёт вам команду автономных AI-агентов — каждый специалист в своём деле — под управлением центрального координатора. Вы пишете задачу в Telegram. Система декомпозирует её, направляет нужному агенту, выполняет, проверяет качество и доставляет результат. Без совещаний. Без задержек. Без отговорок. Ваша цифровая рабочая сила работает 24/7, никогда не спит, не увольняется и стоит в разы меньше человеческой команды.",
+    features: [
+      { icon: "[*]", title: "AI-координатор", text: "Центральный мозг: декомпозирует любую задачу, выбирает лучшего агента, проверяет качество перед отправкой." },
+      { icon: "[!]", title: "Мгновенное исполнение", text: "Отправьте сообщение в Telegram — получите результат. Код, исследования, автоматизация, контент — что угодно." },
+      { icon: "[@]", title: "Специализированные агенты", text: "Fullstack-разработчик, backend-инженер, DevOps, исследователь — каждый агент мастер своего дела." },
+      { icon: "[:]", title: "Работа 24/7", text: "Ваши агенты никогда не спят, не берут отпуск, не уходят на больничный. Всегда на связи. Всегда готовы." },
+      { icon: "[|]", title: "Ваша инфраструктура", text: "Работает на ваших серверах. Ваши данные остаются вашими. Никакого стороннего доступа. Полный контроль." },
+      { icon: "[/]", title: "Масштабируйтесь мгновенно", text: "Нужно больше агентов? Легко! От 4 агентов до 40 за минуты, а не месяцы." },
+    ],
+    ctaTemplate: "\u0428\u0430\u0431\u043b\u043e\u043d SKYNET", ctaIntegration: "SKYNET + \u0438\u043d\u0442\u0435\u0433\u0440\u0430\u0446\u0438\u044f",
+    diagramTitle: "Архитектура SKYNET",
+  },
+  callAgent: {
+    label: "Голосовой AI", title: "AI Call Agent",
+    subtitle: "Ваш AI-сотрудник отвечает на каждый звонок. 24/7. На любом языке.",
+    desc: "Полностью автономный голосовой робот для входящих и исходящих звонков. Квалифицирует лидов, записывает на встречи, отвечает на FAQ и переключает на человека только когда это действительно нужно. Звучит естественно. Работает круглосуточно.",
+    features: [
+      { icon: "[>]", title: "Входящие звонки", text: "Мгновенный ответ. Квалификация. Маршрутизация или запись." },
+      { icon: "[<]", title: "Исходящие кампании", text: "Холодные звонки, фоллоу-апы, напоминания — автоматика в масштабе." },
+      { icon: "[~]", title: "Человеческий голос", text: "Продвинутый синтез речи. Клиенты не отличают от человека." },
+      { icon: "[*]", title: "Мультиязычность", text: "Говорит на языке клиента. Определяет и переключает автоматически." },
+      { icon: "[#]", title: "Аналитика звонков", text: "Каждый звонок расшифрован, оценён и суммирован." },
+      { icon: "[!]", title: "Интеграция CRM", text: "Синхронизация с вашей CRM в реальном времени. Ноль ручного ввода." },
+    ],
+    ctaTemplate: "\u0428\u0430\u0431\u043b\u043e\u043d Call Agent", ctaIntegration: "Call Agent + \u0438\u043d\u0442\u0435\u0433\u0440\u0430\u0446\u0438\u044f", diagramTitle: "Как работает AI Call Agent",
+  },
+  docMind: {
+    label: "Документ AI", title: "DocMind",
+    subtitle: "Задавайте вопросы. Получайте ответы из ваших документов. Мгновенно.",
+    desc: "Загрузите контракты, инструкции, отчёты — DocMind прочитает, проиндексирует и поймёт всё. Спрашивайте на обычном языке, получайте точные ответы со ссылками на источники.",
+    features: [
+      { icon: "[=]", title: "Любой документ", text: "PDF, DOCX, таблицы, презентации — всё индексируется." },
+      { icon: "[?]", title: "Семантический поиск", text: "Не совпадение ключевых слов. Настоящее понимание смысла." },
+      { icon: "[!]", title: "Ссылки на источники", text: "Каждый ответ — с точными ссылками на страницу и абзац." },
+      { icon: "[|]", title: "Приватно и безопасно", text: "Ваши документы не покидают вашу инфраструктуру." },
+      { icon: "[~]", title: "Чат-интерфейс", text: "Общайтесь с документами как с коллегой, который всё прочитал." },
+      { icon: "[%]", title: "Автообновление", text: "Добавили документ — база знаний обновляется мгновенно." },
+    ],
+    ctaTemplate: "\u0428\u0430\u0431\u043b\u043e\u043d DocMind", ctaIntegration: "DocMind + \u0438\u043d\u0442\u0435\u0433\u0440\u0430\u0446\u0438\u044f", diagramTitle: "Как работает DocMind",
+  },
+  hiringAutopilot: {
+    label: "Мультиагентный HR", title: "Hiring Autopilot",
+    subtitle: "Опубликуйте вакансию. AI найдёт, отсеет и доставит кандидатов.",
+    desc: "Мультиагентная система, автоматизирующая весь процесс найма. Публикует вакансии, отсеивает резюме с помощью AI, проводит первичные интервью в чате, планирует встречи и ранжирует кандидатов. Вы встречаетесь только с топ-3.",
+    features: [
+      { icon: "[+]", title: "Авто-публикация", text: "На job-борды, LinkedIn, Telegram — всё разом." },
+      { icon: "[@]", title: "AI-скрининг", text: "Читает каждое резюме. Фильтрует по скиллам. Без предвзятости." },
+      { icon: "[~]", title: "Чат-интервью", text: "Первый раунд — AI. Естественный разговор, реальная оценка." },
+      { icon: "[:]", title: "Умное планирование", text: "Координирует календарь с топ-кандидатами." },
+      { icon: "[#]", title: "Ранжирование", text: "Оценены, сравнены, отранжированы. Видите лучших." },
+      { icon: "[#]", title: "Дашборд", text: "Каждый этап, кандидат, метрика в реальном времени." },
+    ],
+    ctaTemplate: "\u0428\u0430\u0431\u043b\u043e\u043d Hiring", ctaIntegration: "Hiring + \u0438\u043d\u0442\u0435\u0433\u0440\u0430\u0446\u0438\u044f", diagramTitle: "Как работает Hiring Autopilot",
+  },
+  leadHunter: {
+    label: "Продажи AI", title: "LeadHunter AI",
+    subtitle: "AI находит ваших клиентов. Квалифицирует. Доставляет тёплые лиды.",
+    desc: "Автономная система генерации лидов. Мониторит каналы, вступает в диалог, квалифицирует по вашим критериям и доставляет лиды в CRM. Без холодных звонков.",
+    features: [
+      { icon: "[>]", title: "Целевые каналы", text: "Мониторит Telegram, LinkedIn, форумы." },
+      { icon: "[~]", title: "Естественный диалог", text: "Начинает разговоры, которые ощущаются человеческими." },
+      { icon: "[v]", title: "Авто-квалификация", text: "Бюджет, сроки, ЛПР — ваши критерии, автоматизированы." },
+      { icon: "[=]", title: "Доставка в CRM", text: "Лиды появляются в CRM с полным контекстом." },
+      { icon: "[/]", title: "Трекинг конверсий", text: "Какие каналы конвертят лучше. AI оптимизирует себя." },
+      { icon: "[%]", title: "Поиск 24/7", text: "Никогда не останавливается." },
+    ],
+    ctaTemplate: "\u0428\u0430\u0431\u043b\u043e\u043d LeadHunter", ctaIntegration: "LeadHunter + \u0438\u043d\u0442\u0435\u0433\u0440\u0430\u0446\u0438\u044f", diagramTitle: "Как работает LeadHunter AI",
+  },
+  contentFactory: {
+    label: "Контент AI", title: "ContentFactory",
+    subtitle: "Загрузите бренд. Получайте посты, статьи и рекламу на автопилоте.",
+    desc: "AI-конвейер контента: генерирует, планирует и публикует по всем каналам. Блог-посты, соцсети, рассылки — всё в голосе бренда, по расписанию.",
+    features: [
+      { icon: "[+]", title: "Генерация контента", text: "Блог-посты, подписи, рассылки — всё в голосе бренда." },
+      { icon: "[:]", title: "Авто-расписание", text: "Публикация по календарю. Правильный контент, время." },
+      { icon: "[*]", title: "Мульти-формат", text: "Текст, изображения, карусели — адаптируется под платформу." },
+      { icon: "[#]", title: "Трекинг эффективности", text: "Видите что резонирует. AI корректирует стратегию." },
+      { icon: "[*]", title: "Мульти-язык", text: "Один пост — много языков. Локализовано." },
+      { icon: "[%]", title: "Переработка контента", text: "Лучшие публикации переиспользуются автоматически." },
+    ],
+    ctaTemplate: "\u0428\u0430\u0431\u043b\u043e\u043d ContentFactory", ctaIntegration: "ContentFactory + \u0438\u043d\u0442\u0435\u0433\u0440\u0430\u0446\u0438\u044f", diagramTitle: "Как работает ContentFactory",
+  },
+  contact: { label: "\u041a\u043e\u043d\u0442\u0430\u043a\u0442", title: "\u0421\u0432\u044f\u0437\u0430\u0442\u044c\u0441\u044f", subtitle: "\u0413\u043e\u0442\u043e\u0432\u044b \u0440\u0430\u0437\u0432\u0435\u0440\u043d\u0443\u0442\u044c AI-\u0441\u0438\u0441\u0442\u0435\u043c\u0443? \u0412\u044b\u0431\u0435\u0440\u0438\u0442\u0435 \u0448\u0430\u0431\u043b\u043e\u043d \u0438\u043b\u0438 \u0437\u0430\u043a\u0430\u0436\u0438\u0442\u0435 \u0438\u043d\u0442\u0435\u0433\u0440\u0430\u0446\u0438\u044e.", templateCta: "\u0421\u043c\u043e\u0442\u0440\u0435\u0442\u044c \u043f\u0440\u043e\u0434\u0443\u043a\u0442\u044b", integrationCta: "\u0417\u0430\u043a\u0430\u0437\u0430\u0442\u044c \u0438\u043d\u0442\u0435\u0433\u0440\u0430\u0446\u0438\u044e" },
+  footer: "\u00a9 2026 Finekot \u2014 AI Systems",
+};
+
+const UA: T = {
+  nav: { home: "\u0413\u043e\u043b\u043e\u0432\u043d\u0430", products: "\u0410\u0433\u0435\u043d\u0442\u0438", projects: "\u041f\u0440\u043e\u0454\u043a\u0442\u0438", contact: "\u041a\u043e\u043d\u0442\u0430\u043a\u0442", connect: "\u0417\u0432'\u044f\u0437\u0430\u0442\u0438\u0441\u044f" },
+  heroSubtitle: "\u0413\u043e\u0442\u043e\u0432\u0456 AI-\u0441\u0438\u0441\u0442\u0435\u043c\u0438",
+  roles: ["17 AI-\u0441\u0438\u0441\u0442\u0435\u043c \u0433\u043e\u0442\u043e\u0432\u0456 \u0434\u043e \u0437\u0430\u043f\u0443\u0441\u043a\u0443", "\u0412\u0456\u0434 $149 \u2014 \u043f\u043e\u0432\u043d\u0438\u0439 \u0432\u0438\u0445\u0456\u0434\u043d\u0438\u0439 \u043a\u043e\u0434", "\u0412\u0430\u0448\u0430 AI-\u0430\u0440\u043c\u0456\u044f. \u0412\u0430\u0448\u0456 \u043f\u0440\u0430\u0432\u0438\u043b\u0430.", "\u0411\u0435\u0437 \u043f\u0456\u0434\u043f\u0438\u0441\u043e\u043a. \u041a\u043e\u0434 \u0432\u0430\u0448.", "\u0417\u0430\u043f\u0443\u0441\u043a \u0437\u0430 \u0445\u0432\u0438\u043b\u0438\u043d\u0438, \u043d\u0435 \u043c\u0456\u0441\u044f\u0446\u0456", "\u0421\u0442\u0432\u043e\u0440\u0435\u043d\u043e \u0456\u043d\u0436\u0435\u043d\u0435\u0440\u043e\u043c, \u043d\u0435 \u043a\u043e\u043c\u0456\u0442\u0435\u0442\u043e\u043c", "\u0410\u0432\u0442\u043e\u043f\u0456\u043b\u043e\u0442 \u0434\u043b\u044f \u0432\u0430\u0448\u043e\u0433\u043e \u0431\u0456\u0437\u043d\u0435\u0441\u0443"],
+  cta: { viewProducts: "\u041f\u0435\u0440\u0435\u0433\u043b\u044f\u043d\u0443\u0442\u0438 \u043f\u0440\u043e\u0434\u0443\u043a\u0442\u0438", requestIntegration: "\u0417\u0430\u043c\u043e\u0432\u0438\u0442\u0438 \u0456\u043d\u0442\u0435\u0433\u0440\u0430\u0446\u0456\u044e" },
+  stats: { products: "\u041f\u0440\u043e\u0434\u0443\u043a\u0442\u0456\u0432", startingPrice: "\u0421\u0442\u0430\u0440\u0442\u043e\u0432\u0430 \u0446\u0456\u043d\u0430 ($)", dayIntegration: "\u0414\u0435\u043d\u044c \u0456\u043d\u0442\u0435\u0433\u0440\u0430\u0446\u0456\u0457", systemsBuilt: "\u0421\u0438\u0441\u0442\u0435\u043c \u0437\u0431\u0443\u0434\u043e\u0432\u0430\u043d\u043e" },
+  projectsSection: { label: "\u041f\u043e\u0440\u0442\u0444\u043e\u043b\u0456\u043e", title: "\u041f\u0440\u043e\u0454\u043a\u0442\u0438", shown: "\u043f\u043e\u043a\u0430\u0437\u0430\u043d\u043e", showMore: "\u041f\u043e\u043a\u0430\u0437\u0430\u0442\u0438 \u0431\u0456\u043b\u044c\u0448\u0435", showLess: "\u0417\u0433\u043e\u0440\u043d\u0443\u0442\u0438" },
+  categories: { "All": "\u0412\u0441\u0456", "Multi-Agent": "\u041c\u0443\u043b\u044c\u0442\u0438\u0430\u0433\u0435\u043d\u0442", "Voice AI": "\u0413\u043e\u043b\u043e\u0441\u043e\u0432\u0438\u0439 AI", "Bots": "\u0411\u043e\u0442\u0438", "Automation": "\u0410\u0432\u0442\u043e\u043c\u0430\u0442\u0438\u0437\u0430\u0446\u0456\u044f", "RAG": "RAG" },
+  projectUI: { live: "Live", keyFeatures: "\u041a\u043b\u044e\u0447\u043e\u0432\u0456 \u0444\u0456\u0447\u0456" },
+  about: {
+    label: "Про мене", title: "\u041c\u0430\u0433\u0430\u0437\u0438\u043d AI-\u0441\u0438\u0441\u0442\u0435\u043c",
+    desc: "17 AI-\u0441\u0438\u0441\u0442\u0435\u043c \u0437\u0431\u0443\u0434\u043e\u0432\u0430\u043d\u043e \u0442\u0430 \u043f\u0435\u0440\u0435\u0432\u0456\u0440\u0435\u043d\u043e \u0432 \u0431\u043e\u044e. 7 \u0437 \u043d\u0438\u0445 \u0434\u043e\u0441\u0442\u0443\u043f\u043d\u0456 \u044f\u043a \u0433\u043e\u0442\u043e\u0432\u0456 \u0448\u0430\u0431\u043b\u043e\u043d\u0438. \u041a\u043e\u0436\u043d\u0430 \u0441\u0438\u0441\u0442\u0435\u043c\u0430 \u2014 \u043f\u043e\u0432\u043d\u0438\u0439 \u0432\u0438\u0445\u0456\u0434\u043d\u0438\u0439 \u043a\u043e\u0434, \u0434\u043e\u043a\u0443\u043c\u0435\u043d\u0442\u0430\u0446\u0456\u044f, \u0433\u0430\u0439\u0434 \u043f\u043e \u0434\u0435\u043f\u043b\u043e\u044e. \u0420\u043e\u0437\u0433\u043e\u0440\u043d\u0456\u0442\u044c \u0441\u0430\u043c\u0456 \u0437\u0430 $499 \u2014 \u0430\u0431\u043e \u044f \u043e\u0441\u043e\u0431\u0438\u0441\u0442\u043e \u0456\u043d\u0442\u0435\u0433\u0440\u0443\u044e \u0443 \u0432\u0430\u0448 \u0431\u0456\u0437\u043d\u0435\u0441 \u0437\u0430 1 \u0434\u0435\u043d\u044c \u0437\u0430 $2500. \u0411\u0435\u0437 \u043f\u0456\u0434\u043f\u0438\u0441\u043e\u043a. \u041a\u043e\u0434 \u0432\u0430\u0448.",
+    boxTitle: "\u0429\u043e \u0432\u0438 \u043e\u0442\u0440\u0438\u043c\u0443\u0454\u0442\u0435",
+    points: ["\u041f\u0440\u043e\u0434\u0430\u043a\u0448\u0435\u043d-\u043a\u043e\u0434 \u2014 \u043d\u0435 \u0434\u0435\u043c\u043e, \u043d\u0435 \u043f\u0440\u043e\u0442\u043e\u0442\u0438\u043f", "\u041f\u043e\u0432\u043d\u0430 \u0434\u043e\u043a\u0443\u043c\u0435\u043d\u0442\u0430\u0446\u0456\u044f + \u0433\u0430\u0439\u0434 \u043f\u043e \u0434\u0435\u043f\u043b\u043e\u044e", "\u041f\u043e\u0432\u043d\u0435 \u0432\u043e\u043b\u043e\u0434\u0456\u043d\u043d\u044f \u2014 \u0431\u0435\u0437 \u043f\u0456\u0434\u043f\u0438\u0441\u043e\u043a, \u0431\u0435\u0437 \u0437\u0430\u043c\u043a\u0456\u0432", "\u041e\u043f\u0446\u0456\u043e\u043d\u0430\u043b\u044c\u043d\u0430 \u043e\u0441\u043e\u0431\u0438\u0441\u0442\u0430 \u0456\u043d\u0442\u0435\u0433\u0440\u0430\u0446\u0456\u044f \u0437\u0430 1 \u0434\u0435\u043d\u044c", "30 \u0434\u043d\u0456\u0432 \u043f\u0456\u0434\u0442\u0440\u0438\u043c\u043a\u0438 \u043f\u0456\u0441\u043b\u044f \u0456\u043d\u0442\u0435\u0433\u0440\u0430\u0446\u0456\u0457"],
+  },
+  pricingSection: {
+    templateLabel: "\u0428\u0430\u0431\u043b\u043e\u043d",
+    templatePrice: "$499",
+    templateDesc: "\u041e\u0442\u0440\u0438\u043c\u0430\u0439\u0442\u0435 \u0441\u0438\u0441\u0442\u0435\u043c\u0443. \u0420\u043e\u0437\u0433\u043e\u0440\u043d\u0456\u0442\u044c \u0441\u0430\u043c\u0456.",
+    templateIncludes: ["\u041f\u043e\u0432\u043d\u0438\u0439 \u0432\u0438\u0445\u0456\u0434\u043d\u0438\u0439 \u043a\u043e\u0434", "\u0414\u043e\u043a\u0443\u043c\u0435\u043d\u0442\u0430\u0446\u0456\u044f + \u0433\u0430\u0439\u0434 \u043f\u043e \u043d\u0430\u043b\u0430\u0448\u0442\u0443\u0432\u0430\u043d\u043d\u044e", "\u0410\u0432\u0442\u043e-\u0456\u043d\u0441\u0442\u0430\u043b\u044f\u0446\u0456\u044f", "\u041f\u043e\u0436\u0438\u0442\u0442\u0454\u0432\u0456 \u043e\u043d\u043e\u0432\u043b\u0435\u043d\u043d\u044f"],
+    integrationLabel: "\u0406\u043d\u0442\u0435\u0433\u0440\u0430\u0446\u0456\u044f",
+    integrationPrice: "$2500",
+    integrationDesc: "\u041e\u0441\u043e\u0431\u0438\u0441\u0442\u0435 \u043d\u0430\u043b\u0430\u0448\u0442\u0443\u0432\u0430\u043d\u043d\u044f \u0443 \u0432\u0430\u0448 \u0431\u0456\u0437\u043d\u0435\u0441. 1 \u0434\u0435\u043d\u044c.",
+    integrationIncludes: ["\u0412\u0441\u0435 \u0437 \u0448\u0430\u0431\u043b\u043e\u043d\u0443", "\u041e\u0441\u043e\u0431\u0438\u0441\u0442\u0435 \u043d\u0430\u043b\u0430\u0448\u0442\u0443\u0432\u0430\u043d\u043d\u044f \u0430\u0432\u0442\u043e\u0440\u043e\u043c", "\u0406\u043d\u0442\u0435\u0433\u0440\u0430\u0446\u0456\u044f \u0443 \u0432\u0430\u0448\u0443 \u0456\u043d\u0444\u0440\u0430\u0441\u0442\u0440\u0443\u043a\u0442\u0443\u0440\u0443", "30 \u0434\u043d\u0456\u0432 \u043f\u0456\u0434\u0442\u0440\u0438\u043c\u043a\u0438"],
+    recommended: "\u0420\u0435\u043a\u043e\u043c\u0435\u043d\u0434\u043e\u0432\u0430\u043d\u043e",
+  },
+  svetlana: {
+    label: "AI-\u0431\u0456\u0437\u043d\u0435\u0441", title: "\u0410\u0433\u0435\u043d\u0442 \u0421\u0432\u0456\u0442\u043b\u0430\u043d\u0430",
+    subtitle: "Купіть готовий бізнес. AI керує ним за вас.",
+    desc: "Оберіть приміщення. Оформіть інтер'єр. Далі СвітЛана бере все на себе. Знайде персонал, приведе клієнтів, замовить продукцію, поведе всі переписки — і турбуватиме вас лише справді важливими рішеннями. Жодного шуму. Жодного мікроменеджменту. Просто бізнес, що працює сам.",
+    features: [
+      { icon: "[+]", title: "Авто-найм", text: "Розміщує вакансії, відбирає кандидатів, призначає співбесіди. Вам лишається тільки схвалити." },
+      { icon: "[>]", title: "Залучення клієнтів", text: "Автоматичний маркетинг, бронювання, нагадування. Клієнти приходять самі." },
+      { icon: "[=]", title: "Постачання", text: "Склад відстежується, продукція замовляється напівавтоматично. Дефіциту не буде." },
+      { icon: "[~]", title: "Усі переписки", text: "Чати з клієнтами, координація персоналу, відгуки — СвітЛана веде кожне повідомлення." },
+      { icon: "[#]", title: "Розумні звіти", text: "Зрозумілі щоденні зведення: що було, що далі, що потребує вашого рішення." },
+      { icon: "[^]", title: "Швидкий запуск", text: "Від порожнього приміщення до працюючого салону за тижні, а не місяці." },
+    ],
+    ctaTemplate: "\u0428\u0430\u0431\u043b\u043e\u043d \u0421\u0432\u0456\u0442\u043b\u0430\u043d\u0430", ctaIntegration: "\u0421\u0432\u0456\u0442\u043b\u0430\u043d\u0430 + \u0456\u043d\u0442\u0435\u0433\u0440\u0430\u0446\u0456\u044f",
+    diagramTitle: "\u042f\u043a \u043f\u0440\u0430\u0446\u044e\u0454 \u0421\u0432\u0456\u0442\u041b\u0430\u043d\u0430",
+  },
+  skynetProduct: {
+    label: "Продукт", title: "SKYNET",
+    subtitle: "Ваша особиста армія AI. Командуйте з Telegram.",
+    desc: "Досить наймати. Починайте командувати. SKYNET дає вам команду автономних AI-агентів — кожен спеціаліст у своїй справі — під керуванням центрального координатора. Ви пишете завдання у Telegram. Система декомпозує його, спрямовує потрібному агенту, виконує, перевіряє якість і доставляє результат. Без нарад. Без затримок. Без відмовок. Ваша цифрова робоча сила працює 24/7, ніколи не спить, не звільняється і коштує у рази менше людської команди.",
+    features: [
+      { icon: "[*]", title: "AI-координатор", text: "Центральний мозок: декомпозує будь-яке завдання, обирає найкращого агента, перевіряє якість перед відправкою." },
+      { icon: "[!]", title: "Миттєве виконання", text: "Відправте повідомлення у Telegram — отримайте результат. Код, дослідження, автоматизація, контент — будь-що." },
+      { icon: "[@]", title: "Спеціалізовані агенти", text: "Fullstack-розробник, backend-інженер, DevOps, дослідник — кожен агент майстер своєї справи." },
+      { icon: "[:]", title: "Робота 24/7", text: "Ваші агенти ніколи не сплять, не беруть відпустку, не йдуть на лікарняний. Завжди на зв'язку. Завжди готові." },
+      { icon: "[|]", title: "Ваша інфраструктура", text: "Працює на ваших серверах. Ваші дані залишаються вашими. Жодного стороннього доступу. Повний контроль." },
+      { icon: "[/]", title: "Масштабуйтесь миттєво", text: "Потрібно більше агентів? Клонуйте конфіг. Від 4 агентів до 40 за хвилини, а не місяці." },
+    ],
+    ctaTemplate: "\u0428\u0430\u0431\u043b\u043e\u043d SKYNET", ctaIntegration: "SKYNET + \u0456\u043d\u0442\u0435\u0433\u0440\u0430\u0446\u0456\u044f",
+    diagramTitle: "\u0410\u0440\u0445\u0456\u0442\u0435\u043a\u0442\u0443\u0440\u0430 SKYNET",
+  },
+  callAgent: {
+    label: "Голосовий AI", title: "AI Call Agent",
+    subtitle: "Ваш AI-співробітник відповідає на кожен дзвінок. 24/7. Будь-якою мовою.",
+    desc: "Повністю автономний голосовий робот для вхідних та вихідних дзвінків. Кваліфікує лідів, записує на зустрічі, відповідає на FAQ та переключає на людину лише коли це справді потрібно. Звучить природно. Працює цілодобово.",
+    features: [
+      { icon: "[>]", title: "Вхідні дзвінки", text: "Миттєва відповідь. Кваліфікація. Маршрутизація або запис." },
+      { icon: "[<]", title: "Вихідні кампанії", text: "Холодні дзвінки, фоллоу-апи, нагадування — автоматика в масштабі." },
+      { icon: "[~]", title: "Людський голос", text: "Просунутий синтез мовлення. Клієнти не відрізняють від людини." },
+      { icon: "[*]", title: "Мультимовність", text: "Говорить мовою клієнта. Визначає та переключає автоматично." },
+      { icon: "[#]", title: "Аналітика дзвінків", text: "Кожен дзвінок розшифрований, оцінений та підсумований." },
+      { icon: "[!]", title: "Інтеграція CRM", text: "Синхронізація з вашою CRM у реальному часі. Нуль ручного вводу." },
+    ],
+    ctaTemplate: "\u0428\u0430\u0431\u043b\u043e\u043d Call Agent", ctaIntegration: "Call Agent + \u0456\u043d\u0442\u0435\u0433\u0440\u0430\u0446\u0456\u044f", diagramTitle: "\u042f\u043a \u043f\u0440\u0430\u0446\u044e\u0454 AI Call Agent",
+  },
+  docMind: {
+    label: "Документ AI", title: "DocMind",
+    subtitle: "Ставте питання. Отримуйте відповіді з ваших документів. Миттєво.",
+    desc: "Завантажте контракти, інструкції, звіти — DocMind прочитає, проіндексує та зрозуміє все. Питайте звичайною мовою, отримуйте точні відповіді з посиланнями на джерела.",
+    features: [
+      { icon: "[=]", title: "Будь-який документ", text: "PDF, DOCX, таблиці, презентації — все індексується." },
+      { icon: "[?]", title: "Семантичний пошук", text: "Не збіг ключових слів. Справжнє розуміння сенсу." },
+      { icon: "[!]", title: "Посилання на джерела", text: "Кожна відповідь — з точними посиланнями." },
+      { icon: "[|]", title: "Приватно та безпечно", text: "Ваші документи не залишають вашу інфраструктуру." },
+      { icon: "[~]", title: "Чат-інтерфейс", text: "Спілкуйтеся з документами як з колегою." },
+      { icon: "[%]", title: "Автооновлення", text: "Додали документ — база знань оновлюється миттєво." },
+    ],
+    ctaTemplate: "\u0428\u0430\u0431\u043b\u043e\u043d DocMind", ctaIntegration: "DocMind + \u0456\u043d\u0442\u0435\u0433\u0440\u0430\u0446\u0456\u044f", diagramTitle: "\u042f\u043a \u043f\u0440\u0430\u0446\u044e\u0454 DocMind",
+  },
+  hiringAutopilot: {
+    label: "Мультиагентний HR", title: "Hiring Autopilot",
+    subtitle: "Опублікуйте вакансію. AI знайде, відсіє та доставить кандидатів.",
+    desc: "Мультиагентна система, що автоматизує весь процес найму. Публікує вакансії, відсіює резюме, проводить інтерв'ю в чаті, планує зустрічі та ранжує кандидатів. Ви зустрічаєтесь лише з топ-3.",
+    features: [
+      { icon: "[+]", title: "Авто-публікація", text: "На job-борди, LinkedIn, Telegram — все одразу." },
+      { icon: "[@]", title: "AI-скринінг", text: "Читає кожне резюме. Фільтрує за скілами." },
+      { icon: "[~]", title: "Чат-інтерв'ю", text: "Перший раунд — AI. Природна розмова, реальна оцінка." },
+      { icon: "[:]", title: "Розумне планування", text: "Координує календар з топ-кандидатами." },
+      { icon: "[#]", title: "Ранжування", text: "Оцінені, порівняні, відранжовані." },
+      { icon: "[#]", title: "Дашборд", text: "Кожен етап, кандидат, метрика в реальному часі." },
+    ],
+    ctaTemplate: "\u0428\u0430\u0431\u043b\u043e\u043d Hiring", ctaIntegration: "Hiring + \u0456\u043d\u0442\u0435\u0433\u0440\u0430\u0446\u0456\u044f", diagramTitle: "\u042f\u043a \u043f\u0440\u0430\u0446\u044e\u0454 Hiring Autopilot",
+  },
+  leadHunter: {
+    label: "Продажі AI", title: "LeadHunter AI",
+    subtitle: "AI знаходить ваших клієнтів. Кваліфікує. Доставляє теплі ліди.",
+    desc: "Автономна система генерації лідів. Моніторить канали, вступає в діалог, кваліфікує та доставляє ліди в CRM.",
+    features: [
+      { icon: "[>]", title: "Цільові канали", text: "Моніторить Telegram, LinkedIn, форуми." },
+      { icon: "[~]", title: "Природний діалог", text: "Починає розмови, які відчуваються людськими." },
+      { icon: "[v]", title: "Авто-кваліфікація", text: "Бюджет, терміни, ОПР — ваші критерії." },
+      { icon: "[=]", title: "Доставка в CRM", text: "Ліди з'являються в CRM з повним контекстом." },
+      { icon: "[/]", title: "Трекінг конверсій", text: "Які канали конвертять краще." },
+      { icon: "[%]", title: "Пошук 24/7", text: "Ніколи не зупиняється." },
+    ],
+    ctaTemplate: "\u0428\u0430\u0431\u043b\u043e\u043d LeadHunter", ctaIntegration: "LeadHunter + \u0456\u043d\u0442\u0435\u0433\u0440\u0430\u0446\u0456\u044f", diagramTitle: "\u042f\u043a \u043f\u0440\u0430\u0446\u044e\u0454 LeadHunter AI",
+  },
+  contentFactory: {
+    label: "Контент AI", title: "ContentFactory",
+    subtitle: "Завантажте бренд. Отримуйте пости, статті та рекламу на автопілоті.",
+    desc: "AI-конвеєр контенту: генерує, планує та публікує по всіх каналах.",
+    features: [
+      { icon: "[+]", title: "Генерація контенту", text: "Блог-пости, підписи, розсилки — все голосом бренду." },
+      { icon: "[:]", title: "Авто-розклад", text: "Публікація за календарем." },
+      { icon: "[*]", title: "Мульти-формат", text: "Текст, зображення, каруселі — адаптується." },
+      { icon: "[#]", title: "Трекінг ефективності", text: "Бачите що резонує." },
+      { icon: "[*]", title: "Мульти-мова", text: "Один пост — багато мов. Локалізовано." },
+      { icon: "[%]", title: "Переробка контенту", text: "Найкращі публікації перевикористовуються." },
+    ],
+    ctaTemplate: "\u0428\u0430\u0431\u043b\u043e\u043d ContentFactory", ctaIntegration: "ContentFactory + \u0456\u043d\u0442\u0435\u0433\u0440\u0430\u0446\u0456\u044f", diagramTitle: "\u042f\u043a \u043f\u0440\u0430\u0446\u044e\u0454 ContentFactory",
+  },
+  contact: { label: "\u041a\u043e\u043d\u0442\u0430\u043a\u0442", title: "\u0417\u0432'\u044f\u0437\u0430\u0442\u0438\u0441\u044f", subtitle: "\u0413\u043e\u0442\u043e\u0432\u0456 \u0440\u043e\u0437\u0433\u043e\u0440\u043d\u0443\u0442\u0438 AI-\u0441\u0438\u0441\u0442\u0435\u043c\u0443? \u0412\u0438\u0431\u0435\u0440\u0456\u0442\u044c \u0448\u0430\u0431\u043b\u043e\u043d \u0430\u0431\u043e \u0437\u0430\u043c\u043e\u0432\u0442\u0435 \u0456\u043d\u0442\u0435\u0433\u0440\u0430\u0446\u0456\u044e.", templateCta: "\u041f\u0435\u0440\u0435\u0433\u043b\u044f\u043d\u0443\u0442\u0438 \u043f\u0440\u043e\u0434\u0443\u043a\u0442\u0438", integrationCta: "\u0417\u0430\u043c\u043e\u0432\u0438\u0442\u0438 \u0456\u043d\u0442\u0435\u0433\u0440\u0430\u0446\u0456\u044e" },
+  footer: "\u00a9 2026 Finekot \u2014 AI Systems",
+};
+
+export const i18n: Record<Lang, T> = { EN, RU, UA };
