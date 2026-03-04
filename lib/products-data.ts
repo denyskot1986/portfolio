@@ -75,11 +75,11 @@ export const productsData: ProductData[] = [
   },
   {
     id: "svetlana",
-    name: "SvetLana",
+    name: "Svetlana AI-admin",
     tagline: "AI Business Manager",
     category: "Business Automation",
     description: "Autonomous AI system that manages your entire business.",
-    longDescription: "SvetLana is a fully autonomous AI manager that takes over day-to-day business operations. You secure the location and handle the decor \u2014 SvetLana handles everything else: recruiting staff, acquiring clients, managing supply chains, handling all communications, and delivering daily performance reports. Built for beauty salons, clinics, retail stores, and any service business that wants to run on autopilot.",
+    longDescription: "Svetlana AI-admin is a fully autonomous AI manager that takes over day-to-day business operations. You secure the location and handle the decor \u2014 Svetlana AI-admin handles everything else: recruiting staff, acquiring clients, managing supply chains, handling all communications, and delivering daily performance reports. Built for beauty salons, clinics, retail stores, and any service business that wants to run on autopilot.",
     features: [
       { title: "Auto-Recruiting", desc: "Posts vacancies, screens candidates, schedules interviews \u2014 qualified people show up ready to work." },
       { title: "Client Acquisition", desc: "Runs targeted outreach, manages social media inquiries, books appointments \u2014 clients come to you." },
@@ -101,7 +101,7 @@ export const productsData: ProductData[] = [
                     +---------+---------+
                               |
                     +---------+---------+
-                    |   SVETLANA CORE   |
+                    | SVETLANA AI-ADMIN |
                     |  Decision Engine  |
                     |  Context Memory   |
                     |  Priority Queue   |
@@ -142,7 +142,7 @@ export const productsData: ProductData[] = [
     tagline: "Universal Client Manager",
     category: "Business Automation",
     description: "AI admin for any service professional \u2014 bookings, clients, marketing.",
-    longDescription: "C-Admin is a lightweight AI administrator built for any service professional: barbers, tutors, personal trainers, photographers, massage therapists, nail artists, freelance consultants \u2014 anyone who needs client bookings, automated reminders, and marketing on autopilot. It handles scheduling, client conversations, review management, and promotion \u2014 all from one Telegram bot. Lite version of SvetLana, optimized for solo professionals.",
+    longDescription: "C-Admin is a lightweight AI administrator built for any service professional: barbers, tutors, personal trainers, photographers, massage therapists, nail artists, freelance consultants \u2014 anyone who needs client bookings, automated reminders, and marketing on autopilot. It handles scheduling, client conversations, review management, and promotion \u2014 all from one Telegram bot. Lite version of Svetlana AI-admin, optimized for solo professionals.",
     features: [
       { title: "Smart Booking", desc: "Clients book through Telegram/web. Auto-confirms, reminds, reschedules." },
       { title: "Client CRM", desc: "Remembers every client: preferences, history, notes. Personalizes every interaction." },

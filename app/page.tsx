@@ -38,7 +38,7 @@ const productSlugMap: Record<string, string> = {
   "SKYNET": "skynet-platform",
   "AI Call Agent": "call-agent",
   "SKYNET Intake": "skynet-intake",
-  "SvetLana": "svetlana",
+  "Svetlana AI-admin": "svetlana",
   "C-Admin": "c-admin",
   "DocMind": "docmind",
   "LeadHunter AI": "leadhunter",
@@ -756,7 +756,7 @@ export default function Home() {
             <p className="text-[10px] text-pink-400/30 uppercase tracking-wider font-mono mb-4">{t.svetlana.diagramTitle}</p>
             <pre className="diagram text-[10px] md:text-xs text-pink-300/50">
 {`  ┌─────────────┐       ┌──────────────────┐       ┌─────────────┐
-  │  YOU / ВЫ   │──────▶│    SVETLANA      │──────▶│  BUSINESS   │
+  │  YOU / ВЫ   │──────▶│ SVETLANA AI-ADMIN│──────▶│  BUSINESS   │
   │             │       │    AI Core       │       │   RUNNING   │
   │ Location +  │       │                  │       │             │
   │ Decor       │       │  Autonomous Mgmt │       │ Clients $   │

@@ -21,7 +21,7 @@ const EN: PMap = {
   "14": { subtitle: "Autonomous Code Review Agent", description: "Autonomous code review agent. Analyzes PRs for bugs, security vulns, performance issues. Writes inline comments. Learns team conventions.", highlights: ["PR analysis < 60 seconds", "OWASP security checks", "Learns team coding style", "Inline comments like a human"] },
   "16": { subtitle: "AI Meeting Assistant", description: "Records meetings via bot, transcribes, extracts action items, assigns owners, pushes tasks to project management tools automatically.", highlights: ["Live meeting transcription", "Action item extraction", "Auto-assign to owners", "Push to Notion / Todoist"] },
   "17": { subtitle: "Regulatory Compliance AI", description: "Regulatory compliance checker. Upload policies + new docs — AI flags violations, suggests fixes, tracks compliance score over time.", highlights: ["Multi-regulation checking", "Compliance scoring with history", "Fix suggestions per violation", "Full audit trail"] },
-  "18": { subtitle: "Universal Client Manager", description: "AI admin for any service professional. Handles bookings, client management, auto-marketing \u2014 all from Telegram. Lite version of SvetLana.", highlights: ["Smart booking & scheduling", "Client CRM with history", "Auto-marketing & promotions", "Multi-channel communication"] },
+  "18": { subtitle: "Universal Client Manager", description: "AI admin for any service professional. Handles bookings, client management, auto-marketing \u2014 all from Telegram. Lite version of Svetlana AI-admin.", highlights: ["Smart booking & scheduling", "Client CRM with history", "Auto-marketing & promotions", "Multi-channel communication"] },
 };
 
 const RU: PMap = {
