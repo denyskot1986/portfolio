@@ -190,7 +190,7 @@ const EN: T = {
     ctaTemplate: "Get ContentFactory Template", ctaIntegration: "ContentFactory + Integration", diagramTitle: "How ContentFactory Works",
   },
   contact: { label: "Contact", title: "Get In Touch", subtitle: "Ready to deploy an AI system? Choose a template or request personal integration.", templateCta: "Browse Products", integrationCta: "Request Integration" },
-  footer: "\u00a9 2026 Finekot \u2014 AI Systems",
+  footer: "\u00a9 2026 Finekot AI \u2014 Denys Kot",
 };
 
 const RU: T = {
@@ -345,7 +345,7 @@ const RU: T = {
     ctaTemplate: "\u0428\u0430\u0431\u043b\u043e\u043d ContentFactory", ctaIntegration: "ContentFactory + \u0438\u043d\u0442\u0435\u0433\u0440\u0430\u0446\u0438\u044f", diagramTitle: "Как работает ContentFactory",
   },
   contact: { label: "\u041a\u043e\u043d\u0442\u0430\u043a\u0442", title: "\u0421\u0432\u044f\u0437\u0430\u0442\u044c\u0441\u044f", subtitle: "\u0413\u043e\u0442\u043e\u0432\u044b \u0440\u0430\u0437\u0432\u0435\u0440\u043d\u0443\u0442\u044c AI-\u0441\u0438\u0441\u0442\u0435\u043c\u0443? \u0412\u044b\u0431\u0435\u0440\u0438\u0442\u0435 \u0448\u0430\u0431\u043b\u043e\u043d \u0438\u043b\u0438 \u0437\u0430\u043a\u0430\u0436\u0438\u0442\u0435 \u0438\u043d\u0442\u0435\u0433\u0440\u0430\u0446\u0438\u044e.", templateCta: "\u0421\u043c\u043e\u0442\u0440\u0435\u0442\u044c \u043f\u0440\u043e\u0434\u0443\u043a\u0442\u044b", integrationCta: "\u0417\u0430\u043a\u0430\u0437\u0430\u0442\u044c \u0438\u043d\u0442\u0435\u0433\u0440\u0430\u0446\u0438\u044e" },
-  footer: "\u00a9 2026 Finekot \u2014 AI Systems",
+  footer: "\u00a9 2026 Finekot AI \u2014 Denys Kot",
 };
 
 const UA: T = {
@@ -500,7 +500,7 @@ const UA: T = {
     ctaTemplate: "\u0428\u0430\u0431\u043b\u043e\u043d ContentFactory", ctaIntegration: "ContentFactory + \u0456\u043d\u0442\u0435\u0433\u0440\u0430\u0446\u0456\u044f", diagramTitle: "\u042f\u043a \u043f\u0440\u0430\u0446\u044e\u0454 ContentFactory",
   },
   contact: { label: "\u041a\u043e\u043d\u0442\u0430\u043a\u0442", title: "\u0417\u0432'\u044f\u0437\u0430\u0442\u0438\u0441\u044f", subtitle: "\u0413\u043e\u0442\u043e\u0432\u0456 \u0440\u043e\u0437\u0433\u043e\u0440\u043d\u0443\u0442\u0438 AI-\u0441\u0438\u0441\u0442\u0435\u043c\u0443? \u0412\u0438\u0431\u0435\u0440\u0456\u0442\u044c \u0448\u0430\u0431\u043b\u043e\u043d \u0430\u0431\u043e \u0437\u0430\u043c\u043e\u0432\u0442\u0435 \u0456\u043d\u0442\u0435\u0433\u0440\u0430\u0446\u0456\u044e.", templateCta: "\u041f\u0435\u0440\u0435\u0433\u043b\u044f\u043d\u0443\u0442\u0438 \u043f\u0440\u043e\u0434\u0443\u043a\u0442\u0438", integrationCta: "\u0417\u0430\u043c\u043e\u0432\u0438\u0442\u0438 \u0456\u043d\u0442\u0435\u0433\u0440\u0430\u0446\u0456\u044e" },
-  footer: "\u00a9 2026 Finekot \u2014 AI Systems",
+  footer: "\u00a9 2026 Finekot AI \u2014 Denys Kot",
 };
 
 export const i18n: Record<Lang, T> = { EN, RU, UA };

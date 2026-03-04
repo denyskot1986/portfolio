@@ -334,12 +334,12 @@ export default function Home() {
 
           <motion.h1 initial={{ opacity: 0, y: 30 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.8, delay: 0.2 }}
             className="text-4xl sm:text-5xl md:text-7xl font-bold mb-1 tracking-tight">
-            Fine<span className="gradient-text">kot</span>
+            Fine<span className="gradient-text">kot</span>{" "}<span className="text-pink-400/40 font-light">AI</span>
           </motion.h1>
 
           <motion.p initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.6, delay: 0.35 }}
             className="text-sm sm:text-base text-white/20 font-light tracking-[0.2em] uppercase mb-1">
-            Denys Kot
+            by Denys Kot
           </motion.p>
 
           <motion.p initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ duration: 0.6, delay: 0.45 }}
