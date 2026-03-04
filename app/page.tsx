@@ -178,33 +178,48 @@ export default function Home() {
   const t = i18n[lang];
   const pt = projectI18n[lang];
 
-  // Typewriter
-  const [roleIndex, setRoleIndex] = useState(0);
-  const [text, setText] = useState("");
-  const [isDeleting, setIsDeleting] = useState(false);
-
-  // Reset typewriter on language change
-  useEffect(() => {
-    setText("");
-    setIsDeleting(false);
-    setRoleIndex(0);
-  }, [lang]);
+  // Rolling 3-line cascade
+  type LineItem = { text: string; id: number };
+  const [lines, setLines] = useState<LineItem[]>([]);
+  const counterRef = useRef(0);
+  const phraseIdxRef = useRef(0);
 
   useEffect(() => {
-    const current = t.roles[roleIndex];
-    const speed = isDeleting ? 30 : 60;
-    if (!isDeleting && text === current) {
-      const t = setTimeout(() => setIsDeleting(true), 2000);
-      return () => clearTimeout(t);
-    }
-    if (isDeleting && text === "") {
-      setIsDeleting(false);
-      setRoleIndex((p) => (p + 1) % t.roles.length);
-      return;
-    }
-    const tm = setTimeout(() => setText(isDeleting ? current.slice(0, text.length - 1) : current.slice(0, text.length + 1)), speed);
-    return () => clearTimeout(tm);
-  }, [text, isDeleting, roleIndex, t.roles]);
+    setLines([]);
+    counterRef.current = 0;
+    phraseIdxRef.current = 0;
+
+    const addLine = () => {
+      const id = counterRef.current++;
+      const phrases = t.roles;
+      const text = phrases[phraseIdxRef.current % phrases.length];
+      phraseIdxRef.current++;
+      setLines((prev) => {
+        const next = [...prev, { text, id }];
+        if (next.length > 3) return next.slice(1);
+        return next;
+      });
+    };
+
+    // Staggered initial appearance: 0.5s, 2.5s, 4.5s
+    const t0 = setTimeout(addLine, 500);
+    const t1 = setTimeout(addLine, 2500);
+    const t2 = setTimeout(addLine, 4500);
+
+    // Start rotation after all 3 visible (every 3s, replace oldest)
+    let interval: ReturnType<typeof setInterval>;
+    const startRotation = setTimeout(() => {
+      interval = setInterval(addLine, 3000);
+    }, 7500);
+
+    return () => {
+      clearTimeout(t0);
+      clearTimeout(t1);
+      clearTimeout(t2);
+      clearTimeout(startRotation);
+      if (interval) clearInterval(interval);
+    };
+  }, [lang, t.roles]);
 
   // Nav scroll state + active section
   const [scrolled, setScrolled] = useState(false);
@@ -327,12 +342,23 @@ export default function Home() {
             agent engineer &middot; AI systems architect
           </motion.p>
 
-          <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.8, delay: 0.4 }}
-            className="h-10 mb-8">
-            <span className="text-lg sm:text-xl md:text-2xl text-pink-300/60 font-mono">
-              {text}<span className="animate-pulse text-pink-400">_</span>
-            </span>
-          </motion.div>
+          <div className="flex flex-col items-center gap-1.5 h-[100px] mb-8 justify-center overflow-hidden">
+            <AnimatePresence mode="popLayout">
+              {lines.map((line) => (
+                <motion.p
+                  key={line.id}
+                  layout
+                  initial={{ opacity: 0, y: 20, filter: "blur(8px)" }}
+                  animate={{ opacity: 1, y: 0, filter: "blur(0px)" }}
+                  exit={{ opacity: 0, y: -20, filter: "blur(8px)" }}
+                  transition={{ duration: 0.6, ease: "easeOut" }}
+                  className="text-sm sm:text-base md:text-lg text-pink-300/50 font-mono tracking-wide"
+                >
+                  {line.text}
+                </motion.p>
+              ))}
+            </AnimatePresence>
+          </div>
 
           <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.8, delay: 0.6 }}
             className="flex flex-col sm:flex-row gap-3 sm:gap-4 justify-center">
@@ -359,12 +385,26 @@ export default function Home() {
           </motion.div>
         </div>
 
-        {/* Scroll indicator */}
+        {/* Scroll indicator — enhanced */}
         <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ delay: 1.5 }}
-          className="absolute bottom-10 left-1/2 -translate-x-1/2">
+          className="absolute bottom-8 left-1/2 -translate-x-1/2 flex flex-col items-center gap-2">
+          <motion.p
+            animate={{ opacity: [0.3, 0.7, 0.3] }}
+            transition={{ duration: 2, repeat: Infinity }}
+            className="text-[10px] uppercase tracking-[0.3em] text-pink-400/40 font-mono"
+          >
+            scroll
+          </motion.p>
           <div className="w-6 h-10 border-2 border-pink-500/20 rounded-full flex justify-center pt-2">
             <motion.div animate={{ y: [0, 12, 0] }} transition={{ duration: 1.5, repeat: Infinity }} className="w-1.5 h-1.5 bg-pink-400/60 rounded-full" />
           </div>
+          <motion.div
+            animate={{ y: [0, 6, 0] }}
+            transition={{ duration: 1.5, repeat: Infinity }}
+            className="text-pink-400/30"
+          >
+            <svg width="16" height="10" viewBox="0 0 16 10" fill="none"><path d="M1 1L8 8L15 1" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round"/></svg>
+          </motion.div>
         </motion.div>
       </section>
 
