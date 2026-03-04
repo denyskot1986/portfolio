@@ -36,7 +36,7 @@ export interface T {
 
 const EN: T = {
   nav: { home: "Home", products: "Products", projects: "Projects", contact: "Contact", connect: "Connect" },
-  heroSubtitle: "Production-Ready AI Systems",
+  heroSubtitle: "AI Arsenal",
   roles: [
     "17 AI systems ready to deploy",
     "From $149 — full source code",
@@ -207,7 +207,7 @@ const EN: T = {
 
 const RU: T = {
   nav: { home: "\u0413\u043b\u0430\u0432\u043d\u0430\u044f", products: "\u0410\u0433\u0435\u043d\u0442\u044b", projects: "\u041f\u0440\u043e\u0435\u043a\u0442\u044b", contact: "\u041a\u043e\u043d\u0442\u0430\u043a\u0442", connect: "\u0421\u0432\u044f\u0437\u0430\u0442\u044c\u0441\u044f" },
-  heroSubtitle: "\u0413\u043e\u0442\u043e\u0432\u044b\u0435 AI-\u0441\u0438\u0441\u0442\u0435\u043c\u044b",
+  heroSubtitle: "AI-\u0430\u0440\u0441\u0435\u043d\u0430\u043b",
   roles: [
     "17 AI-\u0441\u0438\u0441\u0442\u0435\u043c \u0433\u043e\u0442\u043e\u0432\u044b \u043a \u0437\u0430\u043f\u0443\u0441\u043a\u0443",
     "\u041e\u0442 $149 \u2014 \u043f\u043e\u043b\u043d\u044b\u0439 \u0438\u0441\u0445\u043e\u0434\u043d\u044b\u0439 \u043a\u043e\u0434",
@@ -373,7 +373,7 @@ const RU: T = {
 
 const UA: T = {
   nav: { home: "\u0413\u043e\u043b\u043e\u0432\u043d\u0430", products: "\u0410\u0433\u0435\u043d\u0442\u0438", projects: "\u041f\u0440\u043e\u0454\u043a\u0442\u0438", contact: "\u041a\u043e\u043d\u0442\u0430\u043a\u0442", connect: "\u0417\u0432'\u044f\u0437\u0430\u0442\u0438\u0441\u044f" },
-  heroSubtitle: "\u0413\u043e\u0442\u043e\u0432\u0456 AI-\u0441\u0438\u0441\u0442\u0435\u043c\u0438",
+  heroSubtitle: "AI-\u0430\u0440\u0441\u0435\u043d\u0430\u043b",
   roles: [
     "17 AI-\u0441\u0438\u0441\u0442\u0435\u043c \u0433\u043e\u0442\u043e\u0432\u0456 \u0434\u043e \u0437\u0430\u043f\u0443\u0441\u043a\u0443",
     "\u0412\u0456\u0434 $149 \u2014 \u043f\u043e\u0432\u043d\u0438\u0439 \u0432\u0438\u0445\u0456\u0434\u043d\u0438\u0439 \u043a\u043e\u0434",

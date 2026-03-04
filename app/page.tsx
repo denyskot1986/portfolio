@@ -428,7 +428,7 @@ export default function Home() {
                   {t.comparison.rows.map((row, i) => (
                     <motion.div key={i} initial={{ opacity: 0, x: -10 }} whileInView={{ opacity: 1, x: 0 }} viewport={{ once: true }} transition={{ delay: i * 0.08 }}
                       className="flex items-start gap-2 sm:gap-3">
-                      <span className="text-red-400/50 mt-0.5 text-xs sm:text-sm shrink-0">&times;</span>
+                      <span className="text-red-400/50 mt-0.5 text-xs sm:text-sm shrink-0">{"\u2715"}</span>
                       <span className="text-white/25 text-xs sm:text-sm leading-relaxed">{row.bad}</span>
                     </motion.div>
                   ))}
@@ -442,7 +442,7 @@ export default function Home() {
                   {t.comparison.rows.map((row, i) => (
                     <motion.div key={i} initial={{ opacity: 0, x: 10 }} whileInView={{ opacity: 1, x: 0 }} viewport={{ once: true }} transition={{ delay: i * 0.08 + 0.15 }}
                       className="flex items-start gap-2 sm:gap-3">
-                      <span className="text-emerald-400/70 mt-0.5 text-xs sm:text-sm shrink-0">&check;</span>
+                      <span className="text-emerald-400/70 mt-0.5 text-xs sm:text-sm shrink-0">{"\u2713"}</span>
                       <span className="text-white/60 text-xs sm:text-sm leading-relaxed font-medium">{row.good}</span>
                     </motion.div>
                   ))}
