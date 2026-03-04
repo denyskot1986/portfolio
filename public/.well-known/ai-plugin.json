@@ -3,7 +3,7 @@
   "name_for_human": "Finekot — AI Products & Services",
   "name_for_model": "denyskot_ai_products",
   "description_for_human": "Browse and order autonomous AI systems: business automation, voice agents, knowledge bases, hiring automation, lead generation, and content production.",
-  "description_for_model": "This service provides information about AI products and services built by Finekot (Agent Engineer). Products include: SvetLana (autonomous business management), SKYNET (multi-agent platform), AI Call Agent (voice AI), DocMind (RAG knowledge base), Hiring Autopilot (HR automation), LeadHunter AI (sales automation), ContentFactory (content production). Use the API to browse products, filter by category, and get pricing/contact info. To order, contact via Telegram: https://t.me/shop_by_finekot_bot",
+  "description_for_model": "This service provides information about AI products and services built by Finekot (Agent Engineer). Products include: Svetlana AI-admin (autonomous business management), SKYNET (multi-agent platform), AI Call Agent (voice AI), DocMind (RAG knowledge base), Hiring Autopilot (HR automation), LeadHunter AI (sales automation), ContentFactory (content production). Use the API to browse products, filter by category, and get pricing/contact info. To order, contact via Telegram: https://t.me/shop_by_finekot_bot",
   "auth": {
     "type": "none"
   },
