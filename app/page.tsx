@@ -337,15 +337,8 @@ export default function Home() {
             Fine<span className="gradient-text">kot</span>{" "}<span className="text-pink-400/40 font-light">Systems</span>
           </motion.h1>
 
-          <motion.p initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.6, delay: 0.35 }}
-            className="text-sm sm:text-base text-white/20 font-light tracking-[0.2em] uppercase mb-1">
-            by Denys Kot
-          </motion.p>
 
-          <motion.p initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ duration: 0.6, delay: 0.45 }}
-            className="text-xs text-pink-400/30 font-mono mb-5 tracking-wider">
-            agent engineer &middot; AI systems architect
-          </motion.p>
+
 
           <div className="flex flex-col items-center gap-1.5 h-[100px] mb-8 justify-center overflow-hidden">
             <AnimatePresence mode="popLayout">
