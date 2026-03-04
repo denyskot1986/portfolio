@@ -333,11 +333,16 @@ export default function Home() {
           </motion.p>
 
           <motion.h1 initial={{ opacity: 0, y: 30 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.8, delay: 0.2 }}
-            className="text-4xl sm:text-5xl md:text-7xl font-bold mb-2 tracking-tight">
+            className="text-4xl sm:text-5xl md:text-7xl font-bold mb-1 tracking-tight">
             Fine<span className="gradient-text">kot</span>
           </motion.h1>
 
-          <motion.p initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ duration: 0.6, delay: 0.3 }}
+          <motion.p initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.6, delay: 0.35 }}
+            className="text-sm sm:text-base text-white/20 font-light tracking-[0.2em] uppercase mb-1">
+            Denys Kot
+          </motion.p>
+
+          <motion.p initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ duration: 0.6, delay: 0.45 }}
             className="text-xs text-pink-400/30 font-mono mb-5 tracking-wider">
             agent engineer &middot; AI systems architect
           </motion.p>
