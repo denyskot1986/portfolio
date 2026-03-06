@@ -194,10 +194,8 @@ export default function Home() {
     if (!checkoutProduct || !checkoutEmail) return;
     setCheckoutSubmitted(true);
     const slug = productSlugMap[checkoutProduct.title] || checkoutProduct.title.toLowerCase().replace(/\s+/g, "-");
-    const emailB64 = btoa(checkoutEmail);
-    const nameParam = checkoutName ? `_${btoa(checkoutName)}` : "";
     setTimeout(() => {
-      window.open(`https://t.me/shop_by_finekot_bot?start=pay_${slug}_${emailB64}${nameParam}`, "_blank");
+      window.open(`https://t.me/shop_by_finekot_bot?start=pay_${slug}`, "_blank");
       setCheckoutProduct(null);
     }, 1500);
   };
