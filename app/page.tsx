@@ -1003,6 +1003,455 @@ export default function Home() {
         </div>
       </section>
 
+      {/* ─── SKYNET INTAKE ─── */}
+      <section className="relative z-10 py-20 sm:py-28 px-6">
+        <div className="max-w-5xl mx-auto">
+          <motion.div {...fade} className="text-center mb-12">
+            <p className="text-xs text-pink-400/30 uppercase tracking-[0.4em] mb-3 font-mono">{t.skynetIntake.label}</p>
+            <h2 className="text-4xl md:text-6xl font-black mb-4 tracking-tight"><span className="gradient-text">{t.skynetIntake.title}</span></h2>
+            <p className="text-lg md:text-xl text-pink-100/50 font-semibold mb-4">{t.skynetIntake.subtitle}</p>
+            <p className="text-pink-100/30 text-base leading-relaxed max-w-3xl mx-auto">{t.skynetIntake.desc}</p>
+          </motion.div>
+          <motion.div {...fade} className="glass rounded-xl p-4 sm:p-8 overflow-x-auto flex flex-col items-center mb-10">
+            <p className="text-[10px] text-pink-400/30 uppercase tracking-wider font-mono mb-4">{t.skynetIntake.diagramTitle}</p>
+            <pre className="diagram text-[10px] md:text-xs text-pink-300/50">
+{`  ┌──────────────┐       ┌──────────────────┐       ┌──────────────┐
+  │  YOUR INPUT  │──────▶│  SKYNET INTAKE   │──────▶│  TODOIST     │
+  │              │       │                  │       │              │
+  │ Voice / Text │       │ Transcribe →     │       │ Structured   │
+  │ Ideas, Tasks │       │ Structure →      │       │ Prioritized  │
+  └──────────────┘       │ Route            │       │ Assigned     │
+                         └────────┬─────────┘       └──────────────┘
+                                  │
+            ┌──────────┬──────────┼──────────┬──────────┐
+            ▼          ▼          ▼          ▼          ▼
+     ┌──────────┐┌──────────┐┌──────────┐┌──────────┐┌──────────┐
+     │TRANSCRIBE││STRUCTURE ││PRIORITIZE││  ROUTE   ││  TRACK   │
+     │  VOICE   ││  TASK    ││  BY AI   ││ TO AGENT ││ PROGRESS │
+     └──────────┘└──────────┘└──────────┘└──────────┘└──────────┘`}
+            </pre>
+          </motion.div>
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
+            {t.skynetIntake.features.map((f, i) => (
+              <motion.div key={f.title} {...fade} transition={{ delay: i * 0.08 }}
+                className="glass rounded-xl p-5 hover:border-pink-500/20 transition-colors group">
+                <span className="text-sm font-mono text-pink-400/40 mb-3 block">{f.icon}</span>
+                <h3 className="text-sm font-bold text-pink-100/70 mb-2 group-hover:text-pink-100/90 transition-colors">{f.title}</h3>
+                <p className="text-xs text-pink-100/30 leading-relaxed">{f.text}</p>
+              </motion.div>
+            ))}
+          </div>
+          <PricingBlock codePrice={499} ctaTemplate={t.skynetIntake.ctaTemplate} ctaIntegration={t.skynetIntake.ctaIntegration} t={t} onBuy={() => openCheckout(projects.find(p => p.title === "SKYNET Intake")!)} />
+          <div className="text-center">
+            <a href="/products/skynet-intake" className="text-xs text-pink-400/30 hover:text-pink-400/60 transition-colors font-mono">Learn more →</a>
+          </div>
+        </div>
+      </section>
+
+      {/* ─── C-ADMIN ─── */}
+      <section className="relative z-10 py-20 sm:py-28 px-6">
+        <div className="max-w-5xl mx-auto">
+          <motion.div {...fade} className="text-center mb-12">
+            <p className="text-xs text-pink-400/30 uppercase tracking-[0.4em] mb-3 font-mono">{t.cAdmin.label}</p>
+            <h2 className="text-4xl md:text-6xl font-black mb-4 tracking-tight"><span className="gradient-text">{t.cAdmin.title}</span></h2>
+            <p className="text-lg md:text-xl text-pink-100/50 font-semibold mb-4">{t.cAdmin.subtitle}</p>
+            <p className="text-pink-100/30 text-base leading-relaxed max-w-3xl mx-auto">{t.cAdmin.desc}</p>
+          </motion.div>
+          <motion.div {...fade} className="glass rounded-xl p-4 sm:p-8 overflow-x-auto flex flex-col items-center mb-10">
+            <p className="text-[10px] text-pink-400/30 uppercase tracking-wider font-mono mb-4">{t.cAdmin.diagramTitle}</p>
+            <pre className="diagram text-[10px] md:text-xs text-pink-300/50">
+{`  ┌──────────────┐       ┌──────────────────┐       ┌──────────────┐
+  │   CLIENTS    │──────▶│     C-ADMIN      │──────▶│  BUSINESS    │
+  │              │       │   AI Secretary   │       │  ORGANIZED   │
+  │ Telegram,    │       │                  │       │              │
+  │ WhatsApp     │       │ Book → Manage    │       │ Booked,      │
+  └──────────────┘       │ → Market         │       │ Tracked      │
+                         └────────┬─────────┘       └──────────────┘
+                                  │
+            ┌──────────┬──────────┼──────────┬──────────┐
+            ▼          ▼          ▼          ▼          ▼
+     ┌──────────┐┌──────────┐┌──────────┐┌──────────┐┌──────────┐
+     │  BOOK    ││  CLIENT  ││  AUTO    ││ REVENUE  ││  MULTI   │
+     │ APPTS   ││   CRM    ││ MARKET   ││ TRACKING ││ CHANNEL  │
+     └──────────┘└──────────┘└──────────┘└──────────┘└──────────┘`}
+            </pre>
+          </motion.div>
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
+            {t.cAdmin.features.map((f, i) => (
+              <motion.div key={f.title} {...fade} transition={{ delay: i * 0.08 }}
+                className="glass rounded-xl p-5 hover:border-pink-500/20 transition-colors group">
+                <span className="text-sm font-mono text-pink-400/40 mb-3 block">{f.icon}</span>
+                <h3 className="text-sm font-bold text-pink-100/70 mb-2 group-hover:text-pink-100/90 transition-colors">{f.title}</h3>
+                <p className="text-xs text-pink-100/30 leading-relaxed">{f.text}</p>
+              </motion.div>
+            ))}
+          </div>
+          <PricingBlock codePrice={250} setupPrice={500} ctaTemplate={t.cAdmin.ctaTemplate} ctaIntegration={t.cAdmin.ctaIntegration} t={t} onBuy={() => openCheckout(projects.find(p => p.title === "C-Admin")!)} />
+          <div className="text-center">
+            <a href="/products/c-admin" className="text-xs text-pink-400/30 hover:text-pink-400/60 transition-colors font-mono">Learn more →</a>
+          </div>
+        </div>
+      </section>
+
+      {/* ─── SUPPORTBOT PRO ─── */}
+      <section className="relative z-10 py-20 sm:py-28 px-6">
+        <div className="max-w-5xl mx-auto">
+          <motion.div {...fade} className="text-center mb-12">
+            <p className="text-xs text-pink-400/30 uppercase tracking-[0.4em] mb-3 font-mono">{t.supportBot.label}</p>
+            <h2 className="text-4xl md:text-6xl font-black mb-4 tracking-tight"><span className="gradient-text">{t.supportBot.title}</span></h2>
+            <p className="text-lg md:text-xl text-pink-100/50 font-semibold mb-4">{t.supportBot.subtitle}</p>
+            <p className="text-pink-100/30 text-base leading-relaxed max-w-3xl mx-auto">{t.supportBot.desc}</p>
+          </motion.div>
+          <motion.div {...fade} className="glass rounded-xl p-4 sm:p-8 overflow-x-auto flex flex-col items-center mb-10">
+            <p className="text-[10px] text-pink-400/30 uppercase tracking-wider font-mono mb-4">{t.supportBot.diagramTitle}</p>
+            <pre className="diagram text-[10px] md:text-xs text-pink-300/50">
+{`  ┌──────────────┐       ┌──────────────────┐       ┌──────────────┐
+  │  CUSTOMER    │──────▶│  SUPPORTBOT PRO  │──────▶│   RESOLVED   │
+  │  MESSAGE     │       │                  │       │              │
+  │ Question,    │       │ Classify →       │       │ Answered /   │
+  │ Complaint    │       │ Answer / Route   │       │ Escalated    │
+  └──────────────┘       └────────┬─────────┘       └──────────────┘
+                                  │
+            ┌──────────┬──────────┼──────────┬──────────┐
+            ▼          ▼          ▼          ▼          ▼
+     ┌──────────┐┌──────────┐┌──────────┐┌──────────┐┌──────────┐
+     │ CLASSIFY ││ SEARCH   ││ GENERATE ││ ESCALATE ││ ANALYTICS│
+     │ INTENT   ││ KNOWLEDGE││  ANSWER  ││ → HUMAN  ││ & LEARN  │
+     └──────────┘└──────────┘└──────────┘└──────────┘└──────────┘`}
+            </pre>
+          </motion.div>
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
+            {t.supportBot.features.map((f, i) => (
+              <motion.div key={f.title} {...fade} transition={{ delay: i * 0.08 }}
+                className="glass rounded-xl p-5 hover:border-pink-500/20 transition-colors group">
+                <span className="text-sm font-mono text-pink-400/40 mb-3 block">{f.icon}</span>
+                <h3 className="text-sm font-bold text-pink-100/70 mb-2 group-hover:text-pink-100/90 transition-colors">{f.title}</h3>
+                <p className="text-xs text-pink-100/30 leading-relaxed">{f.text}</p>
+              </motion.div>
+            ))}
+          </div>
+          <PricingBlock codePrice={199} ctaTemplate={t.supportBot.ctaTemplate} ctaIntegration={t.supportBot.ctaIntegration} t={t} onBuy={() => openCheckout(projects.find(p => p.title === "SupportBot Pro")!)} />
+          <div className="text-center">
+            <a href="/products/supportbot-pro" className="text-xs text-pink-400/30 hover:text-pink-400/60 transition-colors font-mono">Learn more →</a>
+          </div>
+        </div>
+      </section>
+
+      {/* ─── REALESTATE AI ─── */}
+      <section className="relative z-10 py-20 sm:py-28 px-6">
+        <div className="max-w-5xl mx-auto">
+          <motion.div {...fade} className="text-center mb-12">
+            <p className="text-xs text-pink-400/30 uppercase tracking-[0.4em] mb-3 font-mono">{t.realEstateAi.label}</p>
+            <h2 className="text-4xl md:text-6xl font-black mb-4 tracking-tight"><span className="gradient-text">{t.realEstateAi.title}</span></h2>
+            <p className="text-lg md:text-xl text-pink-100/50 font-semibold mb-4">{t.realEstateAi.subtitle}</p>
+            <p className="text-pink-100/30 text-base leading-relaxed max-w-3xl mx-auto">{t.realEstateAi.desc}</p>
+          </motion.div>
+          <motion.div {...fade} className="glass rounded-xl p-4 sm:p-8 overflow-x-auto flex flex-col items-center mb-10">
+            <p className="text-[10px] text-pink-400/30 uppercase tracking-wider font-mono mb-4">{t.realEstateAi.diagramTitle}</p>
+            <pre className="diagram text-[10px] md:text-xs text-pink-300/50">
+{`  ┌──────────────┐       ┌──────────────────┐       ┌──────────────┐
+  │   CLIENT     │──────▶│  REALESTATE AI   │──────▶│   VIEWING    │
+  │   REQUEST    │       │                  │       │   BOOKED     │
+  │              │       │ Match → Answer   │       │              │
+  │ Budget, Area │       │ → Book Viewing   │       │ Calendar +   │
+  │ Rooms, Style │       │                  │       │ CRM Updated  │
+  └──────────────┘       └────────┬─────────┘       └──────────────┘
+                                  │
+            ┌──────────┬──────────┼──────────┬──────────┐
+            ▼          ▼          ▼          ▼          ▼
+     ┌──────────┐┌──────────┐┌──────────┐┌──────────┐┌──────────┐
+     │  MATCH   ││  ANSWER  ││  BOOK    ││  UPDATE  ││  SCORE   │
+     │PROPERTIES││   Q&A    ││ VIEWINGS ││   CRM    ││  LEADS   │
+     └──────────┘└──────────┘└──────────┘└──────────┘└──────────┘`}
+            </pre>
+          </motion.div>
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
+            {t.realEstateAi.features.map((f, i) => (
+              <motion.div key={f.title} {...fade} transition={{ delay: i * 0.08 }}
+                className="glass rounded-xl p-5 hover:border-pink-500/20 transition-colors group">
+                <span className="text-sm font-mono text-pink-400/40 mb-3 block">{f.icon}</span>
+                <h3 className="text-sm font-bold text-pink-100/70 mb-2 group-hover:text-pink-100/90 transition-colors">{f.title}</h3>
+                <p className="text-xs text-pink-100/30 leading-relaxed">{f.text}</p>
+              </motion.div>
+            ))}
+          </div>
+          <PricingBlock codePrice={199} ctaTemplate={t.realEstateAi.ctaTemplate} ctaIntegration={t.realEstateAi.ctaIntegration} t={t} onBuy={() => openCheckout(projects.find(p => p.title === "RealEstate AI")!)} />
+          <div className="text-center">
+            <a href="/products/realestate-ai" className="text-xs text-pink-400/30 hover:text-pink-400/60 transition-colors font-mono">Learn more →</a>
+          </div>
+        </div>
+      </section>
+
+      {/* ─── MAILMIND ─── */}
+      <section className="relative z-10 py-20 sm:py-28 px-6">
+        <div className="max-w-5xl mx-auto">
+          <motion.div {...fade} className="text-center mb-12">
+            <p className="text-xs text-pink-400/30 uppercase tracking-[0.4em] mb-3 font-mono">{t.mailMind.label}</p>
+            <h2 className="text-4xl md:text-6xl font-black mb-4 tracking-tight"><span className="gradient-text">{t.mailMind.title}</span></h2>
+            <p className="text-lg md:text-xl text-pink-100/50 font-semibold mb-4">{t.mailMind.subtitle}</p>
+            <p className="text-pink-100/30 text-base leading-relaxed max-w-3xl mx-auto">{t.mailMind.desc}</p>
+          </motion.div>
+          <motion.div {...fade} className="glass rounded-xl p-4 sm:p-8 overflow-x-auto flex flex-col items-center mb-10">
+            <p className="text-[10px] text-pink-400/30 uppercase tracking-wider font-mono mb-4">{t.mailMind.diagramTitle}</p>
+            <pre className="diagram text-[10px] md:text-xs text-pink-300/50">
+{`  ┌──────────────┐       ┌──────────────────┐       ┌──────────────┐
+  │   INBOUND    │──────▶│     MAILMIND     │──────▶│   HANDLED    │
+  │   EMAIL      │       │                  │       │              │
+  │              │       │ Classify →       │       │ Auto-replied │
+  │ Support,     │       │ Draft →          │       │ or Escalated │
+  │ Sales, Spam  │       │ Send / Escalate  │       │              │
+  └──────────────┘       └────────┬─────────┘       └──────────────┘
+                                  │
+            ┌──────────┬──────────┼──────────┬──────────┐
+            ▼          ▼          ▼          ▼          ▼
+     ┌──────────┐┌──────────┐┌──────────┐┌──────────┐┌──────────┐
+     │ CLASSIFY ││PRIORITIZE││  DRAFT   ││AUTO-SEND ││ ESCALATE │
+     │  INTENT  ││  URGENCY ││  REPLY   ││   FAQ    ││  EDGE    │
+     └──────────┘└──────────┘└──────────┘└──────────┘└──────────┘`}
+            </pre>
+          </motion.div>
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
+            {t.mailMind.features.map((f, i) => (
+              <motion.div key={f.title} {...fade} transition={{ delay: i * 0.08 }}
+                className="glass rounded-xl p-5 hover:border-pink-500/20 transition-colors group">
+                <span className="text-sm font-mono text-pink-400/40 mb-3 block">{f.icon}</span>
+                <h3 className="text-sm font-bold text-pink-100/70 mb-2 group-hover:text-pink-100/90 transition-colors">{f.title}</h3>
+                <p className="text-xs text-pink-100/30 leading-relaxed">{f.text}</p>
+              </motion.div>
+            ))}
+          </div>
+          <PricingBlock codePrice={199} ctaTemplate={t.mailMind.ctaTemplate} ctaIntegration={t.mailMind.ctaIntegration} t={t} onBuy={() => openCheckout(projects.find(p => p.title === "MailMind")!)} />
+          <div className="text-center">
+            <a href="/products/mailmind" className="text-xs text-pink-400/30 hover:text-pink-400/60 transition-colors font-mono">Learn more →</a>
+          </div>
+        </div>
+      </section>
+
+      {/* ─── CONTRACT SCANNER ─── */}
+      <section className="relative z-10 py-20 sm:py-28 px-6">
+        <div className="max-w-5xl mx-auto">
+          <motion.div {...fade} className="text-center mb-12">
+            <p className="text-xs text-pink-400/30 uppercase tracking-[0.4em] mb-3 font-mono">{t.contractScanner.label}</p>
+            <h2 className="text-4xl md:text-6xl font-black mb-4 tracking-tight"><span className="gradient-text">{t.contractScanner.title}</span></h2>
+            <p className="text-lg md:text-xl text-pink-100/50 font-semibold mb-4">{t.contractScanner.subtitle}</p>
+            <p className="text-pink-100/30 text-base leading-relaxed max-w-3xl mx-auto">{t.contractScanner.desc}</p>
+          </motion.div>
+          <motion.div {...fade} className="glass rounded-xl p-4 sm:p-8 overflow-x-auto flex flex-col items-center mb-10">
+            <p className="text-[10px] text-pink-400/30 uppercase tracking-wider font-mono mb-4">{t.contractScanner.diagramTitle}</p>
+            <pre className="diagram text-[10px] md:text-xs text-pink-300/50">
+{`  ┌──────────────┐       ┌──────────────────┐       ┌──────────────┐
+  │  CONTRACT    │──────▶│CONTRACT SCANNER  │──────▶│   REPORT     │
+  │              │       │                  │       │              │
+  │ PDF / DOCX / │       │ Parse → Analyze  │       │ Risks,       │
+  │ Scanned      │       │ → Compare        │       │ Red Flags,   │
+  └──────────────┘       │ → Summarize      │       │ Summary      │
+                         └────────┬─────────┘       └──────────────┘
+                                  │
+            ┌──────────┬──────────┼──────────┬──────────┐
+            ▼          ▼          ▼          ▼          ▼
+     ┌──────────┐┌──────────┐┌──────────┐┌──────────┐┌──────────┐
+     │  PARSE   ││  DETECT  ││ COMPARE  ││SUMMARIZE ││  AUDIT   │
+     │ DOCUMENT ││  RISKS   ││ TEMPLATE ││  PLAIN   ││  TRAIL   │
+     └──────────┘└──────────┘└──────────┘└──────────┘└──────────┘`}
+            </pre>
+          </motion.div>
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
+            {t.contractScanner.features.map((f, i) => (
+              <motion.div key={f.title} {...fade} transition={{ delay: i * 0.08 }}
+                className="glass rounded-xl p-5 hover:border-pink-500/20 transition-colors group">
+                <span className="text-sm font-mono text-pink-400/40 mb-3 block">{f.icon}</span>
+                <h3 className="text-sm font-bold text-pink-100/70 mb-2 group-hover:text-pink-100/90 transition-colors">{f.title}</h3>
+                <p className="text-xs text-pink-100/30 leading-relaxed">{f.text}</p>
+              </motion.div>
+            ))}
+          </div>
+          <PricingBlock codePrice={399} ctaTemplate={t.contractScanner.ctaTemplate} ctaIntegration={t.contractScanner.ctaIntegration} t={t} onBuy={() => openCheckout(projects.find(p => p.title === "Contract Scanner")!)} />
+          <div className="text-center">
+            <a href="/products/contract-scanner" className="text-xs text-pink-400/30 hover:text-pink-400/60 transition-colors font-mono">Learn more →</a>
+          </div>
+        </div>
+      </section>
+
+      {/* ─── BIZPULSE ─── */}
+      <section className="relative z-10 py-20 sm:py-28 px-6">
+        <div className="max-w-5xl mx-auto">
+          <motion.div {...fade} className="text-center mb-12">
+            <p className="text-xs text-pink-400/30 uppercase tracking-[0.4em] mb-3 font-mono">{t.bizPulse.label}</p>
+            <h2 className="text-4xl md:text-6xl font-black mb-4 tracking-tight"><span className="gradient-text">{t.bizPulse.title}</span></h2>
+            <p className="text-lg md:text-xl text-pink-100/50 font-semibold mb-4">{t.bizPulse.subtitle}</p>
+            <p className="text-pink-100/30 text-base leading-relaxed max-w-3xl mx-auto">{t.bizPulse.desc}</p>
+          </motion.div>
+          <motion.div {...fade} className="glass rounded-xl p-4 sm:p-8 overflow-x-auto flex flex-col items-center mb-10">
+            <p className="text-[10px] text-pink-400/30 uppercase tracking-wider font-mono mb-4">{t.bizPulse.diagramTitle}</p>
+            <pre className="diagram text-[10px] md:text-xs text-pink-300/50">
+{`  ┌──────────────┐       ┌──────────────────┐       ┌──────────────┐
+  │  DATA SOURCE │──────▶│     BIZPULSE     │──────▶│   INSIGHTS   │
+  │              │       │                  │       │              │
+  │ DB, Sheets,  │       │ Connect →        │       │ Digest,      │
+  │ Metabase,    │       │ Monitor →        │       │ Alerts,      │
+  │ APIs         │       │ Diagnose         │       │ Root Cause   │
+  └──────────────┘       └────────┬─────────┘       └──────────────┘
+                                  │
+            ┌──────────┬──────────┼──────────┬──────────┐
+            ▼          ▼          ▼          ▼          ▼
+     ┌──────────┐┌──────────┐┌──────────┐┌──────────┐┌──────────┐
+     │ CONNECT  ││ MONITOR  ││  DETECT  ││ DIAGNOSE ││  ALERT   │
+     │  DATA    ││ METRICS  ││ ANOMALY  ││ROOT CAUSE││ TELEGRAM │
+     └──────────┘└──────────┘└──────────┘└──────────┘└──────────┘`}
+            </pre>
+          </motion.div>
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
+            {t.bizPulse.features.map((f, i) => (
+              <motion.div key={f.title} {...fade} transition={{ delay: i * 0.08 }}
+                className="glass rounded-xl p-5 hover:border-pink-500/20 transition-colors group">
+                <span className="text-sm font-mono text-pink-400/40 mb-3 block">{f.icon}</span>
+                <h3 className="text-sm font-bold text-pink-100/70 mb-2 group-hover:text-pink-100/90 transition-colors">{f.title}</h3>
+                <p className="text-xs text-pink-100/30 leading-relaxed">{f.text}</p>
+              </motion.div>
+            ))}
+          </div>
+          <PricingBlock codePrice={199} ctaTemplate={t.bizPulse.ctaTemplate} ctaIntegration={t.bizPulse.ctaIntegration} t={t} onBuy={() => openCheckout(projects.find(p => p.title === "BizPulse")!)} />
+          <div className="text-center">
+            <a href="/products/bizpulse" className="text-xs text-pink-400/30 hover:text-pink-400/60 transition-colors font-mono">Learn more →</a>
+          </div>
+        </div>
+      </section>
+
+      {/* ─── CODEREVIEWER ─── */}
+      <section className="relative z-10 py-20 sm:py-28 px-6">
+        <div className="max-w-5xl mx-auto">
+          <motion.div {...fade} className="text-center mb-12">
+            <p className="text-xs text-pink-400/30 uppercase tracking-[0.4em] mb-3 font-mono">{t.codeReviewer.label}</p>
+            <h2 className="text-4xl md:text-6xl font-black mb-4 tracking-tight"><span className="gradient-text">{t.codeReviewer.title}</span></h2>
+            <p className="text-lg md:text-xl text-pink-100/50 font-semibold mb-4">{t.codeReviewer.subtitle}</p>
+            <p className="text-pink-100/30 text-base leading-relaxed max-w-3xl mx-auto">{t.codeReviewer.desc}</p>
+          </motion.div>
+          <motion.div {...fade} className="glass rounded-xl p-4 sm:p-8 overflow-x-auto flex flex-col items-center mb-10">
+            <p className="text-[10px] text-pink-400/30 uppercase tracking-wider font-mono mb-4">{t.codeReviewer.diagramTitle}</p>
+            <pre className="diagram text-[10px] md:text-xs text-pink-300/50">
+{`  ┌──────────────┐       ┌──────────────────┐       ┌──────────────┐
+  │  PULL REQUEST│──────▶│  CODEREVIEWER    │──────▶│   REVIEWED   │
+  │              │       │                  │       │              │
+  │ New code,    │       │ Diff → Analyze   │       │ Comments,    │
+  │ Changed files│       │ → Security       │       │ Suggestions, │
+  └──────────────┘       │ → Comment        │       │ Approved     │
+                         └────────┬─────────┘       └──────────────┘
+                                  │
+            ┌──────────┬──────────┼──────────┬──────────┐
+            ▼          ▼          ▼          ▼          ▼
+     ┌──────────┐┌──────────┐┌──────────┐┌──────────┐┌──────────┐
+     │  PARSE   ││ SECURITY ││  STYLE   ││ COMMENT  ││  LEARN   │
+     │   DIFF   ││  CHECK   ││  CHECK   ││  INLINE  ││ PATTERNS │
+     └──────────┘└──────────┘└──────────┘└──────────┘└──────────┘`}
+            </pre>
+          </motion.div>
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
+            {t.codeReviewer.features.map((f, i) => (
+              <motion.div key={f.title} {...fade} transition={{ delay: i * 0.08 }}
+                className="glass rounded-xl p-5 hover:border-pink-500/20 transition-colors group">
+                <span className="text-sm font-mono text-pink-400/40 mb-3 block">{f.icon}</span>
+                <h3 className="text-sm font-bold text-pink-100/70 mb-2 group-hover:text-pink-100/90 transition-colors">{f.title}</h3>
+                <p className="text-xs text-pink-100/30 leading-relaxed">{f.text}</p>
+              </motion.div>
+            ))}
+          </div>
+          <PricingBlock codePrice={199} ctaTemplate={t.codeReviewer.ctaTemplate} ctaIntegration={t.codeReviewer.ctaIntegration} t={t} onBuy={() => openCheckout(projects.find(p => p.title === "CodeReviewer")!)} />
+          <div className="text-center">
+            <a href="/products/code-reviewer" className="text-xs text-pink-400/30 hover:text-pink-400/60 transition-colors font-mono">Learn more →</a>
+          </div>
+        </div>
+      </section>
+
+      {/* ─── MEETING SCRIBE ─── */}
+      <section className="relative z-10 py-20 sm:py-28 px-6">
+        <div className="max-w-5xl mx-auto">
+          <motion.div {...fade} className="text-center mb-12">
+            <p className="text-xs text-pink-400/30 uppercase tracking-[0.4em] mb-3 font-mono">{t.meetingScribe.label}</p>
+            <h2 className="text-4xl md:text-6xl font-black mb-4 tracking-tight"><span className="gradient-text">{t.meetingScribe.title}</span></h2>
+            <p className="text-lg md:text-xl text-pink-100/50 font-semibold mb-4">{t.meetingScribe.subtitle}</p>
+            <p className="text-pink-100/30 text-base leading-relaxed max-w-3xl mx-auto">{t.meetingScribe.desc}</p>
+          </motion.div>
+          <motion.div {...fade} className="glass rounded-xl p-4 sm:p-8 overflow-x-auto flex flex-col items-center mb-10">
+            <p className="text-[10px] text-pink-400/30 uppercase tracking-wider font-mono mb-4">{t.meetingScribe.diagramTitle}</p>
+            <pre className="diagram text-[10px] md:text-xs text-pink-300/50">
+{`  ┌──────────────┐       ┌──────────────────┐       ┌──────────────┐
+  │   MEETING    │──────▶│  MEETING SCRIBE  │──────▶│   RESULTS    │
+  │              │       │                  │       │              │
+  │ Zoom, Meet,  │       │ Record →         │       │ Transcript,  │
+  │ Teams, Call  │       │ Transcribe →     │       │ Action Items,│
+  └──────────────┘       │ Extract Tasks    │       │ Assignments  │
+                         └────────┬─────────┘       └──────────────┘
+                                  │
+            ┌──────────┬──────────┼──────────┬──────────┐
+            ▼          ▼          ▼          ▼          ▼
+     ┌──────────┐┌──────────┐┌──────────┐┌──────────┐┌──────────┐
+     │  RECORD  ││TRANSCRIBE││ EXTRACT  ││  ASSIGN  ││  PUSH    │
+     │  AUDIO   ││  TEXT    ││  ACTIONS ││  OWNERS  ││ TO TOOLS │
+     └──────────┘└──────────┘└──────────┘└──────────┘└──────────┘`}
+            </pre>
+          </motion.div>
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
+            {t.meetingScribe.features.map((f, i) => (
+              <motion.div key={f.title} {...fade} transition={{ delay: i * 0.08 }}
+                className="glass rounded-xl p-5 hover:border-pink-500/20 transition-colors group">
+                <span className="text-sm font-mono text-pink-400/40 mb-3 block">{f.icon}</span>
+                <h3 className="text-sm font-bold text-pink-100/70 mb-2 group-hover:text-pink-100/90 transition-colors">{f.title}</h3>
+                <p className="text-xs text-pink-100/30 leading-relaxed">{f.text}</p>
+              </motion.div>
+            ))}
+          </div>
+          <PricingBlock codePrice={199} ctaTemplate={t.meetingScribe.ctaTemplate} ctaIntegration={t.meetingScribe.ctaIntegration} t={t} onBuy={() => openCheckout(projects.find(p => p.title === "Meeting Scribe")!)} />
+          <div className="text-center">
+            <a href="/products/meeting-scribe" className="text-xs text-pink-400/30 hover:text-pink-400/60 transition-colors font-mono">Learn more →</a>
+          </div>
+        </div>
+      </section>
+
+      {/* ─── COMPLIANCE GUARD ─── */}
+      <section className="relative z-10 py-20 sm:py-28 px-6">
+        <div className="max-w-5xl mx-auto">
+          <motion.div {...fade} className="text-center mb-12">
+            <p className="text-xs text-pink-400/30 uppercase tracking-[0.4em] mb-3 font-mono">{t.complianceGuard.label}</p>
+            <h2 className="text-4xl md:text-6xl font-black mb-4 tracking-tight"><span className="gradient-text">{t.complianceGuard.title}</span></h2>
+            <p className="text-lg md:text-xl text-pink-100/50 font-semibold mb-4">{t.complianceGuard.subtitle}</p>
+            <p className="text-pink-100/30 text-base leading-relaxed max-w-3xl mx-auto">{t.complianceGuard.desc}</p>
+          </motion.div>
+          <motion.div {...fade} className="glass rounded-xl p-4 sm:p-8 overflow-x-auto flex flex-col items-center mb-10">
+            <p className="text-[10px] text-pink-400/30 uppercase tracking-wider font-mono mb-4">{t.complianceGuard.diagramTitle}</p>
+            <pre className="diagram text-[10px] md:text-xs text-pink-300/50">
+{`  ┌──────────────┐       ┌──────────────────┐       ┌──────────────┐
+  │  DOCUMENTS   │──────▶│COMPLIANCE GUARD  │──────▶│   REPORT     │
+  │  + POLICIES  │       │                  │       │              │
+  │              │       │ Scan → Compare   │       │ Violations,  │
+  │ New docs,    │       │ → Score          │       │ Fixes,       │
+  │ Regulations  │       │ → Fix            │       │ Score        │
+  └──────────────┘       └────────┬─────────┘       └──────────────┘
+                                  │
+            ┌──────────┬──────────┼──────────┬──────────┐
+            ▼          ▼          ▼          ▼          ▼
+     ┌──────────┐┌──────────┐┌──────────┐┌──────────┐┌──────────┐
+     │   SCAN   ││  CHECK   ││  SCORE   ││ SUGGEST  ││  AUDIT   │
+     │   DOCS   ││  RULES   ││COMPLIANCE││  FIXES   ││  TRAIL   │
+     └──────────┘└──────────┘└──────────┘└──────────┘└──────────┘`}
+            </pre>
+          </motion.div>
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
+            {t.complianceGuard.features.map((f, i) => (
+              <motion.div key={f.title} {...fade} transition={{ delay: i * 0.08 }}
+                className="glass rounded-xl p-5 hover:border-pink-500/20 transition-colors group">
+                <span className="text-sm font-mono text-pink-400/40 mb-3 block">{f.icon}</span>
+                <h3 className="text-sm font-bold text-pink-100/70 mb-2 group-hover:text-pink-100/90 transition-colors">{f.title}</h3>
+                <p className="text-xs text-pink-100/30 leading-relaxed">{f.text}</p>
+              </motion.div>
+            ))}
+          </div>
+          <PricingBlock codePrice={199} ctaTemplate={t.complianceGuard.ctaTemplate} ctaIntegration={t.complianceGuard.ctaIntegration} t={t} onBuy={() => openCheckout(projects.find(p => p.title === "Compliance Guard")!)} />
+          <div className="text-center">
+            <a href="/products/compliance-guard" className="text-xs text-pink-400/30 hover:text-pink-400/60 transition-colors font-mono">Learn more →</a>
+          </div>
+        </div>
+      </section>
+
       {/* ─── NEWSLETTER ─── */}
       <section className="relative z-10 py-16 px-6">
         <div className="max-w-md mx-auto">
