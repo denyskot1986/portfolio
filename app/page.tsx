@@ -178,48 +178,45 @@ export default function Home() {
   const t = i18n[lang];
   const pt = projectI18n[lang];
 
-  // Rolling 3-line cascade
-  type LineItem = { text: string; id: number };
-  const [lines, setLines] = useState<LineItem[]>([]);
-  const counterRef = useRef(0);
-  const phraseIdxRef = useRef(0);
+  // Single-line typewriter effect
+  const [displayText, setDisplayText] = useState("");
+  const [phraseIdx, setPhraseIdx] = useState(0);
+  const [isDeleting, setIsDeleting] = useState(false);
 
   useEffect(() => {
-    setLines([]);
-    counterRef.current = 0;
-    phraseIdxRef.current = 0;
+    const phrases = t.roles;
+    const current = phrases[phraseIdx % phrases.length];
+    const typeSpeed = isDeleting ? 30 : 60;
+    const pauseAfterType = 2500;
+    const pauseAfterDelete = 300;
 
-    const addLine = () => {
-      const id = counterRef.current++;
-      const phrases = t.roles;
-      const text = phrases[phraseIdxRef.current % phrases.length];
-      phraseIdxRef.current++;
-      setLines((prev) => {
-        const next = [...prev, { text, id }];
-        if (next.length > 3) return next.slice(1);
-        return next;
-      });
-    };
+    let timeout: ReturnType<typeof setTimeout>;
 
-    // Staggered initial appearance: 0.5s, 2.5s, 4.5s
-    const t0 = setTimeout(addLine, 500);
-    const t1 = setTimeout(addLine, 2500);
-    const t2 = setTimeout(addLine, 4500);
+    if (!isDeleting && displayText === current) {
+      timeout = setTimeout(() => setIsDeleting(true), pauseAfterType);
+    } else if (isDeleting && displayText === "") {
+      timeout = setTimeout(() => {
+        setIsDeleting(false);
+        setPhraseIdx((prev) => prev + 1);
+      }, pauseAfterDelete);
+    } else {
+      timeout = setTimeout(() => {
+        setDisplayText(
+          isDeleting
+            ? current.substring(0, displayText.length - 1)
+            : current.substring(0, displayText.length + 1)
+        );
+      }, typeSpeed);
+    }
 
-    // Start rotation after all 3 visible (every 3s, replace oldest)
-    let interval: ReturnType<typeof setInterval>;
-    const startRotation = setTimeout(() => {
-      interval = setInterval(addLine, 3000);
-    }, 7500);
+    return () => clearTimeout(timeout);
+  }, [displayText, isDeleting, phraseIdx, t.roles]);
 
-    return () => {
-      clearTimeout(t0);
-      clearTimeout(t1);
-      clearTimeout(t2);
-      clearTimeout(startRotation);
-      if (interval) clearInterval(interval);
-    };
-  }, [lang, t.roles]);
+  useEffect(() => {
+    setDisplayText("");
+    setPhraseIdx(0);
+    setIsDeleting(false);
+  }, [lang]);
 
   // Nav scroll state + active section
   const [scrolled, setScrolled] = useState(false);
@@ -340,22 +337,10 @@ export default function Home() {
 
 
 
-          <div className="flex flex-col items-center gap-1.5 h-[100px] mb-8 justify-center overflow-hidden">
-            <AnimatePresence mode="popLayout">
-              {lines.map((line) => (
-                <motion.p
-                  key={line.id}
-                  layout
-                  initial={{ opacity: 0, y: 20, filter: "blur(8px)" }}
-                  animate={{ opacity: 1, y: 0, filter: "blur(0px)" }}
-                  exit={{ opacity: 0, y: -20, filter: "blur(8px)" }}
-                  transition={{ duration: 0.6, ease: "easeOut" }}
-                  className="text-sm sm:text-base md:text-lg text-pink-300/50 font-mono tracking-wide"
-                >
-                  {line.text}
-                </motion.p>
-              ))}
-            </AnimatePresence>
+          <div className="flex items-center justify-center h-[48px] mb-8 overflow-hidden">
+            <p className="text-sm sm:text-base md:text-lg text-pink-300/50 font-mono tracking-wide">
+              {displayText}<span className="animate-pulse text-pink-400">|</span>
+            </p>
           </div>
 
           <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.8, delay: 0.6 }}
