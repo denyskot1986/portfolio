@@ -64,7 +64,7 @@ const navLinks = [
   { href: "#contact", label: "Contact" },
 ];
 
-function PricingBlock({ codePrice, setupPrice, ctaTemplate, ctaIntegration, t }: { codePrice: number; setupPrice?: number; ctaTemplate: string; ctaIntegration: string; t: any }) {
+function PricingBlock({ codePrice, setupPrice, ctaTemplate, ctaIntegration, t, onBuy }: { codePrice: number; setupPrice?: number; ctaTemplate: string; ctaIntegration: string; t: any; onBuy?: () => void }) {
   return (
     <motion.div initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} transition={{ duration: 0.5 }}
       className="mt-12 mb-6">
@@ -79,10 +79,10 @@ function PricingBlock({ codePrice, setupPrice, ctaTemplate, ctaIntegration, t }:
                 <li key={item} className="flex gap-2"><span className="text-pink-400/40">→</span> {item}</li>
               ))}
             </ul>
-            <a href="https://t.me/shop_by_finekot_bot" target="_blank" rel="noopener noreferrer"
+            <button onClick={onBuy}
               className="inline-block w-full px-6 py-3 rounded-lg border border-pink-400/20 text-sm font-semibold text-pink-100/70 hover:bg-pink-400/10 hover:text-pink-100 transition-all">
               {ctaTemplate}
-            </a>
+            </button>
           </div>
           <div className="glass rounded-xl p-6 sm:p-8 text-center border-pink-400/20 shadow-[0_0_40px_rgba(244,114,182,0.08)]">
             <div className="flex justify-center mb-3">
@@ -95,10 +95,10 @@ function PricingBlock({ codePrice, setupPrice, ctaTemplate, ctaIntegration, t }:
                 <li key={item} className="flex gap-2"><span className="text-pink-400">→</span> {item}</li>
               ))}
             </ul>
-            <a href="https://t.me/shop_by_finekot_bot" target="_blank" rel="noopener noreferrer"
+            <button onClick={onBuy}
               className="inline-block w-full px-6 py-3 rounded-lg bg-gradient-to-r from-pink-600 to-purple-600 text-white font-semibold hover:opacity-90 transition-opacity shadow-[0_0_30px_rgba(244,114,182,0.2)]">
               {ctaIntegration}
-            </a>
+            </button>
           </div>
         </div>
       ) : (
@@ -111,10 +111,10 @@ function PricingBlock({ codePrice, setupPrice, ctaTemplate, ctaIntegration, t }:
                 <li key={item} className="flex gap-2"><span className="text-pink-400">→</span> {item}</li>
               ))}
             </ul>
-            <a href="https://t.me/shop_by_finekot_bot" target="_blank" rel="noopener noreferrer"
+            <button onClick={onBuy}
               className="inline-block w-full px-6 py-3 rounded-lg bg-gradient-to-r from-pink-600 to-purple-600 text-white font-semibold hover:opacity-90 transition-opacity shadow-[0_0_30px_rgba(244,114,182,0.2)]">
               {ctaTemplate}
-            </a>
+            </button>
           </div>
         </div>
       )}
@@ -175,6 +175,36 @@ export default function Home() {
   const [expanded, setExpanded] = useState<number | null>(null);
   const [showAllProjects, setShowAllProjects] = useState(false);
   const [lang, setLang] = useState<Lang>("EN");
+
+  // Checkout modal state
+  const [checkoutProduct, setCheckoutProduct] = useState<typeof projects[0] | null>(null);
+  const [checkoutEmail, setCheckoutEmail] = useState("");
+  const [checkoutName, setCheckoutName] = useState("");
+  const [checkoutSubmitted, setCheckoutSubmitted] = useState(false);
+
+  const openCheckout = (product: typeof projects[0]) => {
+    setCheckoutProduct(product);
+    setCheckoutEmail("");
+    setCheckoutName("");
+    setCheckoutSubmitted(false);
+  };
+
+  const handleCheckout = (e: React.FormEvent) => {
+    e.preventDefault();
+    if (!checkoutProduct || !checkoutEmail) return;
+    setCheckoutSubmitted(true);
+    const slug = productSlugMap[checkoutProduct.title] || checkoutProduct.title.toLowerCase().replace(/\s+/g, "-");
+    const emailB64 = btoa(checkoutEmail);
+    const nameParam = checkoutName ? `_${btoa(checkoutName)}` : "";
+    setTimeout(() => {
+      window.open(`https://t.me/shop_by_finekot_bot?start=pay_${slug}_${emailB64}${nameParam}`, "_blank");
+      setCheckoutProduct(null);
+    }, 1500);
+  };
+
+  // Newsletter state
+  const [newsletterEmail, setNewsletterEmail] = useState("");
+  const [newsletterDone, setNewsletterDone] = useState(false);
   const t = i18n[lang];
   const pt = projectI18n[lang];
 
@@ -529,15 +559,12 @@ export default function Home() {
                         </div>
                         <div className="flex items-center gap-2">
                           <p className="text-[10px] text-pink-300/30 font-mono hidden sm:block">{p.metrics}</p>
-                          <a
-                            href={botBuyLink(p.title)}
-                            target="_blank"
-                            rel="noopener noreferrer"
-                            onClick={(e) => e.stopPropagation()}
+                          <button
+                            onClick={(e) => { e.stopPropagation(); openCheckout(p); }}
                             className="px-3 py-1.5 rounded-lg bg-gradient-to-r from-pink-600 to-purple-600 text-[10px] font-bold text-white uppercase tracking-wider hover:opacity-90 transition-opacity shadow-[0_0_15px_rgba(244,114,182,0.2)] whitespace-nowrap"
                           >
                             Buy →
-                          </a>
+                          </button>
                         </div>
                       </div>
 
@@ -545,26 +572,45 @@ export default function Home() {
                         {isExpanded && (
                           <motion.div initial={{ opacity: 0, height: 0 }} animate={{ opacity: 1, height: "auto" }} exit={{ opacity: 0, height: 0 }} className="overflow-hidden">
                             <div className="mt-4 pt-4 border-t border-pink-500/10">
+                              {/* Full description */}
+                              <p className="text-xs text-pink-100/40 leading-relaxed mb-4">{pData?.description || p.description}</p>
+
                               <p className="text-[10px] text-pink-400/30 uppercase tracking-wider font-mono mb-2">{t.projectUI.keyFeatures}</p>
                               <ul className="space-y-1.5 mb-4">
                                 {(pData?.highlights || p.highlights).map((h: string) => (
                                   <li key={h} className="flex gap-2 text-xs text-pink-100/40"><span className="text-pink-400/60">→</span> {h}</li>
                                 ))}
                               </ul>
+
+                              {/* Tech stack */}
+                              <p className="text-[10px] text-pink-400/30 uppercase tracking-wider font-mono mb-2">
+                                {lang === "RU" ? "Стек технологий" : lang === "UA" ? "Стек технологій" : "Tech Stack"}
+                              </p>
                               <div className="flex flex-wrap gap-1.5 mb-4">
                                 {p.stack.map((s) => (
                                   <span key={s} className="text-[10px] px-2 py-1 rounded-md bg-pink-500/5 text-pink-300/30 border border-pink-500/10 font-mono">{s}</span>
                                 ))}
                               </div>
-                              <a
-                                href={botBuyLink(p.title)}
-                                target="_blank"
-                                rel="noopener noreferrer"
-                                onClick={(e) => e.stopPropagation()}
+
+                              {/* What you get */}
+                              <div className="glass rounded-lg p-4 mb-4 border border-pink-500/10">
+                                <p className="text-[10px] text-pink-400/30 uppercase tracking-wider font-mono mb-2">
+                                  {lang === "RU" ? "Что вы получаете" : lang === "UA" ? "Що ви отримуєте" : "What you get"}
+                                </p>
+                                <ul className="space-y-1">
+                                  <li className="flex gap-2 text-xs text-pink-100/40"><span className="text-emerald-400/60">✓</span> {lang === "RU" ? "Полный исходный код" : lang === "UA" ? "Повний вихідний код" : "Full source code"}</li>
+                                  <li className="flex gap-2 text-xs text-pink-100/40"><span className="text-emerald-400/60">✓</span> {lang === "RU" ? "Документация + инструкция по установке" : lang === "UA" ? "Документація + інструкція з встановлення" : "Documentation + setup guide"}</li>
+                                  <li className="flex gap-2 text-xs text-pink-100/40"><span className="text-emerald-400/60">✓</span> {lang === "RU" ? "Без подписок — навсегда ваш" : lang === "UA" ? "Без підписок — назавжди ваш" : "No subscriptions — yours forever"}</li>
+                                  <li className="flex gap-2 text-xs text-pink-100/40"><span className="text-emerald-400/60">✓</span> {lang === "RU" ? "Доставка на email после оплаты" : lang === "UA" ? "Доставка на email після оплати" : "Delivered to your email after payment"}</li>
+                                </ul>
+                              </div>
+
+                              <button
+                                onClick={(e) => { e.stopPropagation(); openCheckout(p); }}
                                 className="block w-full text-center px-6 py-3 rounded-lg bg-gradient-to-r from-pink-600 to-purple-600 text-white text-sm font-semibold hover:opacity-90 transition-opacity shadow-[0_0_25px_rgba(244,114,182,0.2)]"
                               >
                                 Get {p.title} — {p.price} →
-                              </a>
+                              </button>
                             </div>
                           </motion.div>
                         )}
@@ -674,7 +720,7 @@ export default function Home() {
             ))}
           </div>
 
-          <PricingBlock codePrice={1200} ctaTemplate={t.skynetProduct.ctaTemplate} ctaIntegration={t.skynetProduct.ctaIntegration} t={t} />
+          <PricingBlock codePrice={1200} ctaTemplate={t.skynetProduct.ctaTemplate} ctaIntegration={t.skynetProduct.ctaIntegration} t={t} onBuy={() => openCheckout(projects.find(p => p.title === "SKYNET")!)} />
           <div className="text-center">
             <a href="/products/skynet-platform" className="text-xs text-pink-400/30 hover:text-pink-400/60 transition-colors font-mono">Learn more →</a>
           </div>
@@ -719,7 +765,7 @@ export default function Home() {
               </motion.div>
             ))}
           </div>
-          <PricingBlock codePrice={499} setupPrice={2000} ctaTemplate={t.contentFactory.ctaTemplate} ctaIntegration={t.contentFactory.ctaIntegration} t={t} />
+          <PricingBlock codePrice={499} setupPrice={2000} ctaTemplate={t.contentFactory.ctaTemplate} ctaIntegration={t.contentFactory.ctaIntegration} t={t} onBuy={() => openCheckout(projects.find(p => p.title === "ContentFactory")!)} />
           <div className="text-center">
             <a href="/products/contentfactory" className="text-xs text-pink-400/30 hover:text-pink-400/60 transition-colors font-mono">Learn more →</a>
           </div>
@@ -770,7 +816,7 @@ export default function Home() {
             ))}
           </div>
 
-          <PricingBlock codePrice={500} setupPrice={2500} ctaTemplate={t.svetlana.ctaTemplate} ctaIntegration={t.svetlana.ctaIntegration} t={t} />
+          <PricingBlock codePrice={500} setupPrice={2500} ctaTemplate={t.svetlana.ctaTemplate} ctaIntegration={t.svetlana.ctaIntegration} t={t} onBuy={() => openCheckout(projects.find(p => p.title === "Svetlana AI-admin")!)} />
           <div className="text-center">
             <a href="/products/svetlana" className="text-xs text-pink-400/30 hover:text-pink-400/60 transition-colors font-mono">Learn more →</a>
           </div>
@@ -815,7 +861,7 @@ export default function Home() {
               </motion.div>
             ))}
           </div>
-          <PricingBlock codePrice={149} ctaTemplate={t.callAgent.ctaTemplate} ctaIntegration={t.callAgent.ctaIntegration} t={t} />
+          <PricingBlock codePrice={149} ctaTemplate={t.callAgent.ctaTemplate} ctaIntegration={t.callAgent.ctaIntegration} t={t} onBuy={() => openCheckout(projects.find(p => p.title === "AI Call Agent")!)} />
           <div className="text-center">
             <a href="/products/call-agent" className="text-xs text-pink-400/30 hover:text-pink-400/60 transition-colors font-mono">Learn more →</a>
           </div>
@@ -860,7 +906,7 @@ export default function Home() {
               </motion.div>
             ))}
           </div>
-          <PricingBlock codePrice={299} ctaTemplate={t.docMind.ctaTemplate} ctaIntegration={t.docMind.ctaIntegration} t={t} />
+          <PricingBlock codePrice={299} ctaTemplate={t.docMind.ctaTemplate} ctaIntegration={t.docMind.ctaIntegration} t={t} onBuy={() => openCheckout(projects.find(p => p.title === "DocMind")!)} />
           <div className="text-center">
             <a href="/products/docmind" className="text-xs text-pink-400/30 hover:text-pink-400/60 transition-colors font-mono">Learn more →</a>
           </div>
@@ -905,7 +951,7 @@ export default function Home() {
               </motion.div>
             ))}
           </div>
-          <PricingBlock codePrice={199} ctaTemplate={t.hiringAutopilot.ctaTemplate} ctaIntegration={t.hiringAutopilot.ctaIntegration} t={t} />
+          <PricingBlock codePrice={199} ctaTemplate={t.hiringAutopilot.ctaTemplate} ctaIntegration={t.hiringAutopilot.ctaIntegration} t={t} onBuy={() => openCheckout(projects.find(p => p.title === "Hiring Autopilot")!)} />
           <div className="text-center">
             <a href="/products/hiring-autopilot" className="text-xs text-pink-400/30 hover:text-pink-400/60 transition-colors font-mono">Learn more →</a>
           </div>
@@ -950,10 +996,43 @@ export default function Home() {
               </motion.div>
             ))}
           </div>
-          <PricingBlock codePrice={399} ctaTemplate={t.leadHunter.ctaTemplate} ctaIntegration={t.leadHunter.ctaIntegration} t={t} />
+          <PricingBlock codePrice={399} ctaTemplate={t.leadHunter.ctaTemplate} ctaIntegration={t.leadHunter.ctaIntegration} t={t} onBuy={() => openCheckout(projects.find(p => p.title === "LeadHunter AI")!)} />
           <div className="text-center">
             <a href="/products/leadhunter" className="text-xs text-pink-400/30 hover:text-pink-400/60 transition-colors font-mono">Learn more →</a>
           </div>
+        </div>
+      </section>
+
+      {/* ─── NEWSLETTER ─── */}
+      <section className="relative z-10 py-16 px-6">
+        <div className="max-w-md mx-auto">
+          <motion.div {...fade} className="glass rounded-xl p-6 sm:p-8 text-center border border-pink-500/10">
+            <p className="text-[10px] text-pink-400/30 uppercase tracking-[0.3em] mb-2 font-mono">
+              {lang === "RU" ? "Рассылка" : lang === "UA" ? "Розсилка" : "Newsletter"}
+            </p>
+            <p className="text-sm text-pink-100/40 mb-4">
+              {lang === "RU" ? "Новые AI-продукты и спецпредложения. Без спама." : lang === "UA" ? "Нові AI-продукти та спецпропозиції. Без спаму." : "New AI products & special offers. No spam."}
+            </p>
+            {newsletterDone ? (
+              <p className="text-sm text-emerald-400/70 font-mono">
+                {lang === "RU" ? "Подписано ✓" : lang === "UA" ? "Підписано ✓" : "Subscribed ✓"}
+              </p>
+            ) : (
+              <form onSubmit={(e) => { e.preventDefault(); if (newsletterEmail) setNewsletterDone(true); }} className="flex gap-2">
+                <input
+                  type="email"
+                  required
+                  value={newsletterEmail}
+                  onChange={(e) => setNewsletterEmail(e.target.value)}
+                  placeholder={lang === "RU" ? "your@email.com" : "your@email.com"}
+                  className="flex-1 px-4 py-2.5 rounded-lg bg-white/5 border border-pink-500/15 text-sm text-pink-100/70 placeholder:text-pink-300/20 focus:outline-none focus:border-pink-500/40 font-mono"
+                />
+                <button type="submit" className="px-5 py-2.5 rounded-lg bg-gradient-to-r from-pink-600 to-purple-600 text-white text-xs font-bold uppercase tracking-wider hover:opacity-90 transition-opacity whitespace-nowrap">
+                  →
+                </button>
+              </form>
+            )}
+          </motion.div>
         </div>
       </section>
 
@@ -974,6 +1053,93 @@ export default function Home() {
       <footer className="relative z-10 py-6 text-center text-[10px] text-pink-300/15 border-t border-pink-500/10 font-mono uppercase tracking-wider">
         {t.footer}
       </footer>
+
+      {/* ─── CHECKOUT MODAL ─── */}
+      <AnimatePresence>
+        {checkoutProduct && (
+          <motion.div
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            className="fixed inset-0 z-[200] flex items-center justify-center p-4"
+            onClick={() => setCheckoutProduct(null)}
+          >
+            <div className="absolute inset-0 bg-black/70 backdrop-blur-sm" />
+            <motion.div
+              initial={{ opacity: 0, scale: 0.9, y: 20 }}
+              animate={{ opacity: 1, scale: 1, y: 0 }}
+              exit={{ opacity: 0, scale: 0.9, y: 20 }}
+              onClick={(e) => e.stopPropagation()}
+              className="relative w-full max-w-md glass rounded-2xl p-6 sm:p-8 border border-pink-500/20 shadow-[0_0_80px_rgba(244,114,182,0.15)]"
+            >
+              <button onClick={() => setCheckoutProduct(null)} className="absolute top-4 right-4 text-pink-400/30 hover:text-pink-400/60 text-lg">×</button>
+
+              {checkoutSubmitted ? (
+                <div className="text-center py-8">
+                  <div className="text-4xl mb-4">✓</div>
+                  <p className="text-pink-100/70 font-semibold mb-2">
+                    {lang === "RU" ? "Перенаправляем в Telegram..." : lang === "UA" ? "Переспрямовуємо в Telegram..." : "Redirecting to Telegram..."}
+                  </p>
+                  <p className="text-xs text-pink-300/30 font-mono">
+                    {lang === "RU" ? "Выберите криптовалюту и оплатите" : lang === "UA" ? "Оберіть криптовалюту та оплатіть" : "Choose crypto & complete payment"}
+                  </p>
+                </div>
+              ) : (
+                <>
+                  <div className="mb-6">
+                    <p className="text-[10px] text-pink-400/30 uppercase tracking-[0.3em] font-mono mb-1">
+                      {lang === "RU" ? "Оформление" : lang === "UA" ? "Оформлення" : "Checkout"}
+                    </p>
+                    <h3 className="text-xl font-bold text-pink-100/80">{checkoutProduct.title}</h3>
+                    <p className="text-xs text-pink-300/40 font-mono">{checkoutProduct.subtitle}</p>
+                    <div className="mt-3 flex items-baseline gap-2">
+                      <span className="text-2xl font-black gradient-text font-mono">{checkoutProduct.price}</span>
+                      <span className="text-[10px] text-pink-300/30 font-mono">{checkoutProduct.priceNote}</span>
+                    </div>
+                  </div>
+
+                  <form onSubmit={handleCheckout} className="space-y-4">
+                    <div>
+                      <label className="block text-[10px] text-pink-400/40 uppercase tracking-wider font-mono mb-1.5">
+                        Email *
+                      </label>
+                      <input
+                        type="email"
+                        required
+                        value={checkoutEmail}
+                        onChange={(e) => setCheckoutEmail(e.target.value)}
+                        placeholder={lang === "RU" ? "Куда отправить продукт" : lang === "UA" ? "Куди надіслати продукт" : "Where to deliver the product"}
+                        className="w-full px-4 py-3 rounded-lg bg-white/5 border border-pink-500/15 text-sm text-pink-100/70 placeholder:text-pink-300/20 focus:outline-none focus:border-pink-500/40 font-mono"
+                      />
+                    </div>
+                    <div>
+                      <label className="block text-[10px] text-pink-400/40 uppercase tracking-wider font-mono mb-1.5">
+                        {lang === "RU" ? "Имя (опционально)" : lang === "UA" ? "Ім'я (опціонально)" : "Name (optional)"}
+                      </label>
+                      <input
+                        type="text"
+                        value={checkoutName}
+                        onChange={(e) => setCheckoutName(e.target.value)}
+                        placeholder={lang === "RU" ? "Ваше имя" : lang === "UA" ? "Ваше ім'я" : "Your name"}
+                        className="w-full px-4 py-3 rounded-lg bg-white/5 border border-pink-500/15 text-sm text-pink-100/70 placeholder:text-pink-300/20 focus:outline-none focus:border-pink-500/40 font-mono"
+                      />
+                    </div>
+                    <button
+                      type="submit"
+                      className="w-full py-3.5 rounded-lg bg-gradient-to-r from-pink-600 to-purple-600 text-white font-semibold hover:opacity-90 transition-opacity shadow-[0_0_30px_rgba(244,114,182,0.2)] text-sm"
+                    >
+                      {lang === "RU" ? "Перейти к оплате →" : lang === "UA" ? "Перейти до оплати →" : "Proceed to Payment →"}
+                    </button>
+                    <p className="text-[9px] text-pink-300/20 text-center font-mono leading-relaxed">
+                      {lang === "RU" ? "Оплата криптовалютой (USDC). После оплаты продукт будет доставлен на указанный email." : lang === "UA" ? "Оплата криптовалютою (USDC). Після оплати продукт буде доставлений на вказаний email." : "Payment via crypto (USDC). Product will be delivered to your email after payment."}
+                    </p>
+                  </form>
+                </>
+              )}
+            </motion.div>
+          </motion.div>
+        )}
+      </AnimatePresence>
     </div>
   );
 }
