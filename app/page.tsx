@@ -30,6 +30,7 @@ const projects = [
   { id: "14", title: "CodeReviewer", subtitle: "Autonomous Code Review Agent", category: "Multi-Agent" as Category, status: "live", price: "$199", priceNote: "Code review AI", description: "Autonomous code review agent. Analyzes PRs for bugs, security vulns, performance issues. Writes inline comments. Learns team conventions.", stack: ["Claude API", "GitHub API", "AST Parsers", "Python", "Docker"], highlights: ["PR analysis < 60 seconds", "OWASP security checks", "Learns team coding style", "Inline comments like a human"], metrics: "< 60s · OWASP · style learning", color: "from-lime-500/25 to-emerald-500/15", accent: "border-lime-500/40", glow: "rgba(132, 204, 22, 0.3)" },
   { id: "16", title: "Meeting Scribe", subtitle: "AI Meeting Assistant", category: "Voice AI" as Category, status: "live", price: "$199", priceNote: "Meeting assistant AI", description: "Records meetings via bot, transcribes, extracts action items, assigns owners, pushes tasks to project management tools automatically.", stack: ["Whisper", "Claude API", "Zoom SDK", "Notion API", "Python"], highlights: ["Live meeting transcription", "Action item extraction", "Auto-assign to owners", "Push to Notion / Todoist"], metrics: "Live transcription · auto-assign", color: "from-rose-500/25 to-pink-500/15", accent: "border-rose-500/40", glow: "rgba(244, 63, 94, 0.3)" },
   { id: "17", title: "Compliance Guard", subtitle: "Regulatory Compliance AI", category: "RAG" as Category, status: "live", price: "$199", priceNote: "Compliance AI", description: "Regulatory compliance checker. Upload policies + new docs — AI flags violations, suggests fixes, tracks compliance score over time.", stack: ["Claude API", "LangChain", "Pinecone", "FastAPI", "React"], highlights: ["Multi-regulation checking", "Compliance scoring with history", "Fix suggestions per violation", "Full audit trail"], metrics: "Multi-reg · audit trail", color: "from-yellow-500/25 to-amber-500/15", accent: "border-yellow-500/40", glow: "rgba(234, 179, 8, 0.3)" },
+  { id: "19", title: "Reels Agent", subtitle: "Instagram AI Auto-Responder", category: "Bots" as Category, status: "live", price: "$79", priceNote: "Instagram AI bot", description: "AI auto-replies to every Instagram comment on your posts and reels. Sounds like you. Works 24/7. Boosts engagement by up to 3x.", stack: ["Claude API", "Instagram API", "OAuth", "Next.js", "PostgreSQL"], highlights: ["Instant AI replies to every comment", "Custom brand voice & tone settings", "Smart spam filtering & VIP escalation", "Analytics dashboard with sentiment tracking"], metrics: "24/7 · 3x engagement · your voice", color: "from-pink-500/30 to-fuchsia-500/20", accent: "border-pink-500/40", glow: "rgba(244, 114, 182, 0.3)" },
 ];
 
 const categories: Category[] = ["All", "Multi-Agent", "Voice AI", "Bots", "Automation", "RAG"];
@@ -52,6 +53,7 @@ const productSlugMap: Record<string, string> = {
   "CodeReviewer": "code-reviewer",
   "Meeting Scribe": "meeting-scribe",
   "Compliance Guard": "compliance-guard",
+  "Reels Agent": "reels-agent",
 };
 const botBuyLink = (title: string) => `https://t.me/shop_by_finekot_bot?start=buy_${productSlugMap[title] || title.toLowerCase().replace(/\s+/g, "-")}`;
 
@@ -557,12 +559,22 @@ export default function Home() {
                         </div>
                         <div className="flex items-center gap-2">
                           <p className="text-[10px] text-pink-300/30 font-mono hidden sm:block">{p.metrics}</p>
-                          <button
-                            onClick={(e) => { e.stopPropagation(); openCheckout(p); }}
-                            className="px-3 py-1.5 rounded-lg bg-gradient-to-r from-pink-600 to-purple-600 text-[10px] font-bold text-white uppercase tracking-wider hover:opacity-90 transition-opacity shadow-[0_0_15px_rgba(244,114,182,0.2)] whitespace-nowrap"
-                          >
-                            Buy →
-                          </button>
+                          {p.title === "Reels Agent" ? (
+                            <a
+                              href="/reels-agent"
+                              onClick={(e) => e.stopPropagation()}
+                              className="px-3 py-1.5 rounded-lg bg-gradient-to-r from-pink-600 to-purple-600 text-[10px] font-bold text-white uppercase tracking-wider hover:opacity-90 transition-opacity shadow-[0_0_15px_rgba(244,114,182,0.2)] whitespace-nowrap"
+                            >
+                              {lang === "RU" ? "Подробнее →" : lang === "UA" ? "Детальніше →" : "Read more →"}
+                            </a>
+                          ) : (
+                            <button
+                              onClick={(e) => { e.stopPropagation(); openCheckout(p); }}
+                              className="px-3 py-1.5 rounded-lg bg-gradient-to-r from-pink-600 to-purple-600 text-[10px] font-bold text-white uppercase tracking-wider hover:opacity-90 transition-opacity shadow-[0_0_15px_rgba(244,114,182,0.2)] whitespace-nowrap"
+                            >
+                              Buy →
+                            </button>
+                          )}
                         </div>
                       </div>
 
