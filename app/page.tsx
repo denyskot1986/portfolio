@@ -61,8 +61,8 @@ const botBuyLink = (title: string) => `https://t.me/shop_by_finekot_bot?start=bu
 
 const navLinks = [
   { href: "#hero", label: "Home" },
-  { href: "#products", label: "Products" },
   { href: "#projects", label: "Projects" },
+  { href: "#products", label: "Products" },
   { href: "#contact", label: "Contact" },
 ];
 
