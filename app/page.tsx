@@ -176,108 +176,7 @@ function ScrollProgress() {
    THEME TOGGLE
    ═══════════════════════════════════════════════════════ */
 
-function ThemeToggle() {
-  const [isDark, setIsDark] = useState(true);
 
-  useEffect(() => {
-    const saved = localStorage.getItem("theme");
-    if (saved === "light") {
-      setIsDark(false);
-      document.documentElement.classList.remove("dark");
-      document.documentElement.classList.add("light");
-    }
-  }, []);
-
-  const toggle = () => {
-    const next = !isDark;
-    setIsDark(next);
-    if (next) {
-      document.documentElement.classList.remove("light");
-      document.documentElement.classList.add("dark");
-      localStorage.setItem("theme", "dark");
-    } else {
-      document.documentElement.classList.remove("dark");
-      document.documentElement.classList.add("light");
-      localStorage.setItem("theme", "light");
-    }
-  };
-
-  return (
-    <button
-      onClick={toggle}
-      className="w-9 h-9 flex items-center justify-center rounded-lg border border-pink-500/20 hover:border-pink-400/40 hover:bg-pink-500/10 transition-all"
-      aria-label="Toggle theme"
-    >
-      <motion.span
-        key={isDark ? "moon" : "sun"}
-        initial={{ rotate: -90, opacity: 0 }}
-        animate={{ rotate: 0, opacity: 1 }}
-        exit={{ rotate: 90, opacity: 0 }}
-        transition={{ duration: 0.2 }}
-        className="text-sm"
-      >
-        {isDark ? (
-          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" className="text-pink-300">
-            <circle cx="12" cy="12" r="5"/><line x1="12" y1="1" x2="12" y2="3"/><line x1="12" y1="21" x2="12" y2="23"/><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"/><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"/><line x1="1" y1="12" x2="3" y2="12"/><line x1="21" y1="12" x2="23" y2="12"/><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"/><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"/>
-          </svg>
-        ) : (
-          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" className="text-pink-600">
-            <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/>
-          </svg>
-        )}
-      </motion.span>
-    </button>
-  );
-}
-
-/* ═══════════════════════════════════════════════════════
-   VIDEO DEMO SECTION
-   ═══════════════════════════════════════════════════════ */
-
-function VideoDemoSection() {
-  const ref = useRef<HTMLDivElement>(null);
-  const inView = useInView(ref, { once: true });
-
-  return (
-    <section className="relative z-10 py-16 sm:py-20 px-6" ref={ref}>
-      <div className="max-w-4xl mx-auto text-center">
-        <motion.div
-          initial={{ opacity: 0, y: 30 }}
-          animate={inView ? { opacity: 1, y: 0 } : {}}
-          transition={{ duration: 0.6 }}
-        >
-          <p className="text-xs text-pink-400/30 uppercase tracking-[0.4em] mb-3 font-mono">Demo</p>
-          <h2 className="text-3xl md:text-5xl font-black mb-4 tracking-tight">
-            <span className="gradient-text">See It In Action</span>
-          </h2>
-          <p className="text-pink-100/40 text-base mb-8">Watch how our AI systems work in real production environments.</p>
-        </motion.div>
-
-        <motion.div
-          initial={{ opacity: 0, scale: 0.95 }}
-          animate={inView ? { opacity: 1, scale: 1 } : {}}
-          transition={{ duration: 0.6, delay: 0.2 }}
-          className="relative aspect-video rounded-2xl overflow-hidden glass border border-pink-500/10 group cursor-pointer"
-        >
-          {/* Placeholder — replace with real YouTube embed */}
-          <div className="absolute inset-0 bg-gradient-to-br from-pink-900/40 via-purple-900/30 to-black/60 flex items-center justify-center">
-            <div className="text-center">
-              <div className="w-20 h-20 rounded-full bg-pink-500/20 border-2 border-pink-400/40 flex items-center justify-center mx-auto mb-4 group-hover:bg-pink-500/30 group-hover:border-pink-400/60 group-hover:scale-110 transition-all duration-300">
-                <svg width="32" height="32" viewBox="0 0 24 24" fill="currentColor" className="text-pink-300 ml-1">
-                  <path d="M8 5v14l11-7z"/>
-                </svg>
-              </div>
-              <p className="text-sm text-pink-200/50 font-mono">Video coming soon</p>
-              <p className="text-xs text-pink-300/25 mt-1">Full product walkthrough & live demo</p>
-            </div>
-          </div>
-          {/* Grid overlay for visual effect */}
-          <div className="absolute inset-0 dot-grid opacity-30 pointer-events-none" />
-        </motion.div>
-      </div>
-    </section>
-  );
-}
 
 /* ═══════════════════════════════════════════════════════
    TESTIMONIALS SECTION
@@ -371,16 +270,16 @@ function TestimonialsSection() {
 }
 
 /* ═══════════════════════════════════════════════════════
-   BLOG PREVIEW SECTION
+   BLOG CARDS SECTION (5 articles)
    ═══════════════════════════════════════════════════════ */
 
-function BlogPreviewSection() {
+function BlogCardsSection() {
   const ref = useRef<HTMLDivElement>(null);
   const inView = useInView(ref, { once: true });
-  const previewPosts = blogPosts.slice(0, 3);
+  const posts = blogPosts.slice(0, 5);
 
   return (
-    <section className="relative z-10 py-20 sm:py-28 px-6" ref={ref}>
+    <section className="relative z-10 py-16 sm:py-20 px-6" ref={ref}>
       <div className="max-w-5xl mx-auto">
         <motion.div
           initial={{ opacity: 0, y: 30 }}
@@ -390,29 +289,54 @@ function BlogPreviewSection() {
         >
           <p className="text-xs text-pink-400/30 uppercase tracking-[0.4em] mb-3 font-mono">Blog</p>
           <h2 className="text-3xl md:text-5xl font-black mb-4 tracking-tight">
-            <span className="gradient-text">Latest Insights</span>
+            <span className="gradient-text">AI Blog</span>
           </h2>
-          <p className="text-pink-100/40 text-base">Thoughts on AI systems, automation, and the future of work.</p>
+          <p className="text-pink-100/40 text-base">Case studies, guides, and insights on AI automation.</p>
         </motion.div>
 
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-          {previewPosts.map((post, i) => (
+        {/* Featured post (first) */}
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          animate={inView ? { opacity: 1, y: 0 } : {}}
+          transition={{ duration: 0.5 }}
+          className="mb-4"
+        >
+          <Link href={`/blog/${posts[0].slug}`} className="block glass rounded-xl p-6 sm:p-8 hover:border-pink-500/20 transition-all group">
+            <div className="flex items-center gap-3 mb-3">
+              <span className="text-[10px] px-2 py-1 rounded-full bg-pink-500/10 text-pink-400/60 border border-pink-500/20 font-mono">
+                {posts[0].category}
+              </span>
+              <span className="text-[10px] text-pink-300/25 font-mono">{posts[0].date}</span>
+              <span className="text-[10px] text-pink-300/25 font-mono">{posts[0].readTime}</span>
+            </div>
+            <h3 className="text-xl md:text-2xl font-bold text-pink-100/70 group-hover:text-pink-100 transition-colors mb-2 leading-tight">
+              {posts[0].title}
+            </h3>
+            <p className="text-sm text-pink-100/30 leading-relaxed line-clamp-2">{posts[0].excerpt}</p>
+            <span className="text-xs text-pink-400/40 group-hover:text-pink-400/70 font-mono mt-3 inline-block transition-colors">
+              Read more &rarr;
+            </span>
+          </Link>
+        </motion.div>
+
+        {/* Grid of 4 more posts */}
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+          {posts.slice(1).map((post, i) => (
             <motion.div
               key={post.slug}
               initial={{ opacity: 0, y: 20 }}
               animate={inView ? { opacity: 1, y: 0 } : {}}
-              transition={{ delay: i * 0.1, duration: 0.5 }}
+              transition={{ delay: (i + 1) * 0.1, duration: 0.5 }}
             >
-              <Link href={`/blog/${post.slug}`} className="block glass rounded-xl p-6 hover:border-pink-500/20 transition-all group h-full">
+              <Link href={`/blog/${post.slug}`} className="block glass rounded-xl p-5 hover:border-pink-500/20 transition-all group h-full">
                 <span className="text-[10px] px-2 py-1 rounded-full bg-pink-500/10 text-pink-400/60 border border-pink-500/20 font-mono">
                   {post.category}
                 </span>
-                <h3 className="text-base font-bold text-pink-100/60 group-hover:text-pink-100/80 transition-colors mt-3 mb-2 leading-tight">
+                <h3 className="text-sm font-bold text-pink-100/60 group-hover:text-pink-100/80 transition-colors mt-3 mb-2 leading-tight">
                   {post.title}
                 </h3>
-                <p className="text-xs text-pink-100/30 leading-relaxed mb-3 line-clamp-3">{post.excerpt}</p>
-                <div className="flex items-center gap-3 text-[10px] text-pink-300/25 font-mono">
-                  <span>{post.date}</span>
+                <p className="text-[11px] text-pink-100/25 leading-relaxed mb-3 line-clamp-3">{post.excerpt}</p>
+                <div className="flex items-center gap-2 text-[10px] text-pink-300/25 font-mono">
                   <span>{post.readTime}</span>
                 </div>
               </Link>
@@ -423,11 +347,11 @@ function BlogPreviewSection() {
         <motion.div
           initial={{ opacity: 0 }}
           animate={inView ? { opacity: 1 } : {}}
-          transition={{ delay: 0.4 }}
+          transition={{ delay: 0.5 }}
           className="text-center mt-8"
         >
           <Link href="/blog" className="inline-flex items-center gap-2 px-6 py-3 rounded-xl border border-pink-500/20 text-pink-300/50 font-mono text-sm hover:border-pink-400/50 hover:text-pink-300 hover:bg-pink-500/5 transition-all">
-            All Articles →
+            All Articles &rarr;
           </Link>
         </motion.div>
       </div>
@@ -842,7 +766,6 @@ export default function Home() {
           </div>
 
           <div className="flex items-center gap-3">
-            <ThemeToggle />
             <a href="#contact" className="hidden md:block text-sm px-4 py-2 rounded-lg border border-pink-500/20 hover:border-pink-400/60 hover:bg-pink-500/10 hover:shadow-[0_0_15px_rgba(244,114,182,0.15)] transition-all font-mono text-pink-300">
               {t.nav.connect}
             </a>
@@ -1018,8 +941,10 @@ export default function Home() {
         </div>
       </section>
 
-      {/* ─── VIDEO DEMO ─── */}
-      <VideoDemoSection />
+      {/* ─── AI BLOG ─── */}
+      <section id="blog">
+        <BlogCardsSection />
+      </section>
 
       {/* ─── PROJECTS ─── */}
       <section id="projects" className="relative z-10 py-20 sm:py-28 px-6">
@@ -2038,11 +1963,6 @@ export default function Home() {
       {/* ─── CONTACT ─── */}
       {/* ─── TESTIMONIALS ─── */}
       <TestimonialsSection />
-
-      {/* ─── BLOG PREVIEW ─── */}
-      <section id="blog">
-        <BlogPreviewSection />
-      </section>
 
       {/* ─── CONTACT FORM ─── */}
       <ContactFormSection />
