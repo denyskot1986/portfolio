@@ -22,8 +22,8 @@ const projects = [
   { id: "03", title: "SKYNET Intake", subtitle: "AI Task Assistant", category: "Bots" as Category, status: "live", price: "$99", priceNote: "AI task routing", description: "Telegram bot converting raw ideas (text/voice) into structured Todoist tasks. AI prioritization and agent routing.", stack: ["aiogram", "Claude Sonnet", "Whisper", "Todoist API"], highlights: ["Voice input via Whisper STT", "AI task structuring & routing", "Auto-prioritization", "Todoist integration"], metrics: "Voice + text · auto-route", color: "from-fuchsia-500/25 to-pink-500/15", accent: "border-fuchsia-500/40", glow: "rgba(232, 121, 249, 0.3)" },
 
   // ═══ IN PROGRESS — by interest level ═══
-  { id: "04", title: "Svetlana AI-admin", subtitle: "AI Business Manager", category: "Automation" as Category, status: "wip", price: "", priceNote: "", description: "Autonomous AI manager for beauty salon. Handles hiring, clients, supply chain, communications, reports — fully on autopilot.", stack: ["Claude API", "Telegram", "Telethon", "PostgreSQL"], highlights: ["Auto-hiring & staff management", "Client acquisition on autopilot", "Supply chain management", "Daily business reports"], metrics: "Full autopilot · 24/7", color: "from-pink-400/25 to-amber-500/10", accent: "border-pink-400/40", glow: "rgba(244, 114, 182, 0.25)" },
-  { id: "18", title: "C-Admin", subtitle: "Universal Client Manager", category: "Bots" as Category, status: "wip", price: "", priceNote: "", description: "AI admin for any service professional. Handles bookings, client management, auto-marketing — all from Telegram. Lite version of Svetlana AI-admin.", stack: ["Claude API", "Telegram Bot API", "PostgreSQL", "N8N", "Redis"], highlights: ["Smart booking & scheduling", "Client CRM with history", "Auto-marketing & promotions", "Multi-channel communication"], metrics: "Lite · any profession", color: "from-indigo-400/25 to-blue-500/15", accent: "border-indigo-400/40", glow: "rgba(129, 140, 248, 0.25)" },
+  { id: "04", title: "AI-Admin", subtitle: "AI Business Manager", category: "Automation" as Category, status: "wip", price: "", priceNote: "", description: "Autonomous AI manager for beauty salon. Handles hiring, clients, supply chain, communications, reports — fully on autopilot.", stack: ["Claude API", "Telegram", "Telethon", "PostgreSQL"], highlights: ["Auto-hiring & staff management", "Client acquisition on autopilot", "Supply chain management", "Daily business reports"], metrics: "Full autopilot · 24/7", color: "from-pink-400/25 to-amber-500/10", accent: "border-pink-400/40", glow: "rgba(244, 114, 182, 0.25)" },
+  { id: "18", title: "C-Admin", subtitle: "Universal Client Manager", category: "Bots" as Category, status: "wip", price: "", priceNote: "", description: "AI admin for any service professional. Handles bookings, client management, auto-marketing — all from Telegram. Lite version of AI-Admin.", stack: ["Claude API", "Telegram Bot API", "PostgreSQL", "N8N", "Redis"], highlights: ["Smart booking & scheduling", "Client CRM with history", "Auto-marketing & promotions", "Multi-channel communication"], metrics: "Lite · any profession", color: "from-indigo-400/25 to-blue-500/15", accent: "border-indigo-400/40", glow: "rgba(129, 140, 248, 0.25)" },
   { id: "06", title: "LeadHunter AI", subtitle: "Lead Qualification Bot", category: "Bots" as Category, status: "wip", price: "", priceNote: "", description: "WhatsApp/Telegram lead qualification using BANT methodology. Scores 1–10, auto-syncs hot leads to CRM with full conversation context.", stack: ["Claude API", "aiogram", "WhatsApp API", "HubSpot", "PostgreSQL"], highlights: ["Intelligent BANT qualification", "Lead scoring 1–10 scale", "Auto-push to HubSpot / Bitrix", "Hot lead alerts to manager"], metrics: "BANT scoring · CRM sync", color: "from-orange-500/25 to-rose-500/15", accent: "border-orange-500/40", glow: "rgba(249, 115, 22, 0.3)" },
   { id: "08", title: "ContentFactory", subtitle: "AI Content Automation", category: "Automation" as Category, status: "wip", price: "", priceNote: "", description: "N8N pipeline: one idea → 10 posts adapted for Instagram, LinkedIn, Telegram, Twitter in the right brand tone and format.", stack: ["N8N", "Claude API", "OpenAI", "Airtable", "Make"], highlights: ["Brief → ready posts in minutes", "Adapts tone per platform", "Auto-scheduling via Buffer", "Monthly content plan in 5 min"], metrics: "1 idea → 10 posts", color: "from-emerald-500/20 to-teal-500/10", accent: "border-emerald-500/30", glow: "rgba(52, 211, 153, 0.25)" },
   { id: "05", title: "DocMind", subtitle: "RAG Knowledge Base", category: "RAG" as Category, status: "wip", price: "", priceNote: "", description: "Enterprise knowledge base: upload PDF, DOCX, URLs, Notion — get AI assistant that answers with inline source citations.", stack: ["Claude API", "LangChain", "ChromaDB", "FastAPI", "Next.js"], highlights: ["Supports PDF, DOCX, URL, Notion", "Semantic search across documents", "Answers with inline citations", "Ready widget for site / Telegram"], metrics: "4 doc types · cited answers", color: "from-violet-500/25 to-pink-500/15", accent: "border-violet-500/40", glow: "rgba(167, 139, 250, 0.3)" },
@@ -44,7 +44,7 @@ const productSlugMap: Record<string, string> = {
   "SKYNET": "skynet-platform",
   "AI Call Agent": "call-agent",
   "SKYNET Intake": "skynet-intake",
-  "Svetlana AI-admin": "svetlana",
+  "AI-Admin": "svetlana",
   "C-Admin": "c-admin",
   "DocMind": "docmind",
   "LeadHunter AI": "leadhunter",
@@ -295,7 +295,7 @@ const testimonials = [
     name: "Maria S.",
     role: "Salon Owner",
     company: "Beauty Studio",
-    text: "Svetlana AI-admin manages my entire business. Hiring, clients, supplies — all on autopilot. I finally have time to breathe.",
+    text: "AI-Admin manages my entire business. Hiring, clients, supplies — all on autopilot. I finally have time to breathe.",
     rating: 5,
   },
   {
@@ -1322,7 +1322,7 @@ export default function Home() {
         </div>
       </section>
 
-      {/* ─── SVETLANA — AI BUSINESS ─── */}
+      {/* ─── AI-ADMIN — AI BUSINESS ─── */}
       <section className="relative z-10 py-20 sm:py-28 px-6">
         <div className="max-w-5xl mx-auto">
           <motion.div {...fade} className="text-center mb-12">
@@ -1337,7 +1337,7 @@ export default function Home() {
             <p className="text-[10px] text-pink-400/30 uppercase tracking-wider font-mono mb-4">{t.svetlana.diagramTitle}</p>
             <pre className="diagram text-[10px] md:text-xs text-pink-300/50">
 {`  ┌─────────────┐       ┌──────────────────┐       ┌─────────────┐
-  │  YOU / ВЫ   │──────▶│ SVETLANA AI-ADMIN│──────▶│  BUSINESS   │
+  │  YOU / ВЫ   │──────▶│ AI-ADMIN│──────▶│  BUSINESS   │
   │             │       │    AI Core       │       │   RUNNING   │
   │ Location +  │       │                  │       │             │
   │ Decor       │       │  Autonomous Mgmt │       │ Clients $   │
@@ -1366,7 +1366,7 @@ export default function Home() {
             ))}
           </div>
 
-          <PricingBlock codePrice={500} setupPrice={2500} ctaTemplate={t.svetlana.ctaTemplate} ctaIntegration={t.svetlana.ctaIntegration} t={t} onBuy={() => openCheckout(projects.find(p => p.title === "Svetlana AI-admin")!)} />
+          <PricingBlock codePrice={500} setupPrice={2500} ctaTemplate={t.svetlana.ctaTemplate} ctaIntegration={t.svetlana.ctaIntegration} t={t} onBuy={() => openCheckout(projects.find(p => p.title === "AI-Admin")!)} />
           <div className="text-center">
             <a href="/products/svetlana" className="text-xs text-pink-400/30 hover:text-pink-400/60 transition-colors font-mono">Learn more →</a>
           </div>

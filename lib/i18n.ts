@@ -112,19 +112,19 @@ const EN: T = {
     recommended: "Recommended",
   },
   svetlana: {
-    label: "AI Business", title: "Svetlana AI-admin",
+    label: "AI Business", title: "AI-Admin",
     subtitle: "Buy a Ready-Made Business. AI Runs It For You.",
-    desc: "Pick a location. Set up the decor. Svetlana AI-admin handles everything else. Finds your staff, brings in clients, orders supplies, manages all communications \u2014 and only bothers you with important questions, handling all routine on its own. No noise. No micromanagement. Just a business that runs itself.",
+    desc: "Pick a location. Set up the decor. AI-Admin handles everything else. Finds your staff, brings in clients, orders supplies, manages all communications \u2014 and only bothers you with important questions, handling all routine on its own. No noise. No micromanagement. Just a business that runs itself.",
     features: [
       { icon: "[+]", title: "Auto-Hiring", text: "Posts vacancies, screens applicants, schedules interviews. You just say yes." },
       { icon: "[>]", title: "Client Acquisition", text: "Automated marketing, booking, reminders. Clients come to you \u2014 not the other way around." },
       { icon: "[=]", title: "Supply Chain", text: "Inventory tracked and reordered semi-automatically. You never run out of stock." },
-      { icon: "[~]", title: "All Communications", text: "Client chats, staff coordination, reviews \u2014 Svetlana AI-admin handles every message." },
+      { icon: "[~]", title: "All Communications", text: "Client chats, staff coordination, reviews \u2014 AI-Admin handles every message." },
       { icon: "[#]", title: "Smart Reports", text: "Clear daily summaries: what happened, what's next, what needs your call." },
       { icon: "[^]", title: "Fast Launch", text: "From empty space to operating salon in weeks, not months." },
     ],
-    ctaTemplate: "Buy Svetlana AI-admin", ctaIntegration: "Svetlana AI-admin + Integration",
-    diagramTitle: "How Svetlana AI-admin Works",
+    ctaTemplate: "Buy AI-Admin", ctaIntegration: "AI-Admin + Integration",
+    diagramTitle: "How AI-Admin Works",
   },
   skynetProduct: {
     label: "Product", title: "SKYNET",
@@ -228,7 +228,7 @@ const EN: T = {
   cAdmin: {
     label: "Client AI", title: "C-Admin",
     subtitle: "Your AI Secretary. Books, Manages, Markets — From Telegram.",
-    desc: "Universal AI administrator for any service professional: barbers, coaches, dentists, tutors. Handles bookings, client CRM, auto-marketing — all from a Telegram bot. A lighter version of Svetlana AI-admin.",
+    desc: "Universal AI administrator for any service professional: barbers, coaches, dentists, tutors. Handles bookings, client CRM, auto-marketing — all from a Telegram bot. A lighter version of AI-Admin.",
     features: [
       { icon: "[+]", title: "Smart Booking", text: "Clients book via Telegram. No double-bookings. Auto-confirmations." },
       { icon: "[@]", title: "Client CRM", text: "Full client history: visits, preferences, notes. All searchable." },
@@ -418,19 +418,19 @@ const RU: T = {
     recommended: "\u0420\u0435\u043a\u043e\u043c\u0435\u043d\u0434\u0443\u0435\u043c",
   },
   svetlana: {
-    label: "AI-бизнес", title: "Svetlana AI-admin",
+    label: "AI-бизнес", title: "AI-Admin",
     subtitle: "Купите готовый бизнес. AI управляет им за вас.",
-    desc: "Выберите помещение. Оформите интерьер. Дальше Svetlana AI-admin берёт всё на себя. Найдёт персонал, приведёт клиентов, закажет продукцию, поведёт все переписки — и будет беспокоить вас только по важным вопросам. Никакого шума. Никакого микроменеджмента. Просто бизнес, который работает сам.",
+    desc: "Выберите помещение. Оформите интерьер. Дальше AI-Admin берёт всё на себя. Найдёт персонал, приведёт клиентов, закажет продукцию, поведёт все переписки — и будет беспокоить вас только по важным вопросам. Никакого шума. Никакого микроменеджмента. Просто бизнес, который работает сам.",
     features: [
       { icon: "[+]", title: "Авто-найм", text: "Размещает вакансии, отбирает кандидатов, назначает собеседования. Вам остаётся только одобрить." },
       { icon: "[>]", title: "Привлечение клиентов", text: "Автоматический маркетинг, бронирование, напоминания. Клиенты приходят сами." },
       { icon: "[=]", title: "Снабжение", text: "Склад отслеживается, продукция заказывается на полуавтомате. Дефицита не будет." },
-      { icon: "[~]", title: "Все переписки", text: "Чаты с клиентами, координация персонала, отзывы — Svetlana AI-admin ведёт каждое сообщение." },
+      { icon: "[~]", title: "Все переписки", text: "Чаты с клиентами, координация персонала, отзывы — AI-Admin ведёт каждое сообщение." },
       { icon: "[#]", title: "Умные отчёты", text: "Понятные ежедневные сводки: что было, что дальше, что требует вашего решения." },
       { icon: "[^]", title: "Быстрый запуск", text: "От пустого помещения до работающего салона за недели, а не месяцы." },
     ],
-    ctaTemplate: "Svetlana AI-admin", ctaIntegration: "Svetlana AI-admin + интеграция",
-    diagramTitle: "Как работает Svetlana AI-admin",
+    ctaTemplate: "AI-Admin", ctaIntegration: "AI-Admin + интеграция",
+    diagramTitle: "Как работает AI-Admin",
   },
   skynetProduct: {
     label: "Продукт", title: "SKYNET",
@@ -534,7 +534,7 @@ const RU: T = {
   cAdmin: {
     label: "Клиент AI", title: "C-Admin",
     subtitle: "Ваш AI-секретарь. Записывает, управляет, рекламирует — из Telegram.",
-    desc: "Универсальный AI-администратор для любого специалиста: парикмахеры, коучи, стоматологи, репетиторы. Запись, CRM клиентов, автомаркетинг — всё из Telegram-бота. Облегчённая версия Svetlana AI-admin.",
+    desc: "Универсальный AI-администратор для любого специалиста: парикмахеры, коучи, стоматологи, репетиторы. Запись, CRM клиентов, автомаркетинг — всё из Telegram-бота. Облегчённая версия AI-Admin.",
     features: [
       { icon: "[+]", title: "Умная запись", text: "Клиенты записываются через Telegram. Без дублей. Автоподтверждения." },
       { icon: "[@]", title: "CRM клиентов", text: "Полная история клиента: визиты, предпочтения, заметки." },
@@ -724,19 +724,19 @@ const UA: T = {
     recommended: "\u0420\u0435\u043a\u043e\u043c\u0435\u043d\u0434\u043e\u0432\u0430\u043d\u043e",
   },
   svetlana: {
-    label: "AI-\u0431\u0456\u0437\u043d\u0435\u0441", title: "Svetlana AI-admin",
+    label: "AI-\u0431\u0456\u0437\u043d\u0435\u0441", title: "AI-Admin",
     subtitle: "Купіть готовий бізнес. AI керує ним за вас.",
-    desc: "Оберіть приміщення. Оформіть інтер'єр. Далі Svetlana AI-admin бере все на себе. Знайде персонал, приведе клієнтів, замовить продукцію, поведе всі переписки — і турбуватиме вас лише справді важливими рішеннями. Жодного шуму. Жодного мікроменеджменту. Просто бізнес, що працює сам.",
+    desc: "Оберіть приміщення. Оформіть інтер'єр. Далі AI-Admin бере все на себе. Знайде персонал, приведе клієнтів, замовить продукцію, поведе всі переписки — і турбуватиме вас лише справді важливими рішеннями. Жодного шуму. Жодного мікроменеджменту. Просто бізнес, що працює сам.",
     features: [
       { icon: "[+]", title: "Авто-найм", text: "Розміщує вакансії, відбирає кандидатів, призначає співбесіди. Вам лишається тільки схвалити." },
       { icon: "[>]", title: "Залучення клієнтів", text: "Автоматичний маркетинг, бронювання, нагадування. Клієнти приходять самі." },
       { icon: "[=]", title: "Постачання", text: "Склад відстежується, продукція замовляється напівавтоматично. Дефіциту не буде." },
-      { icon: "[~]", title: "Усі переписки", text: "Чати з клієнтами, координація персоналу, відгуки — Svetlana AI-admin веде кожне повідомлення." },
+      { icon: "[~]", title: "Усі переписки", text: "Чати з клієнтами, координація персоналу, відгуки — AI-Admin веде кожне повідомлення." },
       { icon: "[#]", title: "Розумні звіти", text: "Зрозумілі щоденні зведення: що було, що далі, що потребує вашого рішення." },
       { icon: "[^]", title: "Швидкий запуск", text: "Від порожнього приміщення до працюючого салону за тижні, а не місяці." },
     ],
-    ctaTemplate: "Svetlana AI-admin", ctaIntegration: "Svetlana AI-admin + інтеграція",
-    diagramTitle: "Як працює Svetlana AI-admin",
+    ctaTemplate: "AI-Admin", ctaIntegration: "AI-Admin + інтеграція",
+    diagramTitle: "Як працює AI-Admin",
   },
   skynetProduct: {
     label: "Продукт", title: "SKYNET",

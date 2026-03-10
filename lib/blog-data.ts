@@ -841,7 +841,7 @@ A CRM doesn't call your leads. An email tool doesn't write your campaigns. A pro
 AI agents are fundamentally different. They don't give you a tool — they **do the job**.
 
 - **LeadHunter AI** doesn't show you a lead list. It qualifies leads, scores them, and pushes hot ones to your CRM automatically.
-- **Svetlana AI-admin** doesn't give you a business dashboard. She runs your entire business: hiring, client acquisition, supply chain, communications.
+- **AI-Admin** doesn't give you a business dashboard. She runs your entire business: hiring, client acquisition, supply chain, communications.
 - **ContentFactory** doesn't give you a content calendar template. It generates, adapts, and publishes content across all your channels.
 
 ## The Economics
