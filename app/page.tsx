@@ -552,7 +552,7 @@ interface ChatMessage {
 function ChatbotWidget() {
   const [open, setOpen] = useState(false);
   const [messages, setMessages] = useState<ChatMessage[]>([
-    { role: "assistant", content: "Hi! I'm the Finekot Systems AI consultant. I can help you choose the right AI system for your business. What are you looking for?" },
+    { role: "assistant", content: "Hi! I'm the Finekot AI consultant. I can help you choose the right AI system for your business. What are you looking for?" },
   ]);
   const [input, setInput] = useState("");
   const [loading, setLoading] = useState(false);

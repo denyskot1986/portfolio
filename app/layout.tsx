@@ -10,24 +10,24 @@ const siteUrl = "https://denyskot.com";
 
 export const metadata: Metadata = {
   metadataBase: new URL(siteUrl),
-  title: "Finekot Systems — Production-Ready AI Systems",
+  title: "Finekot — Production-Ready AI Systems",
   description:
     "17 production-ready AI systems. $499 template — deploy yourself. $2500 integration — ready in 1 day. Full source code. No subscriptions.",
   keywords: [
     "AI systems", "AI templates", "production AI", "multi-agent systems",
-    "voice AI", "RAG", "business automation", "Finekot Systems", "buy AI system",
+    "voice AI", "RAG", "business automation", "Finekot", "buy AI system",
   ],
-  authors: [{ name: "Finekot Systems", url: siteUrl }],
+  authors: [{ name: "Finekot", url: siteUrl }],
   openGraph: {
     type: "website",
     url: siteUrl,
-    title: "Finekot Systems — Production-Ready AI Systems",
+    title: "Finekot — Production-Ready AI Systems",
     description: "17 AI systems ready to launch. $499 template or $2500 personal integration. Full source code ownership.",
     images: [{ url: "/og-image.png", width: 1200, height: 630 }],
   },
   twitter: {
     card: "summary_large_image",
-    title: "Finekot Systems — Production-Ready AI Systems",
+    title: "Finekot — Production-Ready AI Systems",
     description: "17 AI systems. $499 template. $2500 integration. Full source code.",
   },
 };
@@ -35,7 +35,7 @@ export const metadata: Metadata = {
 const jsonLd = {
   "@context": "https://schema.org",
   "@type": "ProfessionalService",
-  name: "Finekot Systems — Production-Ready AI Systems",
+  name: "Finekot — Production-Ready AI Systems",
   url: siteUrl,
   description: "17 production-ready AI systems. $499 template — deploy yourself. $2500 integration — ready in 1 day.",
   contactPoint: { "@type": "ContactPoint", url: "https://t.me/shop_by_finekot_bot", contactType: "sales" },

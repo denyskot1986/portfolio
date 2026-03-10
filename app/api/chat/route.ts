@@ -2,7 +2,7 @@ import { NextRequest, NextResponse } from "next/server";
 
 const OPENROUTER_API_KEY = process.env.OPENROUTER_API_KEY || "";
 
-const SYSTEM_PROMPT = `You are a sales consultant for Finekot Systems — a company that sells 17 production-ready AI systems.
+const SYSTEM_PROMPT = `You are a sales consultant for Finekot — a company that sells 17 production-ready AI systems.
 
 Your role: Help potential customers understand which product fits their needs, answer questions about pricing, features, and integration process. Be friendly, professional, and concise. Always guide toward a purchase or a consultation call.
 
@@ -111,7 +111,7 @@ export async function POST(req: NextRequest) {
         Authorization: `Bearer ${OPENROUTER_API_KEY}`,
         "Content-Type": "application/json",
         "HTTP-Referer": "https://denyskot.com",
-        "X-Title": "Finekot Systems",
+        "X-Title": "Finekot",
       },
       body: JSON.stringify({
         model: "anthropic/claude-sonnet-4",
