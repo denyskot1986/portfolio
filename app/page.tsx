@@ -888,7 +888,7 @@ export default function Home() {
 
           <motion.h1 initial={{ opacity: 0, y: 30 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.8, delay: 0.2 }}
             className="text-4xl sm:text-5xl md:text-7xl font-bold mb-1 tracking-tight">
-            Fine<span className="gradient-text">kot</span>{" "}<span className="text-pink-400/40 font-light">Systems</span>
+            Fine<span className="gradient-text">kot</span>
           </motion.h1>
 
 
