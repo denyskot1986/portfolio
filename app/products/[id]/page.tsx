@@ -4,6 +4,8 @@ import { useParams } from "next/navigation";
 import Link from "next/link";
 import { motion } from "framer-motion";
 import { productsData, getProductById } from "@/lib/products-data";
+import DemoChat from "@/components/DemoChat";
+import { demoChatData } from "@/lib/demo-chats";
 
 const buyLink = (id: string) => `/checkout/${id}`;
 
@@ -12,6 +14,7 @@ const fade = { initial: { opacity: 0, y: 20 }, whileInView: { opacity: 1, y: 0 }
 export default function ProductPage() {
   const params = useParams();
   const product = getProductById(params.id as string);
+  const demo = product ? demoChatData[product.id] : undefined;
 
   if (!product) {
     return (
@@ -59,14 +62,21 @@ export default function ProductPage() {
         </div>
       </section>
 
-      {/* VIDEO */}
+      {/* INTERACTIVE DEMO / VIDEO */}
       <section className="relative z-10 py-12 px-6">
         <div className="max-w-4xl mx-auto">
           <motion.div {...fade}>
             <h2 className="text-2xl md:text-3xl font-black mb-6 text-center tracking-tight">
-              <span className="gradient-text">How It Works</span>
+              <span className="gradient-text">{demo ? "Interactive Demo" : "How It Works"}</span>
             </h2>
-            {product.youtubeId ? (
+            {demo ? (
+              <DemoChat
+                productName={product.name}
+                messages={demo.messages}
+                tryLink={demo.tryLink}
+                tryLabel={demo.tryLabel}
+              />
+            ) : product.youtubeId ? (
               <div className="glass rounded-xl overflow-hidden aspect-video">
                 <iframe
                   src={`https://www.youtube.com/embed/${product.youtubeId}`}
