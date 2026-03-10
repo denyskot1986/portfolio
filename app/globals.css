@@ -8,6 +8,25 @@
   --cyan: #22d3ee;
   --muted: #71717a;
   --border: #3d1f2a;
+  --glass-bg: rgba(255, 255, 255, 0.03);
+  --glass-hover: rgba(255, 255, 255, 0.05);
+  --glass-border: rgba(244, 114, 182, 0.08);
+  --glass-border-hover: rgba(244, 114, 182, 0.2);
+}
+
+/* Light theme */
+html.light {
+  --bg: #faf8f9;
+  --fg: #1a0e14;
+  --accent: #d946a8;
+  --accent2: #9333ea;
+  --cyan: #0891b2;
+  --muted: #9ca3af;
+  --border: #e8d0da;
+  --glass-bg: rgba(0, 0, 0, 0.02);
+  --glass-hover: rgba(0, 0, 0, 0.04);
+  --glass-border: rgba(219, 39, 119, 0.1);
+  --glass-border-hover: rgba(219, 39, 119, 0.25);
 }
 
 body {
@@ -25,7 +44,7 @@ html { scroll-behavior: smooth; }
   color: var(--accent);
 }
 
-/* Gradient text — from 3000 */
+/* Gradient text */
 .gradient-text {
   background: linear-gradient(135deg, #f472b6, #e879a8, #c084fc, #fb923c);
   -webkit-background-clip: text;
@@ -33,20 +52,35 @@ html { scroll-behavior: smooth; }
   background-clip: text;
 }
 
-/* Glass card — from 3002 */
+/* Glass card */
 .glass {
-  background: rgba(255, 255, 255, 0.03);
+  background: var(--glass-bg);
   backdrop-filter: blur(16px);
   -webkit-backdrop-filter: blur(16px);
-  border: 1px solid rgba(244, 114, 182, 0.08);
+  border: 1px solid var(--glass-border);
 }
 
 .glass:hover {
-  background: rgba(255, 255, 255, 0.05);
-  border-color: rgba(244, 114, 182, 0.2);
+  background: var(--glass-hover);
+  border-color: var(--glass-border-hover);
 }
 
-/* Animated blobs — from 3002 */
+/* Light mode adjustments */
+html.light .glass {
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.06);
+}
+
+html.light .blob {
+  opacity: 0.08;
+}
+
+html.light .dot-grid {
+  background-image:
+    linear-gradient(rgba(219, 39, 119, 0.04) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(219, 39, 119, 0.04) 1px, transparent 1px);
+}
+
+/* Animated blobs */
 @keyframes blob {
   0%, 100% { transform: translate(0, 0) scale(1); }
   33% { transform: translate(30px, -50px) scale(1.1); }
@@ -61,14 +95,14 @@ html { scroll-behavior: smooth; }
 .blob-2 { animation-delay: 3s; }
 .blob-3 { animation-delay: 6s; }
 
-/* Terminal cursor — from 3003 */
+/* Terminal cursor */
 @keyframes blink {
   0%, 100% { opacity: 1; }
   50% { opacity: 0; }
 }
 .cursor-blink { animation: blink 1s step-end infinite; }
 
-/* Steampunk grid bg — from 3000 */
+/* Grid bg */
 .dot-grid {
   background-image:
     linear-gradient(rgba(244, 114, 182, 0.03) 1px, transparent 1px),
@@ -76,13 +110,13 @@ html { scroll-behavior: smooth; }
   background-size: 40px 40px;
 }
 
-/* Scrollbar — from 3000 */
+/* Scrollbar */
 ::-webkit-scrollbar { width: 5px; }
 ::-webkit-scrollbar-track { background: var(--bg); }
 ::-webkit-scrollbar-thumb { background: var(--border); border-radius: 3px; }
 ::-webkit-scrollbar-thumb:hover { background: var(--accent); }
 
-/* ASCII diagrams — force true monospace for box-drawing chars */
+/* ASCII diagrams */
 pre.diagram {
   font-family: "Courier New", Courier, monospace !important;
   letter-spacing: 0;

@@ -1,10 +1,12 @@
 "use client";
 
 import { motion, AnimatePresence, useMotionValue, useTransform, animate } from "framer-motion";
-import { useState, useEffect, useRef } from "react";
+import { useState, useEffect, useRef, useCallback } from "react";
 import { useInView } from "framer-motion";
+import Link from "next/link";
 import { i18n, langs, type Lang } from "../lib/i18n";
 import { projectI18n } from "../lib/project-i18n";
+import { blogPosts } from "../lib/blog-data";
 
 /* ═══════════════════════════════════════════════════════
    DATA
@@ -66,6 +68,7 @@ const navLinks = [
   { href: "#hero", label: "Home" },
   { href: "#projects", label: "Projects" },
   { href: "#products", label: "Products" },
+  { href: "#blog", label: "Blog" },
   { href: "#contact", label: "Contact" },
 ];
 
@@ -166,6 +169,526 @@ function ScrollProgress() {
     <div className="fixed top-0 left-0 right-0 z-[60] h-0.5 bg-transparent">
       <motion.div className="h-full bg-gradient-to-r from-pink-600 via-pink-400 to-orange-400" style={{ width: `${progress}%` }} />
     </div>
+  );
+}
+
+/* ═══════════════════════════════════════════════════════
+   THEME TOGGLE
+   ═══════════════════════════════════════════════════════ */
+
+function ThemeToggle() {
+  const [isDark, setIsDark] = useState(true);
+
+  useEffect(() => {
+    const saved = localStorage.getItem("theme");
+    if (saved === "light") {
+      setIsDark(false);
+      document.documentElement.classList.remove("dark");
+      document.documentElement.classList.add("light");
+    }
+  }, []);
+
+  const toggle = () => {
+    const next = !isDark;
+    setIsDark(next);
+    if (next) {
+      document.documentElement.classList.remove("light");
+      document.documentElement.classList.add("dark");
+      localStorage.setItem("theme", "dark");
+    } else {
+      document.documentElement.classList.remove("dark");
+      document.documentElement.classList.add("light");
+      localStorage.setItem("theme", "light");
+    }
+  };
+
+  return (
+    <button
+      onClick={toggle}
+      className="w-9 h-9 flex items-center justify-center rounded-lg border border-pink-500/20 hover:border-pink-400/40 hover:bg-pink-500/10 transition-all"
+      aria-label="Toggle theme"
+    >
+      <motion.span
+        key={isDark ? "moon" : "sun"}
+        initial={{ rotate: -90, opacity: 0 }}
+        animate={{ rotate: 0, opacity: 1 }}
+        exit={{ rotate: 90, opacity: 0 }}
+        transition={{ duration: 0.2 }}
+        className="text-sm"
+      >
+        {isDark ? (
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" className="text-pink-300">
+            <circle cx="12" cy="12" r="5"/><line x1="12" y1="1" x2="12" y2="3"/><line x1="12" y1="21" x2="12" y2="23"/><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"/><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"/><line x1="1" y1="12" x2="3" y2="12"/><line x1="21" y1="12" x2="23" y2="12"/><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"/><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"/>
+          </svg>
+        ) : (
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" className="text-pink-600">
+            <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/>
+          </svg>
+        )}
+      </motion.span>
+    </button>
+  );
+}
+
+/* ═══════════════════════════════════════════════════════
+   VIDEO DEMO SECTION
+   ═══════════════════════════════════════════════════════ */
+
+function VideoDemoSection() {
+  const ref = useRef<HTMLDivElement>(null);
+  const inView = useInView(ref, { once: true });
+
+  return (
+    <section className="relative z-10 py-16 sm:py-20 px-6" ref={ref}>
+      <div className="max-w-4xl mx-auto text-center">
+        <motion.div
+          initial={{ opacity: 0, y: 30 }}
+          animate={inView ? { opacity: 1, y: 0 } : {}}
+          transition={{ duration: 0.6 }}
+        >
+          <p className="text-xs text-pink-400/30 uppercase tracking-[0.4em] mb-3 font-mono">Demo</p>
+          <h2 className="text-3xl md:text-5xl font-black mb-4 tracking-tight">
+            <span className="gradient-text">See It In Action</span>
+          </h2>
+          <p className="text-pink-100/40 text-base mb-8">Watch how our AI systems work in real production environments.</p>
+        </motion.div>
+
+        <motion.div
+          initial={{ opacity: 0, scale: 0.95 }}
+          animate={inView ? { opacity: 1, scale: 1 } : {}}
+          transition={{ duration: 0.6, delay: 0.2 }}
+          className="relative aspect-video rounded-2xl overflow-hidden glass border border-pink-500/10 group cursor-pointer"
+        >
+          {/* Placeholder — replace with real YouTube embed */}
+          <div className="absolute inset-0 bg-gradient-to-br from-pink-900/40 via-purple-900/30 to-black/60 flex items-center justify-center">
+            <div className="text-center">
+              <div className="w-20 h-20 rounded-full bg-pink-500/20 border-2 border-pink-400/40 flex items-center justify-center mx-auto mb-4 group-hover:bg-pink-500/30 group-hover:border-pink-400/60 group-hover:scale-110 transition-all duration-300">
+                <svg width="32" height="32" viewBox="0 0 24 24" fill="currentColor" className="text-pink-300 ml-1">
+                  <path d="M8 5v14l11-7z"/>
+                </svg>
+              </div>
+              <p className="text-sm text-pink-200/50 font-mono">Video coming soon</p>
+              <p className="text-xs text-pink-300/25 mt-1">Full product walkthrough & live demo</p>
+            </div>
+          </div>
+          {/* Grid overlay for visual effect */}
+          <div className="absolute inset-0 dot-grid opacity-30 pointer-events-none" />
+        </motion.div>
+      </div>
+    </section>
+  );
+}
+
+/* ═══════════════════════════════════════════════════════
+   TESTIMONIALS SECTION
+   ═══════════════════════════════════════════════════════ */
+
+const testimonials = [
+  {
+    name: "Alex K.",
+    role: "CTO",
+    company: "FinTech Startup",
+    text: "We deployed SKYNET in a day. 4 agents now handle what took a team of 6. The ROI was visible in the first week.",
+    rating: 5,
+  },
+  {
+    name: "Maria S.",
+    role: "Salon Owner",
+    company: "Beauty Studio",
+    text: "Svetlana AI-admin manages my entire business. Hiring, clients, supplies — all on autopilot. I finally have time to breathe.",
+    rating: 5,
+  },
+  {
+    name: "Daniel R.",
+    role: "Head of Sales",
+    company: "B2B Agency",
+    text: "LeadHunter AI qualifies 200+ leads per day. Our conversion rate jumped 3x because reps only talk to hot leads now.",
+    rating: 5,
+  },
+  {
+    name: "Olena T.",
+    role: "Marketing Director",
+    company: "E-commerce",
+    text: "ContentFactory replaced our 3-person content team. One brief → 10 posts across all channels. The quality is insane.",
+    rating: 5,
+  },
+  {
+    name: "James W.",
+    role: "Engineering Lead",
+    company: "SaaS Platform",
+    text: "CodeReviewer catches bugs our team misses. Under 60 seconds per PR. It even learned our coding conventions.",
+    rating: 5,
+  },
+];
+
+function TestimonialsSection() {
+  const ref = useRef<HTMLDivElement>(null);
+  const inView = useInView(ref, { once: true });
+
+  return (
+    <section className="relative z-10 py-20 sm:py-28 px-6" ref={ref}>
+      <div className="max-w-6xl mx-auto">
+        <motion.div
+          initial={{ opacity: 0, y: 30 }}
+          animate={inView ? { opacity: 1, y: 0 } : {}}
+          transition={{ duration: 0.6 }}
+          className="text-center mb-12"
+        >
+          <p className="text-xs text-pink-400/30 uppercase tracking-[0.4em] mb-3 font-mono">Testimonials</p>
+          <h2 className="text-3xl md:text-5xl font-black mb-4 tracking-tight">
+            <span className="gradient-text">What Clients Say</span>
+          </h2>
+          <p className="text-pink-100/40 text-base">Real results from real businesses.</p>
+        </motion.div>
+
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+          {testimonials.map((t, i) => (
+            <motion.div
+              key={t.name}
+              initial={{ opacity: 0, y: 20 }}
+              animate={inView ? { opacity: 1, y: 0 } : {}}
+              transition={{ delay: i * 0.1, duration: 0.5 }}
+              className="glass rounded-xl p-6 hover:border-pink-500/20 transition-all"
+            >
+              <div className="flex gap-0.5 mb-3">
+                {Array.from({ length: t.rating }).map((_, j) => (
+                  <svg key={j} width="14" height="14" viewBox="0 0 24 24" fill="currentColor" className="text-pink-400/60">
+                    <path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/>
+                  </svg>
+                ))}
+              </div>
+              <p className="text-sm text-pink-100/40 leading-relaxed mb-4 italic">&ldquo;{t.text}&rdquo;</p>
+              <div className="border-t border-pink-500/10 pt-3">
+                <p className="text-sm font-bold text-pink-100/60">{t.name}</p>
+                <p className="text-[10px] text-pink-300/30 font-mono">{t.role} · {t.company}</p>
+              </div>
+            </motion.div>
+          ))}
+        </div>
+      </div>
+    </section>
+  );
+}
+
+/* ═══════════════════════════════════════════════════════
+   BLOG PREVIEW SECTION
+   ═══════════════════════════════════════════════════════ */
+
+function BlogPreviewSection() {
+  const ref = useRef<HTMLDivElement>(null);
+  const inView = useInView(ref, { once: true });
+  const previewPosts = blogPosts.slice(0, 3);
+
+  return (
+    <section className="relative z-10 py-20 sm:py-28 px-6" ref={ref}>
+      <div className="max-w-5xl mx-auto">
+        <motion.div
+          initial={{ opacity: 0, y: 30 }}
+          animate={inView ? { opacity: 1, y: 0 } : {}}
+          transition={{ duration: 0.6 }}
+          className="text-center mb-12"
+        >
+          <p className="text-xs text-pink-400/30 uppercase tracking-[0.4em] mb-3 font-mono">Blog</p>
+          <h2 className="text-3xl md:text-5xl font-black mb-4 tracking-tight">
+            <span className="gradient-text">Latest Insights</span>
+          </h2>
+          <p className="text-pink-100/40 text-base">Thoughts on AI systems, automation, and the future of work.</p>
+        </motion.div>
+
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+          {previewPosts.map((post, i) => (
+            <motion.div
+              key={post.slug}
+              initial={{ opacity: 0, y: 20 }}
+              animate={inView ? { opacity: 1, y: 0 } : {}}
+              transition={{ delay: i * 0.1, duration: 0.5 }}
+            >
+              <Link href={`/blog/${post.slug}`} className="block glass rounded-xl p-6 hover:border-pink-500/20 transition-all group h-full">
+                <span className="text-[10px] px-2 py-1 rounded-full bg-pink-500/10 text-pink-400/60 border border-pink-500/20 font-mono">
+                  {post.category}
+                </span>
+                <h3 className="text-base font-bold text-pink-100/60 group-hover:text-pink-100/80 transition-colors mt-3 mb-2 leading-tight">
+                  {post.title}
+                </h3>
+                <p className="text-xs text-pink-100/30 leading-relaxed mb-3 line-clamp-3">{post.excerpt}</p>
+                <div className="flex items-center gap-3 text-[10px] text-pink-300/25 font-mono">
+                  <span>{post.date}</span>
+                  <span>{post.readTime}</span>
+                </div>
+              </Link>
+            </motion.div>
+          ))}
+        </div>
+
+        <motion.div
+          initial={{ opacity: 0 }}
+          animate={inView ? { opacity: 1 } : {}}
+          transition={{ delay: 0.4 }}
+          className="text-center mt-8"
+        >
+          <Link href="/blog" className="inline-flex items-center gap-2 px-6 py-3 rounded-xl border border-pink-500/20 text-pink-300/50 font-mono text-sm hover:border-pink-400/50 hover:text-pink-300 hover:bg-pink-500/5 transition-all">
+            All Articles →
+          </Link>
+        </motion.div>
+      </div>
+    </section>
+  );
+}
+
+/* ═══════════════════════════════════════════════════════
+   CONTACT FORM SECTION
+   ═══════════════════════════════════════════════════════ */
+
+function ContactFormSection() {
+  const ref = useRef<HTMLDivElement>(null);
+  const inView = useInView(ref, { once: true });
+  const [form, setForm] = useState({ name: "", email: "", phone: "", message: "" });
+  const [status, setStatus] = useState<"idle" | "sending" | "sent" | "error">("idle");
+
+  const handleSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
+    setStatus("sending");
+    try {
+      const res = await fetch("/api/contact", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(form),
+      });
+      if (res.ok) {
+        setStatus("sent");
+        setForm({ name: "", email: "", phone: "", message: "" });
+      } else {
+        setStatus("error");
+      }
+    } catch {
+      setStatus("error");
+    }
+  };
+
+  const inputClass =
+    "w-full px-4 py-3 rounded-lg bg-pink-500/[0.03] border border-pink-500/10 text-sm text-pink-100/70 placeholder:text-pink-300/20 focus:outline-none focus:border-pink-400/40 focus:bg-pink-500/[0.05] transition-all font-mono";
+
+  return (
+    <section id="contact" className="relative z-10 py-20 sm:py-28 px-6" ref={ref}>
+      <div className="max-w-2xl mx-auto">
+        <motion.div
+          initial={{ opacity: 0, y: 30 }}
+          animate={inView ? { opacity: 1, y: 0 } : {}}
+          transition={{ duration: 0.6 }}
+          className="text-center mb-10"
+        >
+          <p className="text-xs text-pink-400/30 uppercase tracking-[0.4em] mb-4 font-mono">Contact</p>
+          <h2 className="text-3xl md:text-5xl font-black mb-4">
+            <span className="gradient-text">Let&apos;s Connect</span>
+          </h2>
+          <p className="text-pink-100/40 mb-2">Leave your details — our AI agent will contact you within 24 hours.</p>
+          <p className="text-pink-100/25 text-xs">Or message us directly on Telegram: <a href="https://t.me/shop_by_finekot_bot" target="_blank" rel="noopener noreferrer" className="text-pink-400/50 hover:text-pink-400/80 transition-colors">@shop_by_finekot_bot</a></p>
+        </motion.div>
+
+        <motion.form
+          onSubmit={handleSubmit}
+          initial={{ opacity: 0, y: 20 }}
+          animate={inView ? { opacity: 1, y: 0 } : {}}
+          transition={{ delay: 0.2, duration: 0.5 }}
+          className="glass rounded-2xl p-6 sm:p-8 space-y-4"
+        >
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+            <input
+              type="text"
+              placeholder="Your name *"
+              required
+              value={form.name}
+              onChange={(e) => setForm((f) => ({ ...f, name: e.target.value }))}
+              className={inputClass}
+            />
+            <input
+              type="email"
+              placeholder="Email *"
+              required
+              value={form.email}
+              onChange={(e) => setForm((f) => ({ ...f, email: e.target.value }))}
+              className={inputClass}
+            />
+          </div>
+          <input
+            type="tel"
+            placeholder="Phone (optional)"
+            value={form.phone}
+            onChange={(e) => setForm((f) => ({ ...f, phone: e.target.value }))}
+            className={inputClass}
+          />
+          <textarea
+            placeholder="Tell us about your project..."
+            rows={4}
+            value={form.message}
+            onChange={(e) => setForm((f) => ({ ...f, message: e.target.value }))}
+            className={`${inputClass} resize-none`}
+          />
+          <button
+            type="submit"
+            disabled={status === "sending"}
+            className="w-full py-3.5 rounded-lg bg-gradient-to-r from-pink-600 to-purple-600 text-white font-semibold hover:opacity-90 transition-opacity shadow-[0_0_30px_rgba(244,114,182,0.2)] disabled:opacity-50 text-sm"
+          >
+            {status === "sending" ? "Sending..." : status === "sent" ? "Sent! We'll be in touch." : "Send → AI Agent Will Contact You"}
+          </button>
+          {status === "error" && (
+            <p className="text-xs text-red-400/60 text-center">Something went wrong. Please try again or use Telegram.</p>
+          )}
+        </motion.form>
+      </div>
+    </section>
+  );
+}
+
+/* ═══════════════════════════════════════════════════════
+   CHATBOT WIDGET
+   ═══════════════════════════════════════════════════════ */
+
+interface ChatMessage {
+  role: "user" | "assistant";
+  content: string;
+}
+
+function ChatbotWidget() {
+  const [open, setOpen] = useState(false);
+  const [messages, setMessages] = useState<ChatMessage[]>([
+    { role: "assistant", content: "Hi! I'm the Finekot Systems AI consultant. I can help you choose the right AI system for your business. What are you looking for?" },
+  ]);
+  const [input, setInput] = useState("");
+  const [loading, setLoading] = useState(false);
+  const messagesEndRef = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
+  }, [messages]);
+
+  const send = useCallback(async () => {
+    if (!input.trim() || loading) return;
+    const userMsg: ChatMessage = { role: "user", content: input.trim() };
+    const newMessages = [...messages, userMsg];
+    setMessages(newMessages);
+    setInput("");
+    setLoading(true);
+
+    try {
+      const res = await fetch("/api/chat", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ messages: newMessages }),
+      });
+      const data = await res.json();
+      if (data.reply) {
+        setMessages((prev) => [...prev, { role: "assistant", content: data.reply }]);
+      } else {
+        setMessages((prev) => [...prev, { role: "assistant", content: "Sorry, I'm having trouble connecting. Please try again or message us on Telegram @shop_by_finekot_bot" }]);
+      }
+    } catch {
+      setMessages((prev) => [...prev, { role: "assistant", content: "Connection error. Please try Telegram: @shop_by_finekot_bot" }]);
+    } finally {
+      setLoading(false);
+    }
+  }, [input, loading, messages]);
+
+  return (
+    <>
+      {/* Floating button */}
+      <motion.button
+        onClick={() => setOpen((v) => !v)}
+        className="fixed bottom-6 right-6 z-[70] w-14 h-14 rounded-full bg-gradient-to-r from-pink-600 to-purple-600 text-white shadow-[0_0_30px_rgba(244,114,182,0.3)] hover:shadow-[0_0_40px_rgba(244,114,182,0.5)] transition-shadow flex items-center justify-center"
+        whileHover={{ scale: 1.05 }}
+        whileTap={{ scale: 0.95 }}
+      >
+        {open ? (
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round">
+            <line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/>
+          </svg>
+        ) : (
+          <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round">
+            <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/>
+          </svg>
+        )}
+      </motion.button>
+
+      {/* Chat panel */}
+      <AnimatePresence>
+        {open && (
+          <motion.div
+            initial={{ opacity: 0, y: 20, scale: 0.95 }}
+            animate={{ opacity: 1, y: 0, scale: 1 }}
+            exit={{ opacity: 0, y: 20, scale: 0.95 }}
+            transition={{ duration: 0.2 }}
+            className="fixed bottom-24 right-6 z-[70] w-[360px] max-w-[calc(100vw-48px)] h-[500px] max-h-[calc(100vh-150px)] rounded-2xl overflow-hidden flex flex-col"
+            style={{
+              background: "rgba(10, 6, 8, 0.95)",
+              backdropFilter: "blur(20px)",
+              border: "1px solid rgba(244, 114, 182, 0.15)",
+              boxShadow: "0 0 60px rgba(244, 114, 182, 0.1), 0 20px 40px rgba(0,0,0,0.5)",
+            }}
+          >
+            {/* Header */}
+            <div className="px-4 py-3 border-b border-pink-500/10 flex items-center gap-3">
+              <div className="w-8 h-8 rounded-full bg-gradient-to-r from-pink-600 to-purple-600 flex items-center justify-center text-white text-xs font-bold">
+                AI
+              </div>
+              <div>
+                <p className="text-sm font-bold text-pink-100/70">Finekot AI Consultant</p>
+                <p className="text-[10px] text-emerald-400/50 font-mono">Online</p>
+              </div>
+            </div>
+
+            {/* Messages */}
+            <div className="flex-1 overflow-y-auto p-4 space-y-3">
+              {messages.map((msg, i) => (
+                <div key={i} className={`flex ${msg.role === "user" ? "justify-end" : "justify-start"}`}>
+                  <div
+                    className={`max-w-[85%] px-3 py-2 rounded-xl text-xs leading-relaxed ${
+                      msg.role === "user"
+                        ? "bg-gradient-to-r from-pink-600/80 to-purple-600/80 text-white rounded-br-sm"
+                        : "bg-pink-500/[0.06] border border-pink-500/10 text-pink-100/50 rounded-bl-sm"
+                    }`}
+                  >
+                    {msg.content}
+                  </div>
+                </div>
+              ))}
+              {loading && (
+                <div className="flex justify-start">
+                  <div className="bg-pink-500/[0.06] border border-pink-500/10 text-pink-100/30 px-3 py-2 rounded-xl rounded-bl-sm text-xs">
+                    <motion.span animate={{ opacity: [0.3, 1, 0.3] }} transition={{ duration: 1.2, repeat: Infinity }}>
+                      Thinking...
+                    </motion.span>
+                  </div>
+                </div>
+              )}
+              <div ref={messagesEndRef} />
+            </div>
+
+            {/* Input */}
+            <div className="p-3 border-t border-pink-500/10">
+              <div className="flex gap-2">
+                <input
+                  type="text"
+                  value={input}
+                  onChange={(e) => setInput(e.target.value)}
+                  onKeyDown={(e) => e.key === "Enter" && send()}
+                  placeholder="Ask about our AI systems..."
+                  className="flex-1 px-3 py-2.5 rounded-lg bg-pink-500/[0.04] border border-pink-500/10 text-xs text-pink-100/70 placeholder:text-pink-300/20 focus:outline-none focus:border-pink-400/30 transition-colors font-mono"
+                />
+                <button
+                  onClick={send}
+                  disabled={loading || !input.trim()}
+                  className="px-3 py-2.5 rounded-lg bg-gradient-to-r from-pink-600 to-purple-600 text-white hover:opacity-90 transition-opacity disabled:opacity-30"
+                >
+                  <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round">
+                    <line x1="22" y1="2" x2="11" y2="13"/><polygon points="22 2 15 22 11 13 2 9 22 2"/>
+                  </svg>
+                </button>
+              </div>
+            </div>
+          </motion.div>
+        )}
+      </AnimatePresence>
+    </>
   );
 }
 
@@ -280,7 +803,7 @@ export default function Home() {
   const hasMore = allFiltered.length > 6 && !showAllProjects;
 
   return (
-    <div className="relative min-h-screen bg-[#0a0608] text-[#ede0e4]">
+    <div className="relative min-h-screen bg-[var(--bg)] text-[var(--fg)]">
       {/* Background blobs */}
       <div className="fixed inset-0 overflow-hidden pointer-events-none">
         <div className="blob absolute top-[-15%] left-[-10%] w-[700px] h-[700px] rounded-full bg-pink-600/60" />
@@ -295,7 +818,7 @@ export default function Home() {
       <motion.nav
         initial={{ y: -80 }} animate={{ y: 0 }} transition={{ duration: 0.6, ease: "easeOut" }}
         className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 ${
-          scrolled || menuOpen ? "bg-[#0a0608]/90 backdrop-blur-lg border-b border-pink-500/10" : "bg-transparent"
+          scrolled || menuOpen ? "bg-[var(--bg)]/90 backdrop-blur-lg border-b border-pink-500/10" : "bg-transparent"
         }`}
       >
         <div className="max-w-6xl mx-auto px-6 py-4 flex items-center justify-between">
@@ -319,6 +842,7 @@ export default function Home() {
           </div>
 
           <div className="flex items-center gap-3">
+            <ThemeToggle />
             <a href="#contact" className="hidden md:block text-sm px-4 py-2 rounded-lg border border-pink-500/20 hover:border-pink-400/60 hover:bg-pink-500/10 hover:shadow-[0_0_15px_rgba(244,114,182,0.15)] transition-all font-mono text-pink-300">
               {t.nav.connect}
             </a>
@@ -493,6 +1017,9 @@ export default function Home() {
           </motion.div>
         </div>
       </section>
+
+      {/* ─── VIDEO DEMO ─── */}
+      <VideoDemoSection />
 
       {/* ─── PROJECTS ─── */}
       <section id="projects" className="relative z-10 py-20 sm:py-28 px-6">
@@ -1509,18 +2036,16 @@ export default function Home() {
       </section>
 
       {/* ─── CONTACT ─── */}
-      <section id="contact" className="relative z-10 py-20 sm:py-28 px-6">
-        <div className="max-w-xl mx-auto text-center">
-          <motion.div {...fade}>
-            <p className="text-xs text-pink-400/30 uppercase tracking-[0.4em] mb-4 font-mono">{t.contact.label}</p>
-            <h2 className="text-3xl md:text-5xl font-black mb-4"><span className="gradient-text">{t.contact.title}</span></h2>
-            <p className="text-pink-100/30 mb-8">{t.contact.subtitle}</p>
-            <a href="https://t.me/shop_by_finekot_bot" target="_blank" rel="noopener noreferrer" className="inline-block px-10 py-4 rounded-xl bg-gradient-to-r from-pink-600 to-purple-600 text-white font-semibold hover:opacity-90 transition-opacity shadow-[0_0_60px_rgba(244,114,182,0.2)]">
-              Telegram → @shop_by_finekot_bot
-            </a>
-          </motion.div>
-        </div>
+      {/* ─── TESTIMONIALS ─── */}
+      <TestimonialsSection />
+
+      {/* ─── BLOG PREVIEW ─── */}
+      <section id="blog">
+        <BlogPreviewSection />
       </section>
+
+      {/* ─── CONTACT FORM ─── */}
+      <ContactFormSection />
 
       <footer className="relative z-10 py-6 text-center text-[10px] text-pink-300/15 border-t border-pink-500/10 font-mono uppercase tracking-wider">
         {t.footer}
@@ -1612,6 +2137,9 @@ export default function Home() {
           </motion.div>
         )}
       </AnimatePresence>
+
+      {/* ─── CHATBOT ─── */}
+      <ChatbotWidget />
     </div>
   );
 }
