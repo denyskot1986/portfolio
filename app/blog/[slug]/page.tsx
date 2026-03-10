@@ -4,9 +4,14 @@ import { motion } from "framer-motion";
 import Link from "next/link";
 import { useParams } from "next/navigation";
 import { blogPosts } from "../../../lib/blog-data";
+import { i18n } from "../../../lib/i18n";
+import { useLang } from "../../../lib/lang-context";
+import LangSwitcher from "../../../components/LangSwitcher";
 
 export default function BlogPostPage() {
   const params = useParams();
+  const { lang } = useLang();
+  const t = i18n[lang].pages;
   const post = blogPosts.find((p) => p.slug === params.slug);
 
   if (!post) {
@@ -16,7 +21,7 @@ export default function BlogPostPage() {
           <h1 className="text-4xl font-black gradient-text mb-4">404</h1>
           <p className="text-pink-100/40 mb-6">Post not found</p>
           <Link href="/blog" className="text-pink-400/60 hover:text-pink-400 font-mono text-sm transition-colors">
-            ← Back to Blog
+            &larr; {t.backBlog}
           </Link>
         </div>
       </div>
@@ -32,9 +37,18 @@ export default function BlogPostPage() {
       <div className="fixed inset-0 dot-grid pointer-events-none" />
 
       <article className="relative z-10 max-w-3xl mx-auto px-6 pt-28 pb-20">
-        <Link href="/blog" className="text-xs text-pink-400/40 hover:text-pink-400/70 font-mono transition-colors mb-8 inline-block">
-          ← Back to Blog
-        </Link>
+        <div className="flex items-center justify-between mb-8">
+          <Link href="/blog" className="text-xs text-pink-400/40 hover:text-pink-400/70 font-mono transition-colors">
+            &larr; {t.backBlog}
+          </Link>
+          <LangSwitcher />
+        </div>
+
+        {lang !== "EN" && (
+          <div className="glass rounded-lg px-4 py-3 mb-6 text-xs text-pink-300/40 font-mono border border-pink-500/10">
+            {t.blog.translationSoon}
+          </div>
+        )}
 
         <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.6 }}>
           <div className="flex items-center gap-3 mb-4">
@@ -72,7 +86,7 @@ export default function BlogPostPage() {
         </motion.div>
 
         <div className="mt-16 pt-8 border-t border-pink-500/10">
-          <p className="text-xs text-pink-400/30 uppercase tracking-wider font-mono mb-4">More articles</p>
+          <p className="text-xs text-pink-400/30 uppercase tracking-wider font-mono mb-4">{t.blog.moreArticles}</p>
           <div className="space-y-3">
             {blogPosts
               .filter((p) => p.slug !== post.slug)
@@ -92,43 +106,30 @@ export default function BlogPostPage() {
 
 function markdownToHtml(md: string): string {
   let html = md;
-  // Headers
   html = html.replace(/^### (.+)$/gm, "<h3>$1</h3>");
   html = html.replace(/^## (.+)$/gm, "<h2>$1</h2>");
-  // Bold
   html = html.replace(/\*\*(.+?)\*\*/g, "<strong>$1</strong>");
-  // Italic
   html = html.replace(/\*(.+?)\*/g, "<em>$1</em>");
-  // Inline code
   html = html.replace(/`([^`]+)`/g, "<code>$1</code>");
-  // Code blocks
   html = html.replace(/```(\w*)\n([\s\S]*?)```/g, "<pre><code>$2</code></pre>");
-  // Links
   html = html.replace(/\[([^\]]+)\]\(([^)]+)\)/g, '<a href="$2">$1</a>');
-  // Unordered lists
   html = html.replace(/^- (.+)$/gm, "<li>$1</li>");
   html = html.replace(/(<li>[\s\S]*?<\/li>)/g, "<ul>$1</ul>");
   html = html.replace(/<\/ul>\s*<ul>/g, "");
-  // Tables
   html = html.replace(/^\|(.+)\|$/gm, (_, row) => {
     const cells = row.split("|").map((c: string) => c.trim());
     return "<tr>" + cells.map((c: string) => `<td>${c}</td>`).join("") + "</tr>";
   });
   html = html.replace(/(<tr>[\s\S]*?<\/tr>)/g, "<table>$1</table>");
   html = html.replace(/<\/table>\s*<table>/g, "");
-  // Remove separator rows
   html = html.replace(/<tr><td>-+<\/td>(<td>-+<\/td>)*<\/tr>/g, "");
-  // First row as thead
   html = html.replace(/<table><tr>([\s\S]*?)<\/tr>/, (_, cells) => {
     const thCells = cells.replace(/<td>/g, "<th>").replace(/<\/td>/g, "</th>");
     return `<table><thead><tr>${thCells}</tr></thead><tbody>`;
   });
   html = html.replace(/<\/table>/g, "</tbody></table>");
-  // Horizontal rules
   html = html.replace(/^---$/gm, "<hr />");
-  // Paragraphs
   html = html.replace(/^(?!<[a-z])((?!^\s*$).+)$/gm, "<p>$1</p>");
-  // Clean up empty paragraphs
   html = html.replace(/<p>\s*<\/p>/g, "");
   return html;
 }

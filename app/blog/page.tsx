@@ -3,10 +3,16 @@
 import { motion } from "framer-motion";
 import Link from "next/link";
 import { blogPosts } from "../../lib/blog-data";
+import { i18n } from "../../lib/i18n";
+import { useLang } from "../../lib/lang-context";
+import LangSwitcher from "../../components/LangSwitcher";
 
 const fade = { initial: { opacity: 0, y: 30 }, whileInView: { opacity: 1, y: 0 }, viewport: { once: true as const } };
 
 export default function BlogPage() {
+  const { lang } = useLang();
+  const t = i18n[lang].pages;
+
   return (
     <div className="relative min-h-screen bg-[var(--bg)] text-[var(--fg)]">
       <div className="fixed inset-0 overflow-hidden pointer-events-none">
@@ -16,16 +22,19 @@ export default function BlogPage() {
       <div className="fixed inset-0 dot-grid pointer-events-none" />
 
       <div className="relative z-10 max-w-4xl mx-auto px-6 pt-28 pb-20">
-        <Link href="/" className="text-xs text-pink-400/40 hover:text-pink-400/70 font-mono transition-colors mb-8 inline-block">
-          ← Back to Home
-        </Link>
+        <div className="flex items-center justify-between mb-8">
+          <Link href="/" className="text-xs text-pink-400/40 hover:text-pink-400/70 font-mono transition-colors">
+            &larr; {t.backHome}
+          </Link>
+          <LangSwitcher />
+        </div>
 
         <motion.div {...fade}>
-          <p className="text-xs text-pink-400/30 uppercase tracking-[0.4em] mb-3 font-mono">Insights</p>
+          <p className="text-xs text-pink-400/30 uppercase tracking-[0.4em] mb-3 font-mono">{t.blog.label}</p>
           <h1 className="text-4xl md:text-6xl font-black mb-4 tracking-tight">
-            <span className="gradient-text">Blog</span>
+            <span className="gradient-text">{t.blog.title}</span>
           </h1>
-          <p className="text-pink-100/40 text-lg mb-12">Thoughts on AI systems, automation, and building the future.</p>
+          <p className="text-pink-100/40 text-lg mb-12">{t.blog.subtitle}</p>
         </motion.div>
 
         <div className="space-y-6">
@@ -45,7 +54,7 @@ export default function BlogPage() {
                   </h2>
                   <p className="text-sm text-pink-100/30 leading-relaxed">{post.excerpt}</p>
                   <span className="text-xs text-pink-400/40 group-hover:text-pink-400/70 font-mono mt-3 inline-block transition-colors">
-                    Read more →
+                    {t.blog.readMore} &rarr;
                   </span>
                 </div>
               </Link>

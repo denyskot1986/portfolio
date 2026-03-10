@@ -7,6 +7,7 @@ import Link from "next/link";
 import { i18n, langs, type Lang } from "../lib/i18n";
 import { projectI18n } from "../lib/project-i18n";
 import { blogPosts } from "../lib/blog-data";
+import { useLang } from "../lib/lang-context";
 
 /* ═══════════════════════════════════════════════════════
    DATA
@@ -626,7 +627,7 @@ export default function Home() {
   const [cat, setCat] = useState<Category>("All");
   const [expanded, setExpanded] = useState<number | null>(null);
   const [showAllProjects, setShowAllProjects] = useState(false);
-  const [lang, setLang] = useState<Lang>("EN");
+  const { lang, setLang } = useLang();
 
   // Checkout modal state
   const [checkoutProduct, setCheckoutProduct] = useState<typeof projects[0] | null>(null);

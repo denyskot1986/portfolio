@@ -5,6 +5,9 @@ import Link from "next/link";
 import { motion } from "framer-motion";
 import { useState } from "react";
 import { getProductById } from "@/lib/products-data";
+import { i18n } from "@/lib/i18n";
+import { useLang } from "@/lib/lang-context";
+import LangSwitcher from "@/components/LangSwitcher";
 
 const fade = { initial: { opacity: 0, y: 20 }, whileInView: { opacity: 1, y: 0 }, viewport: { once: true }, transition: { duration: 0.5 } };
 
@@ -12,6 +15,9 @@ const USDC_ADDRESS = "0x6b55152939088C088fbE931Ae8809D6fe42d5E10";
 
 export default function CheckoutPage() {
   const params = useParams();
+  const { lang } = useLang();
+  const tc = i18n[lang].pages.checkout;
+  const tp = i18n[lang].pages.product;
   const product = getProductById(params.id as string);
   const [plan, setPlan] = useState<"code" | "setup">("code");
   const [copied, setCopied] = useState(false);
@@ -24,8 +30,8 @@ export default function CheckoutPage() {
     return (
       <main className="min-h-screen bg-black text-pink-100/80 flex items-center justify-center">
         <div className="text-center">
-          <h1 className="text-4xl font-black mb-4">Product Not Found</h1>
-          <Link href="/" className="text-pink-400/60 hover:text-pink-400 transition-colors">&larr; Back to Home</Link>
+          <h1 className="text-4xl font-black mb-4">{tc.notFound}</h1>
+          <Link href="/" className="text-pink-400/60 hover:text-pink-400 transition-colors">&larr; {i18n[lang].pages.backHome}</Link>
         </div>
       </main>
     );
@@ -59,7 +65,7 @@ export default function CheckoutPage() {
       const data = await res.json();
       setVerifyResult(data);
     } catch {
-      setVerifyResult({ status: "error", message: "Network error. Please try again." });
+      setVerifyResult({ status: "error", message: tc.paymentError });
     } finally {
       setVerifying(false);
     }
@@ -71,7 +77,10 @@ export default function CheckoutPage() {
       <nav className="fixed top-0 left-0 right-0 z-50 backdrop-blur-xl bg-black/60 border-b border-pink-400/5">
         <div className="max-w-5xl mx-auto px-6 h-14 flex items-center justify-between">
           <Link href={`/products/${product.id}`} className="text-sm font-mono text-pink-400/40 hover:text-pink-400/80 transition-colors">&larr; {product.name}</Link>
-          <span className="text-xs font-mono text-pink-400/30">Checkout</span>
+          <div className="flex items-center gap-4">
+            <LangSwitcher />
+            <span className="text-xs font-mono text-pink-400/30">{tc.title}</span>
+          </div>
         </div>
       </nav>
 
@@ -79,7 +88,7 @@ export default function CheckoutPage() {
       <section className="relative z-10 pt-28 pb-8 px-6">
         <div className="max-w-3xl mx-auto text-center">
           <motion.div {...fade}>
-            <p className="text-xs text-pink-400/30 uppercase tracking-[0.4em] mb-3 font-mono">Checkout</p>
+            <p className="text-xs text-pink-400/30 uppercase tracking-[0.4em] mb-3 font-mono">{tc.title}</p>
             <h1 className="text-4xl md:text-5xl font-black mb-3 tracking-tight">
               <span className="gradient-text">{product.name}</span>
             </h1>
@@ -100,7 +109,7 @@ export default function CheckoutPage() {
                   : "glass text-pink-100/30 hover:text-pink-100/50"
               }`}
             >
-              <span className="block text-[10px] uppercase tracking-wider text-pink-400/40 mb-1">Source Code</span>
+              <span className="block text-[10px] uppercase tracking-wider text-pink-400/40 mb-1">{tc.sourceCode}</span>
               <span className="font-mono font-black text-lg">${product.pricing.code}</span>
             </button>
             <button
@@ -111,7 +120,7 @@ export default function CheckoutPage() {
                   : "glass text-pink-100/30 hover:text-pink-100/50"
               }`}
             >
-              <span className="block text-[10px] uppercase tracking-wider text-pink-400/40 mb-1">Setup + Integration</span>
+              <span className="block text-[10px] uppercase tracking-wider text-pink-400/40 mb-1">{tc.setupIntegration}</span>
               <span className="font-mono font-black text-lg">${product.pricing.setup}</span>
             </button>
           </div>
@@ -146,10 +155,10 @@ export default function CheckoutPage() {
           <div className="max-w-lg mx-auto">
             <motion.div {...fade}>
               <div className="glass rounded-xl p-6 sm:p-8 mb-4">
-                <p className="text-[10px] text-pink-400/30 uppercase tracking-wider font-mono mb-4">Order Summary</p>
+                <p className="text-[10px] text-pink-400/30 uppercase tracking-wider font-mono mb-4">{tc.orderSummary}</p>
                 <div className="flex justify-between items-center mb-3">
                   <span className="text-sm text-pink-100/60">{product.name}</span>
-                  <span className="text-sm font-mono text-pink-100/60">{plan === "setup" ? "Setup + Integration" : "Source Code"}</span>
+                  <span className="text-sm font-mono text-pink-100/60">{plan === "setup" ? tc.setupIntegration : tc.sourceCode}</span>
                 </div>
                 <div className="border-t border-pink-400/10 pt-3 flex justify-between items-center">
                   <span className="text-sm font-semibold text-pink-100/80">Total</span>
@@ -157,17 +166,16 @@ export default function CheckoutPage() {
                 </div>
               </div>
               <div className="glass rounded-xl p-5">
-                <p className="text-xs text-pink-100/40 mb-3">What&apos;s included:</p>
                 <ul className="space-y-2 text-sm text-pink-100/40">
-                  <li className="flex gap-2"><span className="text-pink-400/50">&rarr;</span> Full source code</li>
-                  <li className="flex gap-2"><span className="text-pink-400/50">&rarr;</span> Documentation &amp; setup guide</li>
-                  <li className="flex gap-2"><span className="text-pink-400/50">&rarr;</span> Auto-install included</li>
-                  <li className="flex gap-2"><span className="text-pink-400/50">&rarr;</span> Lifetime updates</li>
+                  <li className="flex gap-2"><span className="text-pink-400/50">&rarr;</span> {tp.includes.code}</li>
+                  <li className="flex gap-2"><span className="text-pink-400/50">&rarr;</span> {tp.includes.docs}</li>
+                  <li className="flex gap-2"><span className="text-pink-400/50">&rarr;</span> {tp.includes.autoInstall}</li>
+                  <li className="flex gap-2"><span className="text-pink-400/50">&rarr;</span> {tp.includes.updates}</li>
                   {plan === "setup" && (
                     <>
-                      <li className="flex gap-2"><span className="text-pink-400">&rarr;</span> Personal setup by the creator</li>
-                      <li className="flex gap-2"><span className="text-pink-400">&rarr;</span> Integrated into your infrastructure</li>
-                      <li className="flex gap-2"><span className="text-pink-400">&rarr;</span> 30 days support</li>
+                      <li className="flex gap-2"><span className="text-pink-400">&rarr;</span> {tp.includes.setup}</li>
+                      <li className="flex gap-2"><span className="text-pink-400">&rarr;</span> {tp.includes.infra}</li>
+                      <li className="flex gap-2"><span className="text-pink-400">&rarr;</span> {tp.includes.support}</li>
                     </>
                   )}
                 </ul>
@@ -176,7 +184,7 @@ export default function CheckoutPage() {
                 onClick={() => setStep(2)}
                 className="mt-6 w-full px-6 py-3 rounded-lg bg-gradient-to-r from-pink-600 to-purple-600 text-white font-semibold hover:opacity-90 transition-opacity shadow-[0_0_30px_rgba(244,114,182,0.2)]"
               >
-                Proceed to Payment &rarr;
+                {tc.sendUsdc} &rarr;
               </button>
             </motion.div>
           </div>
@@ -189,9 +197,9 @@ export default function CheckoutPage() {
           <div className="max-w-lg mx-auto">
             <motion.div {...fade}>
               <div className="glass rounded-xl p-6 sm:p-8 mb-4 text-center">
-                <p className="text-[10px] text-pink-400/30 uppercase tracking-wider font-mono mb-2">Amount to Send</p>
+                <p className="text-[10px] text-pink-400/30 uppercase tracking-wider font-mono mb-2">{tc.sendUsdc}</p>
                 <p className="text-4xl font-black gradient-text font-mono mb-1">${price}</p>
-                <p className="text-xs text-pink-100/30">Send exact amount in USDC (ERC20)</p>
+                <p className="text-xs text-pink-100/30">{tc.usdcNote}</p>
               </div>
 
               <div className="glass rounded-xl p-4 sm:p-5 mb-4">
@@ -211,7 +219,7 @@ export default function CheckoutPage() {
                         : "glass text-pink-100/40 hover:text-pink-100/70 hover:bg-pink-400/10"
                     }`}
                   >
-                    {copied ? "Copied!" : "Copy"}
+                    {copied ? tc.copied : tc.copyAddress}
                   </button>
                 </div>
                 <p className="text-[11px] font-mono text-pink-100/30 break-all select-all bg-black/30 rounded-lg px-3 py-2">{USDC_ADDRESS}</p>
@@ -231,7 +239,7 @@ export default function CheckoutPage() {
                 onClick={() => setStep(3)}
                 className="w-full px-6 py-3 rounded-lg bg-gradient-to-r from-pink-600 to-purple-600 text-white font-semibold hover:opacity-90 transition-opacity shadow-[0_0_30px_rgba(244,114,182,0.2)]"
               >
-                I&apos;ve Sent the Payment &rarr;
+                {tc.verifyPayment} &rarr;
               </button>
             </motion.div>
           </div>
@@ -244,9 +252,9 @@ export default function CheckoutPage() {
           <div className="max-w-lg mx-auto">
             <motion.div {...fade}>
               <div className="glass rounded-xl p-6 sm:p-8 mb-6">
-                <p className="text-[10px] text-pink-400/30 uppercase tracking-wider font-mono mb-4">Verify Your Payment</p>
+                <p className="text-[10px] text-pink-400/30 uppercase tracking-wider font-mono mb-4">{tc.verifyPayment}</p>
                 <p className="text-sm text-pink-100/40 mb-6">
-                  Paste your transaction hash below. We&apos;ll verify it on the Ethereum blockchain automatically.
+                  {tc.enterTxHash}
                 </p>
 
                 <div className="mb-4">
@@ -255,7 +263,7 @@ export default function CheckoutPage() {
                     type="text"
                     value={txHash}
                     onChange={(e) => setTxHash(e.target.value)}
-                    placeholder="0x..."
+                    placeholder={tc.txPlaceholder}
                     className="w-full bg-black/40 border border-pink-400/10 rounded-lg px-4 py-3 text-sm font-mono text-pink-100/70 placeholder-pink-100/20 focus:border-pink-400/30 focus:outline-none transition-colors"
                   />
                 </div>
@@ -292,7 +300,7 @@ export default function CheckoutPage() {
                       : "bg-gradient-to-r from-pink-600 to-purple-600 text-white hover:opacity-90 shadow-[0_0_30px_rgba(244,114,182,0.2)]"
                   }`}
                 >
-                  {verifying ? "Verifying..." : "Verify Payment"}
+                  {verifying ? tc.verifying : tc.verifyPayment}
                 </button>
               </div>
 
@@ -314,7 +322,7 @@ export default function CheckoutPage() {
 
               <div className="text-center mt-6">
                 <Link href={`/products/${product.id}`} className="text-xs text-pink-400/30 hover:text-pink-400/60 transition-colors font-mono">
-                  &larr; Back to {product.name}
+                  &larr; {tc.back} {product.name}
                 </Link>
               </div>
             </motion.div>
@@ -325,7 +333,7 @@ export default function CheckoutPage() {
       {/* FOOTER */}
       <footer className="relative z-10 py-8 px-6 border-t border-pink-400/5">
         <div className="max-w-5xl mx-auto text-center">
-          <Link href="/" className="text-xs text-pink-100/20 hover:text-pink-100/40 transition-colors font-mono">&larr; denyskot.com</Link>
+          <Link href="/" className="text-xs text-pink-100/20 hover:text-pink-100/40 transition-colors font-mono">&larr; {i18n[lang].pages.backHome}</Link>
         </div>
       </footer>
     </main>
