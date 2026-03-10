@@ -95,7 +95,7 @@ const EN: T = {
   categories: { "All": "All", "Multi-Agent": "Multi-Agent", "Voice AI": "Voice AI", "Bots": "Bots", "Automation": "Automation", "RAG": "RAG" },
   projectUI: { live: "Live", keyFeatures: "Key Features" },
   about: {
-    label: "About", title: "AI Systems Store",
+    label: "About", title: "The Forge That Turns Raw Talent Into Results",
     desc: "17 production AI systems built and battle-tested. Each system self-installs and launches. We also integrate ready systems into your running business. No subscriptions. You own the code.",
     boxTitle: "What you get",
     points: ["Production-grade source code \u2014 not a demo, not a prototype", "Complete documentation + auto-install", "Full ownership \u2014 no subscriptions, no vendor lock-in", "Optional 1-day integration into your business", "30 days post-integration support"],
@@ -401,7 +401,7 @@ const RU: T = {
   categories: { "All": "\u0412\u0441\u0435", "Multi-Agent": "\u041c\u0443\u043b\u044c\u0442\u0438\u0430\u0433\u0435\u043d\u0442", "Voice AI": "\u0413\u043e\u043b\u043e\u0441\u043e\u0432\u043e\u0439 AI", "Bots": "\u0411\u043e\u0442\u044b", "Automation": "\u0410\u0432\u0442\u043e\u043c\u0430\u0442\u0438\u0437\u0430\u0446\u0438\u044f", "RAG": "RAG" },
   projectUI: { live: "Live", keyFeatures: "\u041a\u043b\u044e\u0447\u0435\u0432\u044b\u0435 \u0444\u0438\u0447\u0438" },
   about: {
-    label: "Обо мне", title: "Магазин AI-систем",
+    label: "Обо мне", title: "Кузница, которая превращает сырой талант в результаты",
     desc: "17 AI-систем построено и проверено в бою. Каждая система — сама установится и запустится. Также интегрируем готовые системы в Ваш действующий бизнес. Без подписок. Код ваш.",
     boxTitle: "Что вы получаете",
     points: ["Продакшен-код — не демо, не прототип", "Полная документация + авто установка", "Полное владение — без подписок, без замков", "Опциональная интеграция за 1 день", "30 дней поддержки после интеграции"],
@@ -707,7 +707,7 @@ const UA: T = {
   categories: { "All": "\u0412\u0441\u0456", "Multi-Agent": "\u041c\u0443\u043b\u044c\u0442\u0438\u0430\u0433\u0435\u043d\u0442", "Voice AI": "\u0413\u043e\u043b\u043e\u0441\u043e\u0432\u0438\u0439 AI", "Bots": "\u0411\u043e\u0442\u0438", "Automation": "\u0410\u0432\u0442\u043e\u043c\u0430\u0442\u0438\u0437\u0430\u0446\u0456\u044f", "RAG": "RAG" },
   projectUI: { live: "Live", keyFeatures: "\u041a\u043b\u044e\u0447\u043e\u0432\u0456 \u0444\u0456\u0447\u0456" },
   about: {
-    label: "Про мене", title: "Магазин AI-систем",
+    label: "Про мене", title: "Кузня, що перетворює сирий талант на результати",
     desc: "17 AI-систем побудовано та перевірено в бою. Кожна система — сама встановиться та запуститься. Також інтегруємо готові системи у Ваш діючий бізнес. Без підписок. Код ваш.",
     boxTitle: "Що ви отримуєте",
     points: ["Продакшен-код — не демо, не прототип", "Повна документація + авто встановлення", "Повне володіння — без підписок, без замків", "Опціональна інтеграція за 1 день", "30 днів підтримки після інтеграції"],
