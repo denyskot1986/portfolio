@@ -52,10 +52,10 @@ export default function ProductPageClient() {
         <div className="max-w-5xl mx-auto text-center">
           <motion.div {...fade}>
             <p className="text-xs text-pink-400/30 uppercase tracking-[0.4em] mb-3 font-mono">{product.category}</p>
-            <h1 className="text-5xl md:text-7xl font-black mb-4 tracking-tight">
+            <h1 className="text-3xl sm:text-5xl md:text-7xl font-black mb-4 tracking-tight">
               <span className="gradient-text">{product.name}</span>
             </h1>
-            <p className="text-xl md:text-2xl text-pink-100/50 font-semibold mb-6">{product.tagline}</p>
+            <p className="text-base sm:text-xl md:text-2xl text-pink-100/50 font-semibold mb-6">{product.tagline}</p>
             <p className="text-pink-100/30 text-base leading-relaxed max-w-3xl mx-auto">{product.longDescription}</p>
           </motion.div>
         </div>
@@ -75,7 +75,7 @@ export default function ProductPageClient() {
         <section className="relative z-10 py-12 px-6">
           <div className="max-w-4xl mx-auto">
             <motion.div {...fade}>
-              <h2 className="text-2xl md:text-3xl font-black mb-6 text-center tracking-tight">
+              <h2 className="text-xl sm:text-2xl md:text-3xl font-black mb-6 text-center tracking-tight">
                 <span className="gradient-text">{demo ? tp.interactiveDemo : tp.howItWorks}</span>
               </h2>
               {demo ? (
@@ -105,7 +105,7 @@ export default function ProductPageClient() {
       <section className="relative z-10 py-16 px-6">
         <div className="max-w-5xl mx-auto">
           <motion.div {...fade} className="text-center mb-12">
-            <h2 className="text-3xl md:text-4xl font-black tracking-tight">
+            <h2 className="text-2xl sm:text-3xl md:text-4xl font-black tracking-tight">
               <span className="gradient-text">{tp.features}</span>
             </h2>
           </motion.div>
@@ -125,7 +125,7 @@ export default function ProductPageClient() {
       <section className="relative z-10 py-12 px-6">
         <div className="max-w-4xl mx-auto">
           <motion.div {...fade}>
-            <h2 className="text-2xl md:text-3xl font-black mb-6 text-center tracking-tight">
+            <h2 className="text-xl sm:text-2xl md:text-3xl font-black mb-6 text-center tracking-tight">
               <span className="gradient-text">{tp.useCases}</span>
             </h2>
             <div className="flex flex-wrap justify-center gap-3">
@@ -141,7 +141,7 @@ export default function ProductPageClient() {
       <section className="relative z-10 py-12 px-6">
         <div className="max-w-4xl mx-auto">
           <motion.div {...fade}>
-            <h2 className="text-2xl md:text-3xl font-black mb-6 text-center tracking-tight">
+            <h2 className="text-xl sm:text-2xl md:text-3xl font-black mb-6 text-center tracking-tight">
               <span className="gradient-text">{tp.techStack}</span>
             </h2>
             <div className="flex flex-wrap justify-center gap-3">
@@ -162,7 +162,7 @@ export default function ProductPageClient() {
               <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                 <div className="glass rounded-xl p-6 sm:p-8 text-center">
                   <p className="text-[10px] text-pink-400/30 uppercase tracking-wider font-mono mb-3">{tp.sourceCode}</p>
-                  <p className="text-4xl font-black gradient-text font-mono mb-2">${product.pricing.code}</p>
+                  <p className="text-3xl sm:text-4xl font-black gradient-text font-mono mb-2">${product.pricing.code}</p>
                   <p className="text-xs text-pink-100/30 mb-5">{tp.getCodeDesc}</p>
                   <ul className="space-y-2 text-sm text-pink-100/40 text-left mb-6">
                     <li className="flex gap-2"><span className="text-pink-400/40">&rarr;</span> {tp.includes.code}</li>
@@ -180,7 +180,7 @@ export default function ProductPageClient() {
                   <div className="flex justify-center mb-3">
                     <span className="text-[10px] px-3 py-1 rounded-full bg-pink-500/15 text-pink-300/60 border border-pink-500/20 font-mono uppercase tracking-wider">{tp.recommended}</span>
                   </div>
-                  <p className="text-4xl font-black gradient-text font-mono mb-2">${product.pricing.setup}</p>
+                  <p className="text-3xl sm:text-4xl font-black gradient-text font-mono mb-2">${product.pricing.setup}</p>
                   <p className="text-xs text-pink-100/30 mb-5">{tp.setupDesc}</p>
                   <ul className="space-y-2 text-sm text-pink-100/40 text-left mb-6">
                     <li className="flex gap-2"><span className="text-pink-400">&rarr;</span> {tp.includes.everything}</li>
@@ -198,7 +198,7 @@ export default function ProductPageClient() {
             ) : (
               <div className="max-w-md mx-auto">
                 <div className="glass rounded-xl p-6 sm:p-8 text-center border-pink-400/20 shadow-[0_0_40px_rgba(244,114,182,0.08)]">
-                  <p className="text-4xl font-black gradient-text font-mono mb-2">${product.pricing.code}</p>
+                  <p className="text-3xl sm:text-4xl font-black gradient-text font-mono mb-2">${product.pricing.code}</p>
                   <p className="text-xs text-pink-100/30 mb-5">{tp.fullSystem}</p>
                   <ul className="space-y-2 text-sm text-pink-100/40 text-left mb-6">
                     <li className="flex gap-2"><span className="text-pink-400">&rarr;</span> {tp.includes.code}</li>

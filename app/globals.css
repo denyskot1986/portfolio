@@ -23,7 +23,7 @@ body {
   overflow-x: hidden;
 }
 
-html { scroll-behavior: smooth; }
+html { scroll-behavior: smooth; overflow-x: hidden; }
 
 ::selection {
   background: rgba(244, 114, 182, 0.2);

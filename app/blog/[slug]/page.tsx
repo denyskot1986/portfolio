@@ -62,7 +62,7 @@ export default function BlogPostPage() {
             <span className="text-[10px] text-pink-300/25 font-mono">{post.readTime}</span>
           </div>
 
-          <h1 className="text-3xl md:text-5xl font-black mb-6 tracking-tight text-pink-100/90">
+          <h1 className="text-2xl sm:text-3xl md:text-5xl font-black mb-6 tracking-tight text-pink-100/90">
             {translation?.title ?? post.title}
           </h1>
 

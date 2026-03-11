@@ -86,13 +86,23 @@ export default function BlogChat({ articleTitle, articleSlug, lang = "EN" }: Blo
           <motion.div
             initial={{ opacity: 0, height: 0 }}
             animate={{ opacity: 1, height: "auto" }}
-            className="mb-4 max-h-[60vh] overflow-y-auto rounded-2xl p-4 space-y-3"
+            className="relative mb-4 max-h-[60vh] overflow-y-auto rounded-2xl p-4 space-y-3"
             style={{
               background: "rgba(10, 6, 8, 0.6)",
               backdropFilter: "blur(12px)",
               border: "1px solid rgba(244, 114, 182, 0.08)",
             }}
           >
+            <button
+              onClick={() => setMessages([])}
+              className="sticky top-0 float-right z-10 w-6 h-6 flex items-center justify-center rounded-full text-pink-300/40 hover:text-pink-200 hover:bg-pink-500/10 transition-colors"
+              aria-label="Close chat"
+            >
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round">
+                <line x1="18" y1="6" x2="6" y2="18" />
+                <line x1="6" y1="6" x2="18" y2="18" />
+              </svg>
+            </button>
             {messages.map((msg, i) => (
               <motion.div
                 key={i}
@@ -124,7 +134,7 @@ export default function BlogChat({ articleTitle, articleSlug, lang = "EN" }: Blo
                 className="flex justify-start"
               >
                 <div className="w-6 h-6 rounded-full bg-gradient-to-r from-pink-600 to-purple-600 flex items-center justify-center text-white text-[8px] font-bold mr-2 mt-0.5 shrink-0">
-                  T-3
+                  FC
                 </div>
                 <div className="text-pink-100/30 px-4 py-2.5 rounded-2xl rounded-bl-sm text-sm">
                   <motion.span animate={{ opacity: [0.3, 1, 0.3] }} transition={{ duration: 1.2, repeat: Infinity }}>

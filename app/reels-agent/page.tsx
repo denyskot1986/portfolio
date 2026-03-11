@@ -426,7 +426,7 @@ export default function ReelsAgentPage() {
             <motion.p initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.6 }} className="text-xs uppercase tracking-[0.4em] text-pink-400/50 mb-6 font-mono">
               {s.heroLabel}
             </motion.p>
-            <motion.h1 initial={{ opacity: 0, y: 30 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.8, delay: 0.2 }} className="text-5xl md:text-7xl font-bold mb-6 tracking-tight">
+            <motion.h1 initial={{ opacity: 0, y: 30 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.8, delay: 0.2 }} className="text-3xl sm:text-5xl md:text-7xl font-bold mb-6 tracking-tight">
               {s.heroTitle1}{" "}<span className="gradient-text">{s.heroTitle2}</span>
             </motion.h1>
             <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.8, delay: 0.4 }} className="h-10 mb-10">
@@ -457,7 +457,7 @@ export default function ReelsAgentPage() {
         <section id="features" className="mx-auto max-w-6xl px-6 py-32">
           <motion.div initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} transition={{ duration: 0.6 }} className="mb-16 text-center">
             <p className="text-xs font-mono uppercase tracking-[0.4em] text-pink-400/40 mb-4">{s.featLabel}</p>
-            <h2 className="text-3xl font-bold md:text-5xl">{s.featTitle1}{" "}<span className="gradient-text">{s.featTitle2}</span></h2>
+            <h2 className="text-2xl font-bold sm:text-3xl md:text-5xl">{s.featTitle1}{" "}<span className="gradient-text">{s.featTitle2}</span></h2>
           </motion.div>
           <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
             {s.features.map((f, i) => (
@@ -475,7 +475,7 @@ export default function ReelsAgentPage() {
           <div className="mx-auto max-w-4xl px-6 text-center">
             <motion.div initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} transition={{ duration: 0.6 }}>
               <p className="text-xs font-mono uppercase tracking-[0.4em] text-pink-400/40 mb-4">{s.howLabel}</p>
-              <h2 className="mb-16 text-3xl font-bold md:text-5xl">{s.howTitle1}{" "}<span className="gradient-text">{s.howTitle2}</span></h2>
+              <h2 className="mb-16 text-2xl font-bold sm:text-3xl md:text-5xl">{s.howTitle1}{" "}<span className="gradient-text">{s.howTitle2}</span></h2>
             </motion.div>
             <div className="grid gap-12 md:grid-cols-3">
               {s.steps.map((step, i) => (
@@ -495,7 +495,7 @@ export default function ReelsAgentPage() {
         <section id="testimonials" className="mx-auto max-w-6xl px-6 py-32">
           <motion.div initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} transition={{ duration: 0.6 }} className="mb-16 text-center">
             <p className="text-xs font-mono uppercase tracking-[0.4em] text-pink-400/40 mb-4">{s.revLabel}</p>
-            <h2 className="text-3xl font-bold md:text-5xl">{s.revTitle1}{" "}<span className="gradient-text">{s.revTitle2}</span></h2>
+            <h2 className="text-2xl font-bold sm:text-3xl md:text-5xl">{s.revTitle1}{" "}<span className="gradient-text">{s.revTitle2}</span></h2>
           </motion.div>
           <div className="grid gap-6 md:grid-cols-3">
             {testimonials.map((item, i) => (
@@ -518,7 +518,7 @@ export default function ReelsAgentPage() {
           <div className="mx-auto max-w-6xl px-6">
             <motion.div initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} transition={{ duration: 0.6 }} className="text-center">
               <p className="text-xs font-mono uppercase tracking-[0.4em] text-pink-400/40 mb-4">{s.pricLabel}</p>
-              <h2 className="mb-4 text-3xl font-bold md:text-5xl">{s.pricTitle1}{" "}<span className="gradient-text">{s.pricTitle2}</span></h2>
+              <h2 className="mb-4 text-2xl font-bold sm:text-3xl md:text-5xl">{s.pricTitle1}{" "}<span className="gradient-text">{s.pricTitle2}</span></h2>
               <div className="flex justify-center mb-4">
                 <span className="text-[10px] font-mono uppercase tracking-wider px-3 py-1 rounded-full border border-pink-500/20 bg-pink-500/5 text-pink-300/50">{s.comingSoon}</span>
               </div>
@@ -561,7 +561,7 @@ export default function ReelsAgentPage() {
         <section id="waitlist" className="py-32 dot-grid relative overflow-hidden">
           <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[400px] h-[400px] bg-pink-500/[0.06] rounded-full blur-[120px]" />
           <motion.div initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} transition={{ duration: 0.6 }} className="relative z-10 mx-auto max-w-2xl px-6 text-center">
-            <h2 className="mb-4 text-3xl font-bold md:text-5xl">{s.ctaTitle1}{" "}<span className="gradient-text">{s.ctaTitle2}</span>?</h2>
+            <h2 className="mb-4 text-2xl font-bold sm:text-3xl md:text-5xl">{s.ctaTitle1}{" "}<span className="gradient-text">{s.ctaTitle2}</span>?</h2>
             <p className="mb-8 text-pink-100/50">{s.ctaDesc}</p>
             <WaitlistForm className="mx-auto justify-center" />
           </motion.div>

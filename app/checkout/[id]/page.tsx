@@ -89,7 +89,7 @@ export default function CheckoutPage() {
         <div className="max-w-3xl mx-auto text-center">
           <motion.div {...fade}>
             <p className="text-xs text-pink-400/30 uppercase tracking-[0.4em] mb-3 font-mono">{tc.title}</p>
-            <h1 className="text-4xl md:text-5xl font-black mb-3 tracking-tight">
+            <h1 className="text-2xl sm:text-4xl md:text-5xl font-black mb-3 tracking-tight">
               <span className="gradient-text">{product.name}</span>
             </h1>
             <p className="text-pink-100/40 text-sm">{product.tagline}</p>
@@ -198,7 +198,7 @@ export default function CheckoutPage() {
             <motion.div {...fade}>
               <div className="glass rounded-xl p-6 sm:p-8 mb-4 text-center">
                 <p className="text-[10px] text-pink-400/30 uppercase tracking-wider font-mono mb-2">{tc.sendUsdc}</p>
-                <p className="text-4xl font-black gradient-text font-mono mb-1">${price}</p>
+                <p className="text-3xl sm:text-4xl font-black gradient-text font-mono mb-1">${price}</p>
                 <p className="text-xs text-pink-100/30">{tc.usdcNote}</p>
               </div>
 

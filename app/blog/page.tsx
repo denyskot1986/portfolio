@@ -32,10 +32,10 @@ export default function BlogPage() {
 
         <motion.div {...fade}>
           <p className="text-xs text-pink-400/30 uppercase tracking-[0.4em] mb-3 font-mono">{t.blog.label}</p>
-          <h1 className="text-4xl md:text-6xl font-black mb-4 tracking-tight">
+          <h1 className="text-2xl sm:text-4xl md:text-6xl font-black mb-4 tracking-tight">
             <span className="gradient-text">{t.blog.title}</span>
           </h1>
-          <p className="text-pink-100/40 text-lg mb-12">{t.blog.subtitle}</p>
+          <p className="text-pink-100/40 text-base sm:text-lg mb-12">{t.blog.subtitle}</p>
         </motion.div>
 
         <div className="space-y-6">

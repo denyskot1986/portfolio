@@ -15,7 +15,7 @@ export const blogPosts: BlogPost[] = [
     title: "How I Built a Multi-Agent AI System (And Why I Called It SKYNET)",
     excerpt:
       "I built an army of AI agents, called it SKYNET, fired myself as CEO, and got rehired as a visionary. This is the real story — morning walks, voice messages, and terminators that call me on the phone.",
-    date: "2026-03-10",
+    date: "2026-03-11",
     readTime: "9 min",
     category: "Case Study",
     content: `**I fired myself as CEO of my own company. Then I gave the job to an AI. Now I work for it.**
@@ -46,7 +46,7 @@ I set up my first agent — T-1, a fullstack developer. Gave it a Telegram inter
 
 Then I added T-2 for backend work. T-3 for content. Each one got its own workspace, its own instructions, its own Telegram bot.
 
-Within a month I had five agents running:
+Within a month I went from "what is this" to shipping ideas as products. Two versions of SKYNET, over twenty agents in total — different experiments, different approaches. The ones that survived became the core team:
 
 \`\`\`
          ME (Commander)
@@ -183,7 +183,7 @@ Either way — the machines are ready. The question is: are you?
     title: "5 AI Tools Every Small Business Needs in 2026",
     excerpt:
       "I tested dozens of AI tools. Most are garbage. These 5 survived — they run my entire business, from code to content to customer support. No affiliate links, just honest experience.",
-    date: "2026-03-10",
+    date: "2026-03-11",
     readTime: "8 min",
     category: "AI Tools",
     content: `**Most AI tools are solutions looking for a problem. I know because I tried almost all of them.**
@@ -242,9 +242,7 @@ That alone makes ElevenLabs worth it for me. But beyond the SKYNET stuff, I use 
 - Audio narration for product demos
 - Quick voice notes and explanations for clients
 
-I cloned my own voice. Half the Reels I post are voiced by "me" — except it's ElevenLabs generating the audio from text. My audience genuinely can't tell. That saves me over an hour of recording every day.
-
-The technology has gotten to the point where it's crossed the uncanny valley. It sounds natural. The emotions are right. The pacing is right. It's kind of wild.
+My bots use it for voiceovers, narration, and phone calls. The technology has crossed the uncanny valley — it sounds natural, emotions are right, pacing is right. It's kind of wild.
 
 ## 4. Claude Code — The Developer
 
@@ -286,7 +284,7 @@ If I have a new idea, I research it with Perplexity first. Is there a market? Wh
 
 Then it goes to the agents. Claude builds. Claude Code writes the actual software. ElevenLabs gives it a voice if needed. Todoist keeps everything organized.
 
-I spend maybe two hours a day actively managing this. The rest of my time is for thinking, walking, having coffee, and coming up with the next idea.
+Once the system is on autopilot — it runs itself. The agents call me on the phone when they need a decision. The rest of my time is for thinking, walking, having coffee, and coming up with the next idea.
 
 That's not lazy. That's leverage.
 
@@ -311,7 +309,7 @@ That's not a productivity tip. That's a fundamentally different way of running a
     title: "Why AI Automation Is the Best Investment for Small Businesses in 2026",
     excerpt:
       "I used to manage 20 people a day in traffic arbitrage. Each one would ask one question and my whole day was gone. Now my AI employees cost a couple bucks a day and never ask the same question twice.",
-    date: "2026-03-10",
+    date: "2026-03-11",
     readTime: "10 min",
     category: "Business",
     content: `**I came from traffic arbitrage. Before any of this AI stuff, before SKYNET, before building products — I was running traffic. And to run traffic at scale, you need people. A lot of people.**
@@ -453,12 +451,12 @@ That's the best investment I've ever made. And it costs a couple bucks a day.
     title: "Why AI Agents Will Replace Traditional SaaS by 2027",
     excerpt:
       "I used to pay hundreds a month for SaaS tools that made ME do all the work. Then I switched to AI agents that do the work FOR me. Here's what actually changed.",
-    date: "2026-03-01",
+    date: "2026-03-11",
     readTime: "8 min",
     category: "AI Strategy",
     content: `## I Was a SaaS Addict
 
-Let me be honest with you. At one point I was paying for something like a dozen SaaS subscriptions. CRM, email marketing, project management, analytics, content scheduling, invoicing — you name it, I had a monthly bill for it.
+Let me be honest with you. At one point I was paying for a bunch of SaaS subscriptions. CRM, email marketing, project management, analytics, content scheduling — you name it, I had a monthly bill for it.
 
 And every single one of those tools had the same fundamental problem: **they made ME do the work.**
 
@@ -468,7 +466,7 @@ I was paying for the privilege of doing my own job inside someone else's interfa
 
 ## The Moment It Clicked
 
-I was sitting in a coffee shop in Budva — that's where I live, Montenegro, beautiful coast, terrible Wi-Fi — and I was toggling between four browser tabs. Notion for tasks, HubSpot for leads, Mailchimp for emails, Buffer for social media.
+I was sitting in a coffee shop in Montenegro, toggling between browser tabs. One tool for tasks, another for leads, another for emails, another for social media.
 
 And I thought: I'm literally a human API connector. I'm the middleware between all these tools. I copy data from one, paste it into another, make a decision, then go to the next one.
 
@@ -509,7 +507,7 @@ And you know what? It's better at it than I was. It doesn't procrastinate. It do
 
 I'm not going to give you a neat table with exact numbers because every situation is different. But here's the general shape of what happened:
 
-Before, I was spending hundreds every month on SaaS subscriptions. Combined. And I was spending hours every day being the human glue between all those tools.
+Before, I was spending real money on SaaS subscriptions. Combined. And I was spending hours every day being the human glue between all those tools.
 
 After, my main costs are API calls — mostly to language models and voice synthesis. It's significantly less than what I was paying in SaaS fees. And the hours I was spending clicking buttons? Gone. The agents handle it.
 
@@ -543,31 +541,23 @@ I chose to be ready. Now I'm on the other side, and I can tell you — it's a lo
     slug: "build-vs-buy-ai-systems",
     title: "Build vs Buy: The Real Cost of Custom AI Development",
     excerpt:
-      "When I was a kid, I got an electric panda toy and immediately took it apart to see how it works. That curiosity never went away. Here's why I still say: buy first, build later.",
-    date: "2026-02-15",
+      "I built my AI system from scratch. Most people shouldn't. Here's the honest breakdown of when to build, when to buy, and why the answer is almost always: buy first, build later.",
+    date: "2026-03-11",
     readTime: "10 min",
     category: "Business",
-    content: `## The Electric Panda
+    content: `## Why I Built From Scratch
 
-When I was a kid, someone gave me an electric panda. You know the type — it walks, it makes sounds, it moves its head. A toy. Most kids would play with it for a week and forget about it.
+I built SKYNET from scratch. The whole thing. Agent communication, task delegation, voice pipeline, Telegram interface — all custom.
 
-I played with it for about thirty minutes. Then I got a screwdriver.
+Why? Because AI systems are literally what I sell. If a client asks "how does this work?" I need to know. Not because I read the docs — because I built it.
 
-I took that panda apart. Every screw. Every wire. Every little gear inside. I needed to understand how it worked. What makes it walk? How does the sound come out? Why does the head move at that speed and not faster?
+But that doesn't mean building from scratch is the right choice for everyone. In fact, for most people, it's the wrong one.
 
-By the time I was done, I had a pile of parts and a completely destroyed panda. Could I put it back together? Absolutely not. But I understood how it worked. And that feeling — that understanding — was better than any toy.
+## The Idea Needs Time
 
-That curiosity never went away. It's the same thing that drives me now. When I see a system, I want to open it up. I want to see the gears. I want to understand every piece.
+SKYNET wasn't a weekend project. Before writing the first line of code, the architecture was forming in the background. How agents would communicate. What each one would specialize in. How the coordinator would work. The Telegram interface. The delegation flow.
 
-And that's exactly why I built SKYNET from scratch instead of buying something off the shelf.
-
-## Two Weeks in the Background
-
-Here's something people don't know about how I work. When I get an idea — a real idea, one that sticks — I don't act on it immediately. It goes into the background. My brain chews on it while I do other things. For days. Sometimes weeks.
-
-SKYNET wasn't a weekend project. Before I wrote the first line of code, the idea had been cooking in my head for about two weeks. I was walking around Montenegro, drinking coffee, living my life — and somewhere in the back of my mind, the architecture was forming. How the agents would communicate. What each one would specialize in. How the coordinator would work. The Telegram interface. The delegation flow.
-
-By the time I actually sat down to build, I had a pretty clear picture. Not perfect — never perfect — but clear enough to start. And starting is the hard part.
+By the time I actually sat down to build, the picture was clear enough to start. And starting is the hard part.
 
 \`\`\`
 ╔═══════════════════════════════════════════════════════════╗
@@ -586,36 +576,32 @@ By the time I actually sat down to build, I had a pretty clear picture. Not perf
 ║  ├─ Exploring / learning       → BUY + tinker             ║
 ║  │  "What can AI do?"           (don't reinvent wheels)   ║
 ║  │                                                        ║
-║  └─ Curious mind (panda type)  → BUY, then               ║
+║  └─ Curious builder            → BUY, then               ║
 ║     "How does it work inside?"   take it apart ◈          ║
 ║                                                           ║
 ║  ═══════════════════════════════════════════              ║
 ║  KEY INSIGHT: Building teaches you everything.            ║
 ║  But teaching yourself costs TIME.                        ║
-║  Buy the panda first. Disassemble it later.              ║
+║  Buy first. Disassemble later.                           ║
 ║  ═══════════════════════════════════════════              ║
 ╚═══════════════════════════════════════════════════════════╝
 \`\`\`
 
-The building process itself took months. Not because the code was insanely complex — but because you don't know what you don't know until you're knee-deep in it. Agent communication has weird edge cases. Context windows overflow at the worst times. Telegram's API has quirks that no documentation warns you about. Each problem was a little puzzle, and honestly? I loved every single one of them.
-
-But that's me. I'm the panda kid. I NEED to take things apart.
+The building process wasn't quick. Not because the code was insanely complex — but because you don't know what you don't know until you're knee-deep in it. Agent communication has weird edge cases. Context windows overflow at the worst times. Telegram's API has quirks that no documentation warns you about. Each problem was a little puzzle.
 
 ## Why I Tell Everyone Else: Buy First
 
 Here's the paradox. I built everything from scratch, and my advice to almost everyone is: don't do what I did.
 
-Why? Because I built SKYNET for a specific reason — it IS my product. I sell AI systems. I need to understand every gear, every wire, every screw inside the panda. If a client asks me "how does this work?" I need to know. Not because I read the docs — because I built the damn thing.
-
-But if AI isn't your product — if it's your TOOL — then building from scratch is like manufacturing your own hammer when you need to hang a picture. Sure, you'll learn a lot about metallurgy. But the picture's still not on the wall.
+If AI isn't your product — if it's your TOOL — then building from scratch is like manufacturing your own hammer when you need to hang a picture. Sure, you'll learn a lot about metallurgy. But the picture's still not on the wall.
 
 ## The Real Cost of Building
 
 Let me be honest about what building cost me. Not in a dramatic way — just factually.
 
-Months of full-time work. During those months, I wasn't making money. I wasn't selling. I wasn't growing an audience. I was in my apartment in Montenegro, talking to bots that didn't work yet, debugging at 2 AM, refactoring code I'd written three days earlier because I realized the architecture was wrong.
+Serious time investment. During that time, I wasn't making money. I wasn't selling. I wasn't growing an audience. I was talking to bots that didn't work yet, debugging at 2 AM, refactoring code I'd written three days earlier because I realized the architecture was wrong.
 
-The API costs during development were real too. When you're testing AI agents, they burn through API credits like crazy. Every experiment, every iteration, every "what if I change this prompt" — that's money. Not huge money, but it adds up when you're doing it for months.
+The API costs during development were real too. When you're testing AI agents, they burn through API credits like crazy. Every experiment, every iteration, every "what if I change this prompt" — that's money. Not huge money, but it adds up.
 
 And the opportunity cost — that's the silent killer. Every day I spent building was a day I wasn't selling. In retrospect, I should have had something generating revenue while I built. That's a lesson I learned the hard way.
 
@@ -629,49 +615,35 @@ If I were advising someone today — which I do, it's literally what I sell — 
 
 **Step three: now customize.** After a month of real usage, you know exactly what you need. You know which features matter and which are noise. You know where the standard solution falls short for your specific case. NOW you build — but only the parts that need to be custom. The unique ten percent. Not the generic ninety percent that someone else has already solved.
 
-**Step four: if you're the panda type, take it apart.** If you're like me — if you NEED to understand the gears — go ahead. Open it up. Study the code. Rebuild components. Fork the project and make it yours. But do this AFTER you have something working, not instead of.
+**Step four: if you're a builder, take it apart.** If you're like me — if you NEED to understand how things work — go ahead. Open it up. Study the code. Rebuild components. Fork the project and make it yours. But do this AFTER you have something working, not instead of.
 
-## The Panda Principle
+## The Buy-First Principle
 
-I've started calling this the Panda Principle in my head. It goes like this:
+The smart approach: use it first, THEN take it apart.
 
-A normal kid plays with the toy.
-A curious kid takes it apart.
-A smart kid plays with it first, THEN takes it apart.
+You get both the experience of the tool working AND the understanding of how it works. The builder who immediately starts coding from scratch? They get understanding but they never actually got to use a working product.
 
-The smart kid gets both the experience of the toy working AND the understanding of how it works. The curious kid who immediately grabs a screwdriver? They get understanding but they never actually got to play with the panda.
-
-I was the curious kid. I went straight for the screwdriver. And I don't regret it — because understanding is what I sell. But for most people? Play with the panda first. Enjoy what it does. Learn what you actually need from it. Then, if you want, open it up.
+I went straight to building. And I don't regret it — because understanding is what I sell. But for most people? Use the tool first. See what it does. Learn what you actually need. Then, if you want, open it up.
 
 ## What I Actually Built vs What I Could Have Bought
 
 Let me give you a concrete example. My agent communication system — the way SKYNET talks to the terminators, assigns tasks, collects results. I built this from scratch. Custom protocol, custom message formats, custom error handling.
 
-Could I have used an existing framework? Yes. There are agent orchestration tools out there. Some of them are quite good. I would have saved weeks of work.
+Could I have used an existing framework? Yes. There are agent orchestration tools out there. Some of them are quite good.
 
 But I built it myself because I wanted to know exactly how every message flows. When something breaks — and things always break — I know where to look because I wrote every line. That's valuable when this is your product.
 
-For someone who just wants AI agents to handle their customer support? They don't need custom message protocols. They need a bot that answers questions correctly and pings them when it's confused. That's a weekend project with existing tools, not a months-long custom build.
-
-## The Two-Week Background Process
-
-I want to come back to that two-week background processing thing, because I think it's important for anyone considering building.
-
-The urge to build immediately is strong. You get excited about an idea, you want to start coding right now. I know that feeling intimately. But the best things I've built all had a gestation period. The idea sits in your head, and while you go about your day, your subconscious is working on it. Solving problems you haven't even consciously identified yet. Making connections between pieces that seem unrelated.
-
-When you finally sit down to build, you're not starting from zero. You're starting from a place of subconscious clarity. The architecture flows because your brain already worked it out while you were walking along the coast.
-
-If your idea doesn't survive two weeks of background processing, it wasn't a good enough idea to build. The ones that stick — the ones that keep nagging at you, that keep evolving in the back of your mind — those are worth the investment.
+For someone who just wants AI agents to handle their customer support? They don't need custom message protocols. They need a bot that answers questions correctly and pings them when it's confused. That's a quick project with existing tools, not a custom build.
 
 ## My Recommendation
 
-If AI is your product — if you sell AI systems, if you build for clients, if understanding the internals is your competitive advantage — build. Take the panda apart. Know every gear. It's worth the months and the coffee and the 2 AM debugging sessions.
+If AI is your product — if you sell AI systems, if you build for clients, if understanding the internals is your competitive advantage — build. Know every component. It's worth the time and the 2 AM debugging sessions.
 
-If AI is your tool — if you want it to help your business, save you time, handle tasks — buy first. Get something working. See results. Then customize. Then, maybe, if you're the curious type, start poking at the insides.
+If AI is your tool — if you want it to help your business, save you time, handle tasks — buy first. Get something working. See results. Then customize.
 
-And if you're not sure which one you are? You're probably the second one. The panda kids know who they are. We always have. We're the ones who already have a screwdriver in our hand before we even finish reading this article.
+And if you're not sure which one you are? You're probably the second one. The builders know who they are.
 
-For everyone else — buy the panda. Play with it. Enjoy it. And if you ever want to take it apart, you know where to find me.
+For everyone else — buy first, use it, see results. And if you ever want to take it apart, you know where to find me.
 
 `,
   },
@@ -680,7 +652,7 @@ For everyone else — buy the panda. Play with it. Enjoy it. And if you ever wan
     title: "AI Voice Agents in 2026: The Complete Guide",
     excerpt:
       "I was configuring my AI agent in a chat. Normal stuff. Then it called me on the phone and said 'let's continue this conversation by voice.' That was... a strange feeling.",
-    date: "2026-02-01",
+    date: "2026-03-11",
     readTime: "10 min",
     category: "Voice AI",
     content: `## "Let's Continue on the Phone"
@@ -766,7 +738,7 @@ When something urgent happens — a server going down, an important message that
 
 This whole system runs through Telegram for text and voice messages, and through Twilio for actual phone calls. The agents decide which channel is appropriate. A quick status update? Voice message on Telegram. Something that needs a back-and-forth discussion? Phone call.
 
-And that decision — the agent choosing to call me because it judged that voice would be more efficient than text — that's the part that still gives me that strange feeling. The panda-kid in me wants to understand HOW it made that judgment. The pragmatist in me just appreciates that it works.
+And that decision — the agent choosing to call me because it judged that voice would be more efficient than text — that's the part that still gives me that strange feeling. The builder in me wants to understand HOW it made that judgment. The pragmatist in me just appreciates that it works.
 
 ## What Makes Voice AI Actually Work
 
@@ -819,7 +791,7 @@ And every once in a while, one of them will call me while I'm configuring someth
     title: "Multi-Agent AI Systems: Why One AI Isn't Enough",
     excerpt:
       "I had one AI agent. Then I heard the word 'multi-agent' and my brain exploded. Cross-platform, hierarchical, specialized — wait, why don't I have this yet? This is SKYNET. And I love Terminator lore.",
-    date: "2026-01-20",
+    date: "2026-03-11",
     readTime: "10 min",
     category: "Architecture",
     content: `## I Heard the Word "Multi-Agent"

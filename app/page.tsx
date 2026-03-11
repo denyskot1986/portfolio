@@ -93,7 +93,7 @@ function PricingBlock({ codePrice, setupPrice, ctaTemplate, ctaIntegration, t, o
         <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
           <div className="glass rounded-xl p-6 sm:p-8 text-center">
             <p className="text-[10px] text-pink-400/30 uppercase tracking-wider font-mono mb-3">Source Code</p>
-            <p className="text-4xl font-black gradient-text font-mono mb-2">${codePrice}</p>
+            <p className="text-3xl sm:text-4xl font-black gradient-text font-mono mb-2">${codePrice}</p>
             <p className="text-xs text-pink-100/30 mb-5">{t.pricingSection.templateDesc}</p>
             <ul className="space-y-2 text-sm text-pink-100/40 text-left mb-6">
               {t.pricingSection.templateIncludes.map((item: string) => (
@@ -109,7 +109,7 @@ function PricingBlock({ codePrice, setupPrice, ctaTemplate, ctaIntegration, t, o
             <div className="flex justify-center mb-3">
               <span className="text-[10px] px-3 py-1 rounded-full bg-pink-500/15 text-pink-300/60 border border-pink-500/20 font-mono uppercase tracking-wider">{t.pricingSection.recommended}</span>
             </div>
-            <p className="text-4xl font-black gradient-text font-mono mb-2">${setupPrice}</p>
+            <p className="text-3xl sm:text-4xl font-black gradient-text font-mono mb-2">${setupPrice}</p>
             <p className="text-xs text-pink-100/30 mb-5">{t.pricingSection.integrationDesc}</p>
             <ul className="space-y-2 text-sm text-pink-100/40 text-left mb-6">
               {t.pricingSection.integrationIncludes.map((item: string) => (
@@ -125,7 +125,7 @@ function PricingBlock({ codePrice, setupPrice, ctaTemplate, ctaIntegration, t, o
       ) : (
         <div className="max-w-md mx-auto">
           <div className="glass rounded-xl p-6 sm:p-8 text-center border-pink-400/20 shadow-[0_0_40px_rgba(244,114,182,0.08)]">
-            <p className="text-4xl font-black gradient-text font-mono mb-2">${codePrice}</p>
+            <p className="text-3xl sm:text-4xl font-black gradient-text font-mono mb-2">${codePrice}</p>
             <p className="text-xs text-pink-100/30 mb-5">{t.pricingSection.templateDesc}</p>
             <ul className="space-y-2 text-sm text-pink-100/40 text-left mb-6">
               {t.pricingSection.templateIncludes.map((item: string) => (
@@ -247,7 +247,7 @@ function TestimonialsSection() {
           className="text-center mb-12"
         >
           <p className="text-xs text-pink-400/30 uppercase tracking-[0.4em] mb-3 font-mono">Testimonials</p>
-          <h2 className="text-3xl md:text-5xl font-black mb-4 tracking-tight">
+          <h2 className="text-2xl sm:text-3xl md:text-5xl font-black mb-4 tracking-tight">
             <span className="gradient-text">What Clients Say</span>
           </h2>
           <p className="text-pink-100/40 text-base">Real results from real businesses.</p>
@@ -304,7 +304,7 @@ function BlogCardsSection() {
           className="text-center mb-12"
         >
           <p className="text-xs text-pink-400/30 uppercase tracking-[0.4em] mb-3 font-mono">{t.label}</p>
-          <h2 className="text-3xl md:text-5xl font-black mb-4 tracking-tight">
+          <h2 className="text-2xl sm:text-3xl md:text-5xl font-black mb-4 tracking-tight">
             <span className="gradient-text">{t.title}</span>
           </h2>
           <p className="text-pink-100/40 text-base">{t.subtitle}</p>
@@ -421,7 +421,7 @@ function ContactFormSection() {
           className="text-center mb-10"
         >
           <p className="text-xs text-pink-400/30 uppercase tracking-[0.4em] mb-4 font-mono">Contact</p>
-          <h2 className="text-3xl md:text-5xl font-black mb-4">
+          <h2 className="text-2xl sm:text-3xl md:text-5xl font-black mb-4">
             <span className="gradient-text">Let&apos;s Connect</span>
           </h2>
           <p className="text-pink-100/40 mb-2">Leave your details — our AI agent will contact you within 24 hours.</p>
@@ -678,7 +678,7 @@ export default function Home() {
           </motion.p>
 
           <motion.h1 initial={{ opacity: 0, y: 30 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.8, delay: 0.2 }}
-            className="text-4xl sm:text-5xl md:text-7xl font-bold mb-1 tracking-tight">
+            className="text-3xl sm:text-5xl md:text-7xl font-bold mb-1 tracking-tight">
             Fine<span className="gradient-text">kot</span>
           </motion.h1>
 
@@ -750,7 +750,7 @@ export default function Home() {
         <div className="max-w-6xl mx-auto">
           <motion.div {...fade}>
             <p className="text-xs text-pink-400/30 uppercase tracking-[0.4em] mb-3 font-mono">{t.projectsSection.label}</p>
-            <h2 className="text-3xl md:text-5xl font-black mb-3 tracking-tight"><span className="gradient-text">{t.projectsSection.title}</span></h2>
+            <h2 className="text-2xl sm:text-3xl md:text-5xl font-black mb-3 tracking-tight"><span className="gradient-text">{t.projectsSection.title}</span></h2>
           </motion.div>
 
           {/* Category filter */}
@@ -806,7 +806,7 @@ export default function Home() {
                       <p className="text-xs text-pink-100/30 leading-relaxed mb-3">{pData?.description || p.description}</p>
 
                       {/* Price + metrics + CTA */}
-                      <div className="flex items-end justify-between mt-2">
+                      <div className="flex flex-wrap items-end justify-between gap-2 mt-2">
                         <div>
                           {p.price ? (
                             <>
@@ -924,7 +924,7 @@ export default function Home() {
         <div className="max-w-3xl mx-auto text-center">
           <motion.div {...fade}>
             <p className="text-xs text-pink-400/30 uppercase tracking-[0.4em] mb-4 font-mono">{t.about.label}</p>
-            <h2 className="text-3xl md:text-5xl font-black mb-6"><span className="gradient-text">{t.about.title}</span></h2>
+            <h2 className="text-2xl sm:text-3xl md:text-5xl font-black mb-6"><span className="gradient-text">{t.about.title}</span></h2>
             <p className="text-pink-100/40 text-base sm:text-lg leading-relaxed mb-8">{t.about.desc}</p>
             <div className="glass rounded-xl p-4 sm:p-6 text-left max-w-md mx-auto">
               <p className="text-[10px] text-pink-400/30 uppercase tracking-wider font-mono mb-3">{t.about.boxTitle}</p>
@@ -943,8 +943,8 @@ export default function Home() {
         <div className="max-w-5xl mx-auto">
           <motion.div {...fade} className="text-center mb-12">
             <p className="text-xs text-pink-400/30 uppercase tracking-[0.4em] mb-3 font-mono">{t.skynetProduct.label}</p>
-            <h2 className="text-4xl md:text-6xl font-black mb-4 tracking-tight"><span className="gradient-text">{t.skynetProduct.title}</span></h2>
-            <p className="text-lg md:text-xl text-pink-100/50 font-semibold mb-4">{t.skynetProduct.subtitle}</p>
+            <h2 className="text-2xl sm:text-2xl sm:text-4xl md:text-6xl font-black mb-4 tracking-tight"><span className="gradient-text">{t.skynetProduct.title}</span></h2>
+            <p className="text-base sm:text-lg md:text-xl text-pink-100/50 font-semibold mb-4">{t.skynetProduct.subtitle}</p>
             <p className="text-pink-100/30 text-base leading-relaxed max-w-3xl mx-auto">{t.skynetProduct.desc}</p>
           </motion.div>
 
@@ -1006,8 +1006,8 @@ export default function Home() {
         <div className="max-w-5xl mx-auto">
           <motion.div {...fade} className="text-center mb-12">
             <p className="text-xs text-pink-400/30 uppercase tracking-[0.4em] mb-3 font-mono">{t.contentFactory.label}</p>
-            <h2 className="text-4xl md:text-6xl font-black mb-4 tracking-tight"><span className="gradient-text">{t.contentFactory.title}</span></h2>
-            <p className="text-lg md:text-xl text-pink-100/50 font-semibold mb-4">{t.contentFactory.subtitle}</p>
+            <h2 className="text-2xl sm:text-4xl md:text-6xl font-black mb-4 tracking-tight"><span className="gradient-text">{t.contentFactory.title}</span></h2>
+            <p className="text-base sm:text-lg md:text-xl text-pink-100/50 font-semibold mb-4">{t.contentFactory.subtitle}</p>
             <p className="text-pink-100/30 text-base leading-relaxed max-w-3xl mx-auto">{t.contentFactory.desc}</p>
           </motion.div>
           <motion.div {...fade} className="glass rounded-xl p-4 sm:p-8 overflow-x-auto flex flex-col items-center mb-10">
@@ -1051,8 +1051,8 @@ export default function Home() {
         <div className="max-w-5xl mx-auto">
           <motion.div {...fade} className="text-center mb-12">
             <p className="text-xs text-pink-400/30 uppercase tracking-[0.4em] mb-3 font-mono">{t.svetlana.label}</p>
-            <h2 className="text-4xl md:text-6xl font-black mb-4 tracking-tight"><span className="gradient-text">{t.svetlana.title}</span></h2>
-            <p className="text-lg md:text-xl text-pink-100/50 font-semibold mb-4">{t.svetlana.subtitle}</p>
+            <h2 className="text-2xl sm:text-4xl md:text-6xl font-black mb-4 tracking-tight"><span className="gradient-text">{t.svetlana.title}</span></h2>
+            <p className="text-base sm:text-lg md:text-xl text-pink-100/50 font-semibold mb-4">{t.svetlana.subtitle}</p>
             <p className="text-pink-100/30 text-base leading-relaxed max-w-3xl mx-auto">{t.svetlana.desc}</p>
           </motion.div>
 
@@ -1102,8 +1102,8 @@ export default function Home() {
         <div className="max-w-5xl mx-auto">
           <motion.div {...fade} className="text-center mb-12">
             <p className="text-xs text-pink-400/30 uppercase tracking-[0.4em] mb-3 font-mono">{t.callAgent.label}</p>
-            <h2 className="text-4xl md:text-6xl font-black mb-4 tracking-tight"><span className="gradient-text">{t.callAgent.title}</span></h2>
-            <p className="text-lg md:text-xl text-pink-100/50 font-semibold mb-4">{t.callAgent.subtitle}</p>
+            <h2 className="text-2xl sm:text-4xl md:text-6xl font-black mb-4 tracking-tight"><span className="gradient-text">{t.callAgent.title}</span></h2>
+            <p className="text-base sm:text-lg md:text-xl text-pink-100/50 font-semibold mb-4">{t.callAgent.subtitle}</p>
             <p className="text-pink-100/30 text-base leading-relaxed max-w-3xl mx-auto">{t.callAgent.desc}</p>
           </motion.div>
           <motion.div {...fade} className="glass rounded-xl p-4 sm:p-8 overflow-x-auto flex flex-col items-center mb-10">
@@ -1147,8 +1147,8 @@ export default function Home() {
         <div className="max-w-5xl mx-auto">
           <motion.div {...fade} className="text-center mb-12">
             <p className="text-xs text-pink-400/30 uppercase tracking-[0.4em] mb-3 font-mono">{t.docMind.label}</p>
-            <h2 className="text-4xl md:text-6xl font-black mb-4 tracking-tight"><span className="gradient-text">{t.docMind.title}</span></h2>
-            <p className="text-lg md:text-xl text-pink-100/50 font-semibold mb-4">{t.docMind.subtitle}</p>
+            <h2 className="text-2xl sm:text-4xl md:text-6xl font-black mb-4 tracking-tight"><span className="gradient-text">{t.docMind.title}</span></h2>
+            <p className="text-base sm:text-lg md:text-xl text-pink-100/50 font-semibold mb-4">{t.docMind.subtitle}</p>
             <p className="text-pink-100/30 text-base leading-relaxed max-w-3xl mx-auto">{t.docMind.desc}</p>
           </motion.div>
           <motion.div {...fade} className="glass rounded-xl p-4 sm:p-8 overflow-x-auto flex flex-col items-center mb-10">
@@ -1192,8 +1192,8 @@ export default function Home() {
         <div className="max-w-5xl mx-auto">
           <motion.div {...fade} className="text-center mb-12">
             <p className="text-xs text-pink-400/30 uppercase tracking-[0.4em] mb-3 font-mono">{t.hiringAutopilot.label}</p>
-            <h2 className="text-4xl md:text-6xl font-black mb-4 tracking-tight"><span className="gradient-text">{t.hiringAutopilot.title}</span></h2>
-            <p className="text-lg md:text-xl text-pink-100/50 font-semibold mb-4">{t.hiringAutopilot.subtitle}</p>
+            <h2 className="text-2xl sm:text-4xl md:text-6xl font-black mb-4 tracking-tight"><span className="gradient-text">{t.hiringAutopilot.title}</span></h2>
+            <p className="text-base sm:text-lg md:text-xl text-pink-100/50 font-semibold mb-4">{t.hiringAutopilot.subtitle}</p>
             <p className="text-pink-100/30 text-base leading-relaxed max-w-3xl mx-auto">{t.hiringAutopilot.desc}</p>
           </motion.div>
           <motion.div {...fade} className="glass rounded-xl p-4 sm:p-8 overflow-x-auto flex flex-col items-center mb-10">
@@ -1237,8 +1237,8 @@ export default function Home() {
         <div className="max-w-5xl mx-auto">
           <motion.div {...fade} className="text-center mb-12">
             <p className="text-xs text-pink-400/30 uppercase tracking-[0.4em] mb-3 font-mono">{t.leadHunter.label}</p>
-            <h2 className="text-4xl md:text-6xl font-black mb-4 tracking-tight"><span className="gradient-text">{t.leadHunter.title}</span></h2>
-            <p className="text-lg md:text-xl text-pink-100/50 font-semibold mb-4">{t.leadHunter.subtitle}</p>
+            <h2 className="text-2xl sm:text-4xl md:text-6xl font-black mb-4 tracking-tight"><span className="gradient-text">{t.leadHunter.title}</span></h2>
+            <p className="text-base sm:text-lg md:text-xl text-pink-100/50 font-semibold mb-4">{t.leadHunter.subtitle}</p>
             <p className="text-pink-100/30 text-base leading-relaxed max-w-3xl mx-auto">{t.leadHunter.desc}</p>
           </motion.div>
           <motion.div {...fade} className="glass rounded-xl p-4 sm:p-8 overflow-x-auto flex flex-col items-center mb-10">
@@ -1282,8 +1282,8 @@ export default function Home() {
         <div className="max-w-5xl mx-auto">
           <motion.div {...fade} className="text-center mb-12">
             <p className="text-xs text-pink-400/30 uppercase tracking-[0.4em] mb-3 font-mono">{t.skynetIntake.label}</p>
-            <h2 className="text-4xl md:text-6xl font-black mb-4 tracking-tight"><span className="gradient-text">{t.skynetIntake.title}</span></h2>
-            <p className="text-lg md:text-xl text-pink-100/50 font-semibold mb-4">{t.skynetIntake.subtitle}</p>
+            <h2 className="text-2xl sm:text-4xl md:text-6xl font-black mb-4 tracking-tight"><span className="gradient-text">{t.skynetIntake.title}</span></h2>
+            <p className="text-base sm:text-lg md:text-xl text-pink-100/50 font-semibold mb-4">{t.skynetIntake.subtitle}</p>
             <p className="text-pink-100/30 text-base leading-relaxed max-w-3xl mx-auto">{t.skynetIntake.desc}</p>
           </motion.div>
           <motion.div {...fade} className="glass rounded-xl p-4 sm:p-8 overflow-x-auto flex flex-col items-center mb-10">
@@ -1327,8 +1327,8 @@ export default function Home() {
         <div className="max-w-5xl mx-auto">
           <motion.div {...fade} className="text-center mb-12">
             <p className="text-xs text-pink-400/30 uppercase tracking-[0.4em] mb-3 font-mono">{t.cAdmin.label}</p>
-            <h2 className="text-4xl md:text-6xl font-black mb-4 tracking-tight"><span className="gradient-text">{t.cAdmin.title}</span></h2>
-            <p className="text-lg md:text-xl text-pink-100/50 font-semibold mb-4">{t.cAdmin.subtitle}</p>
+            <h2 className="text-2xl sm:text-4xl md:text-6xl font-black mb-4 tracking-tight"><span className="gradient-text">{t.cAdmin.title}</span></h2>
+            <p className="text-base sm:text-lg md:text-xl text-pink-100/50 font-semibold mb-4">{t.cAdmin.subtitle}</p>
             <p className="text-pink-100/30 text-base leading-relaxed max-w-3xl mx-auto">{t.cAdmin.desc}</p>
           </motion.div>
           <motion.div {...fade} className="glass rounded-xl p-4 sm:p-8 overflow-x-auto flex flex-col items-center mb-10">
@@ -1372,8 +1372,8 @@ export default function Home() {
         <div className="max-w-5xl mx-auto">
           <motion.div {...fade} className="text-center mb-12">
             <p className="text-xs text-pink-400/30 uppercase tracking-[0.4em] mb-3 font-mono">{t.supportBot.label}</p>
-            <h2 className="text-4xl md:text-6xl font-black mb-4 tracking-tight"><span className="gradient-text">{t.supportBot.title}</span></h2>
-            <p className="text-lg md:text-xl text-pink-100/50 font-semibold mb-4">{t.supportBot.subtitle}</p>
+            <h2 className="text-2xl sm:text-4xl md:text-6xl font-black mb-4 tracking-tight"><span className="gradient-text">{t.supportBot.title}</span></h2>
+            <p className="text-base sm:text-lg md:text-xl text-pink-100/50 font-semibold mb-4">{t.supportBot.subtitle}</p>
             <p className="text-pink-100/30 text-base leading-relaxed max-w-3xl mx-auto">{t.supportBot.desc}</p>
           </motion.div>
           <motion.div {...fade} className="glass rounded-xl p-4 sm:p-8 overflow-x-auto flex flex-col items-center mb-10">
@@ -1416,8 +1416,8 @@ export default function Home() {
         <div className="max-w-5xl mx-auto">
           <motion.div {...fade} className="text-center mb-12">
             <p className="text-xs text-pink-400/30 uppercase tracking-[0.4em] mb-3 font-mono">{t.realEstateAi.label}</p>
-            <h2 className="text-4xl md:text-6xl font-black mb-4 tracking-tight"><span className="gradient-text">{t.realEstateAi.title}</span></h2>
-            <p className="text-lg md:text-xl text-pink-100/50 font-semibold mb-4">{t.realEstateAi.subtitle}</p>
+            <h2 className="text-2xl sm:text-4xl md:text-6xl font-black mb-4 tracking-tight"><span className="gradient-text">{t.realEstateAi.title}</span></h2>
+            <p className="text-base sm:text-lg md:text-xl text-pink-100/50 font-semibold mb-4">{t.realEstateAi.subtitle}</p>
             <p className="text-pink-100/30 text-base leading-relaxed max-w-3xl mx-auto">{t.realEstateAi.desc}</p>
           </motion.div>
           <motion.div {...fade} className="glass rounded-xl p-4 sm:p-8 overflow-x-auto flex flex-col items-center mb-10">
@@ -1461,8 +1461,8 @@ export default function Home() {
         <div className="max-w-5xl mx-auto">
           <motion.div {...fade} className="text-center mb-12">
             <p className="text-xs text-pink-400/30 uppercase tracking-[0.4em] mb-3 font-mono">{t.mailMind.label}</p>
-            <h2 className="text-4xl md:text-6xl font-black mb-4 tracking-tight"><span className="gradient-text">{t.mailMind.title}</span></h2>
-            <p className="text-lg md:text-xl text-pink-100/50 font-semibold mb-4">{t.mailMind.subtitle}</p>
+            <h2 className="text-2xl sm:text-4xl md:text-6xl font-black mb-4 tracking-tight"><span className="gradient-text">{t.mailMind.title}</span></h2>
+            <p className="text-base sm:text-lg md:text-xl text-pink-100/50 font-semibold mb-4">{t.mailMind.subtitle}</p>
             <p className="text-pink-100/30 text-base leading-relaxed max-w-3xl mx-auto">{t.mailMind.desc}</p>
           </motion.div>
           <motion.div {...fade} className="glass rounded-xl p-4 sm:p-8 overflow-x-auto flex flex-col items-center mb-10">
@@ -1506,8 +1506,8 @@ export default function Home() {
         <div className="max-w-5xl mx-auto">
           <motion.div {...fade} className="text-center mb-12">
             <p className="text-xs text-pink-400/30 uppercase tracking-[0.4em] mb-3 font-mono">{t.contractScanner.label}</p>
-            <h2 className="text-4xl md:text-6xl font-black mb-4 tracking-tight"><span className="gradient-text">{t.contractScanner.title}</span></h2>
-            <p className="text-lg md:text-xl text-pink-100/50 font-semibold mb-4">{t.contractScanner.subtitle}</p>
+            <h2 className="text-2xl sm:text-4xl md:text-6xl font-black mb-4 tracking-tight"><span className="gradient-text">{t.contractScanner.title}</span></h2>
+            <p className="text-base sm:text-lg md:text-xl text-pink-100/50 font-semibold mb-4">{t.contractScanner.subtitle}</p>
             <p className="text-pink-100/30 text-base leading-relaxed max-w-3xl mx-auto">{t.contractScanner.desc}</p>
           </motion.div>
           <motion.div {...fade} className="glass rounded-xl p-4 sm:p-8 overflow-x-auto flex flex-col items-center mb-10">
@@ -1551,8 +1551,8 @@ export default function Home() {
         <div className="max-w-5xl mx-auto">
           <motion.div {...fade} className="text-center mb-12">
             <p className="text-xs text-pink-400/30 uppercase tracking-[0.4em] mb-3 font-mono">{t.bizPulse.label}</p>
-            <h2 className="text-4xl md:text-6xl font-black mb-4 tracking-tight"><span className="gradient-text">{t.bizPulse.title}</span></h2>
-            <p className="text-lg md:text-xl text-pink-100/50 font-semibold mb-4">{t.bizPulse.subtitle}</p>
+            <h2 className="text-2xl sm:text-4xl md:text-6xl font-black mb-4 tracking-tight"><span className="gradient-text">{t.bizPulse.title}</span></h2>
+            <p className="text-base sm:text-lg md:text-xl text-pink-100/50 font-semibold mb-4">{t.bizPulse.subtitle}</p>
             <p className="text-pink-100/30 text-base leading-relaxed max-w-3xl mx-auto">{t.bizPulse.desc}</p>
           </motion.div>
           <motion.div {...fade} className="glass rounded-xl p-4 sm:p-8 overflow-x-auto flex flex-col items-center mb-10">
@@ -1596,8 +1596,8 @@ export default function Home() {
         <div className="max-w-5xl mx-auto">
           <motion.div {...fade} className="text-center mb-12">
             <p className="text-xs text-pink-400/30 uppercase tracking-[0.4em] mb-3 font-mono">{t.codeReviewer.label}</p>
-            <h2 className="text-4xl md:text-6xl font-black mb-4 tracking-tight"><span className="gradient-text">{t.codeReviewer.title}</span></h2>
-            <p className="text-lg md:text-xl text-pink-100/50 font-semibold mb-4">{t.codeReviewer.subtitle}</p>
+            <h2 className="text-2xl sm:text-4xl md:text-6xl font-black mb-4 tracking-tight"><span className="gradient-text">{t.codeReviewer.title}</span></h2>
+            <p className="text-base sm:text-lg md:text-xl text-pink-100/50 font-semibold mb-4">{t.codeReviewer.subtitle}</p>
             <p className="text-pink-100/30 text-base leading-relaxed max-w-3xl mx-auto">{t.codeReviewer.desc}</p>
           </motion.div>
           <motion.div {...fade} className="glass rounded-xl p-4 sm:p-8 overflow-x-auto flex flex-col items-center mb-10">
@@ -1641,8 +1641,8 @@ export default function Home() {
         <div className="max-w-5xl mx-auto">
           <motion.div {...fade} className="text-center mb-12">
             <p className="text-xs text-pink-400/30 uppercase tracking-[0.4em] mb-3 font-mono">{t.meetingScribe.label}</p>
-            <h2 className="text-4xl md:text-6xl font-black mb-4 tracking-tight"><span className="gradient-text">{t.meetingScribe.title}</span></h2>
-            <p className="text-lg md:text-xl text-pink-100/50 font-semibold mb-4">{t.meetingScribe.subtitle}</p>
+            <h2 className="text-2xl sm:text-4xl md:text-6xl font-black mb-4 tracking-tight"><span className="gradient-text">{t.meetingScribe.title}</span></h2>
+            <p className="text-base sm:text-lg md:text-xl text-pink-100/50 font-semibold mb-4">{t.meetingScribe.subtitle}</p>
             <p className="text-pink-100/30 text-base leading-relaxed max-w-3xl mx-auto">{t.meetingScribe.desc}</p>
           </motion.div>
           <motion.div {...fade} className="glass rounded-xl p-4 sm:p-8 overflow-x-auto flex flex-col items-center mb-10">
@@ -1686,8 +1686,8 @@ export default function Home() {
         <div className="max-w-5xl mx-auto">
           <motion.div {...fade} className="text-center mb-12">
             <p className="text-xs text-pink-400/30 uppercase tracking-[0.4em] mb-3 font-mono">{t.complianceGuard.label}</p>
-            <h2 className="text-4xl md:text-6xl font-black mb-4 tracking-tight"><span className="gradient-text">{t.complianceGuard.title}</span></h2>
-            <p className="text-lg md:text-xl text-pink-100/50 font-semibold mb-4">{t.complianceGuard.subtitle}</p>
+            <h2 className="text-2xl sm:text-4xl md:text-6xl font-black mb-4 tracking-tight"><span className="gradient-text">{t.complianceGuard.title}</span></h2>
+            <p className="text-base sm:text-lg md:text-xl text-pink-100/50 font-semibold mb-4">{t.complianceGuard.subtitle}</p>
             <p className="text-pink-100/30 text-base leading-relaxed max-w-3xl mx-auto">{t.complianceGuard.desc}</p>
           </motion.div>
           <motion.div {...fade} className="glass rounded-xl p-4 sm:p-8 overflow-x-auto flex flex-col items-center mb-10">
@@ -1741,7 +1741,7 @@ export default function Home() {
                 {lang === "RU" ? "Подписано ✓" : lang === "UA" ? "Підписано ✓" : "Subscribed ✓"}
               </p>
             ) : (
-              <form onSubmit={(e) => { e.preventDefault(); if (newsletterEmail) setNewsletterDone(true); }} className="flex gap-2">
+              <form onSubmit={(e) => { e.preventDefault(); if (newsletterEmail) setNewsletterDone(true); }} className="flex flex-col sm:flex-row gap-2">
                 <input
                   type="email"
                   required
