@@ -103,7 +103,7 @@ export default function BlogChat({ articleTitle, articleSlug, lang = "EN" }: Blo
               >
                 {msg.role === "assistant" && (
                   <div className="w-6 h-6 rounded-full bg-gradient-to-r from-pink-600 to-purple-600 flex items-center justify-center text-white text-[8px] font-bold mr-2 mt-0.5 shrink-0">
-                    T-3
+                    FC
                   </div>
                 )}
                 <div
@@ -211,9 +211,9 @@ export default function BlogChat({ articleTitle, articleSlug, lang = "EN" }: Blo
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
           transition={{ delay: 0.8 }}
-          className="text-center text-[11px] text-pink-300/40 mt-3 font-mono tracking-wide"
+          className="text-center text-[11px] text-pink-300/30 mt-3 font-mono tracking-wide"
         >
-          {lang === "RU" ? "AI-консультант по статье" : lang === "UA" ? "AI-консультант по статті" : "AI article consultant"}
+          FineChat by Finekot.AI
         </motion.p>
       )}
     </div>
