@@ -1,6 +1,7 @@
 "use client";
 
 import { useState, useRef, useEffect, useCallback } from "react";
+import { usePathname } from "next/navigation";
 import { motion, AnimatePresence } from "framer-motion";
 
 interface ChatMessage {
@@ -9,6 +10,8 @@ interface ChatMessage {
 }
 
 export default function ChatbotWidget() {
+  const pathname = usePathname();
+  const isBlogPost = pathname?.startsWith("/blog/") && pathname !== "/blog";
   const [messages, setMessages] = useState<ChatMessage[]>([]);
   const [input, setInput] = useState("");
   const [loading, setLoading] = useState(false);
@@ -69,6 +72,8 @@ export default function ChatbotWidget() {
     },
     [send]
   );
+
+  if (isBlogPost) return null;
 
   return (
     <section className="w-full px-4 sm:px-6 pb-12 pt-8">

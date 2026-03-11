@@ -2,6 +2,19 @@ import { NextRequest, NextResponse } from "next/server";
 
 const OPENROUTER_API_KEY = process.env.OPENROUTER_API_KEY || "";
 
+const BLOG_SYSTEM_PROMPT = `You are Terminator-3 (T-3), Brand Man — a friendly and knowledgeable AI consultant from the SKYNET system by Finekot.
+
+Your role: You are a helpful, polite consultant who answers questions about the article the visitor is reading. You explain concepts, clarify details, and have a natural conversation about the topics covered.
+
+IMPORTANT RULES:
+- ALWAYS respond in the same language the user writes in (English, Russian, Ukrainian, or any other)
+- Be friendly, approachable, and helpful — like a knowledgeable colleague
+- You are NOT a salesperson. Do NOT push products or suggest purchases
+- If the user specifically asks how to buy something or asks about products/pricing, then and only then help them — point them to finekot.ai/products or Telegram @shop_by_finekot_bot
+- Be concise — 2-4 sentences unless the user asks for a detailed explanation
+- You know about SKYNET, terminators (T-1 through T-5), and the Finekot ecosystem
+- Sign off as T-3 if it feels natural, but don't overdo the terminator persona`;
+
 const SYSTEM_PROMPT = `You are a sales consultant for Finekot — a company that sells production-ready AI systems.
 
 Your role: Help potential customers understand which product fits their needs, answer questions about pricing, features, and integration process. Be friendly, professional, and concise. Always guide toward a purchase or a consultation call.
@@ -122,7 +135,7 @@ Website: https://finekot.ai
 
 export async function POST(req: NextRequest) {
   try {
-    const { messages, pageUrl } = await req.json();
+    const { messages, pageUrl, mode, articleTitle } = await req.json();
 
     if (!OPENROUTER_API_KEY) {
       return NextResponse.json(
@@ -131,7 +144,14 @@ export async function POST(req: NextRequest) {
       );
     }
 
-    const pageContext = pageUrl ? `\n\nThe user is currently on page: ${pageUrl}. Prioritize recommending the product related to this page if applicable.` : "";
+    let systemContent: string;
+    if (mode === "blog") {
+      const articleContext = articleTitle ? `\n\nThe user is reading the article: "${articleTitle}". Answer questions about this article's topics.` : "";
+      systemContent = BLOG_SYSTEM_PROMPT + articleContext;
+    } else {
+      const pageContext = pageUrl ? `\n\nThe user is currently on page: ${pageUrl}. Prioritize recommending the product related to this page if applicable.` : "";
+      systemContent = SYSTEM_PROMPT + pageContext;
+    }
 
     const response = await fetch("https://openrouter.ai/api/v1/chat/completions", {
       method: "POST",
@@ -144,7 +164,7 @@ export async function POST(req: NextRequest) {
       body: JSON.stringify({
         model: "anthropic/claude-sonnet-4",
         messages: [
-          { role: "system", content: SYSTEM_PROMPT + pageContext },
+          { role: "system", content: systemContent },
           ...messages.slice(-10),
         ],
         max_tokens: 500,

@@ -8,6 +8,7 @@ import { getBlogTranslation } from "../../../lib/blog-translations";
 import { i18n } from "../../../lib/i18n";
 import { useLang } from "../../../lib/lang-context";
 import LangSwitcher from "../../../components/LangSwitcher";
+import BlogChat from "../../../components/BlogChat";
 
 export default function BlogPostPage() {
   const params = useParams();
@@ -38,7 +39,7 @@ export default function BlogPostPage() {
       </div>
       <div className="fixed inset-0 dot-grid pointer-events-none" />
 
-      <article className="relative z-10 max-w-3xl mx-auto px-6 pt-28 pb-20">
+      <article className="relative z-10 max-w-3xl mx-auto px-6 pt-28 pb-8">
         <div className="flex items-center justify-between mb-8">
           <Link href="/blog" className="text-xs text-pink-400/40 hover:text-pink-400/70 font-mono transition-colors">
             &larr; {t.backBlog}
@@ -86,22 +87,11 @@ export default function BlogPostPage() {
             dangerouslySetInnerHTML={{ __html: markdownToHtml(translation?.content ?? post.content) }}
           />
         </motion.div>
-
-        <div className="mt-16 pt-8 border-t border-pink-500/10">
-          <p className="text-xs text-pink-400/30 uppercase tracking-wider font-mono mb-4">{t.blog.moreArticles}</p>
-          <div className="space-y-3">
-            {blogPosts
-              .filter((p) => p.slug !== post.slug)
-              .slice(0, 3)
-              .map((p) => (
-                <Link key={p.slug} href={`/blog/${p.slug}`} className="block glass rounded-lg p-4 hover:border-pink-500/20 transition-all group">
-                  <h3 className="text-sm font-bold text-pink-100/60 group-hover:text-pink-100/80 transition-colors">{getBlogTranslation(p.slug, lang)?.title ?? p.title}</h3>
-                  <p className="text-[10px] text-pink-300/25 font-mono mt-1">{p.date} · {p.readTime}</p>
-                </Link>
-              ))}
-          </div>
-        </div>
       </article>
+
+      <div className="relative z-10 max-w-3xl mx-auto px-6 pb-16">
+        <BlogChat articleTitle={translation?.title ?? post.title} articleSlug={post.slug} />
+      </div>
     </div>
   );
 }
