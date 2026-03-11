@@ -518,11 +518,6 @@ export default function Home() {
     e.preventDefault();
     if (!checkoutProduct || !checkoutEmail) return;
     setCheckoutSubmitted(true);
-    const slug = productSlugMap[checkoutProduct.title] || checkoutProduct.title.toLowerCase().replace(/\s+/g, "-");
-    setTimeout(() => {
-      window.open(`https://t.me/shop_by_finekot_bot?start=pay_${slug}`, "_blank");
-      setCheckoutProduct(null);
-    }, 1500);
   };
 
   // Newsletter state
@@ -701,8 +696,8 @@ export default function Home() {
             <a href="#projects" className="px-8 py-3 bg-gradient-to-r from-pink-600 to-pink-500 text-white font-medium rounded-lg hover:from-pink-500 hover:to-pink-400 hover:shadow-[0_0_30px_rgba(244,114,182,0.3)] transition-all">
               {t.cta.viewProducts}
             </a>
-            <a href="#contact" className="px-8 py-3 border border-pink-500/20 rounded-lg hover:border-pink-400/50 hover:bg-pink-500/5 transition-all text-pink-200">
-              {t.cta.requestIntegration}
+            <a href="/blog" className="px-8 py-3 border border-pink-500/20 rounded-lg hover:border-pink-400/50 hover:bg-pink-500/5 transition-all text-pink-200">
+              {lang === "RU" ? "Блог соло-разработчика" : lang === "UA" ? "Блог соло-розробника" : "Solo Developer Blog"}
             </a>
           </motion.div>
 
@@ -744,75 +739,6 @@ export default function Home() {
         </motion.div>
       </section>
 
-      {/* ─── VALUE PROPOSITION (Comparison + Stats) ─── */}
-      <section className="relative z-10 py-16 sm:py-20 px-6">
-        <div className="max-w-5xl mx-auto">
-
-          {/* Comparison Block */}
-          <motion.div initial={{ opacity: 0, y: 30 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} transition={{ duration: 0.6 }}
-            className="relative rounded-2xl border border-pink-500/10 bg-gradient-to-b from-pink-500/[0.04] to-transparent backdrop-blur-sm overflow-hidden mb-10">
-            <div className="grid grid-cols-2 divide-x divide-pink-500/10">
-              {/* WITHOUT column */}
-              <div className="p-5 sm:p-8">
-                <p className="text-[10px] sm:text-xs uppercase tracking-[0.3em] text-white/20 font-mono mb-5 sm:mb-6">{t.comparison.without}</p>
-                <div className="space-y-3 sm:space-y-4">
-                  {t.comparison.rows.map((row, i) => (
-                    <motion.div key={i} initial={{ opacity: 0, x: -10 }} whileInView={{ opacity: 1, x: 0 }} viewport={{ once: true }} transition={{ delay: i * 0.08 }}
-                      className="flex items-start gap-2 sm:gap-3">
-                      <span className="text-red-400/50 mt-0.5 text-xs sm:text-sm shrink-0">{"\u2715"}</span>
-                      <span className="text-white/25 text-xs sm:text-sm leading-relaxed">{row.bad}</span>
-                    </motion.div>
-                  ))}
-                </div>
-              </div>
-
-              {/* WITH column */}
-              <div className="p-5 sm:p-8 bg-pink-500/[0.03]">
-                <p className="text-[10px] sm:text-xs uppercase tracking-[0.3em] text-pink-400/50 font-mono mb-5 sm:mb-6">{t.comparison.with}</p>
-                <div className="space-y-3 sm:space-y-4">
-                  {t.comparison.rows.map((row, i) => (
-                    <motion.div key={i} initial={{ opacity: 0, x: 10 }} whileInView={{ opacity: 1, x: 0 }} viewport={{ once: true }} transition={{ delay: i * 0.08 + 0.15 }}
-                      className="flex items-start gap-2 sm:gap-3">
-                      <span className="text-emerald-400/70 mt-0.5 text-xs sm:text-sm shrink-0">{"\u2713"}</span>
-                      <span className="text-white/60 text-xs sm:text-sm leading-relaxed font-medium">{row.good}</span>
-                    </motion.div>
-                  ))}
-                </div>
-              </div>
-            </div>
-          </motion.div>
-
-          {/* Stats Glass Cards */}
-          <div className="grid grid-cols-2 md:grid-cols-4 gap-3 sm:gap-4 mb-10">
-            {[
-              { value: 23, suffix: "", prefix: "", label: t.stats.products },
-              { value: 149, suffix: "", prefix: "$", label: t.stats.startingPrice },
-              { value: 1, suffix: "", prefix: "<", label: t.stats.dayIntegration },
-              { value: 23, suffix: "+", prefix: "", label: t.stats.systemsBuilt },
-            ].map((s, i) => (
-              <motion.div key={s.label} initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} transition={{ delay: i * 0.08 }}
-                className="group relative rounded-xl border border-pink-500/10 bg-pink-500/[0.02] p-4 sm:p-5 text-center hover:border-pink-400/25 hover:bg-pink-500/[0.05] transition-all duration-300">
-                <div className="absolute inset-0 rounded-xl bg-gradient-to-b from-pink-500/5 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
-                <div className="relative">
-                  <div className="text-2xl sm:text-3xl md:text-4xl font-bold gradient-text font-mono mb-1">
-                    {s.prefix}<AnimatedNumber value={s.value} suffix={s.suffix} />
-                  </div>
-                  <p className="text-[9px] sm:text-[10px] text-pink-300/35 uppercase tracking-[0.2em] font-mono">{s.label}</p>
-                </div>
-              </motion.div>
-            ))}
-          </div>
-
-          {/* CTA */}
-          <motion.div initial={{ opacity: 0, y: 10 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }}
-            className="text-center">
-            <a href="#projects"
-              className="inline-flex items-center gap-2 px-8 py-3 bg-gradient-to-r from-pink-600 to-pink-500 text-white text-sm font-medium rounded-lg hover:from-pink-500 hover:to-pink-400 hover:shadow-[0_0_30px_rgba(244,114,182,0.3)] transition-all">
-              {t.comparison.cta} <span className="ml-1">&rarr;</span>
-            </a>
-          </motion.div>
-        </div>
-      </section>
 
       {/* ─── AI BLOG ─── */}
       <section id="blog">
@@ -1866,12 +1792,12 @@ export default function Home() {
 
               {checkoutSubmitted ? (
                 <div className="text-center py-8">
-                  <div className="text-4xl mb-4">✓</div>
+                  <div className="text-4xl mb-4">&#9881;</div>
                   <p className="text-pink-100/70 font-semibold mb-2">
-                    {lang === "RU" ? "Перенаправляем в Telegram..." : lang === "UA" ? "Переспрямовуємо в Telegram..." : "Redirecting to Telegram..."}
+                    {lang === "RU" ? "Продукт в стадии закрытого тестирования" : lang === "UA" ? "Продукт на стадії закритого тестування" : "Product is in closed beta testing"}
                   </p>
-                  <p className="text-xs text-pink-300/30 font-mono">
-                    {lang === "RU" ? "Выберите криптовалюту и оплатите" : lang === "UA" ? "Оберіть криптовалюту та оплатіть" : "Choose crypto & complete payment"}
+                  <p className="text-xs text-pink-300/40 font-mono leading-relaxed mt-3">
+                    {lang === "RU" ? "Мы сохранили ваш email. Вам придёт письмо, как только тестирование завершится и продукт будет доступен." : lang === "UA" ? "Ми зберегли ваш email. Вам прийде лист, щойно тестування завершиться і продукт буде доступний." : "We saved your email. You'll receive a notification once testing is complete and the product is available."}
                   </p>
                 </div>
               ) : (
@@ -1918,10 +1844,10 @@ export default function Home() {
                       type="submit"
                       className="w-full py-3.5 rounded-lg bg-gradient-to-r from-pink-600 to-purple-600 text-white font-semibold hover:opacity-90 transition-opacity shadow-[0_0_30px_rgba(244,114,182,0.2)] text-sm"
                     >
-                      {lang === "RU" ? "Перейти к оплате →" : lang === "UA" ? "Перейти до оплати →" : "Proceed to Payment →"}
+                      {lang === "RU" ? "Записаться в лист ожидания →" : lang === "UA" ? "Записатися в лист очікування →" : "Join the waitlist →"}
                     </button>
                     <p className="text-[9px] text-pink-300/20 text-center font-mono leading-relaxed">
-                      {lang === "RU" ? "Оплата криптовалютой (USDC). После оплаты продукт будет доставлен на указанный email." : lang === "UA" ? "Оплата криптовалютою (USDC). Після оплати продукт буде доставлений на вказаний email." : "Payment via crypto (USDC). Product will be delivered to your email after payment."}
+                      {lang === "RU" ? "Продукт в закрытом тестировании. Оставьте email — мы напишем, когда будет готово." : lang === "UA" ? "Продукт у закритому тестуванні. Залиште email — ми напишемо, коли буде готово." : "Product is in closed beta. Leave your email — we'll notify you when it's ready."}
                     </p>
                   </form>
                 </>
