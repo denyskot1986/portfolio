@@ -89,8 +89,8 @@ export default function BlogPostPage() {
         </motion.div>
       </article>
 
-      <div className="relative z-10 max-w-3xl mx-auto px-6 pb-16">
-        <BlogChat articleTitle={translation?.title ?? post.title} articleSlug={post.slug} />
+      <div className="sticky bottom-0 z-50 max-w-3xl mx-auto px-6 pb-4 pt-2" style={{ background: "linear-gradient(to top, var(--bg) 60%, transparent)" }}>
+        <BlogChat articleTitle={translation?.title ?? post.title} articleSlug={post.slug} lang={lang} />
       </div>
     </div>
   );

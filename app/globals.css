@@ -114,22 +114,22 @@ pre.diagram {
 .blog-chat-border {
   background: conic-gradient(
     from var(--border-angle),
-    transparent 30%,
-    var(--accent) 48%,
-    var(--accent2) 52%,
-    transparent 70%
+    transparent 35%,
+    rgba(244, 114, 182, 0.35) 48%,
+    rgba(192, 132, 252, 0.35) 52%,
+    transparent 65%
   );
-  animation: chat-border-spin 3s linear infinite;
+  animation: chat-border-spin 4s linear infinite;
 }
 
 .blog-chat-glow {
   background: conic-gradient(
     from var(--border-angle),
-    transparent 30%,
-    var(--accent) 48%,
-    var(--accent2) 52%,
-    transparent 70%
+    transparent 35%,
+    rgba(244, 114, 182, 0.15) 48%,
+    rgba(192, 132, 252, 0.15) 52%,
+    transparent 65%
   );
-  animation: chat-border-spin 3s linear infinite, chat-glow-pulse 2s ease-in-out infinite;
-  filter: blur(12px);
+  animation: chat-border-spin 4s linear infinite, chat-glow-pulse 3s ease-in-out infinite;
+  filter: blur(10px);
 }

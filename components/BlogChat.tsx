@@ -11,9 +11,10 @@ interface ChatMessage {
 interface BlogChatProps {
   articleTitle: string;
   articleSlug: string;
+  lang?: string;
 }
 
-export default function BlogChat({ articleTitle, articleSlug }: BlogChatProps) {
+export default function BlogChat({ articleTitle, articleSlug, lang = "EN" }: BlogChatProps) {
   const [messages, setMessages] = useState<ChatMessage[]>([]);
   const [input, setInput] = useState("");
   const [loading, setLoading] = useState(false);
@@ -163,7 +164,7 @@ export default function BlogChat({ articleTitle, articleSlug }: BlogChatProps) {
                 AI
               </div>
               <span className="text-[10px] text-pink-300/50 font-mono uppercase tracking-[0.2em]">
-                Discuss this article with AI
+                Finekot.AI
               </span>
               <div className="flex-1 h-[1px] bg-gradient-to-r from-pink-500/20 to-transparent" />
             </div>
@@ -178,7 +179,7 @@ export default function BlogChat({ articleTitle, articleSlug }: BlogChatProps) {
                 adjustTextarea();
               }}
               onKeyDown={handleKeyDown}
-              placeholder="Ask T-3 about this article..."
+              placeholder={lang === "RU" ? "Задайте уточняющий вопрос" : lang === "UA" ? "Задайте уточнююче питання" : "Ask a follow-up question"}
               rows={1}
               className="flex-1 px-3 py-2.5 bg-transparent text-sm text-pink-100/80 placeholder:text-pink-300/40 focus:outline-none resize-none font-mono leading-relaxed"
               style={{ maxHeight: 120 }}
@@ -212,7 +213,7 @@ export default function BlogChat({ articleTitle, articleSlug }: BlogChatProps) {
           transition={{ delay: 0.8 }}
           className="text-center text-[11px] text-pink-300/40 mt-3 font-mono tracking-wide"
         >
-          T-3 Brand Man — your article consultant
+          {lang === "RU" ? "AI-консультант по статье" : lang === "UA" ? "AI-консультант по статті" : "AI article consultant"}
         </motion.p>
       )}
     </div>
