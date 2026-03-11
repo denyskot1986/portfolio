@@ -171,10 +171,17 @@ export default function ProductPageClient() {
                     <li className="flex gap-2"><span className="text-pink-400/40">&rarr;</span> {tp.includes.updates}</li>
                   </ul>
                   <p className="text-[10px] text-pink-100/20 mb-4">{tp.deliveryTemplate}: {product.deliveryTime.template}</p>
-                  <Link href={buyLink(product.id)}
-                    className="inline-block w-full px-6 py-3 rounded-lg border border-pink-400/20 text-sm font-semibold text-pink-100/70 hover:bg-pink-400/10 hover:text-pink-100 transition-all">
-                    {tp.getCode} &rarr;
-                  </Link>
+                  {product.available ? (
+                    <Link href={buyLink(product.id)}
+                      className="inline-block w-full px-6 py-3 rounded-lg border border-pink-400/20 text-sm font-semibold text-pink-100/70 hover:bg-pink-400/10 hover:text-pink-100 transition-all">
+                      {tp.getCode} &rarr;
+                    </Link>
+                  ) : (
+                    <a href="https://t.me/finekot" target="_blank" rel="noopener noreferrer"
+                      className="inline-block w-full px-6 py-3 rounded-lg border border-pink-400/20 text-sm font-semibold text-pink-100/70 hover:bg-pink-400/10 hover:text-pink-100 transition-all">
+                      Contact @finekot &rarr;
+                    </a>
+                  )}
                 </div>
                 <div className="glass rounded-xl p-6 sm:p-8 text-center border-pink-400/20 shadow-[0_0_40px_rgba(244,114,182,0.08)]">
                   <div className="flex justify-center mb-3">
@@ -189,10 +196,17 @@ export default function ProductPageClient() {
                     <li className="flex gap-2"><span className="text-pink-400">&rarr;</span> {tp.includes.support}</li>
                   </ul>
                   <p className="text-[10px] text-pink-100/20 mb-4">{tp.deliveryIntegration}: {product.deliveryTime.integration}</p>
-                  <Link href={buyLink(product.id)}
-                    className="inline-block w-full px-6 py-3 rounded-lg bg-gradient-to-r from-pink-600 to-purple-600 text-white font-semibold hover:opacity-90 transition-opacity shadow-[0_0_30px_rgba(244,114,182,0.2)]">
-                    {tp.requestSetup} &rarr;
-                  </Link>
+                  {product.available ? (
+                    <Link href={buyLink(product.id)}
+                      className="inline-block w-full px-6 py-3 rounded-lg bg-gradient-to-r from-pink-600 to-purple-600 text-white font-semibold hover:opacity-90 transition-opacity shadow-[0_0_30px_rgba(244,114,182,0.2)]">
+                      {tp.requestSetup} &rarr;
+                    </Link>
+                  ) : (
+                    <a href="https://t.me/finekot" target="_blank" rel="noopener noreferrer"
+                      className="inline-block w-full px-6 py-3 rounded-lg bg-gradient-to-r from-pink-600 to-purple-600 text-white font-semibold hover:opacity-90 transition-opacity shadow-[0_0_30px_rgba(244,114,182,0.2)]">
+                      Contact @finekot &rarr;
+                    </a>
+                  )}
                 </div>
               </div>
             ) : (
@@ -207,10 +221,17 @@ export default function ProductPageClient() {
                     <li className="flex gap-2"><span className="text-pink-400">&rarr;</span> {tp.includes.updates}</li>
                   </ul>
                   <p className="text-[10px] text-pink-100/20 mb-4">{tp.deliveryTemplate}: {product.deliveryTime.template}</p>
-                  <Link href={buyLink(product.id)}
-                    className="inline-block w-full px-6 py-3 rounded-lg bg-gradient-to-r from-pink-600 to-purple-600 text-white font-semibold hover:opacity-90 transition-opacity shadow-[0_0_30px_rgba(244,114,182,0.2)]">
-                    {tp.getItNow} &rarr;
-                  </Link>
+                  {product.available ? (
+                    <Link href={buyLink(product.id)}
+                      className="inline-block w-full px-6 py-3 rounded-lg bg-gradient-to-r from-pink-600 to-purple-600 text-white font-semibold hover:opacity-90 transition-opacity shadow-[0_0_30px_rgba(244,114,182,0.2)]">
+                      {tp.getItNow} &rarr;
+                    </Link>
+                  ) : (
+                    <a href="https://t.me/finekot" target="_blank" rel="noopener noreferrer"
+                      className="inline-block w-full px-6 py-3 rounded-lg bg-gradient-to-r from-pink-600 to-purple-600 text-white font-semibold hover:opacity-90 transition-opacity shadow-[0_0_30px_rgba(244,114,182,0.2)]">
+                      Contact @finekot &rarr;
+                    </a>
+                  )}
                 </div>
               </div>
             )}
