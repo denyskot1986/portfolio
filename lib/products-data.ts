@@ -204,8 +204,8 @@ export const productsData: ProductData[] = [
       { title: "Multilingual", desc: "Speaks 15+ languages. Auto-detects and switches." },
     ],
     useCases: ["Customer support", "Sales outreach", "Appointment booking", "Lead qualification", "Survey calls"],
-    techStack: ["Vapi / Bland.ai", "Claude API", "Twilio", "N8N", "CRM APIs", "Whisper STT"],
-    pricing: { code: 149, currency: "USD" },
+    techStack: ["Python", "Twilio Voice API", "Claude API", "OpenAI Whisper", "ElevenLabs TTS", "Docker"],
+    pricing: { code: 199, currency: "USD" },
     deliveryTime: { template: "Instant download", integration: "Contact for setup" },
     youtubeId: null,
     screenshots: [],
@@ -1212,6 +1212,58 @@ export const productsData: ProductData[] = [
      |  Hourly . Smart Pick |
      +-----------------------+`,
     available: false,
+  },
+  {
+    id: "intake-bot",
+    name: "AI Intake Bot",
+    tagline: "Voice/Text → Structured Tasks",
+    category: "Business Automation",
+    description: "Turn raw ideas into structured, actionable tasks with AI routing and Todoist integration.",
+    longDescription: "AI Intake Bot transforms chaotic ideas into production-ready tasks. Send a voice message, text, or YouTube link — AI analyzes it, asks clarifying questions, builds a detailed concept, and creates a prioritized task in Todoist with automatic agent assignment. Supports 3-phase idea development (Explore → Expand → Ready), multi-task splitting, and conversation memory for context-aware follow-ups.",
+    features: [
+      { title: "Voice Input", desc: "Send a voice message — AI transcribes via Whisper and structures it into tasks." },
+      { title: "YouTube Analysis", desc: "Paste a link — AI extracts key ideas and action items from any video." },
+      { title: "3-Phase Development", desc: "Explore → Expand → Ready. AI asks smart questions to refine your idea." },
+      { title: "Auto-Routing", desc: "AI assigns tasks to the right agent or team member automatically." },
+      { title: "Todoist Integration", desc: "Tasks appear instantly in your project management with priority and assignee." },
+      { title: "Conversation Memory", desc: "Remembers recent tasks for context-aware follow-up discussions." },
+    ],
+    useCases: ["Idea capture on the go", "Team task delegation", "YouTube research → action items", "Voice-first project management", "Multi-agent task routing"],
+    techStack: ["Python", "aiogram 3", "OpenRouter / Claude", "OpenAI Whisper", "Todoist API", "Docker"],
+    pricing: { code: 149, currency: "USD" },
+    deliveryTime: { template: "Instant download", integration: "Contact for setup" },
+    youtubeId: null,
+    screenshots: [],
+    contact: "https://t.me/shop_by_finekot_bot",
+    diagram: `     +------------------------+
+     |   TELEGRAM CLIENT      |
+     |  Voice . Text . Link   |
+     +----------+-------------+
+                |
+     +----------+-------------+
+     |   INTAKE BOT CORE      |
+     |  +------------------+  |
+     |  | Whisper STT      |  |
+     |  | YouTube Extract  |  |
+     |  | AI Questioner    |  |
+     |  | Concept Builder  |  |
+     |  +------------------+  |
+     +-----+--------+--------+
+           |        |
+     +-----+---++---+-------+
+     | TODOIST ||  AI ROUTE |
+     | API     ||  ENGINE   |
+     +---------++-----------+
+     |Priority ||Agent Match|
+     |Assignee ||Context    |
+     |Deadline ||Memory     |
+     +----+----++----+------+
+          |          |
+     +----+----------+------+
+     |   TASK DISPATCH       |
+     |  Agents . Dashboard   |
+     +-----------------------+`,
+    available: true,
   },
 ];
 
