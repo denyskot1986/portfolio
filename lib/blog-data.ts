@@ -154,11 +154,7 @@ Then add another. And another.
 
 Before you know it, you have a system that works while you sleep.
 
----
-
-**Want to see SKYNET in action?** Check out my AI automation tools at [finekot.ai](https://finekot.ai) — from Telegram bots to desktop terminals, everything I build is available for you to use.
-
-**Building something similar?** I share the entire process — architecture decisions, code snippets, failures and fixes — on my [Instagram @finekot](https://instagram.com/finekot). Follow along.`,
+`,
   },
   {
     slug: "5-ai-tools-every-small-business-2026",
@@ -282,11 +278,7 @@ These 5 cost me less than $100/month combined. They replaced tasks that would re
 
 That's not a productivity hack. That's a business model.
 
----
-
-**Want to see these tools in action?** I build AI-powered products using exactly this stack. Check them out at [finekot.ai](https://finekot.ai).
-
-**New to AI?** Start with Claude (free) and Perplexity (free). Add the rest as you grow. Follow me on [Instagram @finekot](https://instagram.com/finekot) for daily AI tips and tool reviews.`,
+`,
   },
   {
     slug: "ai-customer-support-replace-help-desk-24-hours",
@@ -462,11 +454,7 @@ You don't need a perfect knowledge base on day one. Start with your top 20 FAQ q
 
 Every week, check what the bot couldn't answer. Add it to the knowledge base. In a month, your bot knows everything your customers ask.
 
----
-
-**Want a support bot for your business?** I build custom AI automation solutions — from Telegram bots to full customer support systems. Check out the options at [finekot.ai](https://finekot.ai).
-
-**Want to build it yourself?** Follow me on [Instagram @finekot](https://instagram.com/finekot) — I share code snippets, architecture decisions, and behind-the-scenes of building AI products.`,
+`,
   },
   {
     slug: "from-zero-to-ai-powered-solo-developer-journey",
@@ -618,11 +606,7 @@ I'm not selling a dream. I'm showing the process. Real time.
 
 The goal isn't to retire on a beach. The goal is to spend my time on ideas — and have AI handle everything else.
 
----
-
-**Following along?** I document the entire journey — wins, failures, revenue updates — on [Instagram @finekot](https://instagram.com/finekot).
-
-**Want to start your own AI-powered business?** Check out the tools and resources at [finekot.ai](https://finekot.ai). Or just DM me. I answer everyone.`,
+`,
   },
   {
     slug: "ai-automation-best-investment-small-business-2026",
@@ -814,11 +798,7 @@ The businesses that start now will have:
 
 You don't need a $50,000 consulting engagement. You need one bot that saves you one hour per day. That alone is worth $15,000+/year.
 
----
-
-**Ready to automate your business?** I build custom AI solutions for small businesses — Telegram bots, customer support, content generation, workflow automation. See what's possible at [finekot.ai](https://finekot.ai).
-
-**Want to learn how?** I share practical AI automation tutorials and case studies on [Instagram @finekot](https://instagram.com/finekot). No theory. Just results.`,
+`,
   },
 
   // ── Original articles ───────────────────────────────────────────
@@ -860,9 +840,7 @@ Companies that adopt AI agents today will have a **12-18 month head start** over
 
 The question isn't whether AI agents will replace SaaS. It's whether you'll be early or late.
 
----
-
-*Ready to make the switch? Browse our [production-ready AI systems](/products) — from $149 with full source code.*`,
+`,
   },
   {
     slug: "build-vs-buy-ai-systems",
@@ -912,9 +890,7 @@ Build custom only if:
 
 For everything else, **buy a template and customize it.**
 
----
-
-*Check our [product catalog](/products) — ready to deploy today.*`,
+`,
   },
   {
     slug: "ai-voice-agents-2026",
@@ -967,9 +943,7 @@ A modern voice AI agent typically uses:
 
 Our **AI Call Agent** ($149) includes the complete stack — ready to deploy in 1 day. Handles booking, qualification, FAQ, and escalation out of the box.
 
----
-
-*[Get AI Call Agent ->](/products/call-agent) — $149, full source code, deploy today.*`,
+`,
   },
   {
     slug: "multi-agent-systems-explained",
@@ -1036,8 +1010,6 @@ Our SKYNET platform manages 4 autonomous agents. Real metrics:
 
 You don't need to build this from scratch. **SKYNET** ($1,200) gives you the complete multi-agent platform with all 4 specialized agents, coordinator, and Telegram control.
 
----
-
-*[Get SKYNET ->](/products/skynet-platform) — the complete multi-agent AI platform.*`,
+`,
   },
 ];

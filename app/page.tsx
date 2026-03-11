@@ -784,10 +784,10 @@ export default function Home() {
           {/* Stats Glass Cards */}
           <div className="grid grid-cols-2 md:grid-cols-4 gap-3 sm:gap-4 mb-10">
             {[
-              { value: 17, suffix: "", prefix: "", label: t.stats.products },
+              { value: 23, suffix: "", prefix: "", label: t.stats.products },
               { value: 149, suffix: "", prefix: "$", label: t.stats.startingPrice },
               { value: 1, suffix: "", prefix: "<", label: t.stats.dayIntegration },
-              { value: 17, suffix: "+", prefix: "", label: t.stats.systemsBuilt },
+              { value: 23, suffix: "+", prefix: "", label: t.stats.systemsBuilt },
             ].map((s, i) => (
               <motion.div key={s.label} initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} transition={{ delay: i * 0.08 }}
                 className="group relative rounded-xl border border-pink-500/10 bg-pink-500/[0.02] p-4 sm:p-5 text-center hover:border-pink-400/25 hover:bg-pink-500/[0.05] transition-all duration-300">

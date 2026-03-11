@@ -9,17 +9,23 @@ interface ChatMessage {
 }
 
 export default function ChatbotWidget() {
-  const [open, setOpen] = useState(false);
-  const [messages, setMessages] = useState<ChatMessage[]>([
-    { role: "assistant", content: "Hi! I'm the Finekot AI consultant. I can help you choose the right AI system for your business. What are you looking for?" },
-  ]);
+  const [messages, setMessages] = useState<ChatMessage[]>([]);
   const [input, setInput] = useState("");
   const [loading, setLoading] = useState(false);
   const messagesEndRef = useRef<HTMLDivElement>(null);
+  const inputRef = useRef<HTMLTextAreaElement>(null);
 
   useEffect(() => {
     messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
   }, [messages]);
+
+  const adjustTextarea = useCallback(() => {
+    const el = inputRef.current;
+    if (el) {
+      el.style.height = "auto";
+      el.style.height = Math.min(el.scrollHeight, 120) + "px";
+    }
+  }, []);
 
   const send = useCallback(async () => {
     if (!input.trim() || loading) return;
@@ -28,6 +34,9 @@ export default function ChatbotWidget() {
     setMessages(newMessages);
     setInput("");
     setLoading(true);
+    if (inputRef.current) {
+      inputRef.current.style.height = "auto";
+    }
 
     try {
       const res = await fetch("/api/chat", {
@@ -51,105 +60,129 @@ export default function ChatbotWidget() {
     }
   }, [input, loading, messages]);
 
+  const handleKeyDown = useCallback(
+    (e: React.KeyboardEvent) => {
+      if (e.key === "Enter" && !e.shiftKey) {
+        e.preventDefault();
+        send();
+      }
+    },
+    [send]
+  );
+
   return (
-    <>
-      {/* Floating button */}
-      <motion.button
-        onClick={() => setOpen((v) => !v)}
-        className="fixed bottom-6 right-6 z-[70] w-14 h-14 rounded-full bg-gradient-to-r from-pink-600 to-purple-600 text-white shadow-[0_0_30px_rgba(244,114,182,0.3)] hover:shadow-[0_0_40px_rgba(244,114,182,0.5)] transition-shadow flex items-center justify-center"
-        whileHover={{ scale: 1.05 }}
-        whileTap={{ scale: 0.95 }}
-      >
-        {open ? (
-          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round">
-            <line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/>
-          </svg>
-        ) : (
-          <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round">
-            <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/>
-          </svg>
-        )}
-      </motion.button>
-
-      {/* Chat panel */}
-      <AnimatePresence>
-        {open && (
-          <motion.div
-            initial={{ opacity: 0, y: 20, scale: 0.95 }}
-            animate={{ opacity: 1, y: 0, scale: 1 }}
-            exit={{ opacity: 0, y: 20, scale: 0.95 }}
-            transition={{ duration: 0.2 }}
-            className="fixed bottom-24 right-6 z-[70] w-[360px] max-w-[calc(100vw-48px)] h-[500px] max-h-[calc(100vh-150px)] rounded-2xl overflow-hidden flex flex-col"
-            style={{
-              background: "rgba(10, 6, 8, 0.95)",
-              backdropFilter: "blur(20px)",
-              border: "1px solid rgba(244, 114, 182, 0.15)",
-              boxShadow: "0 0 60px rgba(244, 114, 182, 0.1), 0 20px 40px rgba(0,0,0,0.5)",
-            }}
-          >
-            {/* Header */}
-            <div className="px-4 py-3 border-b border-pink-500/10 flex items-center gap-3">
-              <div className="w-8 h-8 rounded-full bg-gradient-to-r from-pink-600 to-purple-600 flex items-center justify-center text-white text-xs font-bold">
-                AI
-              </div>
-              <div>
-                <p className="text-sm font-bold text-pink-100/70">Finekot AI Consultant</p>
-                <p className="text-[10px] text-emerald-400/50 font-mono">Online</p>
-              </div>
-            </div>
-
-            {/* Messages */}
-            <div className="flex-1 overflow-y-auto p-4 space-y-3">
+    <section className="w-full px-4 sm:px-6 pb-12 pt-8">
+      <div className="max-w-3xl mx-auto">
+        {/* Messages area — only visible after first interaction */}
+        <AnimatePresence>
+          {messages.length > 0 && (
+            <motion.div
+              initial={{ opacity: 0, height: 0 }}
+              animate={{ opacity: 1, height: "auto" }}
+              className="mb-4 max-h-[60vh] overflow-y-auto rounded-2xl p-4 space-y-3"
+              style={{
+                background: "rgba(10, 6, 8, 0.6)",
+                backdropFilter: "blur(12px)",
+                border: "1px solid rgba(244, 114, 182, 0.08)",
+              }}
+            >
               {messages.map((msg, i) => (
-                <div key={i} className={`flex ${msg.role === "user" ? "justify-end" : "justify-start"}`}>
+                <motion.div
+                  key={i}
+                  initial={{ opacity: 0, y: 8 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  transition={{ duration: 0.2 }}
+                  className={`flex ${msg.role === "user" ? "justify-end" : "justify-start"}`}
+                >
+                  {msg.role === "assistant" && (
+                    <div className="w-6 h-6 rounded-full bg-gradient-to-r from-pink-600 to-purple-600 flex items-center justify-center text-white text-[9px] font-bold mr-2 mt-0.5 shrink-0">
+                      AI
+                    </div>
+                  )}
                   <div
-                    className={`max-w-[85%] px-3 py-2 rounded-xl text-xs leading-relaxed ${
+                    className={`max-w-[80%] px-4 py-2.5 rounded-2xl text-sm leading-relaxed ${
                       msg.role === "user"
-                        ? "bg-gradient-to-r from-pink-600/80 to-purple-600/80 text-white rounded-br-sm"
-                        : "bg-pink-500/[0.06] border border-pink-500/10 text-pink-100/50 rounded-bl-sm"
+                        ? "bg-gradient-to-r from-pink-600/70 to-purple-600/70 text-white rounded-br-sm"
+                        : "text-pink-100/60 rounded-bl-sm"
                     }`}
                   >
                     {msg.content}
                   </div>
-                </div>
+                </motion.div>
               ))}
               {loading && (
-                <div className="flex justify-start">
-                  <div className="bg-pink-500/[0.06] border border-pink-500/10 text-pink-100/30 px-3 py-2 rounded-xl rounded-bl-sm text-xs">
+                <motion.div
+                  initial={{ opacity: 0 }}
+                  animate={{ opacity: 1 }}
+                  className="flex justify-start"
+                >
+                  <div className="w-6 h-6 rounded-full bg-gradient-to-r from-pink-600 to-purple-600 flex items-center justify-center text-white text-[9px] font-bold mr-2 mt-0.5 shrink-0">
+                    AI
+                  </div>
+                  <div className="text-pink-100/30 px-4 py-2.5 rounded-2xl rounded-bl-sm text-sm">
                     <motion.span animate={{ opacity: [0.3, 1, 0.3] }} transition={{ duration: 1.2, repeat: Infinity }}>
                       Thinking...
                     </motion.span>
                   </div>
-                </div>
+                </motion.div>
               )}
               <div ref={messagesEndRef} />
-            </div>
+            </motion.div>
+          )}
+        </AnimatePresence>
 
-            {/* Input */}
-            <div className="p-3 border-t border-pink-500/10">
-              <div className="flex gap-2">
-                <input
-                  type="text"
-                  value={input}
-                  onChange={(e) => setInput(e.target.value)}
-                  onKeyDown={(e) => e.key === "Enter" && send()}
-                  placeholder="Ask about our AI systems..."
-                  className="flex-1 px-3 py-2.5 rounded-lg bg-pink-500/[0.04] border border-pink-500/10 text-xs text-pink-100/70 placeholder:text-pink-300/20 focus:outline-none focus:border-pink-400/30 transition-colors font-mono"
+        {/* Input bar */}
+        <div
+          className="relative rounded-2xl overflow-hidden"
+          style={{
+            background: "rgba(10, 6, 8, 0.8)",
+            backdropFilter: "blur(20px)",
+            border: "1px solid rgba(244, 114, 182, 0.12)",
+            boxShadow: "0 0 40px rgba(244, 114, 182, 0.05), 0 4px 20px rgba(0,0,0,0.3)",
+          }}
+        >
+          <div className="flex items-end gap-2 p-3">
+            <textarea
+              ref={inputRef}
+              value={input}
+              onChange={(e) => {
+                setInput(e.target.value);
+                adjustTextarea();
+              }}
+              onKeyDown={handleKeyDown}
+              placeholder="Ask about our AI systems..."
+              rows={1}
+              className="flex-1 px-3 py-2.5 bg-transparent text-sm text-pink-100/70 placeholder:text-pink-300/25 focus:outline-none resize-none font-mono leading-relaxed"
+              style={{ maxHeight: 120 }}
+            />
+            <button
+              onClick={send}
+              disabled={loading || !input.trim()}
+              className="shrink-0 w-10 h-10 rounded-xl bg-gradient-to-r from-pink-600 to-purple-600 text-white flex items-center justify-center hover:opacity-90 transition-opacity disabled:opacity-20"
+            >
+              {loading ? (
+                <motion.div
+                  className="w-4 h-4 border-2 border-white/30 border-t-white rounded-full"
+                  animate={{ rotate: 360 }}
+                  transition={{ duration: 0.8, repeat: Infinity, ease: "linear" }}
                 />
-                <button
-                  onClick={send}
-                  disabled={loading || !input.trim()}
-                  className="px-3 py-2.5 rounded-lg bg-gradient-to-r from-pink-600 to-purple-600 text-white hover:opacity-90 transition-opacity disabled:opacity-30"
-                >
-                  <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round">
-                    <line x1="22" y1="2" x2="11" y2="13"/><polygon points="22 2 15 22 11 13 2 9 22 2"/>
-                  </svg>
-                </button>
-              </div>
-            </div>
-          </motion.div>
+              ) : (
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round">
+                  <line x1="5" y1="12" x2="19" y2="12" />
+                  <polyline points="12 5 19 12 12 19" />
+                </svg>
+              )}
+            </button>
+          </div>
+        </div>
+
+        {/* Subtle hint */}
+        {messages.length === 0 && (
+          <p className="text-center text-[10px] text-pink-300/20 mt-2 font-mono">
+            AI consultant — knows all 23 products
+          </p>
         )}
-      </AnimatePresence>
-    </>
+      </div>
+    </section>
   );
 }
