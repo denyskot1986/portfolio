@@ -137,54 +137,83 @@ export default function BlogChat({ articleTitle, articleSlug }: BlogChatProps) {
         )}
       </AnimatePresence>
 
-      <div
-        className="relative rounded-2xl overflow-hidden"
-        style={{
-          background: "rgba(10, 6, 8, 0.8)",
-          backdropFilter: "blur(20px)",
-          border: "1px solid rgba(244, 114, 182, 0.12)",
-          boxShadow: "0 0 40px rgba(244, 114, 182, 0.05), 0 4px 20px rgba(0,0,0,0.3)",
-        }}
+      {/* Animated glowing border container */}
+      <motion.div
+        initial={{ opacity: 0, y: 10 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ delay: 0.5, duration: 0.6 }}
+        className="relative rounded-2xl p-[2px] overflow-hidden"
       >
-        <div className="flex items-end gap-2 p-3">
-          <textarea
-            ref={inputRef}
-            value={input}
-            onChange={(e) => {
-              setInput(e.target.value);
-              adjustTextarea();
-            }}
-            onKeyDown={handleKeyDown}
-            placeholder="Ask T-3 about this article..."
-            rows={1}
-            className="flex-1 px-3 py-2.5 bg-transparent text-sm text-pink-100/70 placeholder:text-pink-300/25 focus:outline-none resize-none font-mono leading-relaxed"
-            style={{ maxHeight: 120 }}
-          />
-          <button
-            onClick={send}
-            disabled={loading || !input.trim()}
-            className="shrink-0 w-10 h-10 rounded-xl bg-gradient-to-r from-pink-600 to-purple-600 text-white flex items-center justify-center hover:opacity-90 transition-opacity disabled:opacity-20"
-          >
-            {loading ? (
-              <motion.div
-                className="w-4 h-4 border-2 border-white/30 border-t-white rounded-full"
-                animate={{ rotate: 360 }}
-                transition={{ duration: 0.8, repeat: Infinity, ease: "linear" }}
-              />
-            ) : (
-              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round">
-                <line x1="5" y1="12" x2="19" y2="12" />
-                <polyline points="12 5 19 12 12 19" />
-              </svg>
-            )}
-          </button>
+        {/* Spinning conic gradient border */}
+        <div className="absolute inset-0 rounded-2xl blog-chat-border" />
+        {/* Glow layer */}
+        <div className="absolute inset-0 rounded-2xl blog-chat-glow" />
+
+        {/* Inner content */}
+        <div
+          className="relative rounded-2xl"
+          style={{
+            background: "rgba(10, 6, 8, 0.95)",
+          }}
+        >
+          {/* Header label */}
+          <div className="px-4 pt-3 pb-0">
+            <div className="flex items-center gap-2">
+              <div className="w-5 h-5 rounded-full bg-gradient-to-r from-pink-600 to-purple-600 flex items-center justify-center text-white text-[7px] font-bold shrink-0">
+                AI
+              </div>
+              <span className="text-[10px] text-pink-300/50 font-mono uppercase tracking-[0.2em]">
+                Discuss this article with AI
+              </span>
+              <div className="flex-1 h-[1px] bg-gradient-to-r from-pink-500/20 to-transparent" />
+            </div>
+          </div>
+
+          <div className="flex items-end gap-2 p-3">
+            <textarea
+              ref={inputRef}
+              value={input}
+              onChange={(e) => {
+                setInput(e.target.value);
+                adjustTextarea();
+              }}
+              onKeyDown={handleKeyDown}
+              placeholder="Ask T-3 about this article..."
+              rows={1}
+              className="flex-1 px-3 py-2.5 bg-transparent text-sm text-pink-100/80 placeholder:text-pink-300/40 focus:outline-none resize-none font-mono leading-relaxed"
+              style={{ maxHeight: 120 }}
+            />
+            <button
+              onClick={send}
+              disabled={loading || !input.trim()}
+              className="shrink-0 w-10 h-10 rounded-xl bg-gradient-to-r from-pink-600 to-purple-600 text-white flex items-center justify-center hover:opacity-90 transition-opacity disabled:opacity-30 shadow-[0_0_20px_rgba(244,114,182,0.3)]"
+            >
+              {loading ? (
+                <motion.div
+                  className="w-4 h-4 border-2 border-white/30 border-t-white rounded-full"
+                  animate={{ rotate: 360 }}
+                  transition={{ duration: 0.8, repeat: Infinity, ease: "linear" }}
+                />
+              ) : (
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round">
+                  <line x1="5" y1="12" x2="19" y2="12" />
+                  <polyline points="12 5 19 12 12 19" />
+                </svg>
+              )}
+            </button>
+          </div>
         </div>
-      </div>
+      </motion.div>
 
       {messages.length === 0 && (
-        <p className="text-center text-[10px] text-pink-300/20 mt-2 font-mono">
+        <motion.p
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          transition={{ delay: 0.8 }}
+          className="text-center text-[11px] text-pink-300/40 mt-3 font-mono tracking-wide"
+        >
           T-3 Brand Man — your article consultant
-        </p>
+        </motion.p>
       )}
     </div>
   );

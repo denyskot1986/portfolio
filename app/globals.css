@@ -94,3 +94,42 @@ pre.diagram {
   letter-spacing: 0;
   line-height: 1.4;
 }
+
+/* Blog chat animated border */
+@property --border-angle {
+  syntax: "<angle>";
+  initial-value: 0deg;
+  inherits: false;
+}
+
+@keyframes chat-border-spin {
+  to { --border-angle: 360deg; }
+}
+
+@keyframes chat-glow-pulse {
+  0%, 100% { opacity: 0.6; }
+  50% { opacity: 1; }
+}
+
+.blog-chat-border {
+  background: conic-gradient(
+    from var(--border-angle),
+    transparent 30%,
+    var(--accent) 48%,
+    var(--accent2) 52%,
+    transparent 70%
+  );
+  animation: chat-border-spin 3s linear infinite;
+}
+
+.blog-chat-glow {
+  background: conic-gradient(
+    from var(--border-angle),
+    transparent 30%,
+    var(--accent) 48%,
+    var(--accent2) 52%,
+    transparent 70%
+  );
+  animation: chat-border-spin 3s linear infinite, chat-glow-pulse 2s ease-in-out infinite;
+  filter: blur(12px);
+}
