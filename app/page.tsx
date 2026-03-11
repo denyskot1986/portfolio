@@ -71,6 +71,7 @@ const productSlugMap: Record<string, string> = {
   "Bot Factory": "bot-factory",
   "Reels Factory": "reels-factory",
   "Motivator Bot": "motivator-bot",
+  "AI Intake Bot": "intake-bot",
 };
 const botBuyLink = (title: string) => `https://t.me/shop_by_finekot_bot?start=buy_${productSlugMap[title] || title.toLowerCase().replace(/\s+/g, "-")}`;
 
