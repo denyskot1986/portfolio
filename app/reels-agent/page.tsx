@@ -433,8 +433,8 @@ export default function ReelsAgentPage() {
               <Typewriter texts={s.typewriter} />
             </motion.div>
             <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.8, delay: 0.6 }} className="flex flex-col sm:flex-row gap-4 justify-center max-w-sm sm:max-w-none mx-auto">
-              <a href="#waitlist" className="px-8 py-3 bg-gradient-to-r from-pink-600 to-pink-500 text-white font-medium rounded-lg hover:from-pink-500 hover:to-pink-400 hover:shadow-[0_0_30px_rgba(244,114,182,0.3)] transition-all text-center">
-                {s.heroBtn1}
+              <a href="/checkout/reels-agent" className="px-8 py-3 bg-gradient-to-r from-pink-600 to-pink-500 text-white font-medium rounded-lg hover:from-pink-500 hover:to-pink-400 hover:shadow-[0_0_30px_rgba(244,114,182,0.3)] transition-all text-center font-mono">
+                Buy Now — $179
               </a>
               <a href="#features" className="px-8 py-3 border border-pink-500/20 rounded-lg hover:border-pink-400/50 hover:bg-pink-500/5 transition-all text-pink-200 text-center">
                 {s.heroBtn2}

@@ -881,6 +881,57 @@ export const productsData: ProductData[] = [
      |  Daily . Weekly . Ad |
      +-----------------------+`,
   },
+  {
+    id: "reels-agent",
+    name: "Reels Agent",
+    tagline: "Instagram AI Automation",
+    category: "Content Automation",
+    description: "AI auto-reply bot for Instagram Reels comments. Boosts engagement 3x.",
+    longDescription: "Reels Agent is an AI-powered Instagram automation tool that auto-replies to every comment on your Reels. It sounds like you, works 24/7, and boosts engagement by up to 3x. Set your brand voice, banned topics, and style — the AI handles everything. Smart filtering ignores spam, prioritizes real users, and escalates VIP comments. Connects via OAuth in one click. Built for creators, brands, and agencies managing multiple accounts.",
+    features: [
+      { title: "AI Auto-Replies", desc: "Instant, contextual responses to every comment. 24/7, no breaks." },
+      { title: "Boost Engagement", desc: "Algorithm loves active accounts. More replies = more reach." },
+      { title: "Brand-Safe", desc: "Set tone, banned topics, and style. Your brand voice, automated." },
+      { title: "Analytics Dashboard", desc: "Track every reply, sentiment, and engagement metric in real-time." },
+      { title: "Smart Filtering", desc: "Ignore spam, prioritize real users, escalate VIP comments." },
+      { title: "1-Click Connect", desc: "Connect your Instagram in seconds via OAuth. No passwords shared." },
+    ],
+    useCases: ["Instagram creators", "Influencers", "Brands", "Social media agencies", "Content creators"],
+    techStack: ["Claude API", "Instagram Graph API", "OAuth 2.0", "Next.js", "PostgreSQL", "Redis"],
+    pricing: { code: 179, currency: "USD" },
+    deliveryTime: { template: "Instant download", integration: "Contact for setup" },
+    youtubeId: null,
+    screenshots: [],
+    contact: "https://t.me/shop_by_finekot_bot",
+    diagram: `     +------------------------+
+     |   INSTAGRAM OAUTH      |
+     |  1-Click Connect       |
+     +----------+-------------+
+                |
+     +----------+-------------+
+     |   REELS AGENT CORE     |
+     |  +------------------+  |
+     |  | Comment Monitor  |  |
+     |  | Brand Voice AI   |  |
+     |  | Spam Filter      |  |
+     |  | Reply Generator  |  |
+     |  +------------------+  |
+     +-----+--------+--------+
+           |        |
+     +-----+---++---+-------+
+     | AUTO    ||  SMART   |
+     | REPLY   ||  FILTER  |
+     +---------++-----------+
+     |Context  ||Spam Block |
+     |Tone     ||VIP Detect |
+     |24/7     ||Escalate   |
+     +----+----++----+------+
+          |          |
+     +----+----------+------+
+     |   ANALYTICS DASHBOARD |
+     |  Replies . Sentiment  |
+     +-----------------------+`,
+  },
 ];
 
 export function getProductById(id: string): ProductData | undefined {

@@ -4,6 +4,7 @@ import { motion } from "framer-motion";
 import Link from "next/link";
 import { useParams } from "next/navigation";
 import { blogPosts } from "../../../lib/blog-data";
+import { getBlogTranslation } from "../../../lib/blog-translations";
 import { i18n } from "../../../lib/i18n";
 import { useLang } from "../../../lib/lang-context";
 import LangSwitcher from "../../../components/LangSwitcher";
@@ -13,6 +14,7 @@ export default function BlogPostPage() {
   const { lang } = useLang();
   const t = i18n[lang].pages;
   const post = blogPosts.find((p) => p.slug === params.slug);
+  const translation = post ? getBlogTranslation(post.slug, lang) : null;
 
   if (!post) {
     return (
@@ -44,7 +46,7 @@ export default function BlogPostPage() {
           <LangSwitcher />
         </div>
 
-        {lang !== "EN" && (
+        {lang !== "EN" && !translation && (
           <div className="glass rounded-lg px-4 py-3 mb-6 text-xs text-pink-300/40 font-mono border border-pink-500/10">
             {t.blog.translationSoon}
           </div>
@@ -60,7 +62,7 @@ export default function BlogPostPage() {
           </div>
 
           <h1 className="text-3xl md:text-5xl font-black mb-6 tracking-tight text-pink-100/90">
-            {post.title}
+            {translation?.title ?? post.title}
           </h1>
 
           <div
@@ -81,7 +83,7 @@ export default function BlogPostPage() {
               [&_blockquote]:border-l-2 [&_blockquote]:border-pink-500/20 [&_blockquote]:pl-4 [&_blockquote]:italic [&_blockquote]:text-pink-100/30
               [&_em]:text-pink-100/50
             "
-            dangerouslySetInnerHTML={{ __html: markdownToHtml(post.content) }}
+            dangerouslySetInnerHTML={{ __html: markdownToHtml(translation?.content ?? post.content) }}
           />
         </motion.div>
 
@@ -93,7 +95,7 @@ export default function BlogPostPage() {
               .slice(0, 3)
               .map((p) => (
                 <Link key={p.slug} href={`/blog/${p.slug}`} className="block glass rounded-lg p-4 hover:border-pink-500/20 transition-all group">
-                  <h3 className="text-sm font-bold text-pink-100/60 group-hover:text-pink-100/80 transition-colors">{p.title}</h3>
+                  <h3 className="text-sm font-bold text-pink-100/60 group-hover:text-pink-100/80 transition-colors">{getBlogTranslation(p.slug, lang)?.title ?? p.title}</h3>
                   <p className="text-[10px] text-pink-300/25 font-mono mt-1">{p.date} · {p.readTime}</p>
                 </Link>
               ))}

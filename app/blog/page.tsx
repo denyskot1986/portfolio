@@ -3,6 +3,7 @@
 import { motion } from "framer-motion";
 import Link from "next/link";
 import { blogPosts } from "../../lib/blog-data";
+import { getBlogTranslation } from "../../lib/blog-translations";
 import { i18n } from "../../lib/i18n";
 import { useLang } from "../../lib/lang-context";
 import LangSwitcher from "../../components/LangSwitcher";
@@ -38,7 +39,9 @@ export default function BlogPage() {
         </motion.div>
 
         <div className="space-y-6">
-          {blogPosts.map((post, i) => (
+          {blogPosts.map((post, i) => {
+            const tr = getBlogTranslation(post.slug, lang);
+            return (
             <motion.div key={post.slug} {...fade} transition={{ delay: i * 0.1 }}>
               <Link href={`/blog/${post.slug}`}>
                 <div className="glass rounded-xl p-6 sm:p-8 hover:border-pink-500/20 transition-all group cursor-pointer">
@@ -50,16 +53,17 @@ export default function BlogPage() {
                     <span className="text-[10px] text-pink-300/25 font-mono">{post.readTime}</span>
                   </div>
                   <h2 className="text-xl font-bold text-pink-100/70 group-hover:text-pink-100 transition-colors mb-2">
-                    {post.title}
+                    {tr?.title ?? post.title}
                   </h2>
-                  <p className="text-sm text-pink-100/30 leading-relaxed">{post.excerpt}</p>
+                  <p className="text-sm text-pink-100/30 leading-relaxed">{tr?.excerpt ?? post.excerpt}</p>
                   <span className="text-xs text-pink-400/40 group-hover:text-pink-400/70 font-mono mt-3 inline-block transition-colors">
                     {t.blog.readMore} &rarr;
                   </span>
                 </div>
               </Link>
             </motion.div>
-          ))}
+            );
+          })}
         </div>
       </div>
     </div>
