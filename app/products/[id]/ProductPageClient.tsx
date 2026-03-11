@@ -70,41 +70,36 @@ export default function ProductPageClient() {
         </div>
       </section>
 
-      {/* INTERACTIVE DEMO / VIDEO */}
-      <section className="relative z-10 py-12 px-6">
-        <div className="max-w-4xl mx-auto">
-          <motion.div {...fade}>
-            <h2 className="text-2xl md:text-3xl font-black mb-6 text-center tracking-tight">
-              <span className="gradient-text">{demo ? tp.interactiveDemo : tp.howItWorks}</span>
-            </h2>
-            {demo ? (
-              <DemoChat
-                productName={product.name}
-                messages={demo.messages}
-                tryLink={demo.tryLink}
-                tryLabel={demo.tryLabel}
-              />
-            ) : product.youtubeId ? (
-              <div className="glass rounded-xl overflow-hidden aspect-video">
-                <iframe
-                  src={`https://www.youtube.com/embed/${product.youtubeId}`}
-                  title={`${product.name} — Demo`}
-                  allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-                  allowFullScreen
-                  className="w-full h-full"
+      {/* INTERACTIVE DEMO / VIDEO — only render if demo chat or YouTube video exists */}
+      {(demo || product.youtubeId) && (
+        <section className="relative z-10 py-12 px-6">
+          <div className="max-w-4xl mx-auto">
+            <motion.div {...fade}>
+              <h2 className="text-2xl md:text-3xl font-black mb-6 text-center tracking-tight">
+                <span className="gradient-text">{demo ? tp.interactiveDemo : tp.howItWorks}</span>
+              </h2>
+              {demo ? (
+                <DemoChat
+                  productName={product.name}
+                  messages={demo.messages}
+                  tryLink={demo.tryLink}
+                  tryLabel={demo.tryLabel}
                 />
-              </div>
-            ) : (
-              <div className="glass rounded-xl aspect-video flex items-center justify-center">
-                <div className="text-center">
-                  <p className="text-pink-400/20 text-4xl font-mono mb-3">[&gt;]</p>
-                  <p className="text-pink-100/20 text-sm">Demo video coming soon</p>
+              ) : (
+                <div className="glass rounded-xl overflow-hidden aspect-video">
+                  <iframe
+                    src={`https://www.youtube.com/embed/${product.youtubeId}`}
+                    title={`${product.name} — Demo`}
+                    allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                    allowFullScreen
+                    className="w-full h-full"
+                  />
                 </div>
-              </div>
-            )}
-          </motion.div>
-        </div>
-      </section>
+              )}
+            </motion.div>
+          </div>
+        </section>
+      )}
 
       {/* FEATURES */}
       <section className="relative z-10 py-16 px-6">
