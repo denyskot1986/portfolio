@@ -121,7 +121,13 @@ function markdownToHtml(md: string): string {
   });
   html = html.replace(/<\/table>/g, "</tbody></table>");
   html = html.replace(/^---$/gm, "<hr />");
-  html = html.replace(/^(?!<[a-z])((?!^\s*$).+)$/gm, "<p>$1</p>");
+  // Wrap remaining lines in <p> — skip block-level HTML tags but include inline tags like <strong>, <em>, <a>
+  const blockTags = /^<(h[1-6]|ul|ol|li|table|thead|tbody|tr|th|td|pre|hr|div|blockquote)/;
+  html = html.replace(/^(.+)$/gm, (line) => {
+    if (!line.trim()) return line;
+    if (blockTags.test(line)) return line;
+    return `<p>${line}</p>`;
+  });
   html = html.replace(/<p>\s*<\/p>/g, "");
   return html;
 }
