@@ -26,12 +26,12 @@ export async function GET(request: Request) {
     features: p.features.map((f) => f.title),
     deliveryTime: p.deliveryTime,
     contact: p.contact,
-    url: `https://denyskot.com/products/${p.id}`,
+    url: `https://finekot.ai/products/${p.id}`,
   }));
 
   return NextResponse.json({
     provider: "Finekot — AI Systems",
-    website: "https://denyskot.com",
+    website: "https://finekot.ai",
     contact: "https://t.me/shop_by_finekot_bot",
     totalProducts: productsData.length,
     products: apiProducts,

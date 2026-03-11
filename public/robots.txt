@@ -6,4 +6,4 @@ Allow: /
 # OpenAPI spec: /api/openapi.json
 # AI Plugin: /.well-known/ai-plugin.json
 
-Sitemap: https://denyskot.com/sitemap.xml
+Sitemap: https://finekot.ai/sitemap.xml

@@ -6,7 +6,7 @@
     "version": "1.0.0"
   },
   "servers": [
-    { "url": "https://denyskot.com" }
+    { "url": "https://finekot.ai" }
   ],
   "paths": {
     "/api/products": {

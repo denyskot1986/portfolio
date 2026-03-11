@@ -9,9 +9,9 @@
   },
   "api": {
     "type": "openapi",
-    "url": "https://denyskot.com/api/openapi.json"
+    "url": "https://finekot.ai/api/openapi.json"
   },
-  "logo_url": "https://denyskot.com/icon.svg",
-  "contact_email": "denys@denyskot.com",
-  "legal_info_url": "https://denyskot.com"
+  "logo_url": "https://finekot.ai/icon.svg",
+  "contact_email": "denys@finekot.ai",
+  "legal_info_url": "https://finekot.ai"
 }

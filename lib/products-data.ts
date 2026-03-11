@@ -23,7 +23,7 @@ export const productsData: ProductData[] = [
     tagline: "Multi-Agent AI Platform",
     category: "AI Infrastructure",
     description: "Distributed multi-agent system with centralized command.",
-    longDescription: "SKYNET is a command-and-control platform for managing multiple autonomous AI agents. Each agent (Terminator) is a dedicated Claude Code instance accessible via Telegram. The central coordinator delegates tasks, monitors progress, and aggregates reports. Built for companies that need parallel AI workforce across development, operations, research, and QA.",
+    longDescription: "SKYNET is a command-and-control platform for managing multiple autonomous AI agents. Each agent (Terminator) is a dedicated AI instance accessible via Telegram. The central coordinator delegates tasks, monitors progress, and aggregates reports. Built for companies that need parallel AI workforce across development, operations, research, and QA.",
     features: [
       { title: "Multi-Agent Orchestration", desc: "Deploy 4+ autonomous agents, each specialized in different domains." },
       { title: "Telegram Control", desc: "Send tasks to any agent via Telegram bot. Get real-time status updates." },
@@ -33,7 +33,7 @@ export const productsData: ProductData[] = [
       { title: "Scalable Architecture", desc: "Add new agents by cloning config. Scale to 40+." },
     ],
     useCases: ["Software teams", "DevOps automation", "Research orgs", "Enterprise AI", "Agency operations"],
-    techStack: ["Claude Code", "Docker", "Telegram Bot API", "systemd", "PostgreSQL", "N8N"],
+    techStack: ["Claude API", "Docker", "Telegram Bot API", "systemd", "PostgreSQL", "N8N"],
     pricing: { code: 1200, currency: "USD" },
     deliveryTime: { template: "Instant download", integration: "Contact for enterprise setup" },
     youtubeId: null,
@@ -930,6 +930,263 @@ export const productsData: ProductData[] = [
      +----+----------+------+
      |   ANALYTICS DASHBOARD |
      |  Replies . Sentiment  |
+     +-----------------------+`,
+  },
+  {
+    id: "shop-bot",
+    name: "Shop Bot",
+    tagline: "Telegram Sales Bot with Crypto Payments",
+    category: "Bots",
+    description: "Telegram shopping bot with product catalog, AI sales consultant, and USDC ERC20 payment verification.",
+    longDescription: "Shop Bot is a production-ready Telegram sales bot with a built-in product catalog, AI-powered sales consultant (Claude), and blockchain payment processing via USDC ERC20. Supports deep linking from your website, multilingual interface (EN/RU/UA), automatic transaction verification via Etherscan, and commander notifications on every sale. FSM-based purchase flow handles the entire customer journey from browsing to payment to delivery.",
+    features: [
+      { title: "Product Catalog", desc: "Browse products by category with inline keyboards. Deep link support from website." },
+      { title: "Crypto Payments", desc: "USDC ERC20 payments with automatic Etherscan verification." },
+      { title: "AI Sales Consultant", desc: "Claude-powered chat that answers product questions using SPIN selling methodology." },
+      { title: "Multilingual", desc: "Auto-detects language from Telegram. Supports EN, RU, UA with per-user override." },
+      { title: "Deep Linking", desc: "Direct links to product cards and checkout from your website or ads." },
+      { title: "Commander Alerts", desc: "Instant Telegram notifications on new sales, leads, and AI conversations." },
+    ],
+    useCases: ["Digital product sales", "AI product stores", "Telegram commerce", "Crypto-native businesses", "SaaS sales"],
+    techStack: ["Python", "aiogram 3", "Claude API", "Etherscan API", "Docker", "httpx"],
+    pricing: { code: 299, currency: "USD" },
+    deliveryTime: { template: "Instant download", integration: "Contact for setup" },
+    youtubeId: null,
+    screenshots: [],
+    contact: "https://t.me/shop_by_finekot_bot",
+    diagram: `     +------------------------+
+     |   TELEGRAM CLIENT      |
+     |  Deep Link . Catalog   |
+     +----------+-------------+
+                |
+     +----------+-------------+
+     |   SHOP BOT CORE        |
+     |  +------------------+  |
+     |  | Catalog Browser  |  |
+     |  | FSM Buy Flow     |  |
+     |  | AI Consultant    |  |
+     |  | Language Engine   |  |
+     |  +------------------+  |
+     +-----+--------+--------+
+           |        |
+     +-----+---++---+-------+
+     | PAYMENT ||  AI SALES |
+     | ENGINE  ||  CONSULT  |
+     +---------++-----------+
+     |Etherscan||Claude API |
+     |USDC ERC ||SPIN Method|
+     |Verify TX||Chat Hist  |
+     +----+----++----+------+
+          |          |
+     +----+----------+------+
+     |   DELIVERY & NOTIFY  |
+     |  Token . Download    |
+     +-----------------------+`,
+  },
+  {
+    id: "salon-call-bot",
+    name: "Salon Call Bot",
+    tagline: "AI Phone Agent for Salons",
+    category: "Voice AI",
+    description: "AI voice agent that makes outbound calls to confirm, remind, and reschedule salon appointments.",
+    longDescription: "Salon Call Bot is an AI-powered phone agent controlled via Telegram. Select a contact, describe the task, and the bot initiates a real phone call with natural voice dialogue. Built on Twilio for telephony, OpenAI Whisper for speech recognition, Claude for conversation intelligence, and ElevenLabs for natural voice synthesis. Pre-built scenarios include appointment confirmation, reminders, rescheduling, and custom tasks. The agent speaks conversational Russian with a friendly personality.",
+    features: [
+      { title: "Outbound AI Calls", desc: "Initiate real phone calls from Telegram. Full voice dialogue with AI agent." },
+      { title: "Natural Voice", desc: "ElevenLabs multilingual TTS with fallback to OpenAI. Sounds human, not robotic." },
+      { title: "Speech Recognition", desc: "OpenAI Whisper STT with silence detection and turn management." },
+      { title: "Pre-built Scenarios", desc: "Confirm booking, 2-hour reminder, reschedule, or custom task." },
+      { title: "Telegram Control", desc: "Select contact, input task, confirm call, receive transcript — all in Telegram." },
+      { title: "Call Transcripts", desc: "Full conversation transcript delivered to Telegram after each call." },
+    ],
+    useCases: ["Beauty salons", "Dental clinics", "Medical offices", "Service businesses", "Appointment-based businesses"],
+    techStack: ["Python", "Twilio", "OpenAI Whisper", "Claude API", "ElevenLabs", "aiohttp", "FFmpeg"],
+    pricing: { code: 199, currency: "USD" },
+    deliveryTime: { template: "Instant download", integration: "Contact for setup" },
+    youtubeId: null,
+    screenshots: [],
+    contact: "https://t.me/shop_by_finekot_bot",
+    diagram: `     +------------------------+
+     |   TELEGRAM CONTROL     |
+     |  Contact . Task . Go   |
+     +----------+-------------+
+                |
+     +----------+-------------+
+     |   CALL ORCHESTRATOR    |
+     |  Twilio Media Streams  |
+     +-----+--------+--------+
+           |        |
+     +-----+---++---+-------+
+     | WHISPER ||  CLAUDE   |
+     |   STT   ||  BRAIN    |
+     +---------++-----------+
+     |Russian  ||Scenarios  |
+     |Silence  ||Confirm    |
+     |Detect   ||Reschedule |
+     +----+----++----+------+
+          |          |
+     +----+----------+------+
+     |   ELEVENLABS TTS     |
+     |  Voice . Lip-sync    |
+     +----------+-----------+
+                |
+     +----------+-----------+
+     |   TRANSCRIPT DELIVERY|
+     |  Telegram . History   |
+     +-----------------------+`,
+  },
+  {
+    id: "bot-factory",
+    name: "Bot Factory",
+    tagline: "Multi-Tenant Bot Platform",
+    category: "AI Infrastructure",
+    description: "One platform, unlimited AI bots. Multi-tenant architecture with per-client config, analytics, and admin API.",
+    longDescription: "Bot Factory is a multi-tenant Telegram bot platform that lets you create unlimited AI-powered bots for different clients without separate deployments. Each client gets their own system prompt, welcome message, AI model, daily limits, and analytics — all managed through a REST API. Supports two modes: multi-tenant (single bot with deep links) and hybrid (clients bring their own bot token). Built for agencies and SaaS operators who need to scale bot deployments.",
+    features: [
+      { title: "Multi-Tenant Architecture", desc: "One deployment serves unlimited clients. Each client isolated with own config." },
+      { title: "Per-Client AI Config", desc: "Custom system prompt, AI model, welcome message, and daily limits per client." },
+      { title: "Admin REST API", desc: "Full CRUD for clients, users, analytics. Token-based auth. FastAPI." },
+      { title: "Hybrid Mode", desc: "Clients can use shared bot OR bring their own bot token with webhook routing." },
+      { title: "Analytics Dashboard", desc: "Daily stats per client: messages, unique users, token usage." },
+      { title: "Rate Limiting", desc: "Per-user daily message limits. Tiered plans: free, pro, enterprise." },
+    ],
+    useCases: ["Bot agencies", "SaaS platforms", "White-label solutions", "Enterprise bot deployments", "Consulting firms"],
+    techStack: ["Python", "FastAPI", "aiogram 3", "SQLite", "OpenRouter", "Pydantic", "uvicorn"],
+    pricing: { code: 499, currency: "USD" },
+    deliveryTime: { template: "Instant download", integration: "Contact for setup" },
+    youtubeId: null,
+    screenshots: [],
+    contact: "https://t.me/shop_by_finekot_bot",
+    diagram: `     +------------------------+
+     |   ADMIN API (FastAPI)  |
+     |  CRUD . Auth . Stats   |
+     +----------+-------------+
+                |
+     +----------+-------------+
+     |   BOT FACTORY CORE     |
+     |  +------------------+  |
+     |  | Client Router    |  |
+     |  | AI Engine        |  |
+     |  | Rate Limiter     |  |
+     |  | Analytics        |  |
+     |  +------------------+  |
+     +-----+--------+--------+
+           |        |
+     +-----+---++---+-------+
+     | MULTI-  ||  HYBRID   |
+     | TENANT  ||  WEBHOOK  |
+     +---------++-----------+
+     |DeepLink ||Own Token  |
+     |Shared   ||Client Bot |
+     |Bot      ||Routing    |
+     +----+----++----+------+
+          |          |
+     +----+----------+------+
+     |   SQLITE DATABASE     |
+     |  Clients . Users . Msg|
+     +-----------------------+`,
+  },
+  {
+    id: "reels-factory",
+    name: "Reels Factory",
+    tagline: "AI Video Production Pipeline",
+    category: "Content Automation",
+    description: "Photo + text → Instagram Reels with lip-sync, subtitles, and voice clone. Fully automated.",
+    longDescription: "Reels Factory is an AI content production pipeline that turns a photo and text into a ready-to-post Instagram Reel (9:16, 1080x1920). Send a photo and script via Telegram — the system generates speech with your cloned voice (ElevenLabs), creates lip-sync video (Sync Labs), adds auto-generated subtitles, and delivers the final MP4. Built for creators and agencies who need consistent video content at scale.",
+    features: [
+      { title: "Voice Clone TTS", desc: "ElevenLabs multilingual voice cloning. Sounds exactly like you." },
+      { title: "Lip-Sync Video", desc: "Sync Labs AI syncs lip movement to generated audio. Realistic talking head." },
+      { title: "Auto Subtitles", desc: "SRT subtitles auto-generated from script text and video duration." },
+      { title: "Photo → Video", desc: "Static photo auto-converted to video before lip-sync processing." },
+      { title: "Instagram-Ready", desc: "Output: 9:16 aspect ratio, 1080x1920, H.264 MP4. Ready to post." },
+      { title: "Telegram Bot", desc: "Send media + text to bot, receive finished Reel. Also works via CLI." },
+    ],
+    useCases: ["Instagram creators", "Content agencies", "Personal brands", "Marketing teams", "Social media managers"],
+    techStack: ["Python", "ElevenLabs API", "Sync Labs API", "FFmpeg", "python-telegram-bot"],
+    pricing: { code: 149, currency: "USD" },
+    deliveryTime: { template: "Instant download", integration: "Contact for setup" },
+    youtubeId: null,
+    screenshots: [],
+    contact: "https://t.me/shop_by_finekot_bot",
+    diagram: `     +------------------------+
+     |   INPUT                |
+     |  Photo + Script Text   |
+     +----------+-------------+
+                |
+     +----------+-------------+
+     |   TTS ENGINE           |
+     |  ElevenLabs Voice Clone|
+     +----------+-------------+
+                |
+     +----------+-------------+
+     |   LIP-SYNC ENGINE      |
+     |  Sync Labs AI          |
+     |  Photo → Video → Sync  |
+     +----------+-------------+
+                |
+     +----------+-------------+
+     |   POST-PRODUCTION      |
+     |  +------------------+  |
+     |  | FFmpeg Pipeline  |  |
+     |  | Scale 9:16       |  |
+     |  | Embed Audio      |  |
+     |  | Burn Subtitles   |  |
+     |  +------------------+  |
+     +----------+-------------+
+                |
+     +----------+-------------+
+     |   OUTPUT               |
+     |  MP4 1080x1920 H.264   |
+     +-----------------------+`,
+  },
+  {
+    id: "motivator-bot",
+    name: "Motivator Bot",
+    tagline: "AI Coach & Accountability Partner",
+    category: "Bots",
+    description: "AI accountability coach that reads your Todoist tasks and sends personalized micro-steps every hour.",
+    longDescription: "Motivator Bot is an AI-powered Telegram coach that connects to your Todoist and sends personalized micro-steps every hour. Instead of vague motivation, it analyzes your actual tasks and generates specific, doable actions (5-15 min each). Supports work modes (working/paused/free), task completion from Telegram, and a status dashboard. Built for entrepreneurs and professionals who struggle with procrastination and need an accountability partner.",
+    features: [
+      { title: "Micro-Step Generation", desc: "AI analyzes your Todoist task and generates one concrete 10-min action step." },
+      { title: "Smart Task Picking", desc: "Prioritizes by urgency. Avoids repeating nudges within 3 hours." },
+      { title: "Work Modes", desc: "Working (auto-resumes 2h), Paused (1h/2h), Free (receives nudges)." },
+      { title: "Todoist Integration", desc: "View all tasks, mark complete from Telegram. Two-way sync." },
+      { title: "Hourly Nudges", desc: "Scheduled reminders with AI-generated action steps. Configurable interval." },
+      { title: "Status Dashboard", desc: "Current mode, task count, last nudge, nudge counter — all in one view." },
+    ],
+    useCases: ["Entrepreneurs", "Freelancers", "Students", "Remote workers", "Anyone fighting procrastination"],
+    techStack: ["Python", "python-telegram-bot", "Claude API", "Todoist API", "httpx"],
+    pricing: { code: 79, currency: "USD" },
+    deliveryTime: { template: "Instant download", integration: "Contact for setup" },
+    youtubeId: null,
+    screenshots: [],
+    contact: "https://t.me/shop_by_finekot_bot",
+    diagram: `     +------------------------+
+     |   TODOIST API          |
+     |  Tasks . Projects      |
+     +----------+-------------+
+                |
+     +----------+-------------+
+     |   MOTIVATOR CORE       |
+     |  +------------------+  |
+     |  | Task Picker      |  |
+     |  | AI Step Generator|  |
+     |  | Mode Manager     |  |
+     |  | Scheduler        |  |
+     |  +------------------+  |
+     +-----+--------+--------+
+           |        |
+     +-----+---++---+-------+
+     | CLAUDE  ||  TELEGRAM |
+     |  API    ||  BOT UI   |
+     +---------++-----------+
+     |Micro-stp||Buttons    |
+     |Context  ||Dashboard  |
+     |Persona  ||Tasks List |
+     +----+----++----+------+
+          |          |
+     +----+----------+------+
+     |   NUDGE SCHEDULER    |
+     |  Hourly . Smart Pick |
      +-----------------------+`,
   },
 ];

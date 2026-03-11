@@ -7,6 +7,7 @@ import Link from "next/link";
 import { i18n, langs, type Lang } from "../lib/i18n";
 import { projectI18n } from "../lib/project-i18n";
 import { blogPosts } from "../lib/blog-data";
+import { getBlogTranslation } from "../lib/blog-translations";
 import { useLang } from "../lib/lang-context";
 
 /* ═══════════════════════════════════════════════════════
@@ -17,10 +18,15 @@ type Category = "All" | "Multi-Agent" | "Voice AI" | "Automation" | "Bots" | "RA
 
 const projects = [
   // ═══ LIVE — ready products, by importance ═══
-  { id: "01", title: "SKYNET", subtitle: "Multi-Agent System", category: "Multi-Agent" as Category, status: "live", price: "$299", priceNote: "Enterprise multi-agent AI", description: "Distributed army of 4 autonomous Claude Code agents. Telegram-controlled. Three modes: Autopilot / Supervised / Manual. Each agent has memory, tools, and role isolation.", stack: ["Claude Code", "Telegram API", "Docker", "Python", "TypeScript"], highlights: ["4 AI agents with unique specializations", "Automatic task decomposition & delegation", "Three modes: Autopilot, Supervised, Manual", "Real-time Dashboard in Telegram"], metrics: "4 agents · 3 modes · 24/7", color: "from-pink-500/30 to-purple-500/20", accent: "border-pink-500/40", glow: "rgba(244, 114, 182, 0.3)" },
+  { id: "01", title: "SKYNET", subtitle: "Multi-Agent System", category: "Multi-Agent" as Category, status: "live", price: "$299", priceNote: "Enterprise multi-agent AI", description: "Distributed army of 4 autonomous AI agents. Telegram-controlled. Three modes: Autopilot / Supervised / Manual. Each agent has memory, tools, and role isolation.", stack: ["Claude API", "Telegram API", "Docker", "Python", "TypeScript"], highlights: ["4 AI agents with unique specializations", "Automatic task decomposition & delegation", "Three modes: Autopilot, Supervised, Manual", "Real-time Dashboard in Telegram"], metrics: "4 agents · 3 modes · 24/7", color: "from-pink-500/30 to-purple-500/20", accent: "border-pink-500/40", glow: "rgba(244, 114, 182, 0.3)" },
   { id: "19", title: "Reels Agent", subtitle: "Instagram AI Auto-Responder", category: "Bots" as Category, status: "live", price: "$179", priceNote: "One-time setup", description: "AI auto-replies to every Instagram comment on your posts and reels. Sounds like you. Works 24/7. Boosts engagement by up to 3x. Buy once — your reels machine forever.", stack: ["Claude API", "Instagram API", "OAuth", "Next.js", "PostgreSQL"], highlights: ["Instant AI replies to every comment", "Custom brand voice & tone settings", "Smart spam filtering & VIP escalation", "Analytics dashboard with sentiment tracking"], metrics: "24/7 · 3x engagement · your voice", color: "from-pink-500/30 to-fuchsia-500/20", accent: "border-pink-500/40", glow: "rgba(244, 114, 182, 0.3)" },
   { id: "02", title: "AI Call Agent", subtitle: "Voice AI for Business", category: "Voice AI" as Category, status: "live", price: "$149", priceNote: "Voice AI agent", description: "Voice robot for business. Full AI-driven phone dialogues — booking, rescheduling, reminders. Handles objections, understands context across turns.", stack: ["Whisper", "Claude API", "TTS", "VoIP", "Python"], highlights: ["Natural voice dialogues", "CRM integration", "Automated reminders & confirmations", "Multi-scenario: booking, reschedule, confirm"], metrics: "< 400ms · 92% completion", color: "from-rose-500/25 to-orange-500/15", accent: "border-rose-500/40", glow: "rgba(251, 113, 133, 0.3)" },
   { id: "03", title: "SKYNET Intake", subtitle: "AI Task Assistant", category: "Bots" as Category, status: "live", price: "$99", priceNote: "AI task routing", description: "Telegram bot converting raw ideas (text/voice) into structured Todoist tasks. AI prioritization and agent routing.", stack: ["aiogram", "Claude Sonnet", "Whisper", "Todoist API"], highlights: ["Voice input via Whisper STT", "AI task structuring & routing", "Auto-prioritization", "Todoist integration"], metrics: "Voice + text · auto-route", color: "from-fuchsia-500/25 to-pink-500/15", accent: "border-fuchsia-500/40", glow: "rgba(232, 121, 249, 0.3)" },
+  { id: "20", title: "Shop Bot", subtitle: "Telegram Sales + Crypto", category: "Bots" as Category, status: "live", price: "$299", priceNote: "Full sales bot", description: "Telegram shopping bot with product catalog, AI sales consultant (Claude), and USDC ERC20 payment verification via Etherscan. Deep linking, multilingual (EN/RU/UA), commander notifications.", stack: ["Python", "aiogram 3", "Claude API", "Etherscan", "Docker"], highlights: ["Product catalog with categories", "USDC crypto payments + auto-verify", "AI sales consultant (SPIN selling)", "Deep linking from website/ads"], metrics: "Crypto pay · AI sales · 3 langs", color: "from-emerald-500/25 to-teal-500/15", accent: "border-emerald-500/40", glow: "rgba(52, 211, 153, 0.3)" },
+  { id: "21", title: "Salon Call Bot", subtitle: "AI Phone Agent", category: "Voice AI" as Category, status: "live", price: "$199", priceNote: "Voice AI for salons", description: "AI voice agent that makes real outbound phone calls. Confirm appointments, send reminders, reschedule — all via natural voice dialogue. Controlled from Telegram.", stack: ["Python", "Twilio", "Whisper", "Claude API", "ElevenLabs"], highlights: ["Real outbound phone calls", "Natural voice (ElevenLabs)", "Pre-built salon scenarios", "Telegram control + transcripts"], metrics: "Real calls · natural voice", color: "from-rose-500/25 to-orange-500/15", accent: "border-rose-500/40", glow: "rgba(251, 113, 133, 0.3)" },
+  { id: "22", title: "Bot Factory", subtitle: "Multi-Tenant Bot Platform", category: "Multi-Agent" as Category, status: "live", price: "$499", priceNote: "Platform for agencies", description: "One deployment, unlimited AI bots. Multi-tenant architecture with per-client config, AI model selection, analytics dashboard, and REST admin API. Hybrid mode: clients bring their own bot token.", stack: ["Python", "FastAPI", "aiogram 3", "SQLite", "OpenRouter"], highlights: ["Unlimited client bots from 1 deployment", "Per-client AI config & limits", "Admin REST API (FastAPI)", "Hybrid mode: own bot tokens"], metrics: "∞ bots · 1 deploy · API", color: "from-violet-500/25 to-purple-500/15", accent: "border-violet-500/40", glow: "rgba(167, 139, 250, 0.3)" },
+  { id: "23", title: "Reels Factory", subtitle: "AI Video Production", category: "Automation" as Category, status: "live", price: "$149", priceNote: "Video pipeline", description: "Photo + text → Instagram Reel with lip-sync, voice clone, and auto-subtitles. Send media to Telegram bot, get back finished 9:16 video ready to post.", stack: ["Python", "ElevenLabs", "Sync Labs", "FFmpeg", "Telegram"], highlights: ["Voice clone TTS (ElevenLabs)", "Lip-sync video (Sync Labs)", "Auto-subtitles from script", "9:16 Instagram-ready output"], metrics: "Photo → Reel · lip-sync", color: "from-pink-500/25 to-fuchsia-500/15", accent: "border-pink-500/40", glow: "rgba(244, 114, 182, 0.3)" },
+  { id: "24", title: "Motivator Bot", subtitle: "AI Coach + Todoist", category: "Bots" as Category, status: "live", price: "$79", priceNote: "Accountability coach", description: "AI coach that reads your Todoist tasks and sends personalized micro-steps every hour. Work modes, task completion from Telegram, status dashboard. Fights procrastination with action.", stack: ["Python", "Claude API", "Todoist API", "telegram-bot", "httpx"], highlights: ["AI micro-step generation", "Todoist two-way sync", "Work modes (working/paused/free)", "Hourly smart nudges"], metrics: "Hourly nudges · Todoist sync", color: "from-amber-500/25 to-yellow-500/15", accent: "border-amber-500/40", glow: "rgba(245, 158, 11, 0.3)" },
 
   // ═══ IN PROGRESS — by interest level ═══
   { id: "04", title: "AI-Admin", subtitle: "AI Business Manager", category: "Automation" as Category, status: "wip", price: "", priceNote: "", description: "Autonomous AI manager for beauty salon. Handles hiring, clients, supply chain, communications, reports — fully on autopilot.", stack: ["Claude API", "Telegram", "Telethon", "PostgreSQL"], highlights: ["Auto-hiring & staff management", "Client acquisition on autopilot", "Supply chain management", "Daily business reports"], metrics: "Full autopilot · 24/7", color: "from-pink-400/25 to-amber-500/10", accent: "border-pink-400/40", glow: "rgba(244, 114, 182, 0.25)" },
@@ -60,6 +66,11 @@ const productSlugMap: Record<string, string> = {
   "Meeting Scribe": "meeting-scribe",
   "Compliance Guard": "compliance-guard",
   "Reels Agent": "reels-agent",
+  "Shop Bot": "shop-bot",
+  "Salon Call Bot": "salon-call-bot",
+  "Bot Factory": "bot-factory",
+  "Reels Factory": "reels-factory",
+  "Motivator Bot": "motivator-bot",
 };
 const botBuyLink = (title: string) => `https://t.me/shop_by_finekot_bot?start=buy_${productSlugMap[title] || title.toLowerCase().replace(/\s+/g, "-")}`;
 
@@ -277,7 +288,10 @@ function TestimonialsSection() {
 function BlogCardsSection() {
   const ref = useRef<HTMLDivElement>(null);
   const inView = useInView(ref, { once: true });
+  const { lang } = useLang();
+  const t = i18n[lang].pages.blog;
   const posts = blogPosts.slice(0, 5);
+  const feat = getBlogTranslation(posts[0].slug, lang);
 
   return (
     <section className="relative z-10 py-16 sm:py-20 px-6" ref={ref}>
@@ -288,11 +302,11 @@ function BlogCardsSection() {
           transition={{ duration: 0.6 }}
           className="text-center mb-12"
         >
-          <p className="text-xs text-pink-400/30 uppercase tracking-[0.4em] mb-3 font-mono">Blog</p>
+          <p className="text-xs text-pink-400/30 uppercase tracking-[0.4em] mb-3 font-mono">{t.label}</p>
           <h2 className="text-3xl md:text-5xl font-black mb-4 tracking-tight">
-            <span className="gradient-text">AI Blog</span>
+            <span className="gradient-text">{t.title}</span>
           </h2>
-          <p className="text-pink-100/40 text-base">Case studies, guides, and insights on AI automation.</p>
+          <p className="text-pink-100/40 text-base">{t.subtitle}</p>
         </motion.div>
 
         {/* Featured post (first) */}
@@ -311,18 +325,20 @@ function BlogCardsSection() {
               <span className="text-[10px] text-pink-300/25 font-mono">{posts[0].readTime}</span>
             </div>
             <h3 className="text-xl md:text-2xl font-bold text-pink-100/70 group-hover:text-pink-100 transition-colors mb-2 leading-tight">
-              {posts[0].title}
+              {feat?.title ?? posts[0].title}
             </h3>
-            <p className="text-sm text-pink-100/30 leading-relaxed line-clamp-2">{posts[0].excerpt}</p>
+            <p className="text-sm text-pink-100/30 leading-relaxed line-clamp-2">{feat?.excerpt ?? posts[0].excerpt}</p>
             <span className="text-xs text-pink-400/40 group-hover:text-pink-400/70 font-mono mt-3 inline-block transition-colors">
-              Read more &rarr;
+              {t.readMore} &rarr;
             </span>
           </Link>
         </motion.div>
 
         {/* Grid of 4 more posts */}
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
-          {posts.slice(1).map((post, i) => (
+          {posts.slice(1).map((post, i) => {
+            const tr = getBlogTranslation(post.slug, lang);
+            return (
             <motion.div
               key={post.slug}
               initial={{ opacity: 0, y: 20 }}
@@ -334,15 +350,16 @@ function BlogCardsSection() {
                   {post.category}
                 </span>
                 <h3 className="text-sm font-bold text-pink-100/60 group-hover:text-pink-100/80 transition-colors mt-3 mb-2 leading-tight">
-                  {post.title}
+                  {tr?.title ?? post.title}
                 </h3>
-                <p className="text-[11px] text-pink-100/25 leading-relaxed mb-3 line-clamp-3">{post.excerpt}</p>
+                <p className="text-[11px] text-pink-100/25 leading-relaxed mb-3 line-clamp-3">{tr?.excerpt ?? post.excerpt}</p>
                 <div className="flex items-center gap-2 text-[10px] text-pink-300/25 font-mono">
                   <span>{post.readTime}</span>
                 </div>
               </Link>
             </motion.div>
-          ))}
+            );
+          })}
         </div>
 
         <motion.div
@@ -352,7 +369,7 @@ function BlogCardsSection() {
           className="text-center mt-8"
         >
           <Link href="/blog" className="inline-flex items-center gap-2 px-6 py-3 rounded-xl border border-pink-500/20 text-pink-300/50 font-mono text-sm hover:border-pink-400/50 hover:text-pink-300 hover:bg-pink-500/5 transition-all">
-            All Articles &rarr;
+            {t.allArticles} &rarr;
           </Link>
         </motion.div>
       </div>
@@ -469,153 +486,7 @@ function ContactFormSection() {
    CHATBOT WIDGET
    ═══════════════════════════════════════════════════════ */
 
-interface ChatMessage {
-  role: "user" | "assistant";
-  content: string;
-}
-
-function ChatbotWidget() {
-  const [open, setOpen] = useState(false);
-  const [messages, setMessages] = useState<ChatMessage[]>([
-    { role: "assistant", content: "Hi! I'm the Finekot AI consultant. I can help you choose the right AI system for your business. What are you looking for?" },
-  ]);
-  const [input, setInput] = useState("");
-  const [loading, setLoading] = useState(false);
-  const messagesEndRef = useRef<HTMLDivElement>(null);
-
-  useEffect(() => {
-    messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
-  }, [messages]);
-
-  const send = useCallback(async () => {
-    if (!input.trim() || loading) return;
-    const userMsg: ChatMessage = { role: "user", content: input.trim() };
-    const newMessages = [...messages, userMsg];
-    setMessages(newMessages);
-    setInput("");
-    setLoading(true);
-
-    try {
-      const res = await fetch("/api/chat", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ messages: newMessages }),
-      });
-      const data = await res.json();
-      if (data.reply) {
-        setMessages((prev) => [...prev, { role: "assistant", content: data.reply }]);
-      } else {
-        setMessages((prev) => [...prev, { role: "assistant", content: "Sorry, I'm having trouble connecting. Please try again or message us on Telegram @shop_by_finekot_bot" }]);
-      }
-    } catch {
-      setMessages((prev) => [...prev, { role: "assistant", content: "Connection error. Please try Telegram: @shop_by_finekot_bot" }]);
-    } finally {
-      setLoading(false);
-    }
-  }, [input, loading, messages]);
-
-  return (
-    <>
-      {/* Floating button */}
-      <motion.button
-        onClick={() => setOpen((v) => !v)}
-        className="fixed bottom-6 right-6 z-[70] w-14 h-14 rounded-full bg-gradient-to-r from-pink-600 to-purple-600 text-white shadow-[0_0_30px_rgba(244,114,182,0.3)] hover:shadow-[0_0_40px_rgba(244,114,182,0.5)] transition-shadow flex items-center justify-center"
-        whileHover={{ scale: 1.05 }}
-        whileTap={{ scale: 0.95 }}
-      >
-        {open ? (
-          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round">
-            <line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/>
-          </svg>
-        ) : (
-          <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round">
-            <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/>
-          </svg>
-        )}
-      </motion.button>
-
-      {/* Chat panel */}
-      <AnimatePresence>
-        {open && (
-          <motion.div
-            initial={{ opacity: 0, y: 20, scale: 0.95 }}
-            animate={{ opacity: 1, y: 0, scale: 1 }}
-            exit={{ opacity: 0, y: 20, scale: 0.95 }}
-            transition={{ duration: 0.2 }}
-            className="fixed bottom-24 right-6 z-[70] w-[360px] max-w-[calc(100vw-48px)] h-[500px] max-h-[calc(100vh-150px)] rounded-2xl overflow-hidden flex flex-col"
-            style={{
-              background: "rgba(10, 6, 8, 0.95)",
-              backdropFilter: "blur(20px)",
-              border: "1px solid rgba(244, 114, 182, 0.15)",
-              boxShadow: "0 0 60px rgba(244, 114, 182, 0.1), 0 20px 40px rgba(0,0,0,0.5)",
-            }}
-          >
-            {/* Header */}
-            <div className="px-4 py-3 border-b border-pink-500/10 flex items-center gap-3">
-              <div className="w-8 h-8 rounded-full bg-gradient-to-r from-pink-600 to-purple-600 flex items-center justify-center text-white text-xs font-bold">
-                AI
-              </div>
-              <div>
-                <p className="text-sm font-bold text-pink-100/70">Finekot AI Consultant</p>
-                <p className="text-[10px] text-emerald-400/50 font-mono">Online</p>
-              </div>
-            </div>
-
-            {/* Messages */}
-            <div className="flex-1 overflow-y-auto p-4 space-y-3">
-              {messages.map((msg, i) => (
-                <div key={i} className={`flex ${msg.role === "user" ? "justify-end" : "justify-start"}`}>
-                  <div
-                    className={`max-w-[85%] px-3 py-2 rounded-xl text-xs leading-relaxed ${
-                      msg.role === "user"
-                        ? "bg-gradient-to-r from-pink-600/80 to-purple-600/80 text-white rounded-br-sm"
-                        : "bg-pink-500/[0.06] border border-pink-500/10 text-pink-100/50 rounded-bl-sm"
-                    }`}
-                  >
-                    {msg.content}
-                  </div>
-                </div>
-              ))}
-              {loading && (
-                <div className="flex justify-start">
-                  <div className="bg-pink-500/[0.06] border border-pink-500/10 text-pink-100/30 px-3 py-2 rounded-xl rounded-bl-sm text-xs">
-                    <motion.span animate={{ opacity: [0.3, 1, 0.3] }} transition={{ duration: 1.2, repeat: Infinity }}>
-                      Thinking...
-                    </motion.span>
-                  </div>
-                </div>
-              )}
-              <div ref={messagesEndRef} />
-            </div>
-
-            {/* Input */}
-            <div className="p-3 border-t border-pink-500/10">
-              <div className="flex gap-2">
-                <input
-                  type="text"
-                  value={input}
-                  onChange={(e) => setInput(e.target.value)}
-                  onKeyDown={(e) => e.key === "Enter" && send()}
-                  placeholder="Ask about our AI systems..."
-                  className="flex-1 px-3 py-2.5 rounded-lg bg-pink-500/[0.04] border border-pink-500/10 text-xs text-pink-100/70 placeholder:text-pink-300/20 focus:outline-none focus:border-pink-400/30 transition-colors font-mono"
-                />
-                <button
-                  onClick={send}
-                  disabled={loading || !input.trim()}
-                  className="px-3 py-2.5 rounded-lg bg-gradient-to-r from-pink-600 to-purple-600 text-white hover:opacity-90 transition-opacity disabled:opacity-30"
-                >
-                  <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round">
-                    <line x1="22" y1="2" x2="11" y2="13"/><polygon points="22 2 15 22 11 13 2 9 22 2"/>
-                  </svg>
-                </button>
-              </div>
-            </div>
-          </motion.div>
-        )}
-      </AnimatePresence>
-    </>
-  );
-}
+/* ChatbotWidget moved to components/ChatbotWidget.tsx — rendered globally in layout.tsx */
 
 /* ═══════════════════════════════════════════════════════
    MAIN COMPONENT
@@ -2059,8 +1930,7 @@ export default function Home() {
         )}
       </AnimatePresence>
 
-      {/* ─── CHATBOT ─── */}
-      <ChatbotWidget />
+      {/* ChatbotWidget is now global — rendered in layout.tsx */}
     </div>
   );
 }

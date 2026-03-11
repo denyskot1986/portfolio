@@ -2,7 +2,7 @@ import { NextRequest, NextResponse } from "next/server";
 
 const OPENROUTER_API_KEY = process.env.OPENROUTER_API_KEY || "";
 
-const SYSTEM_PROMPT = `You are a sales consultant for Finekot — a company that sells 17 production-ready AI systems.
+const SYSTEM_PROMPT = `You are a sales consultant for Finekot — a company that sells production-ready AI systems.
 
 Your role: Help potential customers understand which product fits their needs, answer questions about pricing, features, and integration process. Be friendly, professional, and concise. Always guide toward a purchase or a consultation call.
 
@@ -12,11 +12,12 @@ IMPORTANT RULES:
 - Always mention specific product names and prices when relevant
 - If unsure which product fits, ask 1-2 clarifying questions
 - End responses with a soft CTA (suggest booking a call or trying a product)
+- You will receive the current page URL — use it to recommend the most relevant product first
 
-PRODUCT CATALOG:
+PRODUCT CATALOG (23 products):
 
 1. SKYNET ($1,200) — Multi-Agent AI Platform
-   - 4 autonomous Claude Code agents (T-1 Fullstack, T-2 Backend, T-3 DevOps, T-4 Research)
+   - 4 autonomous AI agents (T-1 Fullstack, T-2 Backend, T-3 DevOps, T-4 Research)
    - Telegram-controlled, 3 modes: Autopilot/Supervised/Manual
    - For: software teams, enterprise AI, agency operations
 
@@ -25,7 +26,7 @@ PRODUCT CATALOG:
    - <400ms response, 92% call completion rate
    - For: clinics, salons, service businesses
 
-3. SKYNET Intake ($499) — AI Task Assistant
+3. SKYNET Intake ($99) — AI Task Assistant
    - Telegram bot: voice/text → structured Todoist tasks
    - AI prioritization and agent routing
    - For: teams, managers, solopreneurs
@@ -86,17 +87,42 @@ PRODUCT CATALOG:
     - Multi-regulation checking, compliance scoring, audit trail
     - For: regulated industries
 
+18. Reels Agent ($179) — AI Instagram Reels Automation
+    - Trending audio detection, auto-captions, bulk scheduling
+    - For: influencers, SMM agencies, content creators
+
+19. Shop-Bot ($299) — AI Sales Telegram Bot
+    - Product catalog in Telegram, smart recommendations, checkout flow
+    - For: e-commerce, digital product sellers
+
+20. Salon Call Bot ($199) — Voice AI for Beauty & Wellness
+    - Appointment booking, rescheduling, reminders by phone
+    - For: beauty salons, spas, wellness centers
+
+21. Bot Factory ($499) — No-Code Telegram Bot Builder
+    - Visual builder, AI responses, analytics dashboard
+    - For: agencies, entrepreneurs, non-technical founders
+
+22. Reels Factory ($149) — AI Short-Form Video Pipeline
+    - Script → video generation, multi-platform export
+    - For: content teams, marketers, creators
+
+23. Motivator Bot ($79) — AI Accountability Coach
+    - Daily check-ins, habit tracking, motivational nudges
+    - For: individuals, coaches, wellness apps
+
 PRICING MODEL:
 - "Template" = source code + docs + deployment guide (self-deploy)
 - "Integration" = personal setup into your business in 1 day + 30 days support
 - All purchases are one-time. No subscriptions. Full code ownership.
 
 CONTACT: Telegram @shop_by_finekot_bot or @finekot
+Website: https://finekot.ai
 `;
 
 export async function POST(req: NextRequest) {
   try {
-    const { messages } = await req.json();
+    const { messages, pageUrl } = await req.json();
 
     if (!OPENROUTER_API_KEY) {
       return NextResponse.json(
@@ -105,18 +131,20 @@ export async function POST(req: NextRequest) {
       );
     }
 
+    const pageContext = pageUrl ? `\n\nThe user is currently on page: ${pageUrl}. Prioritize recommending the product related to this page if applicable.` : "";
+
     const response = await fetch("https://openrouter.ai/api/v1/chat/completions", {
       method: "POST",
       headers: {
         Authorization: `Bearer ${OPENROUTER_API_KEY}`,
         "Content-Type": "application/json",
-        "HTTP-Referer": "https://denyskot.com",
+        "HTTP-Referer": "https://finekot.ai",
         "X-Title": "Finekot",
       },
       body: JSON.stringify({
         model: "anthropic/claude-sonnet-4",
         messages: [
-          { role: "system", content: SYSTEM_PROMPT },
+          { role: "system", content: SYSTEM_PROMPT + pageContext },
           ...messages.slice(-10),
         ],
         max_tokens: 500,

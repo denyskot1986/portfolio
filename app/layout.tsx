@@ -2,18 +2,19 @@ import type { Metadata } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
 import { Analytics } from "@vercel/analytics/next";
 import { LangProvider } from "@/lib/lang-context";
+import ChatbotWidget from "@/components/ChatbotWidget";
 import "./globals.css";
 
 const geistSans = Geist({ variable: "--font-geist-sans", subsets: ["latin"] });
 const geistMono = Geist_Mono({ variable: "--font-geist-mono", subsets: ["latin"] });
 
-const siteUrl = "https://denyskot.com";
+const siteUrl = "https://finekot.ai";
 
 export const metadata: Metadata = {
   metadataBase: new URL(siteUrl),
   title: "Finekot — Production-Ready AI Systems",
   description:
-    "17 production-ready AI systems. $499 template — deploy yourself. $2500 integration — ready in 1 day. Full source code. No subscriptions.",
+    "23 production-ready AI systems. $499 template — deploy yourself. $2500 integration — ready in 1 day. Full source code. No subscriptions.",
   keywords: [
     "AI systems", "AI templates", "production AI", "multi-agent systems",
     "voice AI", "RAG", "business automation", "Finekot", "buy AI system",
@@ -23,13 +24,13 @@ export const metadata: Metadata = {
     type: "website",
     url: siteUrl,
     title: "Finekot — Production-Ready AI Systems",
-    description: "17 AI systems ready to launch. $499 template or $2500 personal integration. Full source code ownership.",
-    images: [{ url: "/og-image.png", width: 1200, height: 630 }],
+    description: "23 AI systems ready to launch. $499 template or $2500 personal integration. Full source code ownership.",
+    images: [{ url: "/opengraph-image", width: 1200, height: 630 }],
   },
   twitter: {
     card: "summary_large_image",
     title: "Finekot — Production-Ready AI Systems",
-    description: "17 AI systems. $499 template. $2500 integration. Full source code.",
+    description: "23 AI systems. $499 template. $2500 integration. Full source code.",
   },
 };
 
@@ -38,7 +39,7 @@ const jsonLd = {
   "@type": "ProfessionalService",
   name: "Finekot — Production-Ready AI Systems",
   url: siteUrl,
-  description: "17 production-ready AI systems. $499 template — deploy yourself. $2500 integration — ready in 1 day.",
+  description: "23 production-ready AI systems. $499 template — deploy yourself. $2500 integration — ready in 1 day.",
   contactPoint: { "@type": "ContactPoint", url: "https://t.me/shop_by_finekot_bot", contactType: "sales" },
   hasOfferCatalog: {
     "@type": "OfferCatalog",
@@ -61,6 +62,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
         <LangProvider>
           {children}
         </LangProvider>
+        <ChatbotWidget />
         <Analytics />
       </body>
     </html>

@@ -51,7 +51,7 @@ Here's what SKYNET looks like:
     T-1  T-2  T-3  T-4  T-5
 \`\`\`
 
-Each agent is a separate Claude Code instance with its own:
+Each agent is a separate AI instance with its own:
 - **Workspace** — isolated directory, no cross-contamination
 - **Telegram bot** — I send tasks via Telegram, get results back
 - **Specialization** — strict role boundaries
@@ -72,9 +72,9 @@ Each agent is a separate Claude Code instance with its own:
 No fancy frameworks. No Kubernetes. No overengineering.
 
 - **Server:** One Ubuntu VPS (7.8GB RAM, 142GB disk) — $15/month
-- **AI Engine:** Claude Code via Anthropic API
+- **AI Engine:** Anthropic Claude API
 - **Communication:** Telegram Bot API (free)
-- **Bridge:** Open-source claude-code-telegram connector
+- **Bridge:** Open-source AI-Telegram connector
 - **Task Management:** Todoist API for task tracking
 - **Dashboard:** Telegram channel for real-time reports
 - **Orchestration:** systemd services (one per agent)
@@ -181,7 +181,7 @@ These 5 stayed.
 **Why I picked it over ChatGPT:** Longer context window. Better at following complex instructions. Doesn't hallucinate as much (still does sometimes — no AI is perfect).
 
 **How I use it:**
-- Writing and debugging code (my entire SKYNET system runs on Claude Code)
+- Writing and debugging code (my entire SKYNET system is AI-powered)
 - Drafting blog posts and marketing copy
 - Analyzing business documents
 - Building Telegram bots that handle customer inquiries
@@ -222,9 +222,9 @@ These 5 stayed.
 
 **Cost:** Free tier: limited. Starter: $5/month. Creator: $22/month.
 
-## 4. Cursor / Claude Code — The Developer
+## 4. Cursor — The Developer
 
-**What it does:** AI-powered code editor (Cursor) and CLI coding agent (Claude Code). Write code by describing what you want.
+**What it does:** AI-powered code editor. Write code by describing what you want.
 
 **Why it matters:** Even if you're not a developer, you can build tools for your business. If you ARE a developer — you're 3-5x faster.
 
@@ -236,7 +236,7 @@ These 5 stayed.
 
 **Real example:** Built my entire portfolio website — [finekot.ai](https://finekot.ai) — using AI-assisted coding. Design, animations, content, deployment. What would take a freelancer 2 weeks took 3 days.
 
-**Cost:** Cursor: Free tier / $20/month Pro. Claude Code: included with Anthropic subscription.
+**Cost:** Cursor: Free tier / $20/month Pro.
 
 ## 5. Todoist + AI Integration — The Manager
 
@@ -260,7 +260,7 @@ Here's how these 5 tools work together in my daily workflow:
 
 1. **Morning:** Check Todoist for today's tasks. AI agents already started working overnight.
 2. **Research:** Use Perplexity to validate any new ideas or check trends.
-3. **Build:** Claude Code handles the development tasks.
+3. **Build:** AI handles the development tasks.
 4. **Content:** Claude writes drafts. ElevenLabs generates voiceovers.
 5. **Review:** Check the SKYNET Dashboard. Approve, adjust, ship.
 
@@ -862,7 +862,7 @@ The question isn't whether AI agents will replace SaaS. It's whether you'll be e
 
 ---
 
-*Ready to make the switch? Browse our [17 production-ready AI systems](/products) — from $149 with full source code.*`,
+*Ready to make the switch? Browse our [production-ready AI systems](/products) — from $149 with full source code.*`,
   },
   {
     slug: "build-vs-buy-ai-systems",
@@ -914,7 +914,7 @@ For everything else, **buy a template and customize it.**
 
 ---
 
-*Check our [product catalog](/products) — 17 systems ready to deploy today.*`,
+*Check our [product catalog](/products) — ready to deploy today.*`,
   },
   {
     slug: "ai-voice-agents-2026",
