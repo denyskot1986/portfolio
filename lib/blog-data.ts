@@ -70,7 +70,7 @@ Each one has its own memory, its own personality, its own voice. Yeah — they l
 
 Here's the part that still feels surreal to me.
 
-I'm on a morning walk. The sun is out. I'm in Montenegro, probably near the sea. And I get an idea. Something I saw, something that doesn't exist yet, something that could solve a real problem.
+I'm on a morning walk. The sun is out. I'm near the sea. And I get an idea. Something I saw, something that doesn't exist yet, something that could solve a real problem.
 
 I pull out my phone and record a voice message to my Telegram bot. Raw thoughts. Stream of consciousness. All the context I can think of.
 
@@ -249,13 +249,13 @@ That alone makes ElevenLabs worth it for me. But beyond the SKYNET stuff, I use 
 
 My bots use it for voiceovers, narration, and phone calls. The technology has crossed the uncanny valley — it sounds natural, emotions are right, pacing is right. It's kind of wild.
 
-## 4. Claude Code — The Developer
+## 4. AI Coding — The Developer
 
-I used Cursor for a while and it was great. But then I switched to Claude Code — Anthropic's CLI tool for AI-powered development — and I haven't looked back.
+I used Cursor for a while and it was great. But then I switched to AI-powered coding and I haven't looked back.
 
-It's different from a regular code editor with AI bolted on. Claude Code understands your entire codebase. It navigates files, reads context, makes changes across multiple files, runs tests, fixes errors — all through conversation.
+It's different from a regular code editor with AI bolted on. The AI understands your entire codebase. It navigates files, reads context, makes changes across multiple files, runs tests, fixes errors — all through conversation.
 
-My entire website — [finekot.ai](https://finekot.ai) — was built with AI-assisted coding. Every feature, every animation, every page. And it's not just my site. My terminators use Claude Code to build products for the business.
+My entire website — [finekot.ai](https://finekot.ai) — was built with AI-assisted coding. Every feature, every animation, every page. And it's not just my site. My terminators use AI tools to build products for the business.
 
 What makes it powerful for non-developers too: you describe what you want in plain language, and it builds it. Not a perfect prototype — actual working software. Landing pages, internal tools, dashboards, bots.
 
@@ -287,7 +287,7 @@ Every morning starts with Todoist. My agents already worked overnight — Claude
 
 If I have a new idea, I research it with Perplexity first. Is there a market? What's the competition? What's the best approach?
 
-Then it goes to the agents. Claude builds. Claude Code writes the actual software. ElevenLabs gives it a voice if needed. Todoist keeps everything organized.
+Then it goes to the agents. Claude builds. AI writes the actual software. ElevenLabs gives it a voice if needed. Todoist keeps everything organized.
 
 Once the system is on autopilot — it runs itself. The agents call me on the phone when they need a decision. The rest of my time is for thinking, walking, having coffee, and coming up with the next idea.
 
@@ -411,7 +411,7 @@ The first thing that changed was my mornings. Instead of waking up to twenty peo
 
 The second thing that changed was my thinking. When you're not constantly interrupted by operational questions, your brain gets quiet. And in that quiet, ideas appear. The kind of ideas you never have when you're in reactive mode all day.
 
-I started going for morning walks along the coast in Montenegro. No meetings. No messages to answer. Just walking and thinking. And during those walks, when an idea hits, I pull out my phone and send a voice message to one of my agents. By the time I'm back at my laptop, there's already a spec or a draft waiting for me.
+I started going for morning walks along the coast. No meetings. No messages to answer. Just walking and thinking. And during those walks, when an idea hits, I pull out my phone and send a voice message to one of my agents. By the time I'm back at my laptop, there's already a spec or a draft waiting for me.
 
 That's a fundamentally different way of running a business. I went from being the bottleneck to being the brain. From managing people to managing vision.
 
@@ -471,7 +471,7 @@ I was paying for the privilege of doing my own job inside someone else's interfa
 
 ## The Moment It Clicked
 
-I was sitting in a coffee shop in Montenegro, toggling between browser tabs. One tool for tasks, another for leads, another for emails, another for social media.
+I was sitting in a coffee shop, toggling between browser tabs. One tool for tasks, another for leads, another for emails, another for social media.
 
 And I thought: I'm literally a human API connector. I'm the middleware between all these tools. I copy data from one, paste it into another, make a decision, then go to the next one.
 
