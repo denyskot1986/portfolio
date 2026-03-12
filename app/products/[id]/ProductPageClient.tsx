@@ -5,6 +5,7 @@ import Link from "next/link";
 import { motion } from "framer-motion";
 import { productsData, getProductById } from "@/lib/products-data";
 import DemoChat from "@/components/DemoChat";
+import ProductChat from "@/components/ProductChat";
 import { demoChatData } from "@/lib/demo-chats";
 import { i18n } from "@/lib/i18n";
 import { useLang } from "@/lib/lang-context";
@@ -150,6 +151,17 @@ export default function ProductPageClient() {
               ))}
             </div>
           </motion.div>
+        </div>
+      </section>
+
+      {/* AI SALES CHAT */}
+      <section className="relative z-10 py-8 px-6">
+        <div className="max-w-2xl mx-auto">
+          <ProductChat
+            productName={product.name}
+            productTagline={product.tagline}
+            productId={product.id}
+          />
         </div>
       </section>
 
