@@ -39,7 +39,7 @@ export default function BlogPostPage() {
       </div>
       <div className="fixed inset-0 dot-grid pointer-events-none" />
 
-      <article className="relative z-10 max-w-3xl mx-auto px-6 pt-28 pb-8">
+      <article className="relative z-10 max-w-3xl mx-auto px-6 pt-28 pb-48">
         <div className="flex items-center justify-between mb-8">
           <Link href="/blog" className="text-xs text-pink-400/40 hover:text-pink-400/70 font-mono transition-colors">
             &larr; {t.backBlog}
@@ -89,8 +89,10 @@ export default function BlogPostPage() {
         </motion.div>
       </article>
 
-      <div className="sticky bottom-0 z-50 max-w-3xl mx-auto px-6 pb-4 pt-2" style={{ background: "linear-gradient(to top, var(--bg) 60%, transparent)" }}>
-        <BlogChat articleTitle={translation?.title ?? post.title} articleSlug={post.slug} lang={lang} />
+      <div className="fixed bottom-0 left-0 right-0 z-50">
+        <div className="max-w-3xl mx-auto px-6 pb-4 pt-2" style={{ background: "linear-gradient(to top, var(--bg) 60%, transparent)" }}>
+          <BlogChat articleTitle={translation?.title ?? post.title} articleSlug={post.slug} lang={lang} />
+        </div>
       </div>
     </div>
   );
