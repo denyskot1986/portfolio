@@ -140,55 +140,6 @@ export const productsData: ProductData[] = [
     available: false,
   },
   {
-    id: "c-admin",
-    name: "C-Admin",
-    tagline: "Universal Client Manager",
-    category: "Business Automation",
-    description: "AI admin for any service professional \u2014 bookings, clients, marketing.",
-    longDescription: "C-Admin is a lightweight AI administrator built for any service professional: barbers, tutors, personal trainers, photographers, massage therapists, nail artists, freelance consultants \u2014 anyone who needs client bookings, automated reminders, and marketing on autopilot. It handles scheduling, client conversations, review management, and promotion \u2014 all from one Telegram bot. Lite version of AI-Admin, optimized for solo professionals.",
-    features: [
-      { title: "Smart Booking", desc: "Clients book through Telegram/web. Auto-confirms, reminds, reschedules." },
-      { title: "Client CRM", desc: "Remembers every client: preferences, history, notes. Personalizes every interaction." },
-      { title: "Auto-Marketing", desc: "Sends promotions, birthday offers, re-engagement messages to inactive clients." },
-      { title: "Review Manager", desc: "Requests reviews after each visit. Responds to Google/Instagram reviews automatically." },
-      { title: "Chat Autopilot", desc: "Handles client inquiries 24/7. Answers FAQs, sends portfolio, books slots." },
-      { title: "Analytics", desc: "Client retention, booking rates, revenue tracking \u2014 daily digest to Telegram." },
-    ],
-    useCases: ["Barbers & hairdressers", "Tutors & coaches", "Personal trainers", "Photographers", "Nail artists", "Massage therapists", "Freelance consultants"],
-    techStack: ["Claude API", "Telegram Bot API", "Google Calendar", "PostgreSQL", "N8N"],
-    pricing: { code: 299, currency: "USD" },
-    deliveryTime: { template: "Instant download", integration: "1 business day" },
-    youtubeId: null,
-    screenshots: [],
-    contact: "https://t.me/shop_by_finekot_bot",
-    diagram: `              +-------------------+
-              |   PROFESSIONAL    |
-              |   (Telegram Bot)  |
-              +---------+---------+
-                        |
-              +---------+---------+
-              |   C-ADMIN CORE    |
-              |  Booking Engine   |
-              |  Client Memory    |
-              |  Chat Handler     |
-              +--+-----+-----+---+
-                 |     |     |
-          +------+  +--+--+  +------+
-          |BOOKING|  |CLIENT|  |MARKET|
-          |ENGINE |  | CRM  |  |ENGINE|
-          +------+  +------+  +------+
-          |Calendar| |History| |Promos|
-          |Remind  | |Prefs  | |Reviews
-          |Confirm | |Notes  | |Reach |
-          +------+  +------+  +------+
-                 |     |     |
-          +------+-----+-----+------+
-          |    ANALYTICS LAYER      |
-          |  Retention . Revenue    |
-          +-------------------------+`,
-    available: true,
-  },
-  {
     id: "call-agent",
     name: "AI Call Agent",
     tagline: "Voice AI for Business",
