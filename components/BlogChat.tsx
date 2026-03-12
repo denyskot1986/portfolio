@@ -218,7 +218,7 @@ export default function BlogChat({ articleTitle, articleSlug, lang = "EN" }: Blo
                   : "Ask a follow-up question"
               }
               rows={1}
-              className="flex-1 px-2 py-2 bg-transparent text-sm text-[var(--fg)] placeholder:text-pink-200/30 focus:outline-none resize-none font-mono leading-relaxed"
+              className="flex-1 px-2 py-2 bg-transparent text-sm text-[var(--fg)] placeholder:text-pink-100/60 focus:outline-none resize-none font-mono leading-relaxed"
               style={{ maxHeight: 120 }}
             />
             <button
