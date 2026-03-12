@@ -949,7 +949,7 @@ export const productsData: ProductData[] = [
      |   ANALYTICS DASHBOARD |
      |  Replies . Sentiment  |
      +-----------------------+`,
-    available: false,
+    available: true,
   },
   {
     id: "shop-bot",
@@ -1264,6 +1264,149 @@ export const productsData: ProductData[] = [
      |  Agents . Dashboard   |
      +-----------------------+`,
     available: true,
+  },
+  {
+    id: "subscription-guard",
+    name: "Subscription Guard Bot",
+    tagline: "Automated Paid Telegram Channel Access",
+    category: "Telegram Bots",
+    description: "Bot-gatekeeper for paid Telegram channels. Auto-adds users after crypto payment, removes access on expiry.",
+    longDescription: "Subscription Guard Bot is a fully automated access management system for paid Telegram channels. It handles the entire subscription lifecycle: crypto payment (USDC/USDT), instant channel invite, expiry tracking, and automatic removal. Zero manual work for the channel owner. Set up once — runs forever.",
+    features: [
+      { title: "Crypto Payments", desc: "Accepts USDC/USDT on ERC20/TRC20. Payment confirmation in under 3 minutes." },
+      { title: "Auto-Invite", desc: "User pays → instantly receives channel invite link. No manual approvals." },
+      { title: "Subscription Tracking", desc: "Tracks expiry dates, sends renewal reminders 3 days before expiry." },
+      { title: "Auto-Removal", desc: "Removes non-paying users from channel automatically on expiry." },
+      { title: "Multi-Channel Support", desc: "One bot manages multiple paid channels with different pricing." },
+      { title: "Admin Dashboard", desc: "View all subscribers, revenue, and expiry dates via bot commands." },
+    ],
+    useCases: ["Paid Telegram channels", "Trading signals", "Exclusive communities", "Online courses", "Premium content"],
+    techStack: ["Python", "aiogram", "PostgreSQL", "Docker", "USDC/USDT ERC20"],
+    pricing: { code: 249, currency: "USD" },
+    deliveryTime: { template: "Instant download", integration: "1-2 hours setup" },
+    youtubeId: null,
+    screenshots: [],
+    contact: "https://t.me/shop_by_finekot_bot",
+    diagram: `
+    +------------------+
+    |   SUBSCRIBER     |
+    |  Sends /start    |
+    +--------+---------+
+             |
+    +--------v---------+
+    |  GUARD BOT       |
+    |  Shows pricing   |
+    |  Generates       |
+    |  payment address |
+    +--------+---------+
+             |
+    +--------v---------+    +------------------+
+    |  PAYMENT MONITOR |    |  TELEGRAM API    |
+    |  Watches wallet  +--->+  Sends invite    |
+    |  Confirms in     |    |  link to user    |
+    |  ~3 min          |    +------------------+
+    +--------+---------+
+             |
+    +--------v---------+
+    |  SUBSCRIPTION DB |
+    |  Stores expiry   |
+    |  Sends reminders |
+    |  Auto-removes    |
+    +------------------+`,
+    available: false,
+  },
+  {
+    id: "content-writer-bot",
+    name: "AI Content Writer Bot",
+    tagline: "Posts in Your Channel's DNA",
+    category: "AI Content",
+    description: "AI that learns your channel's style and generates on-brand posts, captions, and threads automatically.",
+    longDescription: "AI Content Writer Bot studies your existing content — posts, tone, style, audience reactions — and generates new content that sounds exactly like you. Feed it a topic, a link, or a keyword. It produces ready-to-post content for Telegram, Instagram, or Twitter. Built for channel owners who want to post consistently without spending hours writing.",
+    features: [
+      { title: "Style Learning", desc: "Analyzes your last 100+ posts to extract your unique voice, tone, and structure." },
+      { title: "Multi-Format Output", desc: "Generates Telegram posts, Instagram captions, Twitter threads — all in one bot." },
+      { title: "Topic Expansion", desc: "Give a keyword or URL — bot researches and writes a full post." },
+      { title: "Hashtag & Emoji Logic", desc: "Adds relevant hashtags and emojis matching your channel's style." },
+      { title: "One-Click Publish", desc: "Approve and publish directly from Telegram. No copy-pasting needed." },
+      { title: "Content Calendar", desc: "Schedule posts in advance. Bot maintains consistent posting frequency." },
+    ],
+    useCases: ["Telegram channel owners", "Instagram bloggers", "Twitter/X accounts", "Brand accounts", "News channels"],
+    techStack: ["Python", "Claude API", "aiogram", "Docker", "PostgreSQL"],
+    pricing: { code: 199, currency: "USD" },
+    deliveryTime: { template: "Instant download", integration: "2-3 hours setup" },
+    youtubeId: null,
+    screenshots: [],
+    contact: "https://t.me/shop_by_finekot_bot",
+    diagram: `
+    +--------------------+
+    |  YOUR CHANNEL      |
+    |  Last 100 posts    |
+    +--------+-----------+
+             |
+    +--------v-----------+
+    |  DNA ANALYZER      |
+    |  Tone / Structure  |
+    |  Emoji patterns    |
+    |  Post length       |
+    +--------+-----------+
+             |
+    +--------v-----------+    +------------------+
+    |  AI WRITER         |    |  INPUT           |
+    |  Claude API        +<---+  Topic / URL     |
+    |  Generates post    |    |  Keyword         |
+    |  in your style     |    +------------------+
+    +--------+-----------+
+             |
+    +--------v-----------+
+    |  REVIEW & PUBLISH  |
+    |  Approve in TG     |
+    |  Schedule or post  |
+    |  immediately       |
+    +--------------------+`,
+    available: false,
+  },
+  {
+    id: "booking-bot",
+    name: "Appointment Booking Bot",
+    tagline: "AI Receptionist for Your Business",
+    category: "Business Automation",
+    description: "Voice AI + Telegram bot that books appointments, manages schedule, and sends reminders. Works 24/7.",
+    longDescription: "Appointment Booking Bot replaces your receptionist. Clients book via Telegram or phone call — the voice AI handles the conversation, checks availability, and confirms the appointment. The master gets a daily schedule in Telegram every morning. Automatic reminders reduce no-shows by 60%. Built for beauty salons, clinics, coaches, and any appointment-based business.",
+    features: [
+      { title: "Voice AI Calls", desc: "AI answers phone calls, conducts natural conversation, books appointments in real time." },
+      { title: "Telegram Booking", desc: "Clients book via Telegram bot with calendar view and slot selection." },
+      { title: "Smart Scheduling", desc: "Configure working hours, breaks, service durations. No double-bookings." },
+      { title: "Auto-Reminders", desc: "Sends reminders to clients 24h and 2h before appointment. Reduces no-shows by 60%." },
+      { title: "Daily Brief", desc: "Master receives full schedule for the day every morning via Telegram." },
+      { title: "Multi-Language", desc: "Supports Russian, English, and Ukrainian out of the box." },
+    ],
+    useCases: ["Beauty salons", "Barbershops", "Dental clinics", "Coaches & therapists", "Medical offices"],
+    techStack: ["Python", "aiogram", "Voice AI API", "Docker", "PostgreSQL", "Redis"],
+    pricing: { code: 299, currency: "USD" },
+    deliveryTime: { template: "Instant download", integration: "1 business day" },
+    youtubeId: null,
+    screenshots: [],
+    contact: "https://t.me/shop_by_finekot_bot",
+    diagram: `
+    +------------------+    +------------------+
+    |   PHONE CALL     |    |  TELEGRAM BOT    |
+    |  Client calls    |    |  Client messages |
+    |  your number     |    |  /book command   |
+    +--------+---------+    +--------+---------+
+             |                       |
+    +--------v-----------+-----------v---------+
+    |         BOOKING AI CORE                  |
+    |  Checks availability . Books slot        |
+    |  Sends confirmation . Updates calendar   |
+    +--------+-----------+-----------+---------+
+             |                       |
+    +--------v---------+    +--------v---------+
+    |   MASTER PANEL   |    |  CLIENT REMINDERS|
+    |  Daily schedule  |    |  24h before      |
+    |  Manage bookings |    |  2h before       |
+    |  Edit slots      |    |  Post-visit msg  |
+    +------------------+    +------------------+`,
+    available: false,
   },
 ];
 
