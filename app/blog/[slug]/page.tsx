@@ -89,7 +89,7 @@ export default function BlogPostPage() {
         </motion.div>
       </article>
 
-      <div className="fixed bottom-0 left-0 right-0 z-50">
+      <div className="fixed bottom-0 left-0 right-0 z-50" style={{ willChange: "transform", transform: "translateZ(0)" }}>
         <div className="max-w-3xl mx-auto px-6 pb-4 pt-2" style={{ background: "linear-gradient(to top, var(--bg) 60%, transparent)" }}>
           <BlogChat articleTitle={translation?.title ?? post.title} articleSlug={post.slug} lang={lang} />
         </div>
