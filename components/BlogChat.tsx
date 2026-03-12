@@ -88,7 +88,7 @@ export default function BlogChat({ articleTitle, articleSlug, lang = "EN" }: Blo
             initial={{ opacity: 0, height: 0 }}
             animate={{ opacity: 1, height: "auto" }}
             exit={{ opacity: 0, height: 0 }}
-            className="relative mb-3 max-h-[55vh] overflow-y-auto rounded-2xl p-4 space-y-3"
+            className="relative mb-3 max-h-[55vh] overflow-y-auto rounded-2xl p-4 space-y-3 max-w-[85%] ml-auto mr-0 sm:max-w-full sm:ml-0"
             style={{
               background: "var(--glass-bg)",
               backdropFilter: "blur(20px)",
@@ -100,7 +100,7 @@ export default function BlogChat({ articleTitle, articleSlug, lang = "EN" }: Blo
             <div className="sticky top-0 flex justify-start mb-2">
               <button
                 onClick={() => setMessages([])}
-                className="flex items-center gap-1.5 px-2 py-1 rounded-lg text-pink-300/40 hover:text-pink-200 hover:bg-pink-500/10 transition-colors text-[10px] font-mono"
+                className="flex items-center gap-1.5 px-2 py-1 rounded-lg text-pink-300/70 hover:text-pink-200 hover:bg-pink-500/10 transition-colors text-[10px] font-mono"
                 aria-label="Close chat"
               >
                 <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round">
@@ -218,7 +218,7 @@ export default function BlogChat({ articleTitle, articleSlug, lang = "EN" }: Blo
                   : "Ask a follow-up question"
               }
               rows={1}
-              className="flex-1 px-2 py-2 bg-transparent text-sm text-[var(--fg)] placeholder:text-pink-100/60 focus:outline-none resize-none font-mono leading-relaxed"
+              className="flex-1 px-2 py-2 bg-transparent text-sm text-[var(--fg)] placeholder:text-pink-100/80 focus:outline-none resize-none font-mono leading-relaxed"
               style={{ maxHeight: 120 }}
             />
             <button
@@ -243,17 +243,6 @@ export default function BlogChat({ articleTitle, articleSlug, lang = "EN" }: Blo
         </div>
       </motion.div>
 
-      {/* FineChat branding */}
-      {messages.length === 0 && (
-        <motion.p
-          initial={{ opacity: 0 }}
-          animate={{ opacity: 1 }}
-          transition={{ delay: 1 }}
-          className="text-center text-[10px] text-pink-300/20 mt-2.5 font-mono tracking-widest"
-        >
-          FineChat by Finekot.AI
-        </motion.p>
-      )}
     </div>
   );
 }
