@@ -68,21 +68,21 @@ export default function BlogPostPage() {
 
           <div
             className="prose prose-invert max-w-none
-              [&_h2]:text-xl [&_h2]:font-bold [&_h2]:text-pink-100/70 [&_h2]:mt-10 [&_h2]:mb-4
-              [&_h3]:text-lg [&_h3]:font-bold [&_h3]:text-pink-100/60 [&_h3]:mt-8 [&_h3]:mb-3
-              [&_p]:text-pink-100/40 [&_p]:leading-relaxed [&_p]:mb-4 [&_p]:text-sm
-              [&_ul]:space-y-1 [&_li]:text-pink-100/40 [&_li]:text-sm
-              [&_strong]:text-pink-100/60
-              [&_a]:text-pink-400/60 [&_a]:hover:text-pink-400 [&_a]:transition-colors [&_a]:underline
-              [&_code]:text-pink-300/50 [&_code]:bg-pink-500/5 [&_code]:px-1.5 [&_code]:py-0.5 [&_code]:rounded [&_code]:text-xs [&_code]:font-mono
+              [&_h2]:text-xl [&_h2]:font-bold [&_h2]:text-pink-100/90 [&_h2]:mt-10 [&_h2]:mb-4
+              [&_h3]:text-lg [&_h3]:font-bold [&_h3]:text-pink-100/80 [&_h3]:mt-8 [&_h3]:mb-3
+              [&_p]:text-pink-100/75 [&_p]:leading-relaxed [&_p]:mb-4 [&_p]:text-sm
+              [&_ul]:space-y-1 [&_li]:text-pink-100/75 [&_li]:text-sm
+              [&_strong]:text-pink-100/90
+              [&_a]:text-pink-400/80 [&_a]:hover:text-pink-400 [&_a]:transition-colors [&_a]:underline
+              [&_code]:text-pink-300/80 [&_code]:bg-pink-500/5 [&_code]:px-1.5 [&_code]:py-0.5 [&_code]:rounded [&_code]:text-xs [&_code]:font-mono
               [&_pre]:bg-pink-500/[0.03] [&_pre]:border [&_pre]:border-pink-500/10 [&_pre]:rounded-xl [&_pre]:p-4 [&_pre]:overflow-x-auto [&_pre]:my-6
               [&_pre_code]:bg-transparent [&_pre_code]:p-0
               [&_table]:w-full [&_table]:text-sm [&_table]:my-6
-              [&_th]:text-left [&_th]:text-pink-100/50 [&_th]:font-mono [&_th]:text-xs [&_th]:uppercase [&_th]:tracking-wider [&_th]:pb-2 [&_th]:border-b [&_th]:border-pink-500/10
-              [&_td]:py-2 [&_td]:text-pink-100/35 [&_td]:border-b [&_td]:border-pink-500/5 [&_td]:text-xs
+              [&_th]:text-left [&_th]:text-pink-100/80 [&_th]:font-mono [&_th]:text-xs [&_th]:uppercase [&_th]:tracking-wider [&_th]:pb-2 [&_th]:border-b [&_th]:border-pink-500/10
+              [&_td]:py-2 [&_td]:text-pink-100/70 [&_td]:border-b [&_td]:border-pink-500/5 [&_td]:text-xs
               [&_hr]:border-pink-500/10 [&_hr]:my-8
-              [&_blockquote]:border-l-2 [&_blockquote]:border-pink-500/20 [&_blockquote]:pl-4 [&_blockquote]:italic [&_blockquote]:text-pink-100/30
-              [&_em]:text-pink-100/50
+              [&_blockquote]:border-l-2 [&_blockquote]:border-pink-500/20 [&_blockquote]:pl-4 [&_blockquote]:italic [&_blockquote]:text-pink-100/65
+              [&_em]:text-pink-100/75
             "
             dangerouslySetInnerHTML={{ __html: markdownToHtml(translation?.content ?? post.content) }}
           />
