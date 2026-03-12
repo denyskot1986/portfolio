@@ -191,7 +191,7 @@ export default function BlogChat({ articleTitle, articleSlug, lang = "EN" }: Blo
               onKeyDown={handleKeyDown}
               placeholder={lang === "RU" ? "Задайте уточняющий вопрос" : lang === "UA" ? "Задайте уточнююче питання" : "Ask a follow-up question"}
               rows={1}
-              className="flex-1 px-3 py-2.5 bg-transparent text-sm text-pink-100/80 placeholder:text-pink-300/40 focus:outline-none resize-none font-mono leading-relaxed"
+              className="flex-1 px-3 py-2.5 bg-transparent text-sm text-pink-100/80 placeholder:text-pink-200/55 focus:outline-none resize-none font-mono leading-relaxed"
               style={{ maxHeight: 120 }}
             />
             <button
