@@ -1,0 +1,22 @@
+name: Auto-Publish Blog → Telegram
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - 'lib/blog-data.ts'
+
+jobs:
+  publish:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 2
+
+      - name: Detect new posts & publish to Telegram
+        env:
+          TELEGRAM_BOT_TOKEN: ${{ secrets.TELEGRAM_BOT_TOKEN }}
+          TELEGRAM_CHANNEL_ID: ${{ secrets.TELEGRAM_CHANNEL_ID }}
+          SITE_URL: https://finekot.ai
+        run: node .github/scripts/publish-blog.js
