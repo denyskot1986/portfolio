@@ -90,10 +90,10 @@ export default function BlogChat({ articleTitle, articleSlug, lang = "EN" }: Blo
             exit={{ opacity: 0, height: 0 }}
             className="relative mb-3 max-h-[55vh] overflow-y-auto rounded-2xl p-4 space-y-3"
             style={{
-              background: "rgba(10, 6, 8, 0.82)",
+              background: "var(--glass-bg)",
               backdropFilter: "blur(20px)",
               WebkitBackdropFilter: "blur(20px)",
-              border: "1px solid var(--border)",
+              border: "1px solid var(--glass-border)",
             }}
           >
             {/* Close button — left */}
@@ -184,7 +184,7 @@ export default function BlogChat({ articleTitle, articleSlug, lang = "EN" }: Blo
         <div
           className="relative rounded-2xl"
           style={{
-            background: "rgba(10, 6, 8, 0.92)",
+            background: "var(--glass-bg)",
             backdropFilter: "blur(20px)",
             WebkitBackdropFilter: "blur(20px)",
           }}
