@@ -621,7 +621,7 @@ export const productsData: ProductData[] = [
      |   ANALYTICS & LEARN  |
      |  CSAT . Resolution   |
      +-----------------------+`,
-    available: false,
+    available: true,
   },
   {
     id: "realestate-ai",
@@ -1211,7 +1211,7 @@ export const productsData: ProductData[] = [
      |   NUDGE SCHEDULER    |
      |  Hourly . Smart Pick |
      +-----------------------+`,
-    available: false,
+    available: true,
   },
   {
     id: "intake-bot",
