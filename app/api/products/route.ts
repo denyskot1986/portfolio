@@ -6,6 +6,8 @@ export async function GET(request: Request) {
   const id = searchParams.get("id");
   const category = searchParams.get("category");
 
+  const availableOnly = searchParams.get("available");
+
   let result = productsData;
 
   if (id) {
@@ -14,11 +16,16 @@ export async function GET(request: Request) {
     result = productsData.filter((p) => p.category.toLowerCase().replace(/\s+/g, "-") === category.toLowerCase());
   }
 
+  if (availableOnly === "true") {
+    result = result.filter((p) => p.available);
+  }
+
   const apiProducts = result.map((p) => ({
     id: p.id,
     name: p.name,
     category: p.category,
     description: p.description,
+    available: p.available,
     price: {
       code: { amount: p.pricing.code, currency: p.pricing.currency },
       ...(p.pricing.setup ? { setup: { amount: p.pricing.setup, currency: p.pricing.currency } } : {}),
