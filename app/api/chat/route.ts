@@ -162,7 +162,7 @@ export async function POST(req: NextRequest) {
         "X-Title": "Finekot",
       },
       body: JSON.stringify({
-        model: "anthropic/claude-haiku-4-5-20251001",
+        model: "anthropic/claude-haiku-4.5",
         messages: [
           { role: "system", content: systemContent },
           ...messages.slice(-10),
