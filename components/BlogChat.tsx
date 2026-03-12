@@ -224,7 +224,7 @@ export default function BlogChat({ articleTitle, articleSlug, lang = "EN" }: Blo
             <button
               onClick={send}
               disabled={loading || !input.trim()}
-              className="shrink-0 w-9 h-9 rounded-xl bg-gradient-to-br from-pink-600 to-purple-600 text-white flex items-center justify-center hover:opacity-90 transition-all disabled:opacity-25 shadow-[0_0_16px_rgba(244,114,182,0.2)]"
+              className="shrink-0 w-9 h-9 rounded-xl bg-gradient-to-br from-pink-500 to-purple-500 text-white flex items-center justify-center hover:opacity-90 transition-all disabled:opacity-50 shadow-[0_0_20px_rgba(244,114,182,0.4)]"
             >
               {loading ? (
                 <motion.div
