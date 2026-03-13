@@ -192,7 +192,7 @@ export const productsData: ProductData[] = [
    |  ANALYTICS & RECORDING LAYER  |
    |  Transcripts . Sentiment . KPI|
    +-------------------------------+`,
-    available: true,
+    available: false,
   },
   {
     id: "contentfactory",
@@ -465,7 +465,7 @@ export const productsData: ProductData[] = [
      |    DAILY DIGEST       |
      |  Summary . Priorities |
      +-----------------------+`,
-    available: true,
+    available: false,
   },
   {
     id: "hiring-autopilot",
@@ -662,7 +662,7 @@ export const productsData: ProductData[] = [
      |   STYLE LEARNING     |
      |  Tone . Pattern . KPI|
      +-----------------------+`,
-    available: true,
+    available: false,
   },
   {
     id: "bizpulse",
@@ -952,7 +952,7 @@ export const productsData: ProductData[] = [
      |   DELIVERY & NOTIFY  |
      |  Token . Download    |
      +-----------------------+`,
-    available: true,
+    available: false,
   },
   {
     id: "salon-call-bot",
@@ -1410,7 +1410,7 @@ export const productsData: ProductData[] = [
           |   ТЫ получаешь          |
           |  транскрипцию в Telegram|
           +-------------------------+`,
-    available: true,
+    available: false,
   },
 ];
 
