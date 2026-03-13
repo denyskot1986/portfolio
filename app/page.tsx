@@ -338,7 +338,7 @@ function BlogCardsSection() {
         </motion.div>
 
         {/* Grid of 4 more posts */}
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+        {posts.length > 1 && <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
           {posts.slice(1).map((post, i) => {
             const tr = getBlogTranslation(post.slug, lang);
             return (
@@ -363,7 +363,7 @@ function BlogCardsSection() {
             </motion.div>
             );
           })}
-        </div>
+        </div>}
 
         <motion.div
           initial={{ opacity: 0 }}
