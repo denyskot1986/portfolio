@@ -11,7 +11,7 @@ export interface BlogPost {
 export const blogPosts: BlogPost[] = [
   {
     slug: "solo-architect",
-    title: "I Worked With Twenty People. Now — Five Agents. And I Don't Burn Out.",
+    title: "I Worked With Twenty People. Now — An Agent Squad. And I Don't Burn Out.",
     excerpt:
       "I built profitable teams, managed twenty people, and burned out completely. Then I discovered AI agents. Here's what happened next — and why it changed everything.",
     date: "2026-03-12",
@@ -21,7 +21,7 @@ export const blogPosts: BlogPost[] = [
 
 But I burned out.
 
-Not because the work was bad. Because I was never good at being an effective boss. I was good at being the kind of leader who sits down, codes himself, and motivates everyone by example. The one who delegates tasks, tracks deadlines, and mediates internal conflicts — that was never me. The money kept coming, so I didn't quit. The burnout just hit its limit.
+Not because the work was boring. Because I was never good at being an effective boss. I was good at being the kind of leader who codes and programs himself, and motivates everyone by example. The one who delegates tasks, tracks deadlines, and mediates internal conflicts — that was never me. The money kept coming, so I didn't quit. The burnout just hit its limit.
 
 I took a two-year sabbatical.
 
@@ -29,7 +29,7 @@ I took a two-year sabbatical.
 
 ## I Only Follow AI News
 
-I don't follow the news. I don't go shopping. None of that interests me.
+I don't follow political news — it doesn't interest me. I only follow the world of technology.
 
 But everything related to artificial intelligence — I read every day. And one day I saw something. I thought: *I need that too.* Assembled it quickly. And then the real work began.
 
@@ -45,17 +45,17 @@ That's when I understood what I had in my hands.
 
 ---
 
-## Cybernetic Hands
+## You — a Billionaire
 
-When you have a tool like this — it's like getting cybernetic hands. Projects that were beyond what one person could realistically do — are now possible.
+Your board of directors is in your phone 24/7, working on tasks they set for themselves. You only show up to the development meetings.
 
-Five terminator agents — my own build. One writes backend, one builds interfaces, one creates content, one calculates monetization, one monitors quality. They work in parallel. They come back to me only when a decision requires a human.
+An agent squad — my own build. One writes backend, one builds interfaces, one creates content, one calculates monetization, one monitors quality. They work in parallel. They come back to me only when a decision requires a human. Need another one? Spin it up in a minute.
 
 I don't write code. I don't assign tasks manually.
 
 > I make decisions.
 
-I send SKYNET an idea — a voice message, raw thoughts, stream of consciousness. A minute later I have a plan, business calculations, recommendations. Then I say one word: **"Go."**
+I send SKYNET an idea — a voice message, raw thoughts, stream of consciousness. A minute later I have a plan, business calculations, recommendations. Then I say one word: **"Let's go."**
 
 ---
 
