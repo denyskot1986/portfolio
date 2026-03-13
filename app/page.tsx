@@ -291,6 +291,9 @@ function BlogCardsSection() {
   const { lang } = useLang();
   const t = i18n[lang].pages.blog;
   const posts = blogPosts.slice(0, 5);
+
+  if (posts.length === 0) return null;
+
   const feat = getBlogTranslation(posts[0].slug, lang);
 
   return (
