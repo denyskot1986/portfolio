@@ -119,7 +119,7 @@ pre.diagram {
     rgba(192, 132, 252, 0.35) 52%,
     transparent 65%
   );
-  animation: chat-border-spin 4s linear infinite;
+  animation: chat-border-spin 40s linear infinite;
 }
 
 .blog-chat-glow {
