@@ -92,13 +92,21 @@ export default function BlogPostPage() {
               {lang === "RU" ? "Подписывайся" : lang === "UA" ? "Підписуйся" : "Follow"}
             </p>
             <div className="flex flex-wrap gap-3">
-              <a
-                href="https://t.me/finekot_ai"
-                target="_blank"
-                rel="noopener noreferrer"
-                className="flex items-center gap-2 px-4 py-2.5 rounded-lg border border-pink-500/15 text-xs text-pink-300/50 hover:text-pink-300/85 hover:border-pink-500/30 transition-all font-mono"
-              >
-                Telegram — @finekot_ai
+              <a href="https://instagram.com/finekot.ai" target="_blank" rel="noopener noreferrer"
+                className="flex items-center gap-2 px-4 py-2.5 rounded-lg border border-pink-500/15 text-xs text-pink-300/50 hover:text-pink-300/85 hover:border-pink-500/30 transition-all font-mono">
+                Instagram — @finekot.ai
+              </a>
+              <a href="https://t.me/finekot_ai" target="_blank" rel="noopener noreferrer"
+                className="flex items-center gap-2 px-4 py-2.5 rounded-lg border border-pink-500/15 text-xs text-pink-300/50 hover:text-pink-300/85 hover:border-pink-500/30 transition-all font-mono">
+                Telegram EN — @finekot_ai
+              </a>
+              <a href="https://t.me/finekot_ai_ua" target="_blank" rel="noopener noreferrer"
+                className="flex items-center gap-2 px-4 py-2.5 rounded-lg border border-pink-500/15 text-xs text-pink-300/50 hover:text-pink-300/85 hover:border-pink-500/30 transition-all font-mono">
+                Telegram UA — @finekot_ai_ua
+              </a>
+              <a href="https://t.me/finekot_ai_ru" target="_blank" rel="noopener noreferrer"
+                className="flex items-center gap-2 px-4 py-2.5 rounded-lg border border-pink-500/15 text-xs text-pink-300/50 hover:text-pink-300/85 hover:border-pink-500/30 transition-all font-mono">
+                Telegram RU — @finekot_ai_ru
               </a>
             </div>
           </div>
