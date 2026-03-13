@@ -86,6 +86,22 @@ export default function BlogPostPage() {
             "
             dangerouslySetInnerHTML={{ __html: markdownToHtml(translation?.content ?? post.content) }}
           />
+
+          <div className="mt-12 pt-8 border-t border-pink-500/10">
+            <p className="text-[10px] text-pink-300/30 font-mono uppercase tracking-wider mb-4">
+              {lang === "RU" ? "Подписывайся" : lang === "UA" ? "Підписуйся" : "Follow"}
+            </p>
+            <div className="flex flex-wrap gap-3">
+              <a
+                href="https://t.me/finekot_ai"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="flex items-center gap-2 px-4 py-2.5 rounded-lg border border-pink-500/15 text-xs text-pink-300/50 hover:text-pink-300/85 hover:border-pink-500/30 transition-all font-mono"
+              >
+                Telegram — @finekot_ai
+              </a>
+            </div>
+          </div>
         </motion.div>
       </article>
 

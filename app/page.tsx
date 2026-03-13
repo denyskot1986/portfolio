@@ -726,8 +726,15 @@ export default function Home() {
       </section>
 
 
-      <footer className="relative z-10 py-6 text-center text-[10px] text-pink-300/15 border-t border-pink-500/10 font-mono uppercase tracking-wider">
-        {t.footer}
+      <footer className="relative z-10 py-8 border-t border-pink-500/10 font-mono">
+        <div className="max-w-5xl mx-auto px-6 flex flex-col items-center gap-4">
+          <div className="flex flex-wrap justify-center gap-6">
+            <a href="https://t.me/finekot_ai" target="_blank" rel="noopener noreferrer" className="text-xs text-pink-300/35 hover:text-pink-300/70 transition-colors tracking-wider">
+              {lang === "RU" ? "TG Канал" : lang === "UA" ? "TG Канал" : "TG Channel"} @finekot_ai
+            </a>
+          </div>
+          <p className="text-[10px] text-pink-300/15 uppercase tracking-wider">{t.footer}</p>
+        </div>
       </footer>
 
       {/* ─── CHECKOUT MODAL ─── */}
