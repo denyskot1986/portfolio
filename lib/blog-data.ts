@@ -21,9 +21,27 @@ export const blogPosts: BlogPost[] = [
 
 But I burned out.
 
-Not because the work was boring. Because I was never good at being an effective boss. I was good at being the kind of leader who codes and programs himself, and motivates everyone by example. The one who delegates tasks, tracks deadlines, and mediates internal conflicts — that was never me. The money kept coming, so I didn't quit. The burnout just hit its limit.
+Not because the work was boring. Because managing people exhausted me in a very specific way: I had to repeat myself. Endlessly. Say something at the start of a task — by the end, it's forgotten. Explain the logic — next week, explain it again. People have small context windows. That's not a flaw. That's just how humans are built.
 
-I took a two-year sabbatical.
+But I'm not built that way. And the mismatch ground me down.
+
+The people I worked with — I valued them. That made it harder. Watching disappointment accumulate between people you care about, because the system doesn't fit the way any of you think. I wasn't good at being an effective manager. I was good at being the kind of person who codes and programs himself, sets the example, shows the way. The administrative part — tasks, deadlines, conflicts — was never me. The money kept coming, so I didn't quit. Until the burnout hit its limit.
+
+---
+
+## Two Years as a Student
+
+I took a sabbatical. Two years.
+
+At first I just stopped. Then I started studying.
+
+Modern physics first — filling in gaps I'd skipped years earlier. Then, somewhere in that reading, I stumbled onto generative models. I realized: these things can already interact with a human at the level of text. That's prompt programming. That's a new language.
+
+So I went deeper. How neural networks work. Not just how to use them — how they actually function inside. The architecture, the training, the strange emergent behaviors. I became a student of the technology I was about to build with.
+
+Two years. No money goals. Just learning.
+
+And when I came back — I came back different.
 
 ---
 
@@ -31,9 +49,9 @@ I took a two-year sabbatical.
 
 I don't follow political news — it doesn't interest me. I only follow the world of technology.
 
-But everything related to artificial intelligence — I read every day. And one day I saw something. I thought: *I need that too.* Assembled it quickly. And then the real work began.
+Everything related to artificial intelligence — I read every day. And one day I saw something. I thought: *I need that too.* I assembled it quickly. And then the real work began.
 
-First I just evaluated what it could do. What it handled, what it didn't. Then I started tuning — and it began handling complex tasks. I added more features. Days on end went into configuration: deep search tuned exactly to my needs, scripts, chains of actions.
+First I evaluated what it could do. What it handled, what it didn't. Then I started tuning — it began handling complex tasks. I added more features. Days on end went into configuration: deep search tuned exactly to my needs, scripts, chains of actions.
 
 And then — the first genuinely complex task.
 
@@ -77,13 +95,13 @@ So SKYNET, which I built for my own goals, independently hired a person to achie
 
 ## This Is a Different Way of Thinking
 
-I work from early morning until late at night now. I don't get tired. Agents in Telegram, on the laptop — some questions get resolved in the background while I'm doing something else.
+I work from early morning until late at night now. I don't get tired.
+
+Here's what I noticed: my brain has started running in parallel. I live my life — a walk, coffee, a conversation — and somewhere in the background, there's a process going on. Production. Testing. What the agents finished overnight. It's not intrusive. It's just... there. Like a second monitor you glance at occasionally.
 
 I burned out from working with people. With agents — pure euphoria. I don't know how long it will last. But right now, this is the best thing that has happened to me professionally.
 
-It's a different way of thinking. You think in five dimensions at once. **You think like a director.**
-
-And I love wading into businesses with unsolicited advice and optimizations. You know those people? That's me. Business automation is the perfect niche for me. And I have all the skills for it.
+It's a different way of thinking. You think in multiple dimensions at once. **You think like a director.**
 
 ---
 
@@ -139,15 +157,21 @@ I've personally watched negative user statements accumulate in individual machin
 
 ## Why I'm Telling You This
 
-I read all day. But what I read — are robot reports. Specific reading, people. I wouldn't recommend it. Although — on second thought — I'd recommend it to everyone.
+I'm not telling this to impress.
 
-Since I started communicating with AI, my speech has gotten cleaner. My vocabulary has expanded. My thinking has changed.
+I'm telling this because two years ago, earning money was stress for me. I burned out so completely that I didn't want anything at all. It took time — physics, neural networks, understanding how everything works from the inside — before I wanted to build again.
 
-I want to open these possibilities to ordinary people. Not just for developers. For everyone. So that someone with no technical background can pick up a tool, create something of their own, simplify their life, and become more valuable.
+Now I live my life. And glance at "work" out of the corner of my eye.
+
+Not because I have no choice. But because work stopped being work.
+
+My motivation isn't the money. I want to popularize this technology. I want to gather people like me — those who think in parallel, who want to build, who are tired of repeating themselves. I want to give society something that unlocks new capabilities in a person. Not just for developers. For everyone.
 
 We don't have chips in our heads yet.
 
-But agents — are already here.`,
+But agents — are already here.
+
+*If you're reading this and something resonates — you're already on the path.*`,
   },
 ];
 
