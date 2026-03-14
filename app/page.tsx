@@ -629,12 +629,15 @@ export default function Home() {
                               Testing...
                             </span>
                           ) : (
-                            <button
-                              onClick={(e) => { e.stopPropagation(); openCheckout(p); }}
+                            <a
+                              href={botBuyLink(p.title)}
+                              target="_blank"
+                              rel="noopener noreferrer"
+                              onClick={(e) => e.stopPropagation()}
                               className="px-3 py-1.5 rounded-lg bg-gradient-to-r from-pink-600 to-purple-600 text-[10px] font-bold text-white uppercase tracking-wider hover:opacity-90 transition-opacity shadow-[0_0_15px_rgba(244,114,182,0.2)] whitespace-nowrap"
                             >
                               Buy →
-                            </button>
+                            </a>
                           )}
                         </div>
                       </div>
@@ -676,12 +679,24 @@ export default function Home() {
                                 </ul>
                               </div>
 
-                              <button
-                                onClick={(e) => { e.stopPropagation(); openCheckout(p); }}
-                                className="block w-full text-center px-6 py-3 rounded-lg bg-gradient-to-r from-pink-600 to-purple-600 text-white text-sm font-semibold hover:opacity-90 transition-opacity shadow-[0_0_25px_rgba(244,114,182,0.2)]"
-                              >
-                                Get {p.title} — {p.price} →
-                              </button>
+                              {p.status === "live" ? (
+                                <a
+                                  href={botBuyLink(p.title)}
+                                  target="_blank"
+                                  rel="noopener noreferrer"
+                                  onClick={(e) => e.stopPropagation()}
+                                  className="block w-full text-center px-6 py-3 rounded-lg bg-gradient-to-r from-pink-600 to-purple-600 text-white text-sm font-semibold hover:opacity-90 transition-opacity shadow-[0_0_25px_rgba(244,114,182,0.2)]"
+                                >
+                                  Get {p.title} — {p.price} →
+                                </a>
+                              ) : (
+                                <button
+                                  onClick={(e) => { e.stopPropagation(); openCheckout(p); }}
+                                  className="block w-full text-center px-6 py-3 rounded-lg bg-gradient-to-r from-pink-600 to-purple-600 text-white text-sm font-semibold hover:opacity-90 transition-opacity shadow-[0_0_25px_rgba(244,114,182,0.2)]"
+                                >
+                                  Get {p.title} — {p.price} →
+                                </button>
+                              )}
                             </div>
                           </motion.div>
                         )}
