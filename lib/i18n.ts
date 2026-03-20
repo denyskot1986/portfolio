@@ -221,7 +221,7 @@ const EN: T = {
     subtitle: "Text or Voice a Task. AI Structures, Prioritizes, Routes It.",
     desc: "A Telegram bot that turns chaotic ideas — voice messages, random texts — into clean, structured Todoist tasks. AI figures out priority, assigns to the right agent, and tracks completion.",
     features: [
-      { icon: "[>]", title: "Voice Input", text: "Send a voice message. Whisper transcribes. Claude structures." },
+      { icon: "[>]", title: "Voice Input", text: "Send a voice message. Whisper transcribes. AI structures." },
       { icon: "[=]", title: "Auto-Priority", text: "AI assigns urgency and importance. No manual sorting." },
       { icon: "[@]", title: "Agent Routing", text: "Tasks go to the right specialist automatically." },
       { icon: "[~]", title: "Todoist Sync", text: "Everything lands in your project management tool instantly." },
@@ -531,7 +531,7 @@ const RU: T = {
     subtitle: "Напиши или надиктуй задачу. AI структурирует, приоритезирует, маршрутизирует.",
     desc: "Telegram-бот, превращающий хаотичные идеи — голосовые сообщения, случайные тексты — в чистые структурированные задачи Todoist. AI определяет приоритет, назначает нужного агента, отслеживает выполнение.",
     features: [
-      { icon: "[>]", title: "Голосовой ввод", text: "Отправь голосовое. Whisper транскрибирует. Claude структурирует." },
+      { icon: "[>]", title: "Голосовой ввод", text: "Отправь голосовое. Whisper транскрибирует. AI структурирует." },
       { icon: "[=]", title: "Автоприоритет", text: "AI назначает срочность и важность. Без ручной сортировки." },
       { icon: "[@]", title: "Маршрутизация", text: "Задачи автоматически попадают к нужному специалисту." },
       { icon: "[~]", title: "Синхронизация с Todoist", text: "Всё попадает в ваш менеджер задач мгновенно." },
@@ -841,7 +841,7 @@ const UA: T = {
     subtitle: "Напиши або надиктуй задачу. AI структурує, пріоритизує, маршрутизує.",
     desc: "Telegram-бот, що перетворює хаотичні ідеї — голосові повідомлення, випадкові тексти — на чисті структуровані задачі Todoist.",
     features: [
-      { icon: "[>]", title: "Голосовий ввід", text: "Надішли голосове. Whisper транскрибує. Claude структурує." },
+      { icon: "[>]", title: "Голосовий ввід", text: "Надішли голосове. Whisper транскрибує. AI структурує." },
       { icon: "[=]", title: "Автопріоритет", text: "AI призначає терміновість та важливість." },
       { icon: "[@]", title: "Маршрутизація", text: "Задачі автоматично потрапляють до потрібного спеціаліста." },
       { icon: "[~]", title: "Синхронізація з Todoist", text: "Все потрапляє в менеджер задач миттєво." },

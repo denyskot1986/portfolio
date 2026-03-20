@@ -34,7 +34,7 @@ export const productsData: ProductData[] = [
       { title: "Scalable Architecture", desc: "Add new agents by cloning config. Scale to 40+." },
     ],
     useCases: ["Software teams", "DevOps automation", "Research orgs", "Enterprise AI", "Agency operations"],
-    techStack: ["Claude API", "Docker", "Telegram Bot API", "systemd", "PostgreSQL", "N8N"],
+    techStack: ["AI API", "Docker", "Telegram Bot API", "systemd", "PostgreSQL", "N8N"],
     pricing: { code: 2000, currency: "USD" },
     deliveryTime: { template: "Instant download", integration: "Contact for enterprise setup" },
     youtubeId: null,
@@ -61,7 +61,7 @@ export const productsData: ProductData[] = [
       |Fullstk ||Back ||DevOp||Research|
       |        ||+DB  ||+Infr||+QA     |
       +--------++-----++-----++--------+
-      |Claude  ||Claud||Claud||Claude  |
+      |LLM API ||LLM  ||LLM  ||LLM API |
       |Code    ||Code ||Code ||Code    |
       +---+----++--+--++--+--++---+----+
           |        |      |       |
@@ -91,7 +91,7 @@ export const productsData: ProductData[] = [
       { title: "Daily Reports", desc: "Revenue, client count, staff performance, inventory status \u2014 delivered to your Telegram every morning." },
     ],
     useCases: ["Beauty salons", "Dental clinics", "Retail stores", "Service businesses", "Franchise operations"],
-    techStack: ["Claude API", "Telegram Bot API", "N8N Automation", "PostgreSQL", "Vector DB", "Redis"],
+    techStack: ["AI API", "Telegram Bot API", "N8N Automation", "PostgreSQL", "Vector DB", "Redis"],
     pricing: { code: 1900, currency: "USD" },
     deliveryTime: { template: "Instant download", integration: "1 business day" },
     youtubeId: null,
@@ -155,7 +155,7 @@ export const productsData: ProductData[] = [
       { title: "Multilingual", desc: "Speaks 15+ languages. Auto-detects and switches." },
     ],
     useCases: ["Customer support", "Sales outreach", "Appointment booking", "Lead qualification", "Survey calls"],
-    techStack: ["Python", "Twilio Voice API", "Claude API", "OpenAI Whisper", "ElevenLabs TTS", "Docker"],
+    techStack: ["Python", "Twilio Voice API", "AI API", "OpenAI Whisper", "ElevenLabs TTS", "Docker"],
     pricing: { code: 99, currency: "USD" },
     deliveryTime: { template: "Instant download", integration: "Contact for setup" },
     youtubeId: null,
@@ -210,7 +210,7 @@ export const productsData: ProductData[] = [
       { title: "15+ Languages", desc: "Create and localize content automatically." },
     ],
     useCases: ["Personal brands", "Startup marketing", "Agency content ops", "E-commerce", "SaaS marketing"],
-    techStack: ["Claude API", "Social Media APIs", "WordPress API", "N8N", "Analytics APIs", "Airtable"],
+    techStack: ["AI API", "Social Media APIs", "WordPress API", "N8N", "Analytics APIs", "Airtable"],
     pricing: { code: 500, currency: "USD" },
     deliveryTime: { template: "Instant download", integration: "1 business day" },
     youtubeId: null,
@@ -263,7 +263,7 @@ export const productsData: ProductData[] = [
       { title: "API Integration", desc: "REST API for embedding DocMind into your existing tools." },
     ],
     useCases: ["Legal document search", "Internal knowledge base", "Compliance", "Customer support", "Research"],
-    techStack: ["Claude API", "Pinecone / Weaviate", "LangChain", "Next.js", "PostgreSQL", "FastAPI"],
+    techStack: ["AI API", "Pinecone / Weaviate", "LangChain", "Next.js", "PostgreSQL", "FastAPI"],
     pricing: { code: 200, currency: "USD" },
     deliveryTime: { template: "Instant download", integration: "Contact for setup" },
     youtubeId: null,
@@ -318,7 +318,7 @@ export const productsData: ProductData[] = [
       { title: "CRM Integration", desc: "Syncs with HubSpot, Salesforce, Pipedrive via API." },
     ],
     useCases: ["B2B sales", "Agency new business", "SaaS outbound", "Consulting", "Freelancer lead gen"],
-    techStack: ["Claude API", "LinkedIn API", "Email APIs", "N8N", "PostgreSQL", "Redis"],
+    techStack: ["AI API", "LinkedIn API", "Email APIs", "N8N", "PostgreSQL", "Redis"],
     pricing: { code: 200, currency: "USD" },
     deliveryTime: { template: "Instant download", integration: "Contact for setup" },
     youtubeId: null,
@@ -374,7 +374,7 @@ export const productsData: ProductData[] = [
       { title: "Audit Trail", desc: "Full history of every review and recommendation." },
     ],
     useCases: ["Legal departments", "Procurement", "Real estate", "Freelancers", "Startups"],
-    techStack: ["Claude API", "LangChain", "ChromaDB", "FastAPI", "Next.js"],
+    techStack: ["AI API", "LangChain", "ChromaDB", "FastAPI", "Next.js"],
     pricing: { code: 100, currency: "USD" },
     deliveryTime: { template: "Instant download", integration: "Contact for setup" },
     youtubeId: null,
@@ -431,7 +431,7 @@ export const productsData: ProductData[] = [
       { title: "Daily Digest", desc: "Morning summary of what needs attention today." },
     ],
     useCases: ["Entrepreneurs", "Team leads", "Project managers", "Creative professionals", "Remote teams"],
-    techStack: ["Claude API", "Whisper STT", "Todoist API", "aiogram", "Python"],
+    techStack: ["AI API", "Whisper STT", "Todoist API", "aiogram", "Python"],
     pricing: { code: 99, currency: "USD" },
     deliveryTime: { template: "Instant download", integration: "Contact for setup" },
     youtubeId: null,
@@ -483,7 +483,7 @@ export const productsData: ProductData[] = [
       { title: "HR Analytics", desc: "Time-to-hire, source effectiveness, conversion funnel." },
     ],
     useCases: ["Startup hiring", "Agency recruitment", "Enterprise HR", "Seasonal staffing", "Remote teams"],
-    techStack: ["Claude API", "Telegram Bot API", "Google Calendar API", "PostgreSQL", "N8N", "Redis"],
+    techStack: ["AI API", "Telegram Bot API", "Google Calendar API", "PostgreSQL", "N8N", "Redis"],
     pricing: { code: 199, currency: "USD" },
     deliveryTime: { template: "Instant download", integration: "Contact for setup" },
     youtubeId: null,
@@ -542,7 +542,7 @@ export const productsData: ProductData[] = [
       { title: "Continuous Learning", desc: "Improves from every resolved conversation." },
     ],
     useCases: ["E-commerce support", "SaaS help desk", "Telecom", "Banking", "Travel agencies"],
-    techStack: ["Claude API", "RAG", "Telegram", "Zendesk API", "Python"],
+    techStack: ["AI API", "RAG", "Telegram", "Zendesk API", "Python"],
     pricing: { code: 200, currency: "USD" },
     deliveryTime: { template: "Instant download", integration: "Contact for setup" },
     youtubeId: null,
@@ -590,7 +590,7 @@ export const productsData: ProductData[] = [
       { title: "Photo Galleries", desc: "Sends property photos and virtual tour links." },
     ],
     useCases: ["Real estate agencies", "Property developers", "Rental companies", "Individual agents"],
-    techStack: ["Claude API", "Telegram", "PostgreSQL", "Google Calendar", "Python"],
+    techStack: ["AI API", "Telegram", "PostgreSQL", "Google Calendar", "Python"],
     pricing: { code: 1200, currency: "USD" },
     deliveryTime: { template: "Instant download", integration: "Contact for setup" },
     youtubeId: null,
@@ -637,7 +637,7 @@ export const productsData: ProductData[] = [
       { title: "Analytics", desc: "Response times, volume tracking, pattern insights." },
     ],
     useCases: ["Customer service teams", "Sales teams", "Executive assistants", "Support desks", "Agencies"],
-    techStack: ["Claude API", "N8N", "Gmail API", "OpenAI", "Supabase"],
+    techStack: ["AI API", "N8N", "Gmail API", "OpenAI", "Supabase"],
     pricing: { code: 100, currency: "USD" },
     deliveryTime: { template: "Instant download", integration: "Contact for setup" },
     youtubeId: null,
@@ -680,7 +680,7 @@ export const productsData: ProductData[] = [
       { title: "Multi-Source", desc: "Connects to DB, Google Sheets, Metabase, Stripe, etc." },
     ],
     useCases: ["SaaS companies", "E-commerce", "Marketing teams", "CFOs", "Growth teams"],
-    techStack: ["Claude API", "N8N", "PostgreSQL", "Metabase", "Telegram"],
+    techStack: ["AI API", "N8N", "PostgreSQL", "Metabase", "Telegram"],
     pricing: { code: 200, currency: "USD" },
     deliveryTime: { template: "Instant download", integration: "Contact for setup" },
     youtubeId: null,
@@ -723,7 +723,7 @@ export const productsData: ProductData[] = [
       { title: "CI Integration", desc: "Runs as part of your GitHub Actions / GitLab CI pipeline." },
     ],
     useCases: ["Development teams", "Open source projects", "Startups", "Enterprise dev", "Freelancers"],
-    techStack: ["Claude API", "GitHub API", "AST Parsers", "Python", "Docker"],
+    techStack: ["AI API", "GitHub API", "AST Parsers", "Python", "Docker"],
     pricing: { code: 100, currency: "USD" },
     deliveryTime: { template: "Instant download", integration: "Contact for setup" },
     youtubeId: null,
@@ -772,7 +772,7 @@ export const productsData: ProductData[] = [
       { title: "Searchable Archive", desc: "Every meeting indexed and searchable." },
     ],
     useCases: ["Remote teams", "Agencies", "Board meetings", "Sales calls", "Standup meetings"],
-    techStack: ["Whisper", "Claude API", "Zoom SDK", "Notion API", "Python"],
+    techStack: ["Whisper", "AI API", "Zoom SDK", "Notion API", "Python"],
     pricing: { code: 199, currency: "USD" },
     deliveryTime: { template: "Instant download", integration: "Contact for setup" },
     youtubeId: null,
@@ -818,7 +818,7 @@ export const productsData: ProductData[] = [
       { title: "Scheduled Scans", desc: "Automated periodic compliance reviews." },
     ],
     useCases: ["Legal departments", "Healthcare", "Financial services", "Tech companies", "Government"],
-    techStack: ["Claude API", "LangChain", "Pinecone", "FastAPI", "React"],
+    techStack: ["AI API", "LangChain", "Pinecone", "FastAPI", "React"],
     pricing: { code: 399, currency: "USD" },
     deliveryTime: { template: "Instant download", integration: "Contact for setup" },
     youtubeId: null,
@@ -866,7 +866,7 @@ export const productsData: ProductData[] = [
       { title: "1-Click Connect", desc: "Connect your Instagram in seconds via OAuth. No passwords shared." },
     ],
     useCases: ["Instagram creators", "Influencers", "Brands", "Social media agencies", "Content creators"],
-    techStack: ["Claude API", "Instagram Graph API", "OAuth 2.0", "Next.js", "PostgreSQL", "Redis"],
+    techStack: ["AI API", "Instagram Graph API", "OAuth 2.0", "Next.js", "PostgreSQL", "Redis"],
     pricing: { code: 180, currency: "USD" },
     deliveryTime: { template: "Instant download", integration: "Contact for setup" },
     youtubeId: null,
@@ -908,17 +908,17 @@ export const productsData: ProductData[] = [
     tagline: "Telegram Sales Bot with Crypto Payments",
     category: "Bots",
     description: "Telegram shopping bot with product catalog, AI sales consultant, and USDC ERC20 payment verification.",
-    longDescription: "Shop Bot is a production-ready Telegram sales bot with a built-in product catalog, AI-powered sales consultant (Claude), and blockchain payment processing via USDC ERC20. Supports deep linking from your website, multilingual interface (EN/RU/UA), automatic transaction verification via Etherscan, and commander notifications on every sale. FSM-based purchase flow handles the entire customer journey from browsing to payment to delivery.",
+    longDescription: "Shop Bot is a production-ready Telegram sales bot with a built-in product catalog, AI-powered sales consultant, and blockchain payment processing via USDC ERC20. Supports deep linking from your website, multilingual interface (EN/RU/UA), automatic transaction verification via Etherscan, and commander notifications on every sale. FSM-based purchase flow handles the entire customer journey from browsing to payment to delivery.",
     features: [
       { title: "Product Catalog", desc: "Browse products by category with inline keyboards. Deep link support from website." },
       { title: "Crypto Payments", desc: "USDC ERC20 payments with automatic Etherscan verification." },
-      { title: "AI Sales Consultant", desc: "Claude-powered chat that answers product questions using SPIN selling methodology." },
+      { title: "AI Sales Consultant", desc: "AI-powered chat that answers product questions using SPIN selling methodology." },
       { title: "Multilingual", desc: "Auto-detects language from Telegram. Supports EN, RU, UA with per-user override." },
       { title: "Deep Linking", desc: "Direct links to product cards and checkout from your website or ads." },
       { title: "Commander Alerts", desc: "Instant Telegram notifications on new sales, leads, and AI conversations." },
     ],
     useCases: ["Digital product sales", "AI product stores", "Telegram commerce", "Crypto-native businesses", "SaaS sales"],
-    techStack: ["Python", "aiogram 3", "Claude API", "Etherscan API", "Docker", "httpx"],
+    techStack: ["Python", "aiogram 3", "AI API", "Etherscan API", "Docker", "httpx"],
     pricing: { code: 250, currency: "USD" },
     deliveryTime: { template: "Instant download", integration: "Contact for setup" },
     youtubeId: null,
@@ -943,7 +943,7 @@ export const productsData: ProductData[] = [
      | PAYMENT ||  AI SALES |
      | ENGINE  ||  CONSULT  |
      +---------++-----------+
-     |Etherscan||Claude API |
+     |Etherscan||AI API     |
      |USDC ERC ||SPIN Method|
      |Verify TX||Chat Hist  |
      +----+----++----+------+
@@ -960,7 +960,7 @@ export const productsData: ProductData[] = [
     tagline: "AI Phone Agent for Salons",
     category: "Voice AI",
     description: "AI voice agent that makes outbound calls to confirm, remind, and reschedule salon appointments.",
-    longDescription: "Salon Call Bot is an AI-powered phone agent controlled via Telegram. Select a contact, describe the task, and the bot initiates a real phone call with natural voice dialogue. Built on Twilio for telephony, OpenAI Whisper for speech recognition, Claude for conversation intelligence, and ElevenLabs for natural voice synthesis. Pre-built scenarios include appointment confirmation, reminders, rescheduling, and custom tasks. The agent speaks conversational Russian with a friendly personality.",
+    longDescription: "Salon Call Bot is an AI-powered phone agent controlled via Telegram. Select a contact, describe the task, and the bot initiates a real phone call with natural voice dialogue. Built on Twilio for telephony, OpenAI Whisper for speech recognition, AI for conversation intelligence, and ElevenLabs for natural voice synthesis. Pre-built scenarios include appointment confirmation, reminders, rescheduling, and custom tasks. The agent speaks conversational Russian with a friendly personality.",
     features: [
       { title: "Outbound AI Calls", desc: "Initiate real phone calls from Telegram. Full voice dialogue with AI agent." },
       { title: "Natural Voice", desc: "ElevenLabs multilingual TTS with fallback to OpenAI. Sounds human, not robotic." },
@@ -970,7 +970,7 @@ export const productsData: ProductData[] = [
       { title: "Call Transcripts", desc: "Full conversation transcript delivered to Telegram after each call." },
     ],
     useCases: ["Beauty salons", "Dental clinics", "Medical offices", "Service businesses", "Appointment-based businesses"],
-    techStack: ["Python", "Twilio", "OpenAI Whisper", "Claude API", "ElevenLabs", "aiohttp", "FFmpeg"],
+    techStack: ["Python", "Twilio", "OpenAI Whisper", "AI API", "ElevenLabs", "aiohttp", "FFmpeg"],
     pricing: { code: 249, currency: "USD" },
     deliveryTime: { template: "Instant download", integration: "Contact for setup" },
     youtubeId: null,
@@ -987,7 +987,7 @@ export const productsData: ProductData[] = [
      +-----+--------+--------+
            |        |
      +-----+---++---+-------+
-     | WHISPER ||  CLAUDE   |
+     | WHISPER ||  AI LLM   |
      |   STT   ||  BRAIN    |
      +---------++-----------+
      |Russian  ||Scenarios  |
@@ -1128,7 +1128,7 @@ export const productsData: ProductData[] = [
       { title: "Status Dashboard", desc: "Current mode, task count, last nudge, nudge counter — all in one view." },
     ],
     useCases: ["Entrepreneurs", "Freelancers", "Students", "Remote workers", "Anyone fighting procrastination"],
-    techStack: ["Python", "python-telegram-bot", "Claude API", "Todoist API", "httpx"],
+    techStack: ["Python", "python-telegram-bot", "AI API", "Todoist API", "httpx"],
     pricing: { code: 79, currency: "USD" },
     deliveryTime: { template: "Instant download", integration: "Contact for setup" },
     youtubeId: null,
@@ -1150,7 +1150,7 @@ export const productsData: ProductData[] = [
      +-----+--------+--------+
            |        |
      +-----+---++---+-------+
-     | CLAUDE  ||  TELEGRAM |
+     | AI API  ||  TELEGRAM |
      |  API    ||  BOT UI   |
      +---------++-----------+
      |Micro-stp||Buttons    |
@@ -1180,7 +1180,7 @@ export const productsData: ProductData[] = [
       { title: "Conversation Memory", desc: "Remembers recent tasks for context-aware follow-up discussions." },
     ],
     useCases: ["Idea capture on the go", "Team task delegation", "YouTube research → action items", "Voice-first project management", "Multi-agent task routing"],
-    techStack: ["Python", "aiogram 3", "OpenRouter / Claude", "OpenAI Whisper", "Todoist API", "Docker"],
+    techStack: ["Python", "aiogram 3", "OpenRouter", "OpenAI Whisper", "Todoist API", "Docker"],
     pricing: { code: 99, currency: "USD" },
     deliveryTime: { template: "Instant download", integration: "Contact for setup" },
     youtubeId: null,
@@ -1282,7 +1282,7 @@ export const productsData: ProductData[] = [
       { title: "Content Calendar", desc: "Schedule posts in advance. Bot maintains consistent posting frequency." },
     ],
     useCases: ["Telegram channel owners", "Instagram bloggers", "Twitter/X accounts", "Brand accounts", "News channels"],
-    techStack: ["Python", "Claude API", "aiogram", "Docker", "PostgreSQL"],
+    techStack: ["Python", "AI API", "aiogram", "Docker", "PostgreSQL"],
     pricing: { code: 199, currency: "USD" },
     deliveryTime: { template: "Instant download", integration: "2-3 hours setup" },
     youtubeId: null,
@@ -1303,7 +1303,7 @@ export const productsData: ProductData[] = [
              |
     +--------v-----------+    +------------------+
     |  AI WRITER         |    |  INPUT           |
-    |  Claude API        +<---+  Topic / URL     |
+    |  AI API            +<---+  Topic / URL     |
     |  Generates post    |    |  Keyword         |
     |  in your style     |    +------------------+
     +--------+-----------+
@@ -1375,7 +1375,7 @@ export const productsData: ProductData[] = [
       { title: "Работает глобально", desc: "Звонки в любую страну мира через Twilio." },
     ],
     useCases: ["Эмигранты и экспаты", "Цифровые кочевники", "Туристы", "Бизнесмены на зарубежных рынках", "Все кто боится звонить на иностранном языке"],
-    techStack: ["Claude API", "Twilio", "ElevenLabs", "OpenAI Whisper", "Telegram Bot API"],
+    techStack: ["AI API", "Twilio", "ElevenLabs", "OpenAI Whisper", "Telegram Bot API"],
     pricing: { code: 49, currency: "USD" },
     deliveryTime: { template: "Instant access", integration: "1 business day" },
     youtubeId: null,

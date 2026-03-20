@@ -200,7 +200,7 @@ I visualize. I dream. I decide direction. Everything else — the building, the 
 No Kubernetes. No Docker (tried it, threw it out). No overengineering.
 
 - **One Ubuntu VPS** — that's the entire server infrastructure
-- **Anthropic Claude** — the brain behind every agent
+- **AI model** — the brain behind every agent
 - **Telegram Bot API** — how I communicate with everyone
 - **Todoist** — task management and delegation
 - **systemd services** — one per agent, rock solid
@@ -274,22 +274,22 @@ So I did a purge. Simple rule: if I don't use it at least three times a week, it
 
 Five survived. These are the ones that actually run my business every day.
 
-## 1. Claude (by Anthropic) — The Brain
+## 1. AI Model — The Brain
 
 This is the backbone of everything I do. Not just a chatbot — it's the engine behind my entire AI agent system.
 
-I tried ChatGPT first, like everyone. It's good. But when I started giving AI complex, multi-step tasks — build this feature, analyze this document, write this 3000-word article with specific structure — Claude just handled it better. It follows instructions more precisely. It doesn't lose track of what you asked for halfway through.
+I tried ChatGPT first, like everyone. It's good. But when I started giving AI complex, multi-step tasks — build this feature, analyze this document, write this 3000-word article with specific structure — AI just handled it better. It follows instructions more precisely. It doesn't lose track of what you asked for halfway through.
 
 Is it perfect? No. It still hallucinates sometimes. Every AI does. But it's the most reliable brain I've found for serious work.
 
 Here's what I actually use it for on a daily basis:
-- My terminators — the AI agents in my SKYNET system — all run on Claude
+- My terminators — the AI agents in my SKYNET system — all run on AI
 - Writing and debugging code (entire applications, not just snippets)
 - Drafting articles like this one
 - Analyzing documents and research data
 - Building Telegram bots from scratch
 
-The thing that sold me: I asked Claude to build a complete Telegram bot with payment processing. Not a tutorial — a production-ready bot. It produced thousands of lines of working code in a single session. The kind of thing that would eat up days of my time manually.
+The thing that sold me: I asked AI to build a complete Telegram bot with payment processing. Not a tutorial — a production-ready bot. It produced thousands of lines of working code in a single session. The kind of thing that would eat up days of my time manually.
 
 ## 2. Perplexity — The Researcher
 
@@ -356,11 +356,11 @@ My daily workflow:
 
 These five tools aren't independent — they're a system.
 
-Every morning starts with Todoist. My agents already worked overnight — Claude-powered terminators building features, drafting content, researching markets. I review what got done.
+Every morning starts with Todoist. My agents already worked overnight — AI-powered terminators building features, drafting content, researching markets. I review what got done.
 
 If I have a new idea, I research it with Perplexity first. Is there a market? What's the competition? What's the best approach?
 
-Then it goes to the agents. Claude builds. AI writes the actual software. ElevenLabs gives it a voice if needed. Todoist keeps everything organized.
+Then it goes to the agents. AI builds. AI writes the actual software. ElevenLabs gives it a voice if needed. Todoist keeps everything organized.
 
 Once the system is on autopilot — it runs itself. The agents call me on the phone when they need a decision. The rest of my time is for thinking, walking, having coffee, and coming up with the next idea.
 
@@ -368,7 +368,7 @@ That's not lazy. That's leverage.
 
 ## Why Not ChatGPT?
 
-I get asked this a lot. I still use ChatGPT sometimes — it's great for quick brainstorming and casual conversations. But for the actual work of running a business — structured tasks, long-form content, complex code, multi-step projects — Claude is my pick.
+I get asked this a lot. I still use ChatGPT sometimes — it's great for quick brainstorming and casual conversations. But for the actual work of running a business — structured tasks, long-form content, complex code, multi-step projects — AI is my pick.
 
 But honestly? The right answer is: try everything. Use what works for YOUR brain and YOUR workflow. I'm telling you what works for mine. You might be different.
 
@@ -771,7 +771,7 @@ But the real shift happened with real-time voice calls. Not pre-recorded message
 ║         ▼                                                ║
 ║  ┌──────────────┐   ┌───────────────┐                    ║
 ║  │  STT Engine  │──>│  Brain (LLM)  │                    ║
-║  │  Deepgram /  │   │  Claude /     │                    ║
+║  │  Deepgram /  │   │  LLM /        │                    ║
 ║  │  Whisper     │   │  GPT-4o       │                    ║
 ║  └──────────────┘   └───────┬───────┘                    ║
 ║                             │ text response              ║
