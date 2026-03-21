@@ -10,6 +10,104 @@ export interface BlogPost {
 
 export const blogPosts: BlogPost[] = [
   {
+    slug: "still-not-a-commander",
+    title: "I'm Still Not a Commander",
+    excerpt:
+      "Everyone thinks: you build an army of agents — you become a commander. No. I'm still a developer. Wide-eyed, playing. That's not something that changes fast.",
+    date: "2026-03-21",
+    readTime: "5 min",
+    category: "AI Agents",
+    content: `Everyone thinks: you build an army of agents — you become a commander.
+
+No. I'm still a developer. Wide-eyed, looking at new things and trying to play.
+
+That's not something that changes fast.
+
+---
+
+It started with MCP. When everyone began connecting tools to LLMs — I immediately saw where it was going. The "agentic internet." The world changed yesterday. Not tomorrow. Yesterday.
+
+I always built Jarvises. First prompts. Then n8n configs sprawled across the entire screen — webs of nodes and lines. Friends called me a plumber. Said it looked like that old pipe puzzle game. I agreed and added another pipe.
+
+---
+
+## Why an Army
+
+One agent is never enough.
+
+You're working with it — and you already have ten new ideas in your head. Built a second one. Then a third. Then I realized: I need an army.
+
+That's how it happens. Not by plan — by necessity.
+
+---
+
+## Intelligence as Electricity
+
+What changed in SKYNET compared to my old Jarvises?
+
+Real intelligence appeared.
+
+A brain is an organ. There are mechanical hearts. Why can't there be external intelligence?
+
+There is. You connect via API. You pay like you pay for electricity.
+
+For a solo developer, this changes everything. An idea comes that's too complex for your brain — you pay for external brains. They think. They output a solution. You read it and make a decision.
+
+A super-mentor you pay. Who never gets tired.
+
+---
+
+## Why SKYNET
+
+I don't like sitting at a computer. I like the beach. My phone. The sun.
+
+So I needed a system that works while I live.
+
+In the movie, SKYNET is the superintelligence that controls the Terminators. Brain-orchestrator and combat units. The metaphor is exact.
+
+SKYNET works. That's the goal.
+
+---
+
+## What Was Hardest
+
+Not bugs.
+
+This was hardest: in the evening you come up with something brilliant. The next day Google ships exactly that.
+
+You stand there feeling like ideas are slipping through your fingers.
+
+But then you realize: ideas aren't the bottleneck. Execution is. That's where SKYNET gives the advantage.
+
+---
+
+## The Point of No Return
+
+All of the internet has already been fed to the machines. All of humanity's knowledge — digitized, processed. We attached hands and legs to it.
+
+Now it runs.
+
+There's no going back.
+
+Does it worry me? No. I don't take responsibility for things I can't influence.
+
+But here's what matters: AI has no "want." It computes. It needs someone who wants. That's why humans won't disappear.
+
+We just have to hope we were good parents.
+
+---
+
+## What's Next
+
+SKYNET improves every day. On its own. Without my involvement.
+
+Next: a mobile app. For everyone, not just developers.
+
+I'm not building SKYNET to work less. I'm building it to do more — differently.
+
+With my brain. And from the beach.`,
+  },
+  {
     slug: "solo-architect",
     title: "I Fired My Team. Hired Agents. Stopped Burning Out.",
     excerpt:
