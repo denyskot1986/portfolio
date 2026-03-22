@@ -5,8 +5,8 @@ import { LangProvider } from "@/lib/lang-context";
 import ChatbotWidget from "@/components/ChatbotWidget";
 import "./globals.css";
 
-const geistSans = Geist({ variable: "--font-geist-sans", subsets: ["latin"] });
-const geistMono = Geist_Mono({ variable: "--font-geist-mono", subsets: ["latin"] });
+const geistSans = Geist({ variable: "--font-geist-sans", subsets: ["latin", "cyrillic"] });
+const geistMono = Geist_Mono({ variable: "--font-geist-mono", subsets: ["latin", "cyrillic"] });
 
 const siteUrl = "https://finekot.ai";
 
