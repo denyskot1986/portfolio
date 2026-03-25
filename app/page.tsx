@@ -619,9 +619,6 @@ export default function Home() {
                         {isExpanded && (
                           <motion.div initial={{ opacity: 0, height: 0 }} animate={{ opacity: 1, height: "auto" }} exit={{ opacity: 0, height: 0 }} className="overflow-hidden">
                             <div className="mt-4 pt-4" style={{ borderTop: "1px solid var(--glass-border)" }}>
-                              {/* Full description */}
-                              <p className="text-xs leading-relaxed mb-4" style={{ color: "rgba(240,224,255,0.4)" }}>{pData?.description || p.description}</p>
-
                               <p className="section-label-term text-[10px] mb-2">{t.projectUI.keyFeatures}</p>
                               <ul className="space-y-1.5 mb-4">
                                 {(pData?.highlights || p.highlights).map((h: string) => (
