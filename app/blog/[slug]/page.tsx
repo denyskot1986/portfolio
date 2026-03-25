@@ -50,9 +50,14 @@ export default function BlogPostPage() {
           <LangSwitcher />
         </div>
 
-        {lang !== "EN" && !translation && (
+        {!translation && lang !== "EN" && (
           <div className="rounded-lg px-4 py-3 mb-6 text-xs font-mono" style={{ border: "1px solid var(--glass-border)", color: "var(--muted)" }}>
             <span style={{ color: "var(--accent2)", opacity: 0.6 }}>[~] </span>{t.blog.translationSoon}
+          </div>
+        )}
+        {!translation && lang === "EN" && post.title.match(/[а-яёА-ЯЁіїєІЇЄ]/) && (
+          <div className="rounded-lg px-4 py-3 mb-6 text-xs font-mono" style={{ border: "1px solid var(--glass-border)", color: "var(--muted)" }}>
+            <span style={{ color: "var(--accent2)", opacity: 0.6 }}>[~] </span>English translation coming soon
           </div>
         )}
 
