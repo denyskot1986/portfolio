@@ -511,18 +511,6 @@ export default function Home() {
             <h2 className="text-2xl sm:text-3xl md:text-5xl font-black mb-3 tracking-tight"><span className="gradient-text">{t.projectsSection.title}</span></h2>
           </motion.div>
 
-          {/* Category filter */}
-          <motion.div {...fade} className="flex flex-wrap gap-2 mb-8 mt-6">
-            {categories.map((c) => (
-              <button key={c} onClick={() => { setCat(c); setExpanded(null); }}
-                className={`px-4 py-2 rounded-lg text-xs font-mono uppercase tracking-wider border transition-all ${
-                  cat === c
-                    ? "border-pink-400/60 bg-pink-500/15 text-pink-300 shadow-[0_0_15px_rgba(244,114,182,0.15)]"
-                    : "border-pink-500/10 text-pink-300/30 hover:border-pink-400/30 hover:text-pink-300/50"
-                }`}
-              >{t.categories[c] || c}</button>
-            ))}
-          </motion.div>
 
           {/* Project count */}
           <p className="text-xs text-pink-300/20 font-mono mb-6">{allFiltered.length} {t.projectsSection.shown}</p>
