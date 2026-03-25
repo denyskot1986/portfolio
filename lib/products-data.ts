@@ -73,7 +73,7 @@ export const productsData: ProductData[] = [
    |  INFRASTRUCTURE LAYER             |
    |  Docker . systemd . Nginx . SSL   |
    +-----------------------------------+`,
-    available: false,
+    available: true,
   },
   {
     id: "svetlana",
@@ -137,7 +137,7 @@ export const productsData: ProductData[] = [
    |     MONITORING & LOGGING LAYER            |
    |  Uptime . Errors . Latency . Costs        |
    +-------------------------------------------+`,
-    available: false,
+    available: true,
   },
   {
     id: "call-agent",
@@ -192,7 +192,7 @@ export const productsData: ProductData[] = [
    |  ANALYTICS & RECORDING LAYER  |
    |  Transcripts . Sentiment . KPI|
    +-------------------------------+`,
-    available: false,
+    available: true,
   },
   {
     id: "contentfactory",
@@ -245,7 +245,7 @@ export const productsData: ProductData[] = [
      |  PERFORMANCE ANALYTICS   |
      |  Reach . Clicks . Convert|
      +--------------------------+`,
-    available: false,
+    available: true,
   },
   {
     id: "docmind",
@@ -300,7 +300,7 @@ export const productsData: ProductData[] = [
      |    ACCESS CONTROL LAYER|
      |  Roles . Perms . Audit |
      +------------------------+`,
-    available: false,
+    available: true,
   },
   {
     id: "leadhunter",
@@ -356,7 +356,7 @@ export const productsData: ProductData[] = [
    |  CONVERSION ANALYTICS      |
    |  Opens . Replies . Meetings|
    +----------------------------+`,
-    available: false,
+    available: true,
   },
   {
     id: "contract-scanner",
@@ -413,7 +413,7 @@ export const productsData: ProductData[] = [
      |    AUDIT TRAIL LAYER  |
      |  History . Versions   |
      +-----------------------+`,
-    available: false,
+    available: true,
   },
   {
     id: "skynet-intake",
@@ -465,7 +465,7 @@ export const productsData: ProductData[] = [
      |    DAILY DIGEST       |
      |  Summary . Priorities |
      +-----------------------+`,
-    available: false,
+    available: true,
   },
   {
     id: "hiring-autopilot",
@@ -524,7 +524,7 @@ export const productsData: ProductData[] = [
      |   HR ANALYTICS LAYER |
      |  Funnel . Time . Src |
      +----------------------+`,
-    available: false,
+    available: true,
   },
   {
     id: "supportbot-pro",
@@ -572,7 +572,7 @@ export const productsData: ProductData[] = [
      |   ANALYTICS & LEARN  |
      |  CSAT . Resolution   |
      +-----------------------+`,
-    available: false,
+    available: true,
   },
   {
     id: "realestate-ai",
@@ -619,7 +619,7 @@ export const productsData: ProductData[] = [
      |    CRM & ANALYTICS   |
      |  Leads . Conversions |
      +-----------------------+`,
-    available: false,
+    available: true,
   },
   {
     id: "mailmind",
@@ -662,7 +662,7 @@ export const productsData: ProductData[] = [
      |   STYLE LEARNING     |
      |  Tone . Pattern . KPI|
      +-----------------------+`,
-    available: false,
+    available: true,
   },
   {
     id: "bizpulse",
@@ -705,7 +705,7 @@ export const productsData: ProductData[] = [
      |   TELEGRAM DIGEST    |
      |  Daily . Alerts . Act|
      +-----------------------+`,
-    available: false,
+    available: true,
   },
   {
     id: "code-reviewer",
@@ -754,7 +754,7 @@ export const productsData: ProductData[] = [
      |   TEAM STYLE LEARN   |
      |  Conventions . Prefs |
      +-----------------------+`,
-    available: false,
+    available: true,
   },
   {
     id: "meeting-scribe",
@@ -800,7 +800,7 @@ export const productsData: ProductData[] = [
      |   TASK PUSH & ARCHIVE|
      |  Notion . Jira . Srch|
      +-----------------------+`,
-    available: false,
+    available: true,
   },
   {
     id: "compliance-guard",
@@ -848,7 +848,7 @@ export const productsData: ProductData[] = [
      |   SCHEDULED SCANS    |
      |  Daily . Weekly . Ad |
      +-----------------------+`,
-    available: false,
+    available: true,
   },
   {
     id: "reels-agent",
@@ -900,7 +900,7 @@ export const productsData: ProductData[] = [
      |   ANALYTICS DASHBOARD |
      |  Replies . Sentiment  |
      +-----------------------+`,
-    available: false,
+    available: true,
   },
   {
     id: "shop-bot",
@@ -952,7 +952,7 @@ export const productsData: ProductData[] = [
      |   DELIVERY & NOTIFY  |
      |  Token . Download    |
      +-----------------------+`,
-    available: false,
+    available: true,
   },
   {
     id: "salon-call-bot",
@@ -1004,7 +1004,7 @@ export const productsData: ProductData[] = [
      |   TRANSCRIPT DELIVERY|
      |  Telegram . History   |
      +-----------------------+`,
-    available: false,
+    available: true,
   },
   {
     id: "bot-factory",
@@ -1056,7 +1056,7 @@ export const productsData: ProductData[] = [
      |   SQLITE DATABASE     |
      |  Clients . Users . Msg|
      +-----------------------+`,
-    available: false,
+    available: true,
   },
   {
     id: "reels-factory",
@@ -1110,7 +1110,7 @@ export const productsData: ProductData[] = [
      |   OUTPUT               |
      |  MP4 1080x1920 H.264   |
      +-----------------------+`,
-    available: false,
+    available: true,
   },
   {
     id: "motivator-bot",
@@ -1162,7 +1162,7 @@ export const productsData: ProductData[] = [
      |   NUDGE SCHEDULER    |
      |  Hourly . Smart Pick |
      +-----------------------+`,
-    available: false,
+    available: true,
   },
   {
     id: "intake-bot",
@@ -1214,7 +1214,7 @@ export const productsData: ProductData[] = [
      |   TASK DISPATCH       |
      |  Agents . Dashboard   |
      +-----------------------+`,
-    available: false,
+    available: true,
   },
   {
     id: "subscription-guard",
@@ -1264,7 +1264,7 @@ export const productsData: ProductData[] = [
     |  Sends reminders |
     |  Auto-removes    |
     +------------------+`,
-    available: false,
+    available: true,
   },
   {
     id: "content-writer-bot",
@@ -1314,7 +1314,7 @@ export const productsData: ProductData[] = [
     |  Schedule or post  |
     |  immediately       |
     +--------------------+`,
-    available: false,
+    available: true,
   },
   {
     id: "booking-bot",
@@ -1357,7 +1357,7 @@ export const productsData: ProductData[] = [
     |  Manage bookings |    |  2h before       |
     |  Edit slots      |    |  Post-visit msg  |
     +------------------+    +------------------+`,
-    available: false,
+    available: true,
   },
   {
     id: "personal-call-agent",
@@ -1410,7 +1410,7 @@ export const productsData: ProductData[] = [
           |   ТЫ получаешь          |
           |  транскрипцию в Telegram|
           +-------------------------+`,
-    available: false,
+    available: true,
   },
 ];
 
