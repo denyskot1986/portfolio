@@ -9,6 +9,40 @@ export interface BlogPost {
 }
 
 export const blogPosts: BlogPost[] = [
+
+  {
+    slug: "ai-agents-aren-t-software-why-determinism-fails-20260325",
+    title: "AI Agents Aren't Software: Why Determinism Fails",
+    excerpt: "I spent three months building an AI agent that could schedule meetings. It worked perfectly in demos. It failed constantly in production. The problem ...",
+    date: "2026-03-25",
+    readTime: "2 min",
+    category: "AI Agents",
+    content: `I spent three months building an AI agent that could schedule meetings. It worked perfectly in demos. It failed constantly in production. The problem was not the AI. It was me thinking AI agents should behave like software.
+
+Software is deterministic. You write code, it does the same thing every time. This is why we love it. This is also why most AI agent projects fail.
+
+Everyone building agents right now is trying to make them deterministic. They add guardrails. They write detailed prompts. They create flowcharts showing exactly what the agent should do in each scenario. They are building software that happens to call an LLM.
+
+This is backwards.
+
+The agent I built kept failing because I had written a 3000 word system prompt trying to cover every edge case. When someone wrote "let's meet next week," the agent would freeze. I had specified Tuesday through Thursday, 10am to 4pm, 30 or 60 minute slots, but I had not specified what "next week" meant if today was Friday. The agent would ask for clarification. The user would get annoyed.
+
+I deleted the entire prompt. I replaced it with one instruction: schedule a meeting that works for both people. I added memory so it could learn from mistakes. I removed all the guardrails.
+
+It started working.
+
+Not because it was smarter. Because I stopped treating it like software. I started treating it like an intern.
+
+You do not give an intern a 3000 word instruction manual. You give them a goal and let them figure it out. They will make mistakes. That is how they learn. You review their work, you give feedback, you let them try again.
+
+The best AI agents I have built since then all follow this pattern. Minimal instructions. Lots of memory. Human review in the loop. They are not deterministic. They are adaptive.
+
+This makes most engineers uncomfortable. We want predictability. We want to know exactly what our code will do. But agents are not code. They are closer to employees. And employees are not deterministic.
+
+The companies winning with AI agents right now are not the ones with the best prompts. They are the ones who have accepted that agents will be unpredictable and have built systems around that reality. Review mechanisms. Feedback loops. Ways to measure improvement over time.
+
+If you are still trying to make your agent perfectly deterministic, you are solving the wrong problem. The question is not how to prevent mistakes. The question is how to learn from them.`,
+  },
   {
     slug: "still-not-a-commander",
     title: "I'm Still Not a Commander",
