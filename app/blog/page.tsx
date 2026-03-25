@@ -62,7 +62,7 @@ export default function BlogPage() {
                       <span className="term-tag term-tag-cat">{post.category}</span>
                       <span className="text-[10px] font-mono" style={{ color: "rgba(240,224,255,0.2)" }}>{post.date}</span>
                     </div>
-                    <h2 className="text-xl font-bold transition-colors mb-2" style={{ color: "rgba(240,224,255,0.75)" }}>
+                    <h2 className="text-lg font-semibold transition-colors mb-2" style={{ color: "rgba(240,224,255,0.75)" }}>
                       {tr?.title ?? post.title}
                     </h2>
                     <p className="text-sm leading-relaxed" style={{ color: "rgba(240,224,255,0.3)" }}>{tr?.excerpt ?? post.excerpt}</p>

@@ -191,7 +191,7 @@ function BlogCardsSection() {
                 <span className="term-tag term-tag-cat">{posts[0].category}</span>
                 <span className="text-[10px] font-mono" style={{ color: "rgba(240,224,255,0.2)" }}>{posts[0].date}</span>
               </div>
-              <h3 className="text-xl md:text-2xl font-bold transition-colors mb-2 leading-tight" style={{ color: "rgba(240,224,255,0.75)" }}>
+              <h3 className="text-lg font-semibold transition-colors mb-2 leading-tight" style={{ color: "rgba(240,224,255,0.75)" }}>
                 {feat?.title ?? posts[0].title}
               </h3>
               <p className="text-sm leading-relaxed line-clamp-2" style={{ color: "rgba(240,224,255,0.3)" }}>{feat?.excerpt ?? posts[0].excerpt}</p>
@@ -222,7 +222,7 @@ function BlogCardsSection() {
                 </div>
                 <div className="p-5" style={{ background: "var(--glass-bg)" }}>
                   <span className="term-tag term-tag-cat">{post.category}</span>
-                  <h3 className="text-sm font-bold transition-colors mt-3 mb-2 leading-tight" style={{ color: "rgba(240,224,255,0.6)" }}>
+                  <h3 className="text-base font-semibold transition-colors mt-3 mb-2 leading-tight" style={{ color: "rgba(240,224,255,0.65)" }}>
                     {tr?.title ?? post.title}
                   </h3>
                   <p className="text-[11px] leading-relaxed mb-3 line-clamp-3" style={{ color: "rgba(240,224,255,0.25)" }}>{tr?.excerpt ?? post.excerpt}</p>
@@ -525,11 +525,6 @@ export default function Home() {
       </section>
 
 
-      {/* ─── AI BLOG ─── */}
-      <section id="blog">
-        <BlogCardsSection />
-      </section>
-
       {/* ─── PROJECTS ─── */}
       <section id="projects" className="relative z-10 py-20 sm:py-28 px-6">
         <div className="max-w-6xl mx-auto">
@@ -715,6 +710,10 @@ export default function Home() {
         </div>
       </section>
 
+      {/* ─── AI BLOG ─── */}
+      <section id="blog">
+        <BlogCardsSection />
+      </section>
 
       <footer className="relative z-10 py-8 font-mono" style={{ borderTop: "1px solid var(--glass-border)" }}>
         <div className="max-w-5xl mx-auto px-6 flex flex-col items-center gap-4">
