@@ -596,11 +596,18 @@ export default function Home() {
                         </div>
                         <div className="flex items-center gap-2">
                           {p.price && <p className="text-[10px] font-mono hidden sm:block" style={{ color: "var(--muted)" }}>{p.metrics}</p>}
-                          {p.status === "wip" && (
+                          {p.status === "wip" ? (
                             <span className="px-3 py-1.5 rounded-md border text-[10px] font-bold uppercase tracking-wider whitespace-nowrap"
                               style={{ borderColor: "var(--glass-border)", color: "var(--muted)" }}>
                               Testing...
                             </span>
+                          ) : (
+                            <button
+                              onClick={(e) => { e.stopPropagation(); setExpanded(i); }}
+                              className="btn-buy"
+                            >
+                              ./details →
+                            </button>
                           )}
                         </div>
                       </div>
