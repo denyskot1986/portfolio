@@ -32,82 +32,101 @@ export default function BlogPostPage() {
   }
 
   return (
-    <div className="relative min-h-screen bg-[var(--bg)] text-[var(--fg)]">
+    <div className="relative min-h-screen" style={{ background: "var(--bg)", color: "var(--fg)" }}>
       <div className="fixed inset-0 overflow-hidden pointer-events-none">
-        <div className="blob absolute top-[-15%] left-[-10%] w-[700px] h-[700px] rounded-full bg-pink-600/60" />
-        <div className="blob blob-2 absolute top-[40%] right-[-15%] w-[500px] h-[500px] rounded-full bg-purple-600/50" />
+        <div className="blob absolute top-[-15%] right-[-10%] w-[600px] h-[600px] rounded-full bg-pink-600/80" />
+        <div className="blob blob-2 absolute bottom-[10%] left-[-15%] w-[400px] h-[400px] rounded-full bg-purple-600/70" />
       </div>
       <div className="fixed inset-0 dot-grid pointer-events-none" />
 
       <article className="relative z-10 max-w-3xl mx-auto px-6 pt-28 pb-48">
         <div className="flex items-center justify-between mb-8">
-          <Link href="/blog" className="text-xs text-pink-400/40 hover:text-pink-400/70 font-mono transition-colors">
+          <Link href="/blog" className="text-xs font-mono transition-colors" style={{ color: "var(--muted)" }}
+            onMouseEnter={(e) => ((e.currentTarget as HTMLAnchorElement).style.color = "var(--accent)")}
+            onMouseLeave={(e) => ((e.currentTarget as HTMLAnchorElement).style.color = "var(--muted)")}
+          >
             &larr; {t.backBlog}
           </Link>
           <LangSwitcher />
         </div>
 
         {lang !== "EN" && !translation && (
-          <div className="glass rounded-lg px-4 py-3 mb-6 text-xs text-pink-300/40 font-mono border border-pink-500/10">
-            {t.blog.translationSoon}
+          <div className="rounded-lg px-4 py-3 mb-6 text-xs font-mono" style={{ border: "1px solid var(--glass-border)", color: "var(--muted)" }}>
+            <span style={{ color: "var(--accent2)", opacity: 0.6 }}>[~] </span>{t.blog.translationSoon}
           </div>
         )}
 
         <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.6 }}>
-          <div className="flex items-center gap-3 mb-4">
-            <span className="text-[10px] px-2 py-1 rounded-full bg-pink-500/10 text-pink-400/60 border border-pink-500/20 font-mono">
-              {post.category}
-            </span>
-            <span className="text-[10px] text-pink-300/25 font-mono">{post.date}</span>
-            <span className="text-[10px] text-pink-300/25 font-mono">{post.readTime}</span>
+          {/* Article terminal header */}
+          <div className="terminal-card-header rounded-lg mb-6">
+            <span className="term-dot term-dot-r" />
+            <span className="term-dot term-dot-y" />
+            <span className="term-dot term-dot-g" />
+            <span className="term-filename">{post.slug}.md</span>
+            <div className="ml-auto flex items-center gap-3">
+              <span className="term-tag term-tag-cat">{post.category}</span>
+              <span className="text-[10px] font-mono" style={{ color: "var(--muted)" }}>{post.date}</span>
+              <span className="text-[10px] font-mono" style={{ color: "var(--muted)" }}>{post.readTime}</span>
+            </div>
           </div>
 
-          <h1 className="text-2xl sm:text-3xl md:text-5xl font-black mb-6 tracking-tight text-pink-100/90">
+          <h1 className="text-2xl sm:text-3xl md:text-5xl font-bold mb-8 tracking-tight" style={{ color: "rgba(240,224,255,0.92)" }}>
             {translation?.title ?? post.title}
           </h1>
 
           <div
             className="prose prose-invert max-w-none
-              [&_h2]:text-xl [&_h2]:font-bold [&_h2]:text-pink-100/90 [&_h2]:mt-10 [&_h2]:mb-4
-              [&_h3]:text-lg [&_h3]:font-bold [&_h3]:text-pink-100/80 [&_h3]:mt-8 [&_h3]:mb-3
-              [&_p]:text-pink-100/75 [&_p]:leading-relaxed [&_p]:mb-4 [&_p]:text-sm
-              [&_ul]:space-y-1 [&_li]:text-pink-100/75 [&_li]:text-sm
-              [&_strong]:text-pink-100/90
-              [&_a]:text-pink-400/80 [&_a]:hover:text-pink-400 [&_a]:transition-colors [&_a]:underline
-              [&_code]:text-pink-300/80 [&_code]:bg-pink-500/5 [&_code]:px-1.5 [&_code]:py-0.5 [&_code]:rounded [&_code]:text-xs [&_code]:font-mono
-              [&_pre]:bg-pink-500/[0.03] [&_pre]:border [&_pre]:border-pink-500/10 [&_pre]:rounded-xl [&_pre]:p-4 [&_pre]:overflow-x-auto [&_pre]:my-6
+              [&_h2]:text-xl [&_h2]:font-bold [&_h2]:mt-10 [&_h2]:mb-4
+              [&_h3]:text-lg [&_h3]:font-bold [&_h3]:mt-8 [&_h3]:mb-3
+              [&_p]:leading-relaxed [&_p]:mb-4 [&_p]:text-sm
+              [&_ul]:space-y-1 [&_li]:text-sm
+              [&_a]:underline [&_a]:transition-colors
+              [&_code]:px-1.5 [&_code]:py-0.5 [&_code]:rounded [&_code]:text-xs [&_code]:font-mono
+              [&_pre]:border [&_pre]:rounded-lg [&_pre]:p-4 [&_pre]:overflow-x-auto [&_pre]:my-6
               [&_pre_code]:bg-transparent [&_pre_code]:p-0
               [&_table]:w-full [&_table]:text-sm [&_table]:my-6
-              [&_th]:text-left [&_th]:text-pink-100/80 [&_th]:font-mono [&_th]:text-xs [&_th]:uppercase [&_th]:tracking-wider [&_th]:pb-2 [&_th]:border-b [&_th]:border-pink-500/10
-              [&_td]:py-2 [&_td]:text-pink-100/70 [&_td]:border-b [&_td]:border-pink-500/5 [&_td]:text-xs
-              [&_hr]:border-pink-500/10 [&_hr]:my-8
-              [&_blockquote]:border-l-2 [&_blockquote]:border-pink-500/20 [&_blockquote]:pl-4 [&_blockquote]:italic [&_blockquote]:text-pink-100/65
-              [&_em]:text-pink-100/75
+              [&_th]:text-left [&_th]:font-mono [&_th]:text-xs [&_th]:uppercase [&_th]:tracking-wider [&_th]:pb-2 [&_th]:border-b
+              [&_td]:py-2 [&_td]:border-b [&_td]:text-xs
+              [&_hr]:my-8
+              [&_blockquote]:border-l-2 [&_blockquote]:pl-4 [&_blockquote]:italic
+              [&_h2]:text-[rgba(240,224,255,0.9)]
+              [&_h3]:text-[rgba(240,224,255,0.8)]
+              [&_p]:text-[rgba(240,224,255,0.72)]
+              [&_li]:text-[rgba(240,224,255,0.72)]
+              [&_strong]:text-[rgba(240,224,255,0.92)]
+              [&_em]:text-[rgba(240,224,255,0.72)]
+              [&_a]:text-[var(--accent)] [&_a]:hover:text-[rgba(244,63,160,0.8)]
+              [&_code]:text-[var(--accent2)] [&_code]:bg-[rgba(191,90,242,0.06)] [&_code]:border [&_code]:border-[rgba(191,90,242,0.15)]
+              [&_pre]:bg-[rgba(244,63,160,0.02)] [&_pre]:border-[var(--glass-border)]
+              [&_th]:text-[rgba(240,224,255,0.8)] [&_th]:border-[var(--glass-border)]
+              [&_td]:text-[rgba(240,224,255,0.65)] [&_td]:border-[rgba(244,63,160,0.06)]
+              [&_hr]:border-[var(--glass-border)]
+              [&_blockquote]:border-[var(--accent)] [&_blockquote]:text-[rgba(240,224,255,0.6)]
             "
             dangerouslySetInnerHTML={{ __html: markdownToHtml(translation?.content ?? post.content) }}
           />
 
-          <div className="mt-12 pt-8 border-t border-pink-500/10">
-            <p className="text-[10px] text-pink-300/30 font-mono uppercase tracking-wider mb-4">
+          <div className="mt-12 pt-8" style={{ borderTop: "1px solid var(--glass-border)" }}>
+            <p className="text-[10px] font-mono uppercase tracking-wider mb-4" style={{ color: "var(--muted)" }}>
+              <span style={{ color: "var(--accent2)", opacity: 0.6 }}>&gt; </span>
               {lang === "RU" ? "Подписывайся" : lang === "UA" ? "Підписуйся" : "Follow"}
             </p>
             <div className="flex flex-wrap gap-3">
-              <a href="https://instagram.com/finekot.ai" target="_blank" rel="noopener noreferrer"
-                className="flex items-center gap-2 px-4 py-2.5 rounded-lg border border-pink-500/15 text-xs text-pink-300/50 hover:text-pink-300/85 hover:border-pink-500/30 transition-all font-mono">
-                Instagram — @finekot.ai
-              </a>
-              <a href="https://t.me/finekot_ai" target="_blank" rel="noopener noreferrer"
-                className="flex items-center gap-2 px-4 py-2.5 rounded-lg border border-pink-500/15 text-xs text-pink-300/50 hover:text-pink-300/85 hover:border-pink-500/30 transition-all font-mono">
-                Telegram EN — @finekot_ai
-              </a>
-              <a href="https://t.me/finekot_ai_ua" target="_blank" rel="noopener noreferrer"
-                className="flex items-center gap-2 px-4 py-2.5 rounded-lg border border-pink-500/15 text-xs text-pink-300/50 hover:text-pink-300/85 hover:border-pink-500/30 transition-all font-mono">
-                Telegram UA — @finekot_ai_ua
-              </a>
-              <a href="https://t.me/finekot_ai_ru" target="_blank" rel="noopener noreferrer"
-                className="flex items-center gap-2 px-4 py-2.5 rounded-lg border border-pink-500/15 text-xs text-pink-300/50 hover:text-pink-300/85 hover:border-pink-500/30 transition-all font-mono">
-                Telegram RU — @finekot_ai_ru
-              </a>
+              {[
+                { href: "https://instagram.com/finekot.ai", label: "Instagram — @finekot.ai" },
+                { href: "https://t.me/finekot_ai", label: "Telegram EN — @finekot_ai" },
+                { href: "https://t.me/finekot_ai_ua", label: "Telegram UA — @finekot_ai_ua" },
+                { href: "https://t.me/finekot_ai_ru", label: "Telegram RU — @finekot_ai_ru" },
+              ].map((link) => (
+                <a key={link.href} href={link.href} target="_blank" rel="noopener noreferrer"
+                  className="flex items-center gap-2 px-4 py-2.5 rounded-md text-xs font-mono transition-all"
+                  style={{ border: "1px solid var(--glass-border)", color: "var(--muted)" }}
+                  onMouseEnter={(e) => { (e.currentTarget as HTMLAnchorElement).style.color = "var(--accent)"; (e.currentTarget as HTMLAnchorElement).style.borderColor = "var(--glass-border-hover)"; }}
+                  onMouseLeave={(e) => { (e.currentTarget as HTMLAnchorElement).style.color = "var(--muted)"; (e.currentTarget as HTMLAnchorElement).style.borderColor = "var(--glass-border)"; }}
+                >
+                  {link.label}
+                </a>
+              ))}
             </div>
           </div>
         </motion.div>

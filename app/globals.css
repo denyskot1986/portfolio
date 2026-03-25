@@ -1,58 +1,206 @@
 @import "tailwindcss";
 
 :root {
-  --bg: #0a0608;
-  --fg: #ede0e4;
-  --accent: #f472b6;
-  --accent2: #c084fc;
-  --cyan: #22d3ee;
-  --muted: #71717a;
-  --border: #3d1f2a;
-  --glass-bg: rgba(255, 255, 255, 0.03);
-  --glass-hover: rgba(255, 255, 255, 0.05);
-  --glass-border: rgba(244, 114, 182, 0.08);
-  --glass-border-hover: rgba(244, 114, 182, 0.2);
+  --bg: #040208;
+  --bg2: #07040d;
+  --fg: #f0e0ff;
+  --accent: #f43fa0;
+  --accent2: #bf5af2;
+  --cyan: #30d158;
+  --muted: #6a5580;
+  --border: #1a0a22;
+  --border-accent: rgba(244, 63, 160, 0.15);
+  --border-accent-hover: rgba(244, 63, 160, 0.4);
+  --glass-bg: rgba(244, 63, 160, 0.02);
+  --glass-hover: rgba(244, 63, 160, 0.04);
+  --glass-border: rgba(244, 63, 160, 0.15);
+  --glass-border-hover: rgba(244, 63, 160, 0.4);
 }
-
 
 body {
   background: var(--bg);
   color: var(--fg);
-  font-family: var(--font-geist-sans), system-ui, -apple-system, sans-serif;
+  font-family: var(--font-jetbrains-mono), 'JetBrains Mono', 'Fira Code', 'Courier New', monospace;
   -webkit-font-smoothing: antialiased;
   overflow-x: hidden;
 }
 
 html { scroll-behavior: smooth; overflow-x: hidden; }
 
+/* Scanlines — subtle terminal effect */
+body::after {
+  content: '';
+  position: fixed;
+  inset: 0;
+  background: repeating-linear-gradient(
+    0deg,
+    transparent,
+    transparent 2px,
+    rgba(0, 0, 0, 0.022) 2px,
+    rgba(0, 0, 0, 0.022) 4px
+  );
+  pointer-events: none;
+  z-index: 9999;
+}
+
 ::selection {
-  background: rgba(244, 114, 182, 0.2);
+  background: rgba(244, 63, 160, 0.25);
   color: var(--accent);
 }
 
 /* Gradient text */
 .gradient-text {
-  background: linear-gradient(135deg, #f472b6, #e879a8, #c084fc, #fb923c);
+  background: linear-gradient(135deg, #f43fa0, #e879a8, #bf5af2, #fb923c);
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
   background-clip: text;
 }
 
-/* Glass card */
+/* Terminal card (replaces glass) */
 .glass {
   background: var(--glass-bg);
-  backdrop-filter: blur(16px);
-  -webkit-backdrop-filter: blur(16px);
   border: 1px solid var(--glass-border);
+  /* No blur — terminal aesthetic */
 }
 
 .glass:hover {
   background: var(--glass-hover);
   border-color: var(--glass-border-hover);
+  box-shadow: 0 0 24px rgba(244, 63, 160, 0.08);
 }
 
+/* Terminal card header — colored dots + filename */
+.terminal-card-header {
+  background: rgba(244, 63, 160, 0.04);
+  border-bottom: 1px solid var(--glass-border);
+  padding: 10px 16px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 11px;
+  color: var(--muted);
+  letter-spacing: 0.04em;
+}
 
-/* Animated blobs */
+.term-dot {
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  display: inline-block;
+  flex-shrink: 0;
+}
+.term-dot-r { background: var(--accent); box-shadow: 0 0 6px var(--accent); }
+.term-dot-y { background: #f59e0b; }
+.term-dot-g { background: var(--cyan); box-shadow: 0 0 6px var(--cyan); }
+
+.term-filename {
+  font-family: inherit;
+  font-size: 11px;
+  color: var(--muted);
+  flex: 1;
+}
+
+/* Section label with // prefix */
+.section-label-term {
+  font-size: 11px;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--accent);
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  margin-bottom: 12px;
+}
+
+.section-label-term::before {
+  content: '//';
+  opacity: 0.45;
+  color: var(--accent2);
+}
+
+/* Terminal button — primary (border only, hover fill) */
+.btn-terminal {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  background: transparent;
+  border: 1px solid var(--accent);
+  color: var(--accent);
+  font-family: inherit;
+  font-size: 14px;
+  font-weight: 600;
+  padding: 12px 28px;
+  border-radius: 6px;
+  text-decoration: none;
+  letter-spacing: 0.02em;
+  transition: all 0.2s;
+  cursor: pointer;
+}
+
+.btn-terminal::before {
+  content: '$';
+  opacity: 0.5;
+  font-size: 12px;
+}
+
+.btn-terminal:hover {
+  background: var(--accent);
+  color: var(--bg);
+  box-shadow: 0 0 30px rgba(244, 63, 160, 0.45);
+  transform: translateY(-1px);
+}
+
+/* Terminal button — secondary */
+.btn-terminal-ghost {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  background: transparent;
+  border: 1px solid rgba(244, 63, 160, 0.2);
+  color: var(--muted);
+  font-family: inherit;
+  font-size: 14px;
+  padding: 12px 24px;
+  border-radius: 6px;
+  text-decoration: none;
+  transition: all 0.2s;
+  cursor: pointer;
+}
+
+.btn-terminal-ghost:hover {
+  border-color: rgba(244, 63, 160, 0.5);
+  color: var(--fg);
+  background: rgba(244, 63, 160, 0.04);
+}
+
+/* Terminal buy button — solid neon */
+.btn-buy {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  background: var(--accent);
+  color: var(--bg);
+  font-family: inherit;
+  font-size: 11px;
+  font-weight: 700;
+  padding: 8px 18px;
+  border-radius: 6px;
+  text-decoration: none;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  transition: all 0.2s;
+  cursor: pointer;
+  border: none;
+  box-shadow: 0 0 20px rgba(244, 63, 160, 0.3);
+  white-space: nowrap;
+}
+
+.btn-buy:hover {
+  box-shadow: 0 0 40px rgba(244, 63, 160, 0.6);
+  transform: translateY(-1px);
+}
+
+/* Animated blobs — kept but dimmer for subtle bg effect */
 @keyframes blob {
   0%, 100% { transform: translate(0, 0) scale(1); }
   33% { transform: translate(30px, -50px) scale(1.1); }
@@ -61,8 +209,8 @@ html { scroll-behavior: smooth; overflow-x: hidden; }
 
 .blob {
   animation: blob 10s infinite ease-in-out;
-  filter: blur(100px);
-  opacity: 0.25;
+  filter: blur(120px);
+  opacity: 0.12;
 }
 .blob-2 { animation-delay: 3s; }
 .blob-3 { animation-delay: 6s; }
@@ -74,23 +222,23 @@ html { scroll-behavior: smooth; overflow-x: hidden; }
 }
 .cursor-blink { animation: blink 1s step-end infinite; }
 
-/* Grid bg */
+/* Grid bg — tighter, more terminal */
 .dot-grid {
   background-image:
-    linear-gradient(rgba(244, 114, 182, 0.03) 1px, transparent 1px),
-    linear-gradient(90deg, rgba(244, 114, 182, 0.03) 1px, transparent 1px);
-  background-size: 40px 40px;
+    linear-gradient(rgba(244, 63, 160, 0.04) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(244, 63, 160, 0.04) 1px, transparent 1px);
+  background-size: 32px 32px;
 }
 
 /* Scrollbar */
-::-webkit-scrollbar { width: 5px; }
+::-webkit-scrollbar { width: 4px; }
 ::-webkit-scrollbar-track { background: var(--bg); }
-::-webkit-scrollbar-thumb { background: var(--border); border-radius: 3px; }
+::-webkit-scrollbar-thumb { background: rgba(244, 63, 160, 0.2); border-radius: 2px; }
 ::-webkit-scrollbar-thumb:hover { background: var(--accent); }
 
-/* ASCII diagrams */
+/* ASCII / pre diagrams */
 pre.diagram {
-  font-family: "Courier New", Courier, monospace !important;
+  font-family: inherit;
   letter-spacing: 0;
   line-height: 1.4;
 }
@@ -115,8 +263,8 @@ pre.diagram {
   background: conic-gradient(
     from var(--border-angle),
     transparent 35%,
-    rgba(244, 114, 182, 0.35) 48%,
-    rgba(192, 132, 252, 0.35) 52%,
+    rgba(244, 63, 160, 0.4) 48%,
+    rgba(191, 90, 242, 0.4) 52%,
     transparent 65%
   );
   animation: chat-border-spin 40s linear infinite;
@@ -126,10 +274,64 @@ pre.diagram {
   background: conic-gradient(
     from var(--border-angle),
     transparent 35%,
-    rgba(244, 114, 182, 0.15) 48%,
-    rgba(192, 132, 252, 0.15) 52%,
+    rgba(244, 63, 160, 0.15) 48%,
+    rgba(191, 90, 242, 0.15) 52%,
     transparent 65%
   );
   animation: chat-border-spin 4s linear infinite, chat-glow-pulse 3s ease-in-out infinite;
   filter: blur(10px);
+}
+
+/* Scroll progress bar */
+.scroll-progress-bar {
+  background: linear-gradient(90deg, var(--accent), var(--accent2));
+}
+
+/* Terminal tag / chip */
+.term-tag {
+  font-size: 10px;
+  font-weight: 600;
+  padding: 3px 10px;
+  border-radius: 4px;
+  border: 1px solid;
+  letter-spacing: 0.04em;
+  font-family: inherit;
+}
+
+.term-tag-live {
+  background: rgba(48, 209, 88, 0.08);
+  border-color: rgba(48, 209, 88, 0.25);
+  color: var(--cyan);
+}
+
+.term-tag-id {
+  background: rgba(244, 63, 160, 0.06);
+  border-color: rgba(244, 63, 160, 0.2);
+  color: var(--accent);
+}
+
+.term-tag-cat {
+  background: rgba(191, 90, 242, 0.06);
+  border-color: rgba(191, 90, 242, 0.2);
+  color: var(--accent2);
+}
+
+/* Input fields — terminal style */
+input.term-input {
+  background: rgba(244, 63, 160, 0.03);
+  border: 1px solid rgba(244, 63, 160, 0.15);
+  color: var(--fg);
+  font-family: inherit;
+  border-radius: 6px;
+}
+
+input.term-input:focus {
+  outline: none;
+  border-color: rgba(244, 63, 160, 0.45);
+  box-shadow: 0 0 0 2px rgba(244, 63, 160, 0.08);
+}
+
+input.term-input::placeholder {
+  color: var(--muted);
+  opacity: 0.6;
 }
