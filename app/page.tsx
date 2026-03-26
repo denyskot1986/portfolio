@@ -17,7 +17,7 @@ import { useLang } from "../lib/lang-context";
 type Category = "All" | "Multi-Agent" | "Voice AI" | "Automation" | "Bots" | "RAG";
 
 const projects = [
-  { id: "03", title: "SKYNET Intake", subtitle: "AI Task Assistant", category: "Bots" as Category, status: "live", price: "$99", priceNote: "AI task routing", description: "", stack: ["aiogram", "AI Model", "Whisper", "Todoist API"], highlights: ["Voice input via Whisper STT", "AI task structuring & routing", "Auto-prioritization", "Todoist integration"], metrics: "Voice + text · auto-route", color: "from-fuchsia-500/25 to-pink-500/15", accent: "border-fuchsia-500/40", glow: "rgba(232, 121, 249, 0.3)" },
+  { id: "03", title: "SKYNET Intake", subtitle: "AI Task Assistant", category: "Bots" as Category, status: "live", price: "$90", priceNote: "AI task routing", description: "", stack: ["aiogram", "AI Model", "Whisper", "Todoist API"], highlights: ["Voice input via Whisper STT", "AI task structuring & routing", "Auto-prioritization", "Todoist integration"], metrics: "Voice + text · auto-route", color: "from-fuchsia-500/25 to-pink-500/15", accent: "border-fuchsia-500/40", glow: "rgba(232, 121, 249, 0.3)" },
 ];
 
 const categories: Category[] = ["All", "Multi-Agent", "Voice AI", "Bots", "Automation", "RAG"];
