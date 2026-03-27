@@ -71,17 +71,17 @@ function TerminatorCard({ t, issues }: { t: typeof TERMINATORS[0]; issues: Issue
         <div>
           <div style={{ display: "flex", alignItems: "center", gap: 8, marginBottom: 4 }}>
             <span style={{ fontSize: 16 }}>{t.emoji}</span>
-            <span style={{ fontSize: 12, fontWeight: 700, color: t.color, letterSpacing: "0.12em" }}>{t.label}</span>
+            <span style={{ fontSize: 15, fontWeight: 700, color: t.color, letterSpacing: "0.12em" }}>{t.label}</span>
           </div>
-          <div style={{ fontSize: 9, color: "rgba(255,255,255,0.3)", letterSpacing: "0.1em" }}>{t.role}</div>
+          <div style={{ fontSize: 11, color: "rgba(255,255,255,0.3)", letterSpacing: "0.1em" }}>{t.role}</div>
         </div>
         <div style={{ textAlign: "right" }}>
           <div style={{ display: "flex", alignItems: "center", gap: 5, justifyContent: "flex-end" }}>
             <div style={{ width: 6, height: 6, borderRadius: "50%", background: statusColor, boxShadow: `0 0 6px ${statusColor}` }} />
-            <span style={{ fontSize: 9, color: statusColor, letterSpacing: "0.1em" }}>{statusText}</span>
+            <span style={{ fontSize: 11, color: statusColor, letterSpacing: "0.1em" }}>{statusText}</span>
           </div>
-          <div style={{ fontSize: 18, fontWeight: 900, color: t.color, marginTop: 4 }}>{myIssues.length}</div>
-          <div style={{ fontSize: 8, color: "rgba(255,255,255,0.25)", letterSpacing: "0.1em" }}>TASKS</div>
+          <div style={{ fontSize: 22, fontWeight: 900, color: t.color, marginTop: 4 }}>{myIssues.length}</div>
+          <div style={{ fontSize: 10, color: "rgba(255,255,255,0.25)", letterSpacing: "0.1em" }}>TASKS</div>
         </div>
       </div>
 
@@ -93,8 +93,8 @@ function TerminatorCard({ t, issues }: { t: typeof TERMINATORS[0]; issues: Issue
           { label: "REVIEW", val: review, color: "#f97316" },
         ].map(s => (
           <div key={s.label} style={{ flex: 1, background: "rgba(0,0,0,0.3)", borderRadius: 3, padding: "6px 4px", textAlign: "center" }}>
-            <div style={{ fontSize: 13, fontWeight: 700, color: s.color }}>{s.val}</div>
-            <div style={{ fontSize: 7, color: "rgba(255,255,255,0.25)", letterSpacing: "0.1em", marginTop: 1 }}>{s.label}</div>
+            <div style={{ fontSize: 16, fontWeight: 700, color: s.color }}>{s.val}</div>
+            <div style={{ fontSize: 9, color: "rgba(255,255,255,0.25)", letterSpacing: "0.1em", marginTop: 1 }}>{s.label}</div>
           </div>
         ))}
       </div>
@@ -107,21 +107,21 @@ function TerminatorCard({ t, issues }: { t: typeof TERMINATORS[0]; issues: Issue
             padding: "5px 7px", background: "rgba(0,0,0,0.25)",
             borderRadius: 3, borderLeft: `2px solid ${PRIORITY_COLORS[issue.priority]}`,
           }}>
-            <span style={{ fontSize: 9, fontWeight: 700, color: PRIORITY_COLORS[issue.priority], minWidth: 16, marginTop: 1 }}>
+            <span style={{ fontSize: 11, fontWeight: 700, color: PRIORITY_COLORS[issue.priority], minWidth: 18, marginTop: 1 }}>
               {PRIORITY_LABELS[issue.priority]}
             </span>
-            <span style={{ fontSize: 10, color: "rgba(255,255,255,0.65)", lineHeight: 1.4, flex: 1 }}>
+            <span style={{ fontSize: 12, color: "rgba(255,255,255,0.65)", lineHeight: 1.4, flex: 1 }}>
               {issue.title.length > 48 ? issue.title.slice(0, 48) + "…" : issue.title}
             </span>
           </div>
         ))}
         {myIssues.length > 4 && (
-          <div style={{ fontSize: 9, color: "rgba(255,255,255,0.2)", textAlign: "center", padding: "2px 0" }}>
+          <div style={{ fontSize: 11, color: "rgba(255,255,255,0.2)", textAlign: "center", padding: "2px 0" }}>
             +{myIssues.length - 4} more
           </div>
         )}
         {myIssues.length === 0 && (
-          <div style={{ fontSize: 9, color: "rgba(255,255,255,0.15)", textAlign: "center", padding: "16px 0", letterSpacing: "0.1em" }}>
+          <div style={{ fontSize: 11, color: "rgba(255,255,255,0.15)", textAlign: "center", padding: "16px 0", letterSpacing: "0.1em" }}>
             NO ACTIVE TASKS
           </div>
         )}
@@ -265,7 +265,7 @@ export default function SkynetDashboard() {
 
           {/* TERMINATORS */}
           <div>
-            <div style={{ fontSize: 9, letterSpacing: "0.2em", color: "rgba(255,255,255,0.2)", marginBottom: 10 }}>
+            <div style={{ fontSize: 11, letterSpacing: "0.2em", color: "rgba(255,255,255,0.2)", marginBottom: 14 }}>
               ▸ АКТИВНЫЕ ЮНИТЫ ({TERMINATORS.length})
             </div>
             <div style={{
