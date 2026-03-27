@@ -7,8 +7,8 @@ const TERMINATORS = [
   { id: "Media",        label: "MEDIA",        emoji: "🩷", color: "#ec4899", bg: "rgba(236,72,153,0.08)", border: "rgba(236,72,153,0.25)", role: "Контент & Посты" },
   { id: "Forge",        label: "FORGE",        emoji: "🟠", color: "#f97316", bg: "rgba(249,115,22,0.08)",  border: "rgba(249,115,22,0.25)",  role: "Инфраструктура" },
   { id: "Inspiration",  label: "INSPIRATION",  emoji: "🟢", color: "#22c55e", bg: "rgba(34,197,94,0.08)",  border: "rgba(34,197,94,0.25)",   role: "Монетизация" },
-  { id: "iBoря",        label: "iБОРЯ",        emoji: "🔵", color: "#3b82f6", bg: "rgba(59,130,246,0.08)", border: "rgba(59,130,246,0.25)",  role: "AI Секретарь" },
   { id: "Money Maker",  label: "MONEY MAKER",  emoji: "🟡", color: "#eab308", bg: "rgba(234,179,8,0.08)",  border: "rgba(234,179,8,0.25)",   role: "Creator Economy" },
+  { id: "iBoря",        label: "iБОРЯ",        emoji: "🔵", color: "#3b82f6", bg: "rgba(59,130,246,0.08)", border: "rgba(59,130,246,0.25)",  role: "AI Секретарь" },
 ];
 
 const PRIORITY_LABELS: Record<number, string> = { 1: "P1", 2: "P2", 3: "P3", 4: "P4", 0: "–" };
