@@ -11,6 +11,34 @@ export interface BlogPost {
 export const blogPosts: BlogPost[] = [
 
 
+
+  {
+    slug: "ai-agents-excel-where-humans-can-t-afford-to-20260326",
+    title: "AI Agents Excel Where Humans Can't Afford To",
+    excerpt: "I spent six months watching companies implement AI agents last year. Almost every one made the same mistake. They built agents to do things humans wer...",
+    date: "2026-03-26",
+    readTime: "2 min",
+    category: "AI Agents",
+    content: `I spent six months watching companies implement AI agents last year. Almost every one made the same mistake. They built agents to do things humans were already doing well.
+
+The contrarian truth nobody wants to hear: AI agents are terrible at replacing good human work. They're brilliant at doing work nobody was doing at all.
+
+Everyone fixates on the automation question. Can agents write our emails? Can they handle customer service? Can they do our research? Wrong questions. The real opportunity is in the work that's economically impossible with humans.
+
+I run hundreds of monitoring tasks through SKYNET every day. Not tasks I used to pay someone to do. Tasks I could never afford to have done at all. Scanning thousands of data sources. Cross-referencing signals. Maintaining persistent context across weeks. The unit cost of human attention makes this work not just expensive but impossible.
+
+The companies winning with agents aren't the ones automating their existing workflows. They're the ones asking what becomes possible when certain types of work cost effectively zero.
+
+There's a second contrarian bit here. The AI skills gap everyone's worried about isn't what they think. It's not about prompt engineering or knowing which model to use. It's about recognizing which problems are newly solvable.
+
+Most people look at AI and ask how to make their current job faster. The power users are asking what jobs can now exist. That's the gap. Not technical skill. Vision.
+
+The displacement risk is real but it's indirect. It won't be agents taking your job. It will be someone who saw a business opportunity you couldn't see because you were too focused on defending your current work.
+
+I watch this in my own field. Solo builders using agents aren't competing with agencies by doing agency work cheaper. They're offering entirely new service models that were structurally impossible before. Different work. Different value. Different market.
+
+The advice I give people now: stop trying to automate what you do. Start listing what you wish you could do if you had infinite cheap labor. That's where agents matter.`,
+  },
   {
     slug: "debugging-ai-agents-it-s-always-the-embeddings-20260326",
     title: "Debugging AI Agents: It's Always the Embeddings",
