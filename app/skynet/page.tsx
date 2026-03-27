@@ -4,7 +4,8 @@ import { useState, useEffect, useCallback } from "react";
 import { useRouter } from "next/navigation";
 
 const TERMINATORS = [
-  { id: "Media",        label: "MEDIA",        emoji: "🩷", color: "#ec4899", bg: "rgba(236,72,153,0.08)", border: "rgba(236,72,153,0.25)", role: "Контент & Посты" },
+  { id: "SKYNET",       label: "SKYNET",       emoji: "⚡", color: "#00ff41", bg: "rgba(0,255,65,0.06)",   border: "rgba(0,255,65,0.25)",    role: "Мозг · Оркестратор" },
+  { id: "Media",        label: "MEDIA",        emoji: "🩷", color: "#ec4899", bg: "rgba(236,72,153,0.08)", border: "rgba(236,72,153,0.25)",  role: "Контент & Посты" },
   { id: "Forge",        label: "FORGE",        emoji: "🟠", color: "#f97316", bg: "rgba(249,115,22,0.08)",  border: "rgba(249,115,22,0.25)",  role: "Инфраструктура" },
   { id: "Inspiration",  label: "INSPIRATION",  emoji: "🟢", color: "#22c55e", bg: "rgba(34,197,94,0.08)",  border: "rgba(34,197,94,0.25)",   role: "Монетизация" },
   { id: "Money Maker",  label: "MONEY MAKER",  emoji: "🟡", color: "#eab308", bg: "rgba(234,179,8,0.08)",  border: "rgba(234,179,8,0.25)",   role: "Creator Economy" },
