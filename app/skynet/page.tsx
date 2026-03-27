@@ -225,6 +225,17 @@ export default function SkynetDashboard() {
           </div>
           <div style={{ display: "flex", alignItems: "flex-start", gap: 20 }}>
             <Clock />
+            <button onClick={fetchTasks} style={{
+              fontSize: 9, letterSpacing: "0.15em", color: "#ffffff",
+              background: "transparent", border: "1px solid rgba(255,255,255,0.4)",
+              borderRadius: 3, padding: "5px 10px", cursor: "pointer", fontFamily: "inherit",
+              transition: "all 0.2s",
+            }}
+              onMouseEnter={e => { (e.target as HTMLButtonElement).style.background = "rgba(255,255,255,0.1)"; }}
+              onMouseLeave={e => { (e.target as HTMLButtonElement).style.background = "transparent"; }}
+            >
+              REFRESH
+            </button>
             <button onClick={logout} style={{
               fontSize: 9, letterSpacing: "0.15em", color: "rgba(255,68,68,0.6)",
               background: "transparent", border: "1px solid rgba(255,68,68,0.2)",
@@ -244,6 +255,7 @@ export default function SkynetDashboard() {
           display: "flex", gap: 12, marginBottom: 24, flexWrap: "wrap",
           padding: "10px 14px", background: "rgba(0,255,65,0.02)",
           border: "1px solid rgba(0,255,65,0.1)", borderRadius: 4,
+          paddingLeft: 120,
         }}>
           {[
             { label: "TOTAL TASKS", val: issues.length, color: "rgba(255,255,255,0.7)" },
