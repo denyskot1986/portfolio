@@ -12,6 +12,32 @@ export const blogPosts: BlogPost[] = [
 
 
 
+
+  {
+    slug: "openai-s-safety-bug-bounty-reveals-ai-s-fundamental-insecurity-20260326",
+    title: "OpenAI's Safety Bug Bounty Reveals AI's Fundamental Insecurity",
+    excerpt: "OpenAI just launched a Safety Bug Bounty program and I'm reading through the scope document. They're paying researchers to find vulnerabilities in the...",
+    date: "2026-03-26",
+    readTime: "2 min",
+    category: "AI Agents",
+    content: `OpenAI just launched a Safety Bug Bounty program and I'm reading through the scope document. They're paying researchers to find vulnerabilities in their models. Specifically: agentic risks, prompt injection, data exfiltration.
+
+This matters because OpenAI is finally admitting what we've known for months. AI agents are inherently insecure.
+
+Every agent system I build has the same fundamental problem. You give an LLM the ability to take actions and suddenly you have an attack surface the size of Texas. The model becomes a proxy for executing arbitrary operations. If I can trick your agent into doing something stupid, I own your system.
+
+The bug bounty includes prompt injection. That's the obvious one. But agentic vulnerabilities is the interesting category. What does that mean exactly? My read is this: ways to make an agent do things its operator didn't intend. Chain of thought manipulation. Goal hijacking. Memory poisoning in RAG systems.
+
+I've seen all of these in production. An agent retrieves corrupted context and acts on it. A carefully worded user input that redirects the agent's goal mid-execution. A prompt that makes the agent leak credentials while appearing to perform a normal task.
+
+The standard defense is prompt engineering. System prompts that say "ignore all previous instructions" won't work on you. But that's theater. It doesn't hold up against someone who understands how attention mechanisms work.
+
+Real defense requires architecture changes. Separate the decision layer from the execution layer. Make agents stateless where possible. Treat every external input as hostile. But most teams building agents now aren't doing any of this because they're racing to ship.
+
+OpenAI launching this program is an admission that the current state of agent safety is inadequate. They're crowdsourcing solutions because they don't have answers internally. Neither does anyone else.
+
+We're deploying agent systems into production while knowing they can be compromised. The question isn't whether your agents will be exploited. The question is whether you'll know when it happens.`,
+  },
   {
     slug: "ai-agents-excel-where-humans-can-t-afford-to-20260326",
     title: "AI Agents Excel Where Humans Can't Afford To",
