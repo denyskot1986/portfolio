@@ -230,25 +230,6 @@ export default function SkynetDashboard() {
             </div>
           </div>
 
-          {/* Center: stats */}
-          <div style={{ display: "flex", gap: 0, flex: 1, justifyContent: "center", flexWrap: "wrap" }}>
-            {[
-              { label: "TOTAL", val: issues.length, color: "rgba(255,255,255,0.7)" },
-              { label: "ACTIVE", val: allActive, color: "#00ff41" },
-              { label: "QUEUE", val: allPending, color: "#f97316" },
-              { label: "REVIEW", val: allReview, color: "#3b82f6" },
-              { label: "UNITS", val: 5, color: "#00ff41" },
-            ].map((s, i) => (
-              <div key={s.label} style={{ display: "flex", alignItems: "center" }}>
-                <div style={{ padding: "0 14px", textAlign: "center" }}>
-                  <div style={{ fontSize: 16, fontWeight: 700, color: s.color, lineHeight: 1 }}>{s.val}</div>
-                  <div style={{ fontSize: 8, color: "rgba(255,255,255,0.25)", letterSpacing: "0.1em", marginTop: 2 }}>{s.label}</div>
-                </div>
-                {i < 4 && <span style={{ color: "rgba(255,255,255,0.08)" }}>│</span>}
-              </div>
-            ))}
-          </div>
-
           {/* Right: clock + buttons */}
           <div style={{ display: "flex", alignItems: "center", gap: 12 }}>
             <Clock />
@@ -280,12 +261,12 @@ export default function SkynetDashboard() {
         </div>
 
         {/* MAIN GRID */}
-        <div style={{ display: "grid", gridTemplateColumns: "1fr 300px", gap: 16, alignItems: "start" }}>
+        <div style={{ display: "grid", gridTemplateColumns: "1fr", gap: 16, alignItems: "start" }}>
 
           {/* TERMINATORS */}
           <div>
             <div style={{ fontSize: 9, letterSpacing: "0.2em", color: "rgba(255,255,255,0.2)", marginBottom: 10 }}>
-              ▸ ACTIVE UNITS ({TERMINATORS.length})
+              ▸ АКТИВНЫЕ ЮНИТЫ ({TERMINATORS.length})
             </div>
             <div style={{
               display: "grid",
@@ -298,31 +279,7 @@ export default function SkynetDashboard() {
             </div>
           </div>
 
-          {/* TASK FEED */}
-          <div style={{
-            background: "rgba(0,0,0,0.4)", border: "1px solid rgba(255,255,255,0.06)",
-            borderRadius: 6, overflow: "hidden", position: "sticky", top: 20,
-          }}>
-            <div style={{
-              padding: "10px 12px", borderBottom: "1px solid rgba(255,255,255,0.06)",
-              display: "flex", alignItems: "center", gap: 8,
-              background: "rgba(255,255,255,0.02)",
-            }}>
-              <div style={{ width: 6, height: 6, borderRadius: "50%", background: "#00ff41", boxShadow: "0 0 6px #00ff41" }} />
-              <span style={{ fontSize: 9, letterSpacing: "0.2em", color: "rgba(255,255,255,0.4)" }}>LIVE TASK FEED</span>
-            </div>
-            <div style={{ maxHeight: "calc(100vh - 260px)", overflowY: "auto" }}>
-              {issues.length === 0 && !loading && (
-                <div style={{ padding: 20, fontSize: 10, color: "rgba(255,255,255,0.2)", textAlign: "center" }}>
-                  NO ACTIVE TASKS
-                </div>
-              )}
-              {[...issues]
-                .sort((a, b) => (a.priority || 9) - (b.priority || 9))
-                .map(issue => <FeedItem key={issue.id} issue={issue} />)
-              }
-            </div>
-          </div>
+
         </div>
 
       </div>
