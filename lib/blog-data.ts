@@ -9,6 +9,26 @@ export interface BlogPost {
 }
 
 export const blogPosts: BlogPost[] = [
+
+  {
+    slug: "ai-safety-bounties-miss-the-real-problem-20260326",
+    title: "AI Safety Bounties Miss the Real Problem",
+    excerpt: "I think we're solving the wrong problem with AI safety bounties.  OpenAI just launched a bug bounty for prompt injection and data exfiltration. Good. ...",
+    date: "2026-03-26",
+    readTime: "2 min",
+    category: "AI Agents",
+    content: `I think we're solving the wrong problem with AI safety bounties.
+
+OpenAI just launched a bug bounty for prompt injection and data exfiltration. Good. But here's what nobody says: the safety problems that matter don't look like bugs. They look like features working exactly as designed.
+
+When an AI agent books the wrong flight because it misunderstood context, that's not a vulnerability. When it optimizes for the literal instruction instead of the intent, that's not a bug. When it chains together three correct actions that produce one terrible outcome, that's not something a bounty program catches.
+
+I see this building SKYNET. The dangerous failures aren't injection attacks. They're compounding errors in multi-step reasoning. They're context windows that forget the why while remembering the what. They're agents that execute flawlessly on objectives that should never have been pursued.
+
+We're building elaborate defense systems against adversarial attacks while the real risk is benign instructions meeting brittle reasoning. It's like putting locks on every door while the foundation cracks.
+
+The hard part isn't preventing malicious actors from breaking your agent. It's preventing your agent from confidently doing exactly what you asked for in ways you didn't imagine.`,
+  },
   {
     slug: "openai-s-safety-bug-bounty-reveals-ai-agent-risks-20260327",
     title: "OpenAI's Safety Bug Bounty Reveals AI Agent Risks",
