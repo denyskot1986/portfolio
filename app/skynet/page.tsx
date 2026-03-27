@@ -5,7 +5,7 @@ import { useRouter } from "next/navigation";
 
 const TERMINATORS = [
   { id: "SKYNET",       label: "SKYNET",       emoji: "⚡", color: "#00ff41", bg: "rgba(0,255,65,0.06)",   border: "rgba(0,255,65,0.25)",    role: "Мозг · Оркестратор" },
-  { id: "Media",        label: "MEDIA",        emoji: "🩷", color: "#ec4899", bg: "rgba(236,72,153,0.08)", border: "rgba(236,72,153,0.25)",  role: "Контент & Посты" },
+  { id: "Media",        label: "MEDIA",        emoji: "●", color: "#ec4899", bg: "rgba(236,72,153,0.08)", border: "rgba(236,72,153,0.25)",  role: "Контент & Посты" },
   { id: "Forge",        label: "FORGE",        emoji: "🟠", color: "#f97316", bg: "rgba(249,115,22,0.08)",  border: "rgba(249,115,22,0.25)",  role: "Инфраструктура" },
   { id: "Inspiration",  label: "INSPIRATION",  emoji: "🟢", color: "#22c55e", bg: "rgba(34,197,94,0.08)",  border: "rgba(34,197,94,0.25)",   role: "Монетизация" },
   { id: "Money Maker",  label: "MONEY MAKER",  emoji: "🟡", color: "#eab308", bg: "rgba(234,179,8,0.08)",  border: "rgba(234,179,8,0.25)",   role: "Creator Economy" },
@@ -84,20 +84,6 @@ function TerminatorCard({ t, issues }: { t: typeof TERMINATORS[0]; issues: Issue
           <div style={{ fontSize: 22, fontWeight: 900, color: t.color, marginTop: 4 }}>{myIssues.length}</div>
           <div style={{ fontSize: 10, color: "rgba(255,255,255,0.25)", letterSpacing: "0.1em" }}>TASKS</div>
         </div>
-      </div>
-
-      {/* Stats */}
-      <div style={{ display: "flex", gap: 8, marginBottom: 12 }}>
-        {[
-          { label: "ACTIVE", val: inProgress, color: "#00ff41" },
-          { label: "QUEUE", val: pending, color: t.color },
-          { label: "REVIEW", val: review, color: "#f97316" },
-        ].map(s => (
-          <div key={s.label} style={{ flex: 1, background: "rgba(0,0,0,0.3)", borderRadius: 3, padding: "6px 4px", textAlign: "center" }}>
-            <div style={{ fontSize: 16, fontWeight: 700, color: s.color }}>{s.val}</div>
-            <div style={{ fontSize: 9, color: "rgba(255,255,255,0.25)", letterSpacing: "0.1em", marginTop: 1 }}>{s.label}</div>
-          </div>
-        ))}
       </div>
 
       {/* Task list */}
