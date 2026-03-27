@@ -234,6 +234,15 @@ export default function SkynetDashboard() {
           </div>
         </div>
 
+        {/* NEW TASKS — above units */}
+        <div style={{ marginBottom: 8 }}>
+          <SectionHeader sKey="new" label="НОВЫЕ ЗАДАЧИ" count={newTasks.length} accentColor="rgba(255,255,255,0.6)" />
+          {openSections.new && <TaskTable items={newTasks} />}
+        </div>
+
+        {/* DIVIDER */}
+        <div style={{ height: 1, background: "rgba(255,255,255,0.05)", margin: "8px 0 16px" }} />
+
         {/* UNITS SECTION */}
         <div style={{ marginBottom: 8 }}>
           <div style={{ display: "flex", alignItems: "center", gap: 10, marginBottom: unitsOpen ? 12 : 4 }}>
@@ -259,10 +268,7 @@ export default function SkynetDashboard() {
 
         {/* TASK SECTIONS */}
         <div>
-          <SectionHeader sKey="new" label="НОВЫЕ ЗАДАЧИ" count={newTasks.length} accentColor="rgba(255,255,255,0.6)" />
-          {openSections.new && <TaskTable items={newTasks} />}
-
-          <SectionHeader sKey="active" label="В РАБОТЕ" count={activeTasks.length} accentColor="#00ff41" />
+          <SectionHeader sKey="active" label="ЗАДАЧИ ПО АГЕНТАМ" count={activeTasks.length} accentColor="#00ff41" />
           {openSections.active && <TaskTable items={activeTasks} />}
 
           <SectionHeader sKey="review" label="НА ПРОВЕРКУ" count={reviewTasks.length} accentColor="#f97316" />
