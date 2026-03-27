@@ -430,7 +430,7 @@ export const productsData: ProductData[] = [
     ],
     useCases: ["Entrepreneurs", "Team leads", "Project managers", "Creative professionals", "Remote teams"],
     techStack: ["AI API", "Whisper STT", "Todoist API", "aiogram", "Python"],
-    pricing: { code: 90, currency: "USD" },
+    pricing: { code: 50, currency: "USD" },
     deliveryTime: { template: "Instant download", integration: "Contact for setup" },
     youtubeId: null,
     screenshots: [],
