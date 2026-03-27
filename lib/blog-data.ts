@@ -13,6 +13,36 @@ export const blogPosts: BlogPost[] = [
 
 
 
+
+  {
+    slug: "when-ai-agents-know-too-much-20260327",
+    title: "When AI Agents Know Too Much",
+    excerpt: "I watched an engineer spend three weeks building an AI agent that could schedule meetings. It worked perfectly in demos. Then we gave it to five users...",
+    date: "2026-03-27",
+    readTime: "2 min",
+    category: "AI Agents",
+    content: `I watched an engineer spend three weeks building an AI agent that could schedule meetings. It worked perfectly in demos. Then we gave it to five users and it fell apart within hours.
+
+The agent kept scheduling calls at 3am for people in different timezones. It double-booked everyone. It interpreted "let's catch up sometime" as "schedule a meeting right now." Classic failure mode.
+
+Here's what everyone gets wrong about AI agents: we think the hard part is making them smart enough to do the task. That's actually the easy part. The hard part is making them stupid enough to know when to stop.
+
+I call this the confidence problem. AI models don't have doubt. They don't second-guess themselves. A human assistant would sense something is off about scheduling a 3am call and ask first. The AI just does it because technically it's a valid timeslot.
+
+This is why most production AI agents fail not because they're too dumb but because they're too confident. They execute with perfect certainty in situations that demand hesitation.
+
+The solution isn't better models. GPT-5 won't fix this. The solution is building uncertainty into the system. We need agents that can say "I'm not sure about this, let me check with you first."
+
+In SKYNET, we spent more time building the pause mechanisms than the action mechanisms. Before any agent takes an action with potential downside, it stops and explains what it's about to do. Not because it can't do it, but because blind execution at scale is dangerous.
+
+This sounds obvious but watch what everyone is building. They're all racing to make agents that can do more things autonomously. More actions, fewer confirmations, less human in the loop. They think autonomy means never asking for help.
+
+That's backwards. Real autonomy means knowing when you need help. A junior employee who never asks questions isn't autonomous, they're reckless.
+
+The best AI agents will be the ones that interrupt you the least, not the ones that never interrupt you. They'll develop judgment about what matters. They'll learn your boundaries through interaction, not just through prompts.
+
+Everyone wants fully autonomous agents. What we actually need are agents with good judgment about their own limitations. That's much harder to build, and it's the actual unlock for production AI systems.`,
+  },
   {
     slug: "openai-s-safety-bug-bounty-reveals-ai-s-fundamental-insecurity-20260326",
     title: "OpenAI's Safety Bug Bounty Reveals AI's Fundamental Insecurity",
