@@ -211,67 +211,71 @@ export default function SkynetDashboard() {
       <div style={{ maxWidth: 1400, margin: "0 auto", padding: "20px 16px 40px", position: "relative", zIndex: 1 }}>
 
         {/* TOP BAR */}
-        <div style={{ display: "flex", alignItems: "flex-start", justifyContent: "space-between", marginBottom: 28, flexWrap: "wrap", gap: 16 }}>
+        <div style={{
+          display: "flex", alignItems: "center", justifyContent: "space-between",
+          marginBottom: 20, gap: 16, flexWrap: "wrap",
+          padding: "12px 16px", background: "rgba(0,255,65,0.02)",
+          border: "1px solid rgba(0,255,65,0.1)", borderRadius: 4,
+        }}>
+          {/* Left: title */}
           <div>
-            <div style={{ fontSize: 9, letterSpacing: "0.3em", color: "rgba(0,255,65,0.4)", marginBottom: 4, textTransform: "uppercase" }}>
+            <div style={{ fontSize: 8, letterSpacing: "0.3em", color: "rgba(0,255,65,0.35)", marginBottom: 2, textTransform: "uppercase" }}>
               FINEKOT SYSTEMS · CLASSIFIED
             </div>
-            <div style={{ fontSize: 26, fontWeight: 900, color: "#00ff41", letterSpacing: "0.1em", textShadow: "0 0 20px rgba(0,255,65,0.4)" }}>
-              SKYNET v3.0
-            </div>
-            <div style={{ fontSize: 11, color: "rgba(0,255,65,0.4)", letterSpacing: "0.2em", marginTop: 2 }}>
-              COMMAND CENTER
+            <div style={{ display: "flex", alignItems: "baseline", gap: 10 }}>
+              <span style={{ fontSize: 22, fontWeight: 900, color: "#00ff41", letterSpacing: "0.1em", textShadow: "0 0 20px rgba(0,255,65,0.4)" }}>
+                SKYNET v3.0
+              </span>
+              <span style={{ fontSize: 9, color: "rgba(0,255,65,0.4)", letterSpacing: "0.2em" }}>COMMAND CENTER</span>
             </div>
           </div>
-          <div style={{ display: "flex", alignItems: "flex-start", gap: 20 }}>
-            <Clock />
-            <button onClick={fetchTasks} style={{
-              fontSize: 9, letterSpacing: "0.15em", color: "#ffffff",
-              background: "transparent", border: "1px solid rgba(255,255,255,0.4)",
-              borderRadius: 3, padding: "5px 10px", cursor: "pointer", fontFamily: "inherit",
-              transition: "all 0.2s",
-            }}
-              onMouseEnter={e => { (e.target as HTMLButtonElement).style.background = "rgba(255,255,255,0.1)"; }}
-              onMouseLeave={e => { (e.target as HTMLButtonElement).style.background = "transparent"; }}
-            >
-              REFRESH
-            </button>
-            <button onClick={logout} style={{
-              fontSize: 9, letterSpacing: "0.15em", color: "rgba(255,68,68,0.6)",
-              background: "transparent", border: "1px solid rgba(255,68,68,0.2)",
-              borderRadius: 3, padding: "5px 10px", cursor: "pointer", fontFamily: "inherit",
-              transition: "all 0.2s",
-            }}
-              onMouseEnter={e => { (e.target as HTMLButtonElement).style.color = "#ff4444"; (e.target as HTMLButtonElement).style.borderColor = "rgba(255,68,68,0.5)"; }}
-              onMouseLeave={e => { (e.target as HTMLButtonElement).style.color = "rgba(255,68,68,0.6)"; (e.target as HTMLButtonElement).style.borderColor = "rgba(255,68,68,0.2)"; }}
-            >
-              LOGOUT
-            </button>
-          </div>
-        </div>
 
-        {/* SYSTEM STATUS BAR */}
-        <div style={{
-          display: "flex", gap: 12, marginBottom: 24, flexWrap: "wrap",
-          padding: "10px 14px", background: "rgba(0,255,65,0.02)",
-          border: "1px solid rgba(0,255,65,0.1)", borderRadius: 4,
-          paddingLeft: 120,
-        }}>
-          {[
-            { label: "TOTAL TASKS", val: issues.length, color: "rgba(255,255,255,0.7)" },
-            { label: "IN PROGRESS", val: allActive, color: "#00ff41" },
-            { label: "QUEUE", val: allPending, color: "#f97316" },
-            { label: "ON REVIEW", val: allReview, color: "#3b82f6" },
-            { label: "UNITS ONLINE", val: 5, color: "#00ff41" },
-          ].map(s => (
-            <div key={s.label} style={{ display: "flex", alignItems: "center", gap: 8 }}>
-              <span style={{ fontSize: 9, color: "rgba(255,255,255,0.25)", letterSpacing: "0.1em" }}>{s.label}</span>
-              <span style={{ fontSize: 14, fontWeight: 700, color: s.color }}>{s.val}</span>
-              <span style={{ color: "rgba(255,255,255,0.1)", marginLeft: 4 }}>│</span>
+          {/* Center: stats */}
+          <div style={{ display: "flex", gap: 0, flex: 1, justifyContent: "center", flexWrap: "wrap" }}>
+            {[
+              { label: "TOTAL", val: issues.length, color: "rgba(255,255,255,0.7)" },
+              { label: "ACTIVE", val: allActive, color: "#00ff41" },
+              { label: "QUEUE", val: allPending, color: "#f97316" },
+              { label: "REVIEW", val: allReview, color: "#3b82f6" },
+              { label: "UNITS", val: 5, color: "#00ff41" },
+            ].map((s, i) => (
+              <div key={s.label} style={{ display: "flex", alignItems: "center" }}>
+                <div style={{ padding: "0 14px", textAlign: "center" }}>
+                  <div style={{ fontSize: 16, fontWeight: 700, color: s.color, lineHeight: 1 }}>{s.val}</div>
+                  <div style={{ fontSize: 8, color: "rgba(255,255,255,0.25)", letterSpacing: "0.1em", marginTop: 2 }}>{s.label}</div>
+                </div>
+                {i < 4 && <span style={{ color: "rgba(255,255,255,0.08)" }}>│</span>}
+              </div>
+            ))}
+          </div>
+
+          {/* Right: clock + buttons */}
+          <div style={{ display: "flex", alignItems: "center", gap: 12 }}>
+            <Clock />
+            <div style={{ display: "flex", gap: 6 }}>
+              <button onClick={fetchTasks} style={{
+                fontSize: 9, letterSpacing: "0.15em", color: "#ffffff",
+                background: "transparent", border: "1px solid rgba(255,255,255,0.4)",
+                borderRadius: 3, padding: "5px 10px", cursor: "pointer", fontFamily: "inherit",
+                transition: "all 0.2s",
+              }}
+                onMouseEnter={e => { (e.target as HTMLButtonElement).style.background = "rgba(255,255,255,0.1)"; }}
+                onMouseLeave={e => { (e.target as HTMLButtonElement).style.background = "transparent"; }}
+              >
+                REFRESH
+              </button>
+              <button onClick={logout} style={{
+                fontSize: 9, letterSpacing: "0.15em", color: "rgba(255,68,68,0.6)",
+                background: "transparent", border: "1px solid rgba(255,68,68,0.2)",
+                borderRadius: 3, padding: "5px 10px", cursor: "pointer", fontFamily: "inherit",
+                transition: "all 0.2s",
+              }}
+                onMouseEnter={e => { (e.target as HTMLButtonElement).style.color = "#ff4444"; (e.target as HTMLButtonElement).style.borderColor = "rgba(255,68,68,0.5)"; }}
+                onMouseLeave={e => { (e.target as HTMLButtonElement).style.color = "rgba(255,68,68,0.6)"; (e.target as HTMLButtonElement).style.borderColor = "rgba(255,68,68,0.2)"; }}
+              >
+                LOGOUT
+              </button>
             </div>
-          ))}
-          <div style={{ marginLeft: "auto", fontSize: 9, color: "rgba(0,255,65,0.35)", letterSpacing: "0.1em" }}>
-            {loading ? "LOADING…" : `SYNC ${lastUpdate}`}
           </div>
         </div>
 
