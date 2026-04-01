@@ -6,7 +6,7 @@ import { motion } from "framer-motion";
 import { productsData, getTranslatedProduct } from "@/lib/products-data";
 import DemoChat from "@/components/DemoChat";
 import ProductChat from "@/components/ProductChat";
-import { demoChatData } from "@/lib/demo-chats";
+import { getDemoChat } from "@/lib/demo-chats";
 import { i18n } from "@/lib/i18n";
 import { useLang } from "@/lib/lang-context";
 import LangSwitcher from "@/components/LangSwitcher";
@@ -20,7 +20,7 @@ export default function ProductPageClient() {
   const { lang } = useLang();
   const tp = i18n[lang].pages.product;
   const product = getTranslatedProduct(params.id as string, lang);
-  const demo = product ? demoChatData[product.id] : undefined;
+  const demo = product ? getDemoChat(product.id, lang) : undefined;
 
   if (!product) {
     return (
@@ -85,6 +85,7 @@ export default function ProductPageClient() {
                   messages={demo.messages}
                   tryLink={demo.tryLink}
                   tryLabel={demo.tryLabel}
+                  lang={lang}
                 />
               ) : (
                 <div className="glass rounded-xl overflow-hidden aspect-video">
@@ -161,6 +162,7 @@ export default function ProductPageClient() {
             productName={product.name}
             productTagline={product.tagline}
             productId={product.id}
+            lang={lang}
           />
         </div>
       </section>

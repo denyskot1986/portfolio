@@ -12,15 +12,38 @@ interface ProductChatProps {
   productName: string;
   productTagline: string;
   productId: string;
+  lang?: "EN" | "RU" | "UA";
 }
 
-const QUICK_QUESTIONS = [
-  "What's included?",
-  "How long to deploy?",
-  "Do I need coding skills?",
-];
+const chatUi = {
+  EN: {
+    askAbout: "Ask AI about",
+    ask: "Ask",
+    hi: "Hi! I can answer questions about",
+    quickQuestions: ["What's included?", "How long to deploy?", "Do I need coding skills?"],
+    placeholder: "Ask a question...",
+    send: "Send",
+  },
+  RU: {
+    askAbout: "Спросить AI о",
+    ask: "Спросить",
+    hi: "Привет! Могу ответить на вопросы о",
+    quickQuestions: ["Что входит в комплект?", "Сколько времени на установку?", "Нужны ли навыки программирования?"],
+    placeholder: "Задайте вопрос...",
+    send: "Отправить",
+  },
+  UA: {
+    askAbout: "Запитати AI про",
+    ask: "Запитати",
+    hi: "Привіт! Можу відповісти на запитання про",
+    quickQuestions: ["Що входить до комплекту?", "Скільки часу на встановлення?", "Чи потрібні навички програмування?"],
+    placeholder: "Задайте запитання...",
+    send: "Надіслати",
+  },
+};
 
-export default function ProductChat({ productName, productTagline, productId }: ProductChatProps) {
+export default function ProductChat({ productName, productTagline, productId, lang = "EN" }: ProductChatProps) {
+  const ui = chatUi[lang];
   const [messages, setMessages] = useState<ChatMessage[]>([]);
   const [input, setInput] = useState("");
   const [loading, setLoading] = useState(false);
@@ -99,9 +122,9 @@ export default function ProductChat({ productName, productTagline, productId }: 
           className="w-full py-3 px-5 rounded-xl border border-pink-400/15 text-sm text-pink-300/50 hover:text-pink-300/80 hover:border-pink-400/30 transition-all font-mono flex items-center justify-between group"
           style={{ background: "rgba(10,6,8,0.6)", backdropFilter: "blur(12px)" }}
         >
-          <span>Ask AI about {productName}...</span>
+          <span>{ui.askAbout} {productName}...</span>
           <span className="text-pink-400/30 group-hover:text-pink-400/60 transition-colors text-xs">
-            ▸ Ask
+            ▸ {ui.ask}
           </span>
         </button>
       ) : (
@@ -122,7 +145,7 @@ export default function ProductChat({ productName, productTagline, productId }: 
               <div className="w-5 h-5 rounded-full bg-gradient-to-r from-pink-600 to-purple-600 flex items-center justify-center text-white text-[8px] font-bold">
                 AI
               </div>
-              <span className="text-xs text-pink-300/50 font-mono">Ask about {productName}</span>
+              <span className="text-xs text-pink-300/50 font-mono">{ui.askAbout} {productName}</span>
             </div>
             <button onClick={() => setOpen(false)} className="text-pink-300/30 hover:text-pink-300/60 text-xs transition-colors">
               ✕
@@ -134,10 +157,10 @@ export default function ProductChat({ productName, productTagline, productId }: 
             {messages.length === 0 && (
               <div className="space-y-3">
                 <p className="text-xs text-pink-100/30 font-mono">
-                  Hi! I can answer questions about {productName} — {productTagline}.
+                  {ui.hi} {productName} — {productTagline}.
                 </p>
                 <div className="flex flex-wrap gap-2">
-                  {QUICK_QUESTIONS.map((q) => (
+                  {ui.quickQuestions.map((q) => (
                     <button
                       key={q}
                       onClick={() => { setOpen(true); send(q); }}
@@ -197,7 +220,7 @@ export default function ProductChat({ productName, productTagline, productId }: 
               value={input}
               onChange={(e) => { setInput(e.target.value); adjustTextarea(); }}
               onKeyDown={handleKeyDown}
-              placeholder="Ask anything..."
+              placeholder={ui.placeholder}
               rows={1}
               className="flex-1 bg-transparent text-xs text-pink-100/70 placeholder:text-pink-300/25 focus:outline-none resize-none font-mono leading-relaxed py-2"
               style={{ maxHeight: 100 }}

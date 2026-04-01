@@ -13,9 +13,17 @@ interface DemoChatProps {
   messages: ChatMessage[];
   tryLink: string;
   tryLabel?: string;
+  lang?: "EN" | "RU" | "UA";
 }
 
-export default function DemoChat({ productName, messages, tryLink, tryLabel = "Try it in Telegram" }: DemoChatProps) {
+const uiText = {
+  EN: { see: "See how", handles: "handles a real conversation", play: "Play Demo", replay: "Replay", watching: "watching demo...", demo: "demo · interactive preview", online: "online" },
+  RU: { see: "Посмотрите, как", handles: "обрабатывает реальный диалог", play: "Запустить демо", replay: "Повторить", watching: "смотрим демо...", demo: "демо · интерактивный превью", online: "онлайн" },
+  UA: { see: "Подивіться, як", handles: "обробляє реальний діалог", play: "Запустити демо", replay: "Повторити", watching: "дивимось демо...", demo: "демо · інтерактивний превʼю", online: "онлайн" },
+};
+
+export default function DemoChat({ productName, messages, tryLink, tryLabel = "Try it in Telegram", lang = "EN" }: DemoChatProps) {
+  const ui = uiText[lang];
   const [visibleCount, setVisibleCount] = useState(0);
   const [started, setStarted] = useState(false);
   const chatRef = useRef<HTMLDivElement>(null);
@@ -54,11 +62,11 @@ export default function DemoChat({ productName, messages, tryLink, tryLabel = "T
         </div>
         <div>
           <p className="text-xs font-bold text-pink-100/60">{productName}</p>
-          <p className="text-[10px] text-pink-400/30 font-mono">demo &middot; interactive preview</p>
+          <p className="text-[10px] text-pink-400/30 font-mono">{ui.demo}</p>
         </div>
         <div className="ml-auto flex gap-1.5">
           <div className="w-2 h-2 rounded-full bg-emerald-500/40" />
-          <span className="text-[10px] text-emerald-400/40 font-mono">online</span>
+          <span className="text-[10px] text-emerald-400/40 font-mono">{ui.online}</span>
         </div>
       </div>
 
@@ -70,12 +78,12 @@ export default function DemoChat({ productName, messages, tryLink, tryLabel = "T
             animate={{ opacity: 1 }}
             className="flex flex-col items-center justify-center h-[200px] gap-4"
           >
-            <p className="text-xs text-pink-100/25 text-center font-mono">See how {productName} handles a real conversation</p>
+            <p className="text-xs text-pink-100/25 text-center font-mono">{ui.see} {productName} {ui.handles}</p>
             <button
               onClick={handleStart}
               className="px-6 py-2.5 rounded-lg bg-gradient-to-r from-pink-600/80 to-purple-600/80 text-white text-sm font-semibold hover:from-pink-600 hover:to-purple-600 transition-all shadow-[0_0_20px_rgba(244,114,182,0.15)]"
             >
-              &#9654; Play Demo
+              &#9654; {ui.play}
             </button>
           </motion.div>
         )}
@@ -127,7 +135,7 @@ export default function DemoChat({ productName, messages, tryLink, tryLabel = "T
               onClick={handleReplay}
               className="px-4 py-2 rounded-lg border border-pink-500/15 text-[11px] text-pink-100/40 hover:text-pink-100/60 hover:border-pink-500/30 transition-all font-mono"
             >
-              &#8635; Replay
+              &#8635; {ui.replay}
             </button>
             <a
               href={tryLink}
@@ -141,7 +149,7 @@ export default function DemoChat({ productName, messages, tryLink, tryLabel = "T
         ) : started ? (
           <div className="w-full flex items-center gap-2 opacity-40">
             <div className="flex-1 h-8 rounded-lg border border-pink-500/10 bg-pink-500/[0.02] flex items-center px-3">
-              <span className="text-[10px] text-pink-100/20 font-mono">watching demo...</span>
+              <span className="text-[10px] text-pink-100/20 font-mono">{ui.watching}</span>
             </div>
           </div>
         ) : null}
