@@ -5,7 +5,7 @@ import { useState, useEffect, useRef } from "react";
 import { useInView } from "framer-motion";
 import Link from "next/link";
 import { i18n, langs, type Lang } from "../lib/i18n";
-import { productsData } from "../lib/products-data";
+import { getTranslatedProducts } from "../lib/products-data";
 import { blogPosts } from "../lib/blog-data";
 import { getBlogTranslation } from "../lib/blog-translations";
 import { useLang } from "../lib/lang-context";
@@ -438,7 +438,7 @@ export default function Home() {
           {/* Product grid */}
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 mt-8">
             <AnimatePresence mode="popLayout">
-              {productsData.map((p, i) => (
+              {getTranslatedProducts(lang).map((p, i) => (
                 <motion.div
                   key={p.id}
                   layout

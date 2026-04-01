@@ -3,7 +3,7 @@
 import { useParams } from "next/navigation";
 import Link from "next/link";
 import { motion } from "framer-motion";
-import { productsData, getProductById } from "@/lib/products-data";
+import { productsData, getTranslatedProduct } from "@/lib/products-data";
 import DemoChat from "@/components/DemoChat";
 import ProductChat from "@/components/ProductChat";
 import { demoChatData } from "@/lib/demo-chats";
@@ -19,7 +19,7 @@ export default function ProductPageClient() {
   const params = useParams();
   const { lang } = useLang();
   const tp = i18n[lang].pages.product;
-  const product = getProductById(params.id as string);
+  const product = getTranslatedProduct(params.id as string, lang);
   const demo = product ? demoChatData[product.id] : undefined;
 
   if (!product) {
