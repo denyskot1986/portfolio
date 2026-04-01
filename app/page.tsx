@@ -5,7 +5,7 @@ import { useState, useEffect, useRef } from "react";
 import { useInView } from "framer-motion";
 import Link from "next/link";
 import { i18n, langs, type Lang } from "../lib/i18n";
-import { productsData, type ProductData } from "../lib/products-data";
+import { productsData } from "../lib/products-data";
 import { blogPosts } from "../lib/blog-data";
 import { getBlogTranslation } from "../lib/blog-translations";
 import { useLang } from "../lib/lang-context";
@@ -14,7 +14,6 @@ import { useLang } from "../lib/lang-context";
    DATA
    ═══════════════════════════════════════════════════════ */
 
-const allCategories = ["All", ...Array.from(new Set(productsData.map((p) => p.category)))];
 
 
 
@@ -202,8 +201,6 @@ function BlogCardsSection() {
 const fade = { initial: { opacity: 0, y: 30 }, whileInView: { opacity: 1, y: 0 }, viewport: { once: true as const } };
 
 export default function Home() {
-  const [cat, setCat] = useState("All");
-  const [showAllProjects, setShowAllProjects] = useState(false);
   const { lang, setLang } = useLang();
   const t = i18n[lang];
 
@@ -271,9 +268,6 @@ export default function Home() {
     return () => window.removeEventListener("resize", onResize);
   }, []);
 
-  const allFiltered = cat === "All" ? productsData : productsData.filter((p) => p.category === cat);
-  const filtered = showAllProjects ? allFiltered : allFiltered.slice(0, 6);
-  const hasMore = allFiltered.length > 6 && !showAllProjects;
 
   return (
     <div className="relative min-h-screen bg-[var(--bg)] text-[var(--fg)]">
@@ -441,26 +435,10 @@ export default function Home() {
             <h2 className="text-2xl sm:text-3xl md:text-5xl font-bold mb-3 tracking-tight"><span className="gradient-text">{t.projectsSection.title}</span></h2>
           </motion.div>
 
-          {/* Category filters */}
-          <div className="flex flex-wrap gap-2 mb-6">
-            {allCategories.map((c) => (
-              <button key={c} onClick={() => { setCat(c); setShowAllProjects(false); }}
-                className={`px-3 py-1.5 rounded-md text-[10px] font-mono uppercase tracking-wider border transition-all ${
-                  cat === c
-                    ? "border-[var(--accent)] text-[var(--accent)] bg-[var(--glass-bg)]"
-                    : "border-[var(--glass-border)] text-[var(--muted)] hover:border-[var(--accent)] hover:text-[var(--accent)]"
-                }`}
-              >{c}</button>
-            ))}
-          </div>
-
-          {/* Product count */}
-          <p className="text-xs font-mono mb-6" style={{ color: "var(--muted)" }}>// {allFiltered.length} {t.projectsSection.shown}</p>
-
-          {/* Compact product grid */}
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+          {/* Product grid */}
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 mt-8">
             <AnimatePresence mode="popLayout">
-              {filtered.map((p, i) => (
+              {productsData.map((p, i) => (
                 <motion.div
                   key={p.id}
                   layout
@@ -520,27 +498,6 @@ export default function Home() {
             </AnimatePresence>
           </div>
 
-          {/* Show more button */}
-          {hasMore && (
-            <motion.div {...fade} className="text-center mt-8">
-              <button
-                onClick={() => setShowAllProjects(true)}
-                className="btn-terminal-ghost text-sm"
-              >
-                {t.projectsSection.showMore} (+{allFiltered.length - 6})
-              </button>
-            </motion.div>
-          )}
-          {showAllProjects && allFiltered.length > 6 && (
-            <motion.div {...fade} className="text-center mt-8">
-              <button
-                onClick={() => setShowAllProjects(false)}
-                className="btn-terminal-ghost text-xs"
-              >
-                ↑ {t.projectsSection.showLess}
-              </button>
-            </motion.div>
-          )}
         </div>
       </section>
 
