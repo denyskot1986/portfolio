@@ -6,11 +6,14 @@ import {
 } from "@/lib/discover-prompts";
 
 // Primary: Anthropic-direct (per task spec). Fallback: OpenRouter
-// (only if DISCOVER_USE_OPENROUTER=1 — temporary stopgap until Anthropic
-// key is funded). Both keys are server-only and never exposed to client.
+// (used automatically if no ANTHROPIC_API_KEY — temporary stopgap until
+// Anthropic key is funded). Both keys are server-only, never exposed.
+// Force one or the other with DISCOVER_USE_OPENROUTER=1 / =0.
 const ANTHROPIC_API_KEY = process.env.ANTHROPIC_API_KEY || "";
 const OPENROUTER_API_KEY = process.env.OPENROUTER_API_KEY || "";
-const USE_OPENROUTER = process.env.DISCOVER_USE_OPENROUTER === "1";
+const USE_OPENROUTER =
+  process.env.DISCOVER_USE_OPENROUTER === "1" ||
+  (process.env.DISCOVER_USE_OPENROUTER !== "0" && !ANTHROPIC_API_KEY);
 
 const QUESTIONER_MODEL =
   process.env.DISCOVER_QUESTIONER_MODEL || "claude-sonnet-4-5";
