@@ -274,6 +274,9 @@ export default function Home() {
             <a href="#projects" className="btn-terminal">
               {t.cta.viewProducts}
             </a>
+            <Link href="/discover" className="btn-terminal">
+              {t.cta.discoverScan}
+            </Link>
           </motion.div>
 
           {/* Language switcher */}

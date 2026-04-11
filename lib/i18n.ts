@@ -5,7 +5,7 @@ export interface T {
   nav: { home: string; products: string; projects: string; contact: string; connect: string };
   heroSubtitle: string;
   roles: string[];
-  cta: { viewProducts: string; requestIntegration: string };
+  cta: { viewProducts: string; requestIntegration: string; discoverScan: string };
   stats: { products: string; startingPrice: string; dayIntegration: string; systemsBuilt: string };
   comparison: { without: string; with: string; rows: { bad: string; good: string }[]; cta: string };
   projectsSection: { label: string; title: string; shown: string; showMore: string; showLess: string };
@@ -81,7 +81,7 @@ const EN: T = {
     "No meetings. No delays. Just results.",
     "Scale from 1 to 1000 without hiring",
   ],
-  cta: { viewProducts: "View Products", requestIntegration: "Request Integration" },
+  cta: { viewProducts: "View Products", requestIntegration: "Request Integration", discoverScan: "Personality Scan" },
   stats: { products: "AI Systems", startingPrice: "Starting From", dayIntegration: "Day to Deploy", systemsBuilt: "Built & Shipped" },
   comparison: {
     without: "Without",
@@ -387,7 +387,7 @@ const RU: T = {
     "\u0411\u0435\u0437 \u0441\u043e\u0432\u0435\u0449\u0430\u043d\u0438\u0439. \u0411\u0435\u0437 \u0437\u0430\u0434\u0435\u0440\u0436\u0435\u043a. \u0422\u043e\u043b\u044c\u043a\u043e \u0440\u0435\u0437\u0443\u043b\u044c\u0442\u0430\u0442.",
     "\u041c\u0430\u0441\u0448\u0442\u0430\u0431 \u043e\u0442 1 \u0434\u043e 1000 \u0431\u0435\u0437 \u043d\u0430\u0439\u043c\u0430",
   ],
-  cta: { viewProducts: "\u0421\u043c\u043e\u0442\u0440\u0435\u0442\u044c \u043f\u0440\u043e\u0434\u0443\u043a\u0442\u044b", requestIntegration: "\u0417\u0430\u043a\u0430\u0437\u0430\u0442\u044c \u0438\u043d\u0442\u0435\u0433\u0440\u0430\u0446\u0438\u044e" },
+  cta: { viewProducts: "\u0421\u043c\u043e\u0442\u0440\u0435\u0442\u044c \u043f\u0440\u043e\u0434\u0443\u043a\u0442\u044b", requestIntegration: "\u0417\u0430\u043a\u0430\u0437\u0430\u0442\u044c \u0438\u043d\u0442\u0435\u0433\u0440\u0430\u0446\u0438\u044e", discoverScan: "\u0421\u043a\u0430\u043d \u043b\u0438\u0447\u043d\u043e\u0441\u0442\u0438" },
   stats: { products: "AI-\u0441\u0438\u0441\u0442\u0435\u043c", startingPrice: "\u0421\u0442\u0430\u0440\u0442\u043e\u0432\u0430\u044f \u0446\u0435\u043d\u0430", dayIntegration: "\u0414\u0435\u043d\u044c \u043d\u0430 \u0437\u0430\u043f\u0443\u0441\u043a", systemsBuilt: "\u0421\u043e\u0437\u0434\u0430\u043d\u043e \u0438 \u0434\u043e\u0441\u0442\u0430\u0432\u043b\u0435\u043d\u043e" },
   comparison: {
     without: "\u0411\u0435\u0437 \u043d\u0430\u0441",
@@ -693,7 +693,7 @@ const UA: T = {
     "\u0411\u0435\u0437 \u043d\u0430\u0440\u0430\u0434. \u0411\u0435\u0437 \u0437\u0430\u0442\u0440\u0438\u043c\u043e\u043a. \u0422\u0456\u043b\u044c\u043a\u0438 \u0440\u0435\u0437\u0443\u043b\u044c\u0442\u0430\u0442.",
     "\u041c\u0430\u0441\u0448\u0442\u0430\u0431 \u0432\u0456\u0434 1 \u0434\u043e 1000 \u0431\u0435\u0437 \u043d\u0430\u0439\u043c\u0443",
   ],
-  cta: { viewProducts: "\u041f\u0435\u0440\u0435\u0433\u043b\u044f\u043d\u0443\u0442\u0438 \u043f\u0440\u043e\u0434\u0443\u043a\u0442\u0438", requestIntegration: "\u0417\u0430\u043c\u043e\u0432\u0438\u0442\u0438 \u0456\u043d\u0442\u0435\u0433\u0440\u0430\u0446\u0456\u044e" },
+  cta: { viewProducts: "\u041f\u0435\u0440\u0435\u0433\u043b\u044f\u043d\u0443\u0442\u0438 \u043f\u0440\u043e\u0434\u0443\u043a\u0442\u0438", requestIntegration: "\u0417\u0430\u043c\u043e\u0432\u0438\u0442\u0438 \u0456\u043d\u0442\u0435\u0433\u0440\u0430\u0446\u0456\u044e", discoverScan: "\u0421\u043a\u0430\u043d \u043e\u0441\u043e\u0431\u0438\u0441\u0442\u043e\u0441\u0442\u0456" },
   stats: { products: "AI-\u0441\u0438\u0441\u0442\u0435\u043c", startingPrice: "\u0421\u0442\u0430\u0440\u0442\u043e\u0432\u0430 \u0446\u0456\u043d\u0430", dayIntegration: "\u0414\u0435\u043d\u044c \u043d\u0430 \u0437\u0430\u043f\u0443\u0441\u043a", systemsBuilt: "\u0421\u0442\u0432\u043e\u0440\u0435\u043d\u043e \u0442\u0430 \u0434\u043e\u0441\u0442\u0430\u0432\u043b\u0435\u043d\u043e" },
   comparison: {
     without: "\u0411\u0435\u0437 \u043d\u0430\u0441",
