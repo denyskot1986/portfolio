@@ -5,20 +5,14 @@ import {
   QUESTION_BUDGET,
 } from "@/lib/discover-prompts";
 
-// Primary: Anthropic-direct (per task spec). Fallback: OpenRouter
-// (used automatically if no ANTHROPIC_API_KEY — temporary stopgap until
-// Anthropic key is funded). Both keys are server-only, never exposed.
-// Force one or the other with DISCOVER_USE_OPENROUTER=1 / =0.
-const ANTHROPIC_API_KEY = process.env.ANTHROPIC_API_KEY || "";
+// Все LLM-вызовы в проектах Finekot идут через OpenRouter.
+// Ключ — только серверный, никогда не уходит в браузер.
 const OPENROUTER_API_KEY = process.env.OPENROUTER_API_KEY || "";
-const USE_OPENROUTER =
-  process.env.DISCOVER_USE_OPENROUTER === "1" ||
-  (process.env.DISCOVER_USE_OPENROUTER !== "0" && !ANTHROPIC_API_KEY);
 
 const QUESTIONER_MODEL =
-  process.env.DISCOVER_QUESTIONER_MODEL || "claude-sonnet-4-5";
+  process.env.DISCOVER_QUESTIONER_MODEL || "anthropic/claude-sonnet-4.5";
 const ANALYST_MODEL =
-  process.env.DISCOVER_ANALYST_MODEL || "claude-opus-4-5";
+  process.env.DISCOVER_ANALYST_MODEL || "anthropic/claude-opus-4.5";
 
 export const runtime = "nodejs";
 export const maxDuration = 60;
@@ -49,53 +43,12 @@ function formatHistoryForLLM(history: HistoryItem[]): string {
     .join("\n\n");
 }
 
-async function callAnthropicDirect(opts: {
+async function callLLM(opts: {
   model: string;
   system: string;
   userMessage: string;
   maxTokens: number;
 }): Promise<string> {
-  const res = await fetch("https://api.anthropic.com/v1/messages", {
-    method: "POST",
-    headers: {
-      "x-api-key": ANTHROPIC_API_KEY,
-      "anthropic-version": "2023-06-01",
-      "content-type": "application/json",
-    },
-    body: JSON.stringify({
-      model: opts.model,
-      max_tokens: opts.maxTokens,
-      system: opts.system,
-      messages: [{ role: "user", content: opts.userMessage }],
-    }),
-  });
-
-  if (!res.ok) {
-    const errText = await res.text();
-    throw new Error(`Anthropic API error ${res.status}: ${errText}`);
-  }
-
-  const data = await res.json();
-  const textBlock = (data.content || []).find(
-    (b: { type: string }) => b.type === "text"
-  );
-  if (!textBlock?.text) {
-    throw new Error("Anthropic response missing text content");
-  }
-  return textBlock.text as string;
-}
-
-async function callOpenRouter(opts: {
-  model: string;
-  system: string;
-  userMessage: string;
-  maxTokens: number;
-}): Promise<string> {
-  // OpenRouter prefixes Anthropic models as "anthropic/<model>".
-  const orModel = opts.model.startsWith("anthropic/")
-    ? opts.model
-    : `anthropic/${opts.model}`;
-
   const res = await fetch("https://openrouter.ai/api/v1/chat/completions", {
     method: "POST",
     headers: {
@@ -105,7 +58,7 @@ async function callOpenRouter(opts: {
       "X-Title": "Finekot Discover",
     },
     body: JSON.stringify({
-      model: orModel,
+      model: opts.model,
       max_tokens: opts.maxTokens,
       messages: [
         { role: "system", content: opts.system },
@@ -125,21 +78,6 @@ async function callOpenRouter(opts: {
   return text as string;
 }
 
-async function callLLM(opts: {
-  model: string;
-  system: string;
-  userMessage: string;
-  maxTokens: number;
-}): Promise<string> {
-  if (USE_OPENROUTER) {
-    if (!OPENROUTER_API_KEY) {
-      throw new Error("DISCOVER_USE_OPENROUTER=1 но OPENROUTER_API_KEY не задан");
-    }
-    return callOpenRouter(opts);
-  }
-  return callAnthropicDirect(opts);
-}
-
 // Strip ```json ... ``` if model wraps despite instructions.
 function extractJSON(raw: string): string {
   const trimmed = raw.trim();
@@ -156,13 +94,7 @@ function extractJSON(raw: string): string {
 
 export async function POST(req: NextRequest) {
   try {
-    if (!USE_OPENROUTER && !ANTHROPIC_API_KEY) {
-      return NextResponse.json(
-        { error: "Сканер не настроен. Отсутствует ANTHROPIC_API_KEY." },
-        { status: 500 }
-      );
-    }
-    if (USE_OPENROUTER && !OPENROUTER_API_KEY) {
+    if (!OPENROUTER_API_KEY) {
       return NextResponse.json(
         { error: "Сканер не настроен. Отсутствует OPENROUTER_API_KEY." },
         { status: 500 }
