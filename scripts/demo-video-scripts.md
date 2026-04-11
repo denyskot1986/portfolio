@@ -186,7 +186,7 @@ Results appear one by one:
 - Instagram carousel (5 slides preview)
 - Twitter thread (3 tweets)
 - LinkedIn post (professional tone)
-- Blog article draft
+- Long-form post draft
 - Telegram channel post
 - YouTube Shorts script
 
@@ -214,7 +214,7 @@ Text overlay: "1 voice message → content for the entire week"
 - Instagram карусель (превью 5 слайдов)
 - Twitter тред (3 твита)
 - LinkedIn пост (профессиональный тон)
-- Черновик статьи для блога
+- Черновик длинного поста
 - Пост для Telegram-канала
 - Скрипт для YouTube Shorts
 

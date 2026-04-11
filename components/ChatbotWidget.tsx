@@ -1,7 +1,6 @@
 "use client";
 
 import { useState, useRef, useEffect, useCallback } from "react";
-import { usePathname } from "next/navigation";
 import { motion, AnimatePresence } from "framer-motion";
 
 interface ChatMessage {
@@ -10,8 +9,6 @@ interface ChatMessage {
 }
 
 export default function ChatbotWidget() {
-  const pathname = usePathname();
-  const isBlogPost = pathname?.startsWith("/blog/") && pathname !== "/blog";
   const [open, setOpen] = useState(false);
   const [messages, setMessages] = useState<ChatMessage[]>([]);
   const [input, setInput] = useState("");
@@ -77,8 +74,6 @@ export default function ChatbotWidget() {
     },
     [send]
   );
-
-  if (isBlogPost) return null;
 
   return (
     <div className="fixed bottom-5 right-5 z-[500] flex flex-col items-end gap-3">
@@ -170,10 +165,10 @@ export default function ChatbotWidget() {
               )}
             </AnimatePresence>
 
-            {/* Input — spinning border like BlogChat */}
+            {/* Input with spinning border */}
             <div className="relative rounded-2xl p-[1.5px] overflow-hidden">
-              <div className="absolute inset-0 rounded-2xl blog-chat-border" />
-              <div className="absolute inset-0 rounded-2xl blog-chat-glow" />
+              <div className="absolute inset-0 rounded-2xl chat-input-border" />
+              <div className="absolute inset-0 rounded-2xl chat-input-glow" />
               <div
                 className="relative rounded-2xl"
                 style={{ background: "rgba(10, 6, 8, 0.95)", backdropFilter: "blur(20px)" }}

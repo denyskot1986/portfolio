@@ -243,7 +243,7 @@ pre.diagram {
   line-height: 1.4;
 }
 
-/* Blog chat animated border */
+/* Chat input animated border */
 @property --border-angle {
   syntax: "<angle>";
   initial-value: 0deg;
@@ -259,7 +259,7 @@ pre.diagram {
   50% { opacity: 1; }
 }
 
-.blog-chat-border {
+.chat-input-border {
   background: conic-gradient(
     from var(--border-angle),
     transparent 35%,
@@ -270,7 +270,7 @@ pre.diagram {
   animation: chat-border-spin 40s linear infinite;
 }
 
-.blog-chat-glow {
+.chat-input-glow {
   background: conic-gradient(
     from var(--border-angle),
     transparent 35%,

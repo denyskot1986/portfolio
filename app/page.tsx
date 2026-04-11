@@ -6,8 +6,6 @@ import { useInView } from "framer-motion";
 import Link from "next/link";
 import { i18n, langs, type Lang } from "../lib/i18n";
 import { getTranslatedProducts } from "../lib/products-data";
-import { blogPosts } from "../lib/blog-data";
-import { getBlogTranslation } from "../lib/blog-translations";
 import { useLang } from "../lib/lang-context";
 
 /* ═══════════════════════════════════════════════════════
@@ -20,7 +18,6 @@ import { useLang } from "../lib/lang-context";
 
 const navLinks = [
   { href: "#projects", label: "Projects" },
-  { href: "#blog", label: "Blog" },
 ];
 
 
@@ -71,117 +68,6 @@ function ScrollProgress() {
    ═══════════════════════════════════════════════════════ */
 
 
-
-/* ═══════════════════════════════════════════════════════
-   BLOG CARDS SECTION (5 articles)
-   ═══════════════════════════════════════════════════════ */
-
-function BlogCardsSection() {
-  const ref = useRef<HTMLDivElement>(null);
-  const inView = useInView(ref, { once: true });
-  const { lang } = useLang();
-  const t = i18n[lang].pages.blog;
-  const posts = blogPosts.slice(0, 5);
-
-  if (posts.length === 0) return null;
-
-  const feat = getBlogTranslation(posts[0].slug, lang);
-
-  return (
-    <section className="relative z-10 py-16 sm:py-20 px-6" ref={ref}>
-      <div className="max-w-5xl mx-auto">
-        <motion.div
-          initial={{ opacity: 0, y: 30 }}
-          animate={inView ? { opacity: 1, y: 0 } : {}}
-          transition={{ duration: 0.6 }}
-          className="text-center mb-12"
-        >
-          <p className="section-label-term">{t.label}</p>
-          <h2 className="text-2xl sm:text-3xl md:text-5xl font-bold mb-4 tracking-tight">
-            <span className="gradient-text">{t.title}</span>
-          </h2>
-          <p className="text-base" style={{ color: "var(--muted)" }}>{t.subtitle}</p>
-        </motion.div>
-
-        {/* Featured post (first) */}
-        <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          animate={inView ? { opacity: 1, y: 0 } : {}}
-          transition={{ duration: 0.5 }}
-          className="mb-4"
-        >
-          <Link href={`/blog/${posts[0].slug}`} className="block rounded-lg overflow-hidden transition-all group" style={{ border: "1px solid var(--glass-border)" }}>
-            {/* Terminal header */}
-            <div className="terminal-card-header">
-              <span className="term-dot term-dot-r" />
-              <span className="term-dot term-dot-y" />
-              <span className="term-dot term-dot-g" />
-              <span className="term-filename">{posts[0].slug}.md — {posts[0].readTime}</span>
-            </div>
-            <div className="p-6 sm:p-8" style={{ background: "var(--glass-bg)" }}>
-              <div className="flex items-center gap-3 mb-3">
-                <span className="term-tag term-tag-cat">{posts[0].category}</span>
-                <span className="text-[10px] font-mono" style={{ color: "rgba(240,224,255,0.2)" }}>{posts[0].date}</span>
-              </div>
-              <h3 className="text-lg font-semibold transition-colors mb-2 leading-tight" style={{ color: "rgba(240,224,255,0.75)" }}>
-                {feat?.title ?? posts[0].title}
-              </h3>
-              <p className="text-sm leading-relaxed line-clamp-2" style={{ color: "rgba(240,224,255,0.3)" }}>{feat?.excerpt ?? posts[0].excerpt}</p>
-              <span className="text-xs font-mono mt-3 inline-block transition-colors" style={{ color: "rgba(244,63,160,0.5)" }}>
-                {t.readMore} →
-              </span>
-            </div>
-          </Link>
-        </motion.div>
-
-        {/* Grid of 4 more posts */}
-        {posts.length > 1 && <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
-          {posts.slice(1).map((post, i) => {
-            const tr = getBlogTranslation(post.slug, lang);
-            return (
-            <motion.div
-              key={post.slug}
-              initial={{ opacity: 0, y: 20 }}
-              animate={inView ? { opacity: 1, y: 0 } : {}}
-              transition={{ delay: (i + 1) * 0.1, duration: 0.5 }}
-            >
-              <Link href={`/blog/${post.slug}`} className="block rounded-lg overflow-hidden transition-all group h-full" style={{ border: "1px solid var(--glass-border)" }}>
-                <div className="terminal-card-header">
-                  <span className="term-dot term-dot-r" />
-                  <span className="term-dot term-dot-y" />
-                  <span className="term-dot term-dot-g" />
-                  <span className="term-filename">{post.readTime}</span>
-                </div>
-                <div className="p-5" style={{ background: "var(--glass-bg)" }}>
-                  <span className="term-tag term-tag-cat">{post.category}</span>
-                  <h3 className="text-base font-semibold transition-colors mt-3 mb-2 leading-tight" style={{ color: "rgba(240,224,255,0.65)" }}>
-                    {tr?.title ?? post.title}
-                  </h3>
-                  <p className="text-[11px] leading-relaxed mb-3 line-clamp-3" style={{ color: "rgba(240,224,255,0.25)" }}>{tr?.excerpt ?? post.excerpt}</p>
-                  <div className="text-[10px] font-mono" style={{ color: "rgba(244,63,160,0.4)" }}>
-                    {post.date}
-                  </div>
-                </div>
-              </Link>
-            </motion.div>
-            );
-          })}
-        </div>}
-
-        <motion.div
-          initial={{ opacity: 0 }}
-          animate={inView ? { opacity: 1 } : {}}
-          transition={{ delay: 0.5 }}
-          className="text-center mt-8"
-        >
-          <Link href="/blog" className="btn-terminal-ghost text-sm">
-            {t.allArticles} →
-          </Link>
-        </motion.div>
-      </div>
-    </section>
-  );
-}
 
 /* ═══════════════════════════════════════════════════════
    CONTACT FORM SECTION
@@ -388,9 +274,6 @@ export default function Home() {
             <a href="#projects" className="btn-terminal">
               {t.cta.viewProducts}
             </a>
-            <a href="/blog" className="btn-terminal-ghost">
-              {lang === "RU" ? "Блог соло-разработчика" : lang === "UA" ? "Блог соло-розробника" : "Solo Developer Blog"} →
-            </a>
           </motion.div>
 
           {/* Language switcher */}
@@ -499,11 +382,6 @@ export default function Home() {
           </div>
 
         </div>
-      </section>
-
-      {/* ─── AI BLOG ─── */}
-      <section id="blog">
-        <BlogCardsSection />
       </section>
 
       <footer className="relative z-10 py-8 font-mono" style={{ borderTop: "1px solid var(--glass-border)" }}>
