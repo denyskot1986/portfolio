@@ -342,6 +342,78 @@ function BigFiveBar({ label, value, note }: { label: string; value: number; note
   );
 }
 
+function profileToMarkdown(p: Profile): string {
+  const bf = p.bigFive;
+  const bfn = p.bigFiveNotes || {};
+  const now = new Date();
+  const stamp = now.toISOString().slice(0, 10);
+
+  const lines: string[] = [];
+  lines.push(`# DISCOVER — Сканирование личности`);
+  lines.push(``);
+  lines.push(`_Сгенерировано SKYNET · ${stamp}_`);
+  lines.push(``);
+  lines.push(`## Профиль`);
+  lines.push(``);
+  lines.push(`**Holland-код:** \`${p.hollandCode}\``);
+  lines.push(``);
+  lines.push(p.hollandDescription);
+  lines.push(``);
+  lines.push(`## Big Five (OCEAN)`);
+  lines.push(``);
+  lines.push(`| Шкала | Значение | Комментарий |`);
+  lines.push(`|---|---|---|`);
+  lines.push(`| Openness | ${bf.openness}/100 | ${bfn.openness || "—"} |`);
+  lines.push(`| Conscientiousness | ${bf.conscientiousness}/100 | ${bfn.conscientiousness || "—"} |`);
+  lines.push(`| Extraversion | ${bf.extraversion}/100 | ${bfn.extraversion || "—"} |`);
+  lines.push(`| Agreeableness | ${bf.agreeableness}/100 | ${bfn.agreeableness || "—"} |`);
+  lines.push(`| Neuroticism | ${bf.neuroticism}/100 | ${bfn.neuroticism || "—"} |`);
+  lines.push(``);
+  lines.push(`## Ключевые сильные стороны`);
+  lines.push(``);
+  p.strengths.forEach((s, i) => {
+    lines.push(`### ${String(i + 1).padStart(2, "0")}. ${s.title}`);
+    lines.push(``);
+    lines.push(s.evidence);
+    lines.push(``);
+  });
+  lines.push(`## Рекомендованные направления`);
+  lines.push(``);
+  p.professions.forEach((pr) => {
+    lines.push(`- **${pr.match}% — ${pr.title}** — ${pr.note}`);
+  });
+  lines.push(``);
+  lines.push(`## План развития (3–6 месяцев)`);
+  lines.push(``);
+  p.developmentPlan.forEach((step, i) => {
+    lines.push(`${i + 1}. ${step}`);
+  });
+  lines.push(``);
+  lines.push(`## Итог`);
+  lines.push(``);
+  lines.push(p.summary);
+  lines.push(``);
+  lines.push(`---`);
+  lines.push(``);
+  lines.push(`_Методики: Holland Codes (RIASEC) + Big Five (OCEAN). Сгенерировано на finekot.ai/discover._`);
+  lines.push(``);
+  return lines.join("\n");
+}
+
+function downloadProfileMarkdown(profile: Profile) {
+  const md = profileToMarkdown(profile);
+  const blob = new Blob([md], { type: "text/markdown;charset=utf-8" });
+  const url = URL.createObjectURL(blob);
+  const a = document.createElement("a");
+  const stamp = new Date().toISOString().slice(0, 10);
+  a.href = url;
+  a.download = `finekot-discover-${profile.hollandCode || "profile"}-${stamp}.md`;
+  document.body.appendChild(a);
+  a.click();
+  document.body.removeChild(a);
+  setTimeout(() => URL.revokeObjectURL(url), 1000);
+}
+
 function ResultView({ profile, onRestart }: { profile: Profile; onRestart: () => void }) {
   return (
     <div style={{ display: "flex", flexDirection: "column", gap: 36 }}>
@@ -508,8 +580,21 @@ function ResultView({ profile, onRestart }: { profile: Profile; onRestart: () =>
         </div>
       </section>
 
-      {/* Restart */}
-      <div style={{ display: "flex", justifyContent: "center", paddingTop: 12 }}>
+      {/* Actions */}
+      <div
+        style={{
+          display: "flex",
+          flexDirection: "column",
+          gap: 10,
+          paddingTop: 12,
+        }}
+      >
+        <button
+          onClick={() => downloadProfileMarkdown(profile)}
+          className="term-submit"
+        >
+          $ СКАЧАТЬ ОТЧЁТ (.md) ↓
+        </button>
         <button onClick={onRestart} className="term-submit">
           $ ПРОЙТИ ЗАНОВО ↻
         </button>
