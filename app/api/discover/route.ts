@@ -9,6 +9,11 @@ import {
 // Ключ — только серверный, никогда не уходит в браузер.
 const OPENROUTER_API_KEY = process.env.OPENROUTER_API_KEY || "";
 
+// Gate — чтобы случайные люди не жгли OpenRouter-токены.
+// Этот файл серверный, в клиентский бандл не уходит.
+// Можно переопределить через env var DISCOVER_PASSWORD.
+const DISCOVER_PASSWORD = process.env.DISCOVER_PASSWORD || "minikota";
+
 const QUESTIONER_MODEL =
   process.env.DISCOVER_QUESTIONER_MODEL || "anthropic/claude-sonnet-4.5";
 const ANALYST_MODEL =
@@ -29,8 +34,9 @@ interface HistoryItem {
 }
 
 interface NextRequestBody {
-  action: "next" | "analyze";
+  action: "next" | "analyze" | "auth";
   history: HistoryItem[];
+  password?: string;
 }
 
 function formatHistoryForLLM(history: HistoryItem[]): string {
@@ -102,7 +108,20 @@ export async function POST(req: NextRequest) {
     }
 
     const body = (await req.json()) as NextRequestBody;
-    const { action, history } = body;
+    const { action, history, password } = body;
+
+    // Gate — проверка пароля на каждом запросе
+    if (!password || password !== DISCOVER_PASSWORD) {
+      return NextResponse.json(
+        { error: "Доступ запрещён. Неверный пароль." },
+        { status: 401 }
+      );
+    }
+
+    // auth — только проверка пароля без LLM-вызова
+    if (action === "auth") {
+      return NextResponse.json({ ok: true });
+    }
 
     if (!Array.isArray(history)) {
       return NextResponse.json(
