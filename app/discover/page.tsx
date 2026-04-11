@@ -41,6 +41,8 @@ const TERM_GREEN = "#00ff41";
 const TERM_AMBER = "#ffb000";
 const TERM_DIM = "rgba(0,255,65,0.4)";
 const TERM_BG = "#040208";
+// Яркий читаемый зелёный для описаний (evidence / notes / bigFive notes)
+const TERM_TEXT = "#a0ffb0";
 
 // ---------- Typewriter ----------
 
@@ -332,7 +334,7 @@ function BigFiveBar({ label, value, note }: { label: string; value: number; note
         />
       </div>
       {note && (
-        <div style={{ fontSize: 11, color: TERM_DIM, marginTop: 4, lineHeight: 1.5 }}>
+        <div style={{ fontSize: 12, color: TERM_TEXT, marginTop: 6, lineHeight: 1.55 }}>
           {note}
         </div>
       )}
@@ -407,7 +409,7 @@ function ResultView({ profile, onRestart }: { profile: Profile; onRestart: () =>
               >
                 {String(i + 1).padStart(2, "0")}. {s.title}
               </div>
-              <div style={{ fontSize: 13, color: "#c0d0c0", lineHeight: 1.55 }}>
+              <div style={{ fontSize: 13, color: TERM_TEXT, lineHeight: 1.55 }}>
                 {s.evidence}
               </div>
             </div>
@@ -448,7 +450,7 @@ function ResultView({ profile, onRestart }: { profile: Profile; onRestart: () =>
                 <div style={{ fontSize: 14, color: TERM_GREEN, fontWeight: 600 }}>
                   {p.title}
                 </div>
-                <div style={{ fontSize: 12, color: "#a0b0a0", marginTop: 2, lineHeight: 1.5 }}>
+                <div style={{ fontSize: 12, color: TERM_TEXT, marginTop: 2, lineHeight: 1.5 }}>
                   {p.note}
                 </div>
               </div>
