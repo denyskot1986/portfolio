@@ -1,5 +1,15 @@
 import type { Lang } from "./i18n";
 
+/** Per-agent Telegram bots that power the trial/subscription flow. Each entry maps
+ *  a product id to the bot username that handles `?start=trial` for that agent.
+ *  When an id is absent from this map, the site falls back to the generic sales
+ *  bot (`product.contact`). Keep in sync with /opt/finekot-agents/.env on VPS #3. */
+export const TRIAL_BOT_BY_ID: Record<string, string> = {
+  iborya: "https://t.me/iborya_by_finekot_trial_bot",
+  iada: "https://t.me/ada_by_finekot_trial_bot",
+  // ilucy / orban / idoctor / ileva / ihogol — Commander is creating these in @BotFather.
+};
+
 export interface ProductData {
   id: string;
   name: string;

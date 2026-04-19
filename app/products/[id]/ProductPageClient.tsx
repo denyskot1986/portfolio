@@ -3,7 +3,7 @@
 import { useParams } from "next/navigation";
 import Link from "next/link";
 import { motion } from "framer-motion";
-import { productsData, getTranslatedProduct } from "@/lib/products-data";
+import { productsData, getTranslatedProduct, TRIAL_BOT_BY_ID } from "@/lib/products-data";
 import DemoChat from "@/components/DemoChat";
 import ProductChat from "@/components/ProductChat";
 import { getDemoChat } from "@/lib/demo-chats";
@@ -11,8 +11,15 @@ import { i18n } from "@/lib/i18n";
 import { useLang } from "@/lib/lang-context";
 import LangSwitcher from "@/components/LangSwitcher";
 
-/** Deep-link to the sales bot, preselecting the product + intent (trial vs buy). */
+/** Build the CTA URL for an agent action.
+ *  - `trial`: if a dedicated agent bot exists, link straight into it with `?start=trial`.
+ *    Otherwise fall back to the sales bot with `?start=trial_<id>` so it can route.
+ *  - `buy` / `order`: always the sales bot, preselecting the product. */
 function botDeepLink(contact: string, id: string, intent: "trial" | "buy" | "order"): string {
+  if (intent === "trial") {
+    const agentBot = TRIAL_BOT_BY_ID[id];
+    if (agentBot) return `${agentBot}?start=trial`;
+  }
   const sep = contact.includes("?") ? "&" : "?";
   return `${contact}${sep}start=${intent}_${id}`;
 }
