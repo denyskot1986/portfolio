@@ -1,20 +1,26 @@
 @import "tailwindcss";
 
+/* ═══════════════════════════════════════════════════════
+   VARIANT 1 — GREEN TERMINAL (personality-test style)
+   Extends /discover aesthetic to the whole site:
+   phosphor-green CRT, amber highlights, scan progress UX
+   ═══════════════════════════════════════════════════════ */
+
 :root {
   --bg: #040208;
-  --bg2: #07040d;
-  --fg: #f0e0ff;
-  --accent: #f43fa0;
-  --accent2: #bf5af2;
-  --cyan: #30d158;
-  --muted: #6a5580;
-  --border: #1a0a22;
-  --border-accent: rgba(244, 63, 160, 0.15);
-  --border-accent-hover: rgba(244, 63, 160, 0.4);
-  --glass-bg: rgba(244, 63, 160, 0.02);
-  --glass-hover: rgba(244, 63, 160, 0.04);
-  --glass-border: rgba(244, 63, 160, 0.15);
-  --glass-border-hover: rgba(244, 63, 160, 0.4);
+  --bg2: #06030c;
+  --fg: #d9ffe0;
+  --accent: #00ff41;
+  --accent2: #ffb000;
+  --cyan: #00ff41;
+  --muted: #4d7a5e;
+  --border: #0a1a10;
+  --border-accent: rgba(0, 255, 65, 0.18);
+  --border-accent-hover: rgba(0, 255, 65, 0.45);
+  --glass-bg: rgba(0, 255, 65, 0.025);
+  --glass-hover: rgba(0, 255, 65, 0.05);
+  --glass-border: rgba(0, 255, 65, 0.18);
+  --glass-border-hover: rgba(0, 255, 65, 0.45);
 }
 
 body {
@@ -27,7 +33,7 @@ body {
 
 html { scroll-behavior: smooth; overflow-x: hidden; }
 
-/* Scanlines — subtle terminal effect */
+/* CRT scanlines — stronger than baseline */
 body::after {
   content: '';
   position: fixed;
@@ -36,50 +42,70 @@ body::after {
     0deg,
     transparent,
     transparent 2px,
-    rgba(0, 0, 0, 0.022) 2px,
-    rgba(0, 0, 0, 0.022) 4px
+    rgba(0, 0, 0, 0.08) 2px,
+    rgba(0, 0, 0, 0.08) 4px
   );
   pointer-events: none;
   z-index: 9999;
+  mix-blend-mode: multiply;
+}
+
+/* CRT flicker */
+body::before {
+  content: '';
+  position: fixed;
+  inset: 0;
+  background: radial-gradient(ellipse at center, transparent 55%, rgba(0, 0, 0, 0.35) 100%);
+  pointer-events: none;
+  z-index: 9998;
+  animation: flicker 8s infinite;
+}
+
+@keyframes flicker {
+  0%, 92%, 100% { opacity: 1; }
+  93% { opacity: 0.92; }
+  94% { opacity: 1; }
+  95% { opacity: 0.96; }
+  96% { opacity: 1; }
 }
 
 ::selection {
-  background: rgba(244, 63, 160, 0.25);
-  color: var(--accent);
+  background: rgba(0, 255, 65, 0.3);
+  color: #040208;
 }
 
-/* Gradient text */
+/* Headline "gradient" — green → amber phosphor */
 .gradient-text {
-  background: linear-gradient(135deg, #f43fa0, #e879a8, #bf5af2, #fb923c);
+  background: linear-gradient(135deg, #00ff41, #a0ff60, #ffb000);
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
   background-clip: text;
+  text-shadow: 0 0 28px rgba(0, 255, 65, 0.35);
 }
 
-/* Terminal card (replaces glass) */
+/* Terminal card (glass) */
 .glass {
   background: var(--glass-bg);
   border: 1px solid var(--glass-border);
-  /* No blur — terminal aesthetic */
 }
 
 .glass:hover {
   background: var(--glass-hover);
   border-color: var(--glass-border-hover);
-  box-shadow: 0 0 24px rgba(244, 63, 160, 0.08);
+  box-shadow: 0 0 28px rgba(0, 255, 65, 0.14);
 }
 
-/* Terminal card header — colored dots + filename */
+/* Terminal card header */
 .terminal-card-header {
-  background: rgba(244, 63, 160, 0.04);
+  background: rgba(0, 255, 65, 0.05);
   border-bottom: 1px solid var(--glass-border);
   padding: 10px 16px;
   display: flex;
   align-items: center;
   gap: 8px;
   font-size: 11px;
-  color: var(--muted);
-  letter-spacing: 0.04em;
+  color: var(--accent);
+  letter-spacing: 0.06em;
 }
 
 .term-dot {
@@ -89,21 +115,22 @@ body::after {
   display: inline-block;
   flex-shrink: 0;
 }
-.term-dot-r { background: var(--accent); box-shadow: 0 0 6px var(--accent); }
-.term-dot-y { background: #f59e0b; }
-.term-dot-g { background: var(--cyan); box-shadow: 0 0 6px var(--cyan); }
+.term-dot-r { background: #ff4040; box-shadow: 0 0 6px #ff4040; }
+.term-dot-y { background: var(--accent2); box-shadow: 0 0 6px var(--accent2); }
+.term-dot-g { background: var(--accent); box-shadow: 0 0 8px var(--accent); }
 
 .term-filename {
   font-family: inherit;
   font-size: 11px;
-  color: var(--muted);
+  color: var(--accent);
+  opacity: 0.75;
   flex: 1;
 }
 
-/* Section label with // prefix */
+/* Section label — scanner style */
 .section-label-term {
   font-size: 11px;
-  letter-spacing: 0.12em;
+  letter-spacing: 0.18em;
   text-transform: uppercase;
   color: var(--accent);
   display: inline-flex;
@@ -114,11 +141,11 @@ body::after {
 
 .section-label-term::before {
   content: '//';
-  opacity: 0.45;
+  opacity: 0.55;
   color: var(--accent2);
 }
 
-/* Terminal button — primary (border only, hover fill) */
+/* Primary button — neon terminal */
 .btn-terminal {
   display: inline-flex;
   align-items: center;
@@ -130,50 +157,52 @@ body::after {
   font-size: 14px;
   font-weight: 600;
   padding: 12px 28px;
-  border-radius: 6px;
+  border-radius: 4px;
   text-decoration: none;
-  letter-spacing: 0.02em;
+  letter-spacing: 0.04em;
   transition: all 0.2s;
   cursor: pointer;
+  text-shadow: 0 0 6px rgba(0, 255, 65, 0.6);
+  box-shadow: inset 0 0 14px rgba(0, 255, 65, 0.05), 0 0 12px rgba(0, 255, 65, 0.15);
 }
 
 .btn-terminal::before {
   content: '$';
-  opacity: 0.5;
+  opacity: 0.6;
   font-size: 12px;
 }
 
 .btn-terminal:hover {
   background: var(--accent);
   color: var(--bg);
-  box-shadow: 0 0 30px rgba(244, 63, 160, 0.45);
+  text-shadow: none;
+  box-shadow: 0 0 36px rgba(0, 255, 65, 0.55);
   transform: translateY(-1px);
 }
 
-/* Terminal button — secondary */
 .btn-terminal-ghost {
   display: inline-flex;
   align-items: center;
   gap: 8px;
   background: transparent;
-  border: 1px solid rgba(244, 63, 160, 0.2);
+  border: 1px solid rgba(0, 255, 65, 0.25);
   color: var(--muted);
   font-family: inherit;
   font-size: 14px;
   padding: 12px 24px;
-  border-radius: 6px;
+  border-radius: 4px;
   text-decoration: none;
   transition: all 0.2s;
   cursor: pointer;
 }
 
 .btn-terminal-ghost:hover {
-  border-color: rgba(244, 63, 160, 0.5);
-  color: var(--fg);
-  background: rgba(244, 63, 160, 0.04);
+  border-color: rgba(0, 255, 65, 0.6);
+  color: var(--accent);
+  background: rgba(0, 255, 65, 0.05);
 }
 
-/* Terminal buy button — solid neon */
+/* Buy button */
 .btn-buy {
   display: inline-flex;
   align-items: center;
@@ -184,23 +213,23 @@ body::after {
   font-size: 11px;
   font-weight: 700;
   padding: 8px 18px;
-  border-radius: 6px;
+  border-radius: 4px;
   text-decoration: none;
-  letter-spacing: 0.06em;
+  letter-spacing: 0.08em;
   text-transform: uppercase;
   transition: all 0.2s;
   cursor: pointer;
   border: none;
-  box-shadow: 0 0 20px rgba(244, 63, 160, 0.3);
+  box-shadow: 0 0 24px rgba(0, 255, 65, 0.45);
   white-space: nowrap;
 }
 
 .btn-buy:hover {
-  box-shadow: 0 0 40px rgba(244, 63, 160, 0.6);
+  box-shadow: 0 0 44px rgba(0, 255, 65, 0.75);
   transform: translateY(-1px);
 }
 
-/* Animated blobs — kept but dimmer for subtle bg effect */
+/* Background blobs — tinted green instead of pink */
 @keyframes blob {
   0%, 100% { transform: translate(0, 0) scale(1); }
   33% { transform: translate(30px, -50px) scale(1.1); }
@@ -209,41 +238,43 @@ body::after {
 
 .blob {
   animation: blob 10s infinite ease-in-out;
-  filter: blur(120px);
-  opacity: 0.12;
+  filter: blur(140px);
+  opacity: 0.1;
+  background: var(--accent) !important;
 }
-.blob-2 { animation-delay: 3s; }
+.blob-2 { animation-delay: 3s; background: var(--accent2) !important; opacity: 0.08; }
 .blob-3 { animation-delay: 6s; }
 
-/* Terminal cursor */
+/* Cursor */
 @keyframes blink {
   0%, 100% { opacity: 1; }
   50% { opacity: 0; }
 }
-.cursor-blink { animation: blink 1s step-end infinite; }
+.cursor-blink { animation: blink 1s step-end infinite; color: var(--accent); }
 
-/* Grid bg — tighter, more terminal */
+/* Grid bg — greener */
 .dot-grid {
   background-image:
-    linear-gradient(rgba(244, 63, 160, 0.04) 1px, transparent 1px),
-    linear-gradient(90deg, rgba(244, 63, 160, 0.04) 1px, transparent 1px);
-  background-size: 32px 32px;
+    linear-gradient(rgba(0, 255, 65, 0.06) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(0, 255, 65, 0.06) 1px, transparent 1px);
+  background-size: 28px 28px;
 }
 
 /* Scrollbar */
 ::-webkit-scrollbar { width: 4px; }
 ::-webkit-scrollbar-track { background: var(--bg); }
-::-webkit-scrollbar-thumb { background: rgba(244, 63, 160, 0.2); border-radius: 2px; }
+::-webkit-scrollbar-thumb { background: rgba(0, 255, 65, 0.25); border-radius: 2px; }
 ::-webkit-scrollbar-thumb:hover { background: var(--accent); }
 
-/* ASCII / pre diagrams */
 pre.diagram {
   font-family: inherit;
   letter-spacing: 0;
   line-height: 1.4;
+  color: rgba(0, 255, 65, 0.65);
+  text-shadow: 0 0 6px rgba(0, 255, 65, 0.35);
 }
 
-/* Chat input animated border */
+/* Chat input border animations */
 @property --border-angle {
   syntax: "<angle>";
   initial-value: 0deg;
@@ -263,8 +294,8 @@ pre.diagram {
   background: conic-gradient(
     from var(--border-angle),
     transparent 35%,
-    rgba(244, 63, 160, 0.4) 48%,
-    rgba(191, 90, 242, 0.4) 52%,
+    rgba(0, 255, 65, 0.5) 48%,
+    rgba(255, 176, 0, 0.5) 52%,
     transparent 65%
   );
   animation: chat-border-spin 40s linear infinite;
@@ -274,64 +305,110 @@ pre.diagram {
   background: conic-gradient(
     from var(--border-angle),
     transparent 35%,
-    rgba(244, 63, 160, 0.15) 48%,
-    rgba(191, 90, 242, 0.15) 52%,
+    rgba(0, 255, 65, 0.18) 48%,
+    rgba(255, 176, 0, 0.18) 52%,
     transparent 65%
   );
   animation: chat-border-spin 4s linear infinite, chat-glow-pulse 3s ease-in-out infinite;
   filter: blur(10px);
 }
 
-/* Scroll progress bar */
+/* Scroll progress bar — override gradient colors */
 .scroll-progress-bar {
   background: linear-gradient(90deg, var(--accent), var(--accent2));
 }
 
-/* Terminal tag / chip */
+/* Tags */
 .term-tag {
   font-size: 10px;
   font-weight: 600;
   padding: 3px 10px;
-  border-radius: 4px;
+  border-radius: 3px;
   border: 1px solid;
-  letter-spacing: 0.04em;
+  letter-spacing: 0.06em;
   font-family: inherit;
 }
 
 .term-tag-live {
-  background: rgba(48, 209, 88, 0.08);
-  border-color: rgba(48, 209, 88, 0.25);
-  color: var(--cyan);
+  background: rgba(0, 255, 65, 0.08);
+  border-color: rgba(0, 255, 65, 0.35);
+  color: var(--accent);
+  text-shadow: 0 0 6px rgba(0, 255, 65, 0.5);
 }
 
 .term-tag-id {
-  background: rgba(244, 63, 160, 0.06);
-  border-color: rgba(244, 63, 160, 0.2);
-  color: var(--accent);
-}
-
-.term-tag-cat {
-  background: rgba(191, 90, 242, 0.06);
-  border-color: rgba(191, 90, 242, 0.2);
+  background: rgba(255, 176, 0, 0.06);
+  border-color: rgba(255, 176, 0, 0.3);
   color: var(--accent2);
 }
 
-/* Input fields — terminal style */
+.term-tag-cat {
+  background: rgba(255, 176, 0, 0.06);
+  border-color: rgba(255, 176, 0, 0.3);
+  color: var(--accent2);
+}
+
+/* Inputs */
 input.term-input {
-  background: rgba(244, 63, 160, 0.03);
-  border: 1px solid rgba(244, 63, 160, 0.15);
+  background: rgba(0, 255, 65, 0.03);
+  border: 1px solid rgba(0, 255, 65, 0.22);
   color: var(--fg);
   font-family: inherit;
-  border-radius: 6px;
+  border-radius: 4px;
 }
 
 input.term-input:focus {
   outline: none;
-  border-color: rgba(244, 63, 160, 0.45);
-  box-shadow: 0 0 0 2px rgba(244, 63, 160, 0.08);
+  border-color: rgba(0, 255, 65, 0.6);
+  box-shadow: 0 0 0 2px rgba(0, 255, 65, 0.12);
 }
 
 input.term-input::placeholder {
   color: var(--muted);
   opacity: 0.6;
+}
+
+/* ───────────────────────────────────────────────────
+   TAILWIND COLOR OVERRIDES — re-skin hardcoded pink-*
+   classes (used on product/checkout/dashboard pages)
+   ─────────────────────────────────────────────────── */
+
+/* Text */
+[class*="text-pink-100"] { color: #d9ffe0 !important; }
+[class*="text-pink-100\\/80"], [class*="text-pink-100/80"] { color: rgba(217, 255, 224, 0.8) !important; }
+[class*="text-pink-100\\/70"], [class*="text-pink-100/70"] { color: rgba(217, 255, 224, 0.7) !important; }
+[class*="text-pink-100\\/60"], [class*="text-pink-100/60"] { color: rgba(217, 255, 224, 0.6) !important; }
+[class*="text-pink-100\\/50"], [class*="text-pink-100/50"] { color: rgba(217, 255, 224, 0.5) !important; }
+[class*="text-pink-100\\/40"], [class*="text-pink-100/40"] { color: rgba(217, 255, 224, 0.45) !important; }
+[class*="text-pink-100\\/30"], [class*="text-pink-100/30"] { color: rgba(217, 255, 224, 0.35) !important; }
+[class*="text-pink-100\\/20"], [class*="text-pink-100/20"] { color: rgba(217, 255, 224, 0.25) !important; }
+
+[class*="text-pink-300"] { color: var(--accent) !important; }
+[class*="text-pink-400"] { color: var(--accent) !important; }
+[class*="text-pink-500"] { color: var(--accent) !important; }
+
+/* Borders */
+[class*="border-pink-400"] { border-color: rgba(0, 255, 65, 0.25) !important; }
+[class*="border-pink-500"] { border-color: rgba(0, 255, 65, 0.3) !important; }
+
+/* Backgrounds */
+[class*="bg-pink-400"] { background-color: rgba(0, 255, 65, 0.1) !important; }
+[class*="bg-pink-500"] { background-color: rgba(0, 255, 65, 0.12) !important; }
+[class*="bg-pink-600"] { background-color: rgba(0, 255, 65, 0.18) !important; }
+[class*="bg-purple-600"] { background-color: rgba(255, 176, 0, 0.15) !important; }
+
+/* CTA gradient buttons with from-pink-600 to-purple-600 */
+.bg-gradient-to-r.from-pink-600,
+[class*="from-pink-600"][class*="to-purple-600"] {
+  background: linear-gradient(90deg, var(--accent), var(--accent2)) !important;
+  color: var(--bg) !important;
+  text-shadow: none !important;
+}
+
+/* Shadow overrides */
+[class*="shadow-\\[0_0_30px_rgba\\(244\\,114\\,182"],
+[class*="shadow-[0_0_30px_rgba(244,114,182"],
+[class*="shadow-[0_0_40px_rgba(244,114,182"],
+[class*="shadow-[0_0_20px_rgba(244,114,182"] {
+  box-shadow: 0 0 32px rgba(0, 255, 65, 0.25) !important;
 }
