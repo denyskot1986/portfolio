@@ -269,6 +269,27 @@ export default function Home() {
             </p>
           </div>
 
+          {/* Lineup inventory — terminal badges */}
+          <motion.div
+            initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.6, delay: 0.45 }}
+            className="flex flex-wrap items-center justify-center gap-x-4 gap-y-2 mb-6 font-mono text-[10px] sm:text-xs uppercase tracking-[0.2em]"
+            style={{ color: "var(--muted)" }}
+          >
+            <span>
+              <span style={{ color: "var(--accent)" }}>07</span>
+              <span className="ml-1">{lang === "RU" ? "агентов" : lang === "UA" ? "агентів" : "agents"}</span>
+              <span className="mx-1 opacity-40">·</span>
+              <span>{lang === "RU" ? "подписка" : lang === "UA" ? "підписка" : "subscription"}</span>
+            </span>
+            <span className="opacity-30">+</span>
+            <span>
+              <span style={{ color: "var(--accent2)" }}>01</span>
+              <span className="ml-1">{lang === "RU" ? "система" : lang === "UA" ? "система" : "system"}</span>
+              <span className="mx-1 opacity-40">·</span>
+              <span>{lang === "RU" ? "код твой" : lang === "UA" ? "код твій" : "own the code"}</span>
+            </span>
+          </motion.div>
+
           <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.8, delay: 0.6 }}
             className="flex flex-col sm:flex-row gap-3 sm:gap-4 justify-center">
             <a href="#projects" className="btn-terminal">
