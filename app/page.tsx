@@ -314,111 +314,156 @@ export default function Home() {
 
 
       {/* ─── PRODUCTS ─── */}
-      <section id="projects" className="relative z-10 py-20 sm:py-28 px-6">
-        <div className="max-w-6xl mx-auto">
-          <motion.div {...fade}>
-            <p className="section-label-term">{t.projectsSection.label}</p>
-            <h2 className="text-2xl sm:text-3xl md:text-5xl font-bold mb-3 tracking-tight"><span className="gradient-text">{t.projectsSection.title}</span></h2>
-          </motion.div>
+      {(() => {
+        const allProducts = getTranslatedProducts(lang);
+        const agents = allProducts.filter((p) => p.pricing.subscription);
+        const systems = allProducts.filter((p) => !p.pricing.subscription);
 
-          {/* Product grid */}
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 mt-8">
-            <AnimatePresence mode="popLayout">
-              {getTranslatedProducts(lang).map((p, i) => (
-                <motion.div
-                  key={p.id}
-                  layout
-                  initial={{ opacity: 0, scale: 0.95 }}
-                  animate={{ opacity: 1, scale: 1 }}
-                  exit={{ opacity: 0, scale: 0.95 }}
-                  transition={{ delay: i * 0.04, duration: 0.3 }}
-                  className="rounded-lg overflow-hidden group transition-all"
-                  style={{ border: "1px solid var(--glass-border)" }}
+        const subLabels = {
+          EN: { agents: "// agents — subscription", systems: "// systems — one-time purchase" },
+          RU: { agents: "// агенты — по подписке", systems: "// системы — разовая покупка" },
+          UA: { agents: "// агенти — за підпискою", systems: "// системи — разова покупка" },
+        }[lang];
+
+        const renderCard = (p: (typeof allProducts)[number], i: number) => (
+          <motion.div
+            key={p.id}
+            layout
+            initial={{ opacity: 0, scale: 0.95 }}
+            animate={{ opacity: 1, scale: 1 }}
+            exit={{ opacity: 0, scale: 0.95 }}
+            transition={{ delay: i * 0.04, duration: 0.3 }}
+            className="rounded-lg overflow-hidden group transition-all"
+            style={{ border: "1px solid var(--glass-border)" }}
+          >
+            {/* Terminal window header */}
+            <div className="terminal-card-header group-hover:border-b-[var(--glass-border-hover)]">
+              <span className="term-dot term-dot-r" />
+              <span className="term-dot term-dot-y" />
+              <span className="term-dot term-dot-g" />
+              <span className="term-filename">
+                {p.id}{p.pricing.subscription ? ".agent" : ".py"}
+              </span>
+              {p.available && (
+                <span
+                  className="term-tag term-tag-live ml-auto"
+                  style={p.pricing.subscription ? { background: "rgba(34, 211, 238, 0.12)", color: "var(--cyan)", borderColor: "rgba(34, 211, 238, 0.3)" } : undefined}
                 >
-                  {/* Terminal window header */}
-                  <div className="terminal-card-header group-hover:border-b-[var(--glass-border-hover)]">
-                    <span className="term-dot term-dot-r" />
-                    <span className="term-dot term-dot-y" />
-                    <span className="term-dot term-dot-g" />
-                    <span className="term-filename">
-                      {p.id}{p.pricing.subscription ? ".agent" : ".py"}
+                  {p.pricing.subscription
+                    ? (lang === "RU" ? "ПОДПИСКА" : lang === "UA" ? "ПІДПИСКА" : "SUBSCRIPTION")
+                    : t.projectUI.live}
+                </span>
+              )}
+            </div>
+
+            <div className="p-5 sm:p-6" style={{ background: "var(--glass-bg)" }}>
+              <div className="flex items-start gap-3 mb-2">
+                {p.avatarEmoji && (
+                  <div
+                    className="shrink-0 w-12 h-12 rounded-lg flex items-center justify-center text-2xl"
+                    style={{ background: "rgba(244,63,160,0.08)", border: "1px solid var(--glass-border)", boxShadow: "0 0 20px rgba(244,63,160,0.15)" }}
+                  >
+                    {p.avatarEmoji}
+                  </div>
+                )}
+                <div className="min-w-0">
+                  <h3 className="text-lg font-bold transition-colors truncate" style={{ color: "rgba(240,224,255,0.8)" }}>{p.name}</h3>
+                  <p className="text-xs font-mono mt-0.5" style={{ color: "var(--accent)", opacity: 0.7 }}>{p.tagline}</p>
+                </div>
+              </div>
+
+              <p className="text-xs leading-relaxed mb-4 line-clamp-2" style={{ color: "rgba(240,224,255,0.3)" }}>{p.description}</p>
+
+              {/* Category tag */}
+              <div className="mb-4">
+                <span className="term-tag term-tag-cat">{p.category}</span>
+              </div>
+
+              {/* Price + Details CTA */}
+              <div className="flex items-end justify-between gap-2">
+                <div>
+                  <span className="text-base font-bold font-mono" style={{ color: "var(--accent)" }}>
+                    ${p.pricing.subscription ? p.pricing.subscription.monthly : p.pricing.code}
+                  </span>
+                  {p.pricing.subscription ? (
+                    <span className="text-[10px] font-mono ml-1" style={{ color: "var(--accent)", opacity: 0.6 }}>
+                      /{lang === "RU" ? "мес" : lang === "UA" ? "міс" : "mo"}
                     </span>
-                    {p.available && (
-                      <span
-                        className="term-tag term-tag-live ml-auto"
-                        style={p.pricing.subscription ? { background: "rgba(34, 211, 238, 0.12)", color: "var(--cyan)", borderColor: "rgba(34, 211, 238, 0.3)" } : undefined}
-                      >
-                        {p.pricing.subscription
-                          ? (lang === "RU" ? "ПОДПИСКА" : lang === "UA" ? "ПІДПИСКА" : "SUBSCRIPTION")
-                          : t.projectUI.live}
-                      </span>
-                    )}
+                  ) : null}
+                  {p.pricing.setup && (
+                    <p className="text-[9px] font-mono mt-0.5" style={{ color: "var(--cyan)", opacity: 0.6 }}>
+                      {lang === "RU" ? "от" : lang === "UA" ? "від" : "from"} · {lang === "RU" ? "интеграция" : lang === "UA" ? "інтеграція" : "setup"} ${p.pricing.setup}
+                    </p>
+                  )}
+                  {p.pricing.subscription && (
+                    <p className="text-[9px] font-mono mt-0.5" style={{ color: "var(--cyan)", opacity: 0.6 }}>
+                      {lang === "RU"
+                        ? `${p.pricing.subscription.trialDays} дней бесплатно`
+                        : lang === "UA"
+                          ? `${p.pricing.subscription.trialDays} днів безкоштовно`
+                          : `${p.pricing.subscription.trialDays}-day free trial`}
+                    </p>
+                  )}
+                </div>
+                <Link href={`/products/${p.id}`} className="btn-buy">
+                  ./details →
+                </Link>
+              </div>
+            </div>
+          </motion.div>
+        );
+
+        return (
+          <section id="projects" className="relative z-10 py-20 sm:py-28 px-6">
+            <div className="max-w-6xl mx-auto">
+              <motion.div {...fade}>
+                <p className="section-label-term">{t.projectsSection.label}</p>
+                <h2 className="text-2xl sm:text-3xl md:text-5xl font-bold mb-3 tracking-tight"><span className="gradient-text">{t.projectsSection.title}</span></h2>
+              </motion.div>
+
+              {/* ─── Agents (subscription) ─── */}
+              {agents.length > 0 && (
+                <div className="mt-12">
+                  <motion.div {...fade} className="mb-5 flex items-center gap-3">
+                    <span className="font-mono text-xs uppercase tracking-[0.2em]" style={{ color: "var(--accent)" }}>
+                      {subLabels.agents}
+                    </span>
+                    <span className="flex-1 h-px" style={{ background: "linear-gradient(90deg, var(--glass-border), transparent)" }} />
+                    <span className="font-mono text-[10px]" style={{ color: "var(--muted)" }}>
+                      {agents.length.toString().padStart(2, "0")}
+                    </span>
+                  </motion.div>
+                  <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+                    <AnimatePresence mode="popLayout">
+                      {agents.map(renderCard)}
+                    </AnimatePresence>
                   </div>
+                </div>
+              )}
 
-                  <div className="p-5 sm:p-6" style={{ background: "var(--glass-bg)" }}>
-                    <div className="flex items-start gap-3 mb-2">
-                      {p.avatarEmoji && (
-                        <div
-                          className="shrink-0 w-12 h-12 rounded-lg flex items-center justify-center text-2xl"
-                          style={{ background: "rgba(244,63,160,0.08)", border: "1px solid var(--glass-border)", boxShadow: "0 0 20px rgba(244,63,160,0.15)" }}
-                        >
-                          {p.avatarEmoji}
-                        </div>
-                      )}
-                      <div className="min-w-0">
-                        <h3 className="text-lg font-bold transition-colors truncate" style={{ color: "rgba(240,224,255,0.8)" }}>{p.name}</h3>
-                        <p className="text-xs font-mono mt-0.5" style={{ color: "var(--accent)", opacity: 0.7 }}>{p.tagline}</p>
-                      </div>
-                    </div>
-
-                    <p className="text-xs leading-relaxed mb-4 line-clamp-2" style={{ color: "rgba(240,224,255,0.3)" }}>{p.description}</p>
-
-                    {/* Category tag */}
-                    <div className="mb-4">
-                      <span className="term-tag term-tag-cat">{p.category}</span>
-                    </div>
-
-                    {/* Price + Details CTA */}
-                    <div className="flex items-end justify-between gap-2">
-                      <div>
-                        <span className="text-base font-bold font-mono" style={{ color: "var(--accent)" }}>
-                          ${p.pricing.subscription ? p.pricing.subscription.monthly : p.pricing.code}
-                        </span>
-                        {p.pricing.subscription ? (
-                          <span className="text-[10px] font-mono ml-1" style={{ color: "var(--accent)", opacity: 0.6 }}>
-                            /{lang === "RU" ? "мес" : lang === "UA" ? "міс" : "mo"}
-                          </span>
-                        ) : null}
-                        {p.pricing.setup && (
-                          <p className="text-[9px] font-mono mt-0.5" style={{ color: "var(--cyan)", opacity: 0.6 }}>
-                            {lang === "RU" ? "от" : lang === "UA" ? "від" : "from"} · {lang === "RU" ? "интеграция" : lang === "UA" ? "інтеграція" : "setup"} ${p.pricing.setup}
-                          </p>
-                        )}
-                        {p.pricing.subscription && (
-                          <p className="text-[9px] font-mono mt-0.5" style={{ color: "var(--cyan)", opacity: 0.6 }}>
-                            {lang === "RU"
-                              ? `${p.pricing.subscription.trialDays} дней бесплатно`
-                              : lang === "UA"
-                                ? `${p.pricing.subscription.trialDays} днів безкоштовно`
-                                : `${p.pricing.subscription.trialDays}-day free trial`}
-                          </p>
-                        )}
-                      </div>
-                      <Link
-                        href={`/products/${p.id}`}
-                        className="btn-buy"
-                      >
-                        ./details →
-                      </Link>
-                    </div>
+              {/* ─── Systems (one-time) ─── */}
+              {systems.length > 0 && (
+                <div className="mt-16">
+                  <motion.div {...fade} className="mb-5 flex items-center gap-3">
+                    <span className="font-mono text-xs uppercase tracking-[0.2em]" style={{ color: "var(--accent2)" }}>
+                      {subLabels.systems}
+                    </span>
+                    <span className="flex-1 h-px" style={{ background: "linear-gradient(90deg, var(--glass-border), transparent)" }} />
+                    <span className="font-mono text-[10px]" style={{ color: "var(--muted)" }}>
+                      {systems.length.toString().padStart(2, "0")}
+                    </span>
+                  </motion.div>
+                  <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+                    <AnimatePresence mode="popLayout">
+                      {systems.map(renderCard)}
+                    </AnimatePresence>
                   </div>
-                </motion.div>
-              ))}
-            </AnimatePresence>
-          </div>
-
-        </div>
-      </section>
+                </div>
+              )}
+            </div>
+          </section>
+        );
+      })()}
 
       <footer className="relative z-10 py-8 font-mono" style={{ borderTop: "1px solid var(--glass-border)" }}>
         <div className="max-w-5xl mx-auto px-6 flex flex-col items-center gap-4">
