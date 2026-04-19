@@ -414,6 +414,134 @@ function downloadProfileMarkdown(profile: Profile) {
   setTimeout(() => URL.revokeObjectURL(url), 1000);
 }
 
+function TelegramDelivery({ profile }: { profile: Profile }) {
+  const [state, setState] = useState<"loading" | "ready" | "error">("loading");
+  const [token, setToken] = useState<string>("");
+  const [botUrl, setBotUrl] = useState<string>("");
+  const [copied, setCopied] = useState(false);
+  const [errorMsg, setErrorMsg] = useState<string>("");
+
+  useEffect(() => {
+    let cancelled = false;
+    const markdown = profileToMarkdown(profile);
+    (async () => {
+      try {
+        const res = await fetch("/api/discover/stash", {
+          method: "POST",
+          headers: { "content-type": "application/json" },
+          body: JSON.stringify({ markdown, hollandCode: profile.hollandCode }),
+        });
+        const data = await res.json();
+        if (cancelled) return;
+        if (!res.ok) {
+          setErrorMsg(data.error || "Не удалось подготовить код");
+          setState("error");
+          return;
+        }
+        setToken(data.token);
+        setBotUrl(data.botUrl);
+        setState("ready");
+      } catch (e) {
+        if (cancelled) return;
+        setErrorMsg(e instanceof Error ? e.message : "Сетевая ошибка");
+        setState("error");
+      }
+    })();
+    return () => {
+      cancelled = true;
+    };
+  }, [profile]);
+
+  const copy = async () => {
+    if (!token) return;
+    try {
+      await navigator.clipboard.writeText(token);
+      setCopied(true);
+      setTimeout(() => setCopied(false), 2000);
+    } catch {
+      // ignore — юзер возьмёт глазами
+    }
+  };
+
+  return (
+    <section>
+      <h2 className="section-h">// ОТПРАВИТЬ В TELEGRAM</h2>
+
+      {state === "loading" && (
+        <div style={{ fontSize: 12, color: TERM_DIM, letterSpacing: "0.1em" }}>
+          // генерация кода синхронизации...
+        </div>
+      )}
+
+      {state === "error" && (
+        <div
+          style={{
+            fontSize: 12,
+            color: "#ff8888",
+            border: "1px solid rgba(255,68,68,0.3)",
+            background: "rgba(255,68,68,0.05)",
+            padding: "10px 12px",
+            lineHeight: 1.5,
+          }}
+        >
+          // {errorMsg.toUpperCase()}
+          <br />
+          // доставка в TG временно недоступна. Скачай .md ниже.
+        </div>
+      )}
+
+      {state === "ready" && (
+        <div style={{ display: "flex", flexDirection: "column", gap: 12 }}>
+          <div style={{ fontSize: 12, color: TERM_DIM, lineHeight: 1.6 }}>
+            // код синхронизации. один раз, хранится 24 часа.
+            <br />
+            // жми «Открыть бота» — код подставится сам.
+          </div>
+
+          <div
+            style={{
+              border: `1px solid ${TERM_AMBER}`,
+              background: "rgba(255,176,0,0.06)",
+              padding: "14px 16px",
+              display: "flex",
+              alignItems: "center",
+              justifyContent: "space-between",
+              gap: 12,
+              flexWrap: "wrap",
+            }}
+          >
+            <code
+              style={{
+                fontSize: 18,
+                letterSpacing: "0.15em",
+                color: TERM_AMBER,
+                fontFamily: "inherit",
+                fontWeight: 700,
+                wordBreak: "break-all",
+              }}
+            >
+              {token}
+            </code>
+            <button onClick={copy} className="term-submit" style={{ width: "auto", padding: "8px 14px", fontSize: 12 }}>
+              {copied ? "✓ СКОПИРОВАНО" : "📋 КОПИРОВАТЬ"}
+            </button>
+          </div>
+
+          <a
+            href={botUrl}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="term-submit"
+            style={{ textDecoration: "none", textAlign: "center", display: "block" }}
+          >
+            ✈ ОТКРЫТЬ БОТА В TELEGRAM →
+          </a>
+        </div>
+      )}
+    </section>
+  );
+}
+
 function ResultView({ profile, onRestart }: { profile: Profile; onRestart: () => void }) {
   return (
     <div style={{ display: "flex", flexDirection: "column", gap: 36 }}>
@@ -579,6 +707,9 @@ function ResultView({ profile, onRestart }: { profile: Profile; onRestart: () =>
           {profile.summary}
         </div>
       </section>
+
+      {/* Telegram delivery */}
+      <TelegramDelivery profile={profile} />
 
       {/* Actions */}
       <div
