@@ -341,15 +341,34 @@ export default function Home() {
                     <span className="term-dot term-dot-y" />
                     <span className="term-dot term-dot-g" />
                     <span className="term-filename">
-                      {p.id}.py
+                      {p.id}{p.pricing.subscription ? ".agent" : ".py"}
                     </span>
-                    {p.available && <span className="term-tag term-tag-live ml-auto">{t.projectUI.live}</span>}
+                    {p.available && (
+                      <span
+                        className="term-tag term-tag-live ml-auto"
+                        style={p.pricing.subscription ? { background: "rgba(34, 211, 238, 0.12)", color: "var(--cyan)", borderColor: "rgba(34, 211, 238, 0.3)" } : undefined}
+                      >
+                        {p.pricing.subscription
+                          ? (lang === "RU" ? "ПОДПИСКА" : lang === "UA" ? "ПІДПИСКА" : "SUBSCRIPTION")
+                          : t.projectUI.live}
+                      </span>
+                    )}
                   </div>
 
                   <div className="p-5 sm:p-6" style={{ background: "var(--glass-bg)" }}>
-                    <div className="mb-2">
-                      <h3 className="text-lg font-bold transition-colors" style={{ color: "rgba(240,224,255,0.8)" }}>{p.name}</h3>
-                      <p className="text-xs font-mono mt-0.5" style={{ color: "var(--accent)", opacity: 0.7 }}>{p.tagline}</p>
+                    <div className="flex items-start gap-3 mb-2">
+                      {p.avatarEmoji && (
+                        <div
+                          className="shrink-0 w-12 h-12 rounded-lg flex items-center justify-center text-2xl"
+                          style={{ background: "rgba(244,63,160,0.08)", border: "1px solid var(--glass-border)", boxShadow: "0 0 20px rgba(244,63,160,0.15)" }}
+                        >
+                          {p.avatarEmoji}
+                        </div>
+                      )}
+                      <div className="min-w-0">
+                        <h3 className="text-lg font-bold transition-colors truncate" style={{ color: "rgba(240,224,255,0.8)" }}>{p.name}</h3>
+                        <p className="text-xs font-mono mt-0.5" style={{ color: "var(--accent)", opacity: 0.7 }}>{p.tagline}</p>
+                      </div>
                     </div>
 
                     <p className="text-xs leading-relaxed mb-4 line-clamp-2" style={{ color: "rgba(240,224,255,0.3)" }}>{p.description}</p>
@@ -363,11 +382,25 @@ export default function Home() {
                     <div className="flex items-end justify-between gap-2">
                       <div>
                         <span className="text-base font-bold font-mono" style={{ color: "var(--accent)" }}>
-                          {p.pricing.setup ? `$${p.pricing.code}` : `$${p.pricing.code}`}
+                          ${p.pricing.subscription ? p.pricing.subscription.monthly : p.pricing.code}
                         </span>
+                        {p.pricing.subscription ? (
+                          <span className="text-[10px] font-mono ml-1" style={{ color: "var(--accent)", opacity: 0.6 }}>
+                            /{lang === "RU" ? "мес" : lang === "UA" ? "міс" : "mo"}
+                          </span>
+                        ) : null}
                         {p.pricing.setup && (
                           <p className="text-[9px] font-mono mt-0.5" style={{ color: "var(--cyan)", opacity: 0.6 }}>
                             {lang === "RU" ? "от" : lang === "UA" ? "від" : "from"} · {lang === "RU" ? "интеграция" : lang === "UA" ? "інтеграція" : "setup"} ${p.pricing.setup}
+                          </p>
+                        )}
+                        {p.pricing.subscription && (
+                          <p className="text-[9px] font-mono mt-0.5" style={{ color: "var(--cyan)", opacity: 0.6 }}>
+                            {lang === "RU"
+                              ? `${p.pricing.subscription.trialDays} дней бесплатно`
+                              : lang === "UA"
+                                ? `${p.pricing.subscription.trialDays} днів безкоштовно`
+                                : `${p.pricing.subscription.trialDays}-day free trial`}
                           </p>
                         )}
                       </div>

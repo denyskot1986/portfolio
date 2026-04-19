@@ -7,9 +7,14 @@ function buildProductCatalog(): string {
   const available = productsData.filter((p) => p.available);
 
   const formatProduct = (p: typeof productsData[0]) => {
-    const price = p.pricing.setup
-      ? `$${p.pricing.code} (code) / $${p.pricing.setup} (with setup)`
-      : `$${p.pricing.code}`;
+    let price: string;
+    if (p.pricing.subscription) {
+      price = `$${p.pricing.subscription.monthly}/mo subscription (${p.pricing.subscription.trialDays}-day free trial)`;
+    } else if (p.pricing.setup) {
+      price = `$${p.pricing.code} (code) / $${p.pricing.setup} (with setup)`;
+    } else {
+      price = `$${p.pricing.code}`;
+    }
     const useCases = p.useCases.slice(0, 3).join(", ");
     return `• ${p.name} — ${p.tagline} | ${price} | For: ${useCases}`;
   };
@@ -17,7 +22,12 @@ function buildProductCatalog(): string {
   return `PRODUCT CATALOG (${available.length} products available):
 ${available.map(formatProduct).join("\n")}
 
-PRICING MODEL: Code = source code + docs (self-deploy). "With setup" = we deploy it for your business + 30 days support. One-time payment, no subscriptions, full code ownership.
+PRICING MODELS:
+  (a) Authored agents by subscription — monthly fee, 7-day free trial, cancel anytime. The agent is hosted by Finekot; you get access, not code. Example: iБоря @ $49/mo.
+  (b) System templates — one-time payment for full source code + docs. You deploy & own it.
+  (c) Integration — one-time payment where Denys personally sets up a system into your business in 1 day + 30 days support.
+  (d) Custom Studio — bespoke authored agent for your business, from $15k, 3–6 weeks.
+
 CONTACT: @shop_by_finekot_bot on Telegram`;
 }
 
@@ -25,7 +35,7 @@ const SALES_SYSTEM_PROMPT = `You are a friendly shop consultant at Finekot — a
 
 Your role: Have a real conversation. Understand what the visitor actually needs, then recommend 1-2 relevant products max. Never dump a product list unprompted.
 
-PRODUCT STATUS: Products are available for purchase. Prices are real. Purchases are one-time — no subscriptions, full code ownership.
+PRODUCT STATUS: Products are live. Prices are real. Finekot has both subscription agents (like iБоря @ $49/mo — access to a hosted agent) and one-time system purchases (code + docs, full ownership). Custom Studio for bespoke agents starts at $15k. Pick what fits the visitor's case.
 
 CONVERSATION RULES:
 - If someone asks "what do you have" or similar — DON'T list everything. Instead, ask one short question about their business or problem, then recommend what fits.

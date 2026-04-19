@@ -1,7 +1,7 @@
 import { ImageResponse } from "next/og";
 
 export const runtime = "edge";
-export const alt = "Finekot — Production-Ready AI Systems";
+export const alt = "Finekot — Authored AI Agents & Systems";
 export const size = { width: 1200, height: 630 };
 export const contentType = "image/png";
 
@@ -69,7 +69,7 @@ export default async function Image() {
               textTransform: "uppercase",
             }}
           >
-            Production-Ready AI Systems
+            Authored AI Agents & Systems
           </span>
           <span
             style={{
@@ -90,19 +90,19 @@ export default async function Image() {
               fontWeight: 600,
             }}
           >
-            23 AI systems. Source code included.
+            Subscribe to iБоря. Or own the code.
           </span>
           <div style={{ display: "flex", gap: 24, marginTop: 8 }}>
             <span style={{ fontSize: 14, color: "rgba(244,114,182,0.4)", fontFamily: "monospace" }}>
-              From $79
+              Agents from $49/mo
             </span>
             <span style={{ fontSize: 14, color: "rgba(244,114,182,0.2)" }}>•</span>
             <span style={{ fontSize: 14, color: "rgba(244,114,182,0.4)", fontFamily: "monospace" }}>
-              Full ownership
+              Systems from $499
             </span>
             <span style={{ fontSize: 14, color: "rgba(244,114,182,0.2)" }}>•</span>
             <span style={{ fontSize: 14, color: "rgba(244,114,182,0.4)", fontFamily: "monospace" }}>
-              No subscriptions
+              Studio from $15k
             </span>
           </div>
         </div>
