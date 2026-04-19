@@ -1051,7 +1051,16 @@ function GateView({
       >
         // Доступ ограничен чтобы случайные гости не жгли токены.
         <br />
-        // Пароль выдаёт Командир.
+        // Пароль выдаёт{" "}
+        <a
+          href="https://t.me/finekot"
+          target="_blank"
+          rel="noopener noreferrer"
+          style={{ color: TERM_AMBER, textDecoration: "underline" }}
+        >
+          Командир
+        </a>
+        .
       </div>
     </div>
   );

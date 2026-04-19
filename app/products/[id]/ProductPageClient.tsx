@@ -11,7 +11,11 @@ import { i18n } from "@/lib/i18n";
 import { useLang } from "@/lib/lang-context";
 import LangSwitcher from "@/components/LangSwitcher";
 
-const buyLink = (id: string) => `/checkout/${id}`;
+/** Deep-link to the sales bot, preselecting the product + intent (trial vs buy). */
+function botDeepLink(contact: string, id: string, intent: "trial" | "buy" | "order"): string {
+  const sep = contact.includes("?") ? "&" : "?";
+  return `${contact}${sep}start=${intent}_${id}`;
+}
 
 const fade = { initial: { opacity: 0, y: 20 }, whileInView: { opacity: 1, y: 0 }, viewport: { once: true }, transition: { duration: 0.5 } };
 
@@ -41,7 +45,7 @@ export default function ProductPageClient() {
           <Link href="/" className="text-sm font-mono text-pink-400/40 hover:text-pink-400/80 transition-colors">&larr; {i18n[lang].pages.backHome}</Link>
           <div className="flex items-center gap-4">
             <LangSwitcher />
-            <a href={product.contact} target="_blank" rel="noopener noreferrer" className="text-xs font-mono text-pink-400/40 hover:text-pink-400/80 transition-colors">
+            <a href={botDeepLink(product.contact, product.id, "order")} target="_blank" rel="noopener noreferrer" className="text-xs font-mono text-pink-400/40 hover:text-pink-400/80 transition-colors">
               Order &rarr;
             </a>
           </div>
@@ -217,7 +221,7 @@ export default function ProductPageClient() {
                             </div>
                             {product.available ? (
                               <a
-                                href={product.contact}
+                                href={botDeepLink(product.contact, product.id, "trial")}
                                 target="_blank"
                                 rel="noopener noreferrer"
                                 className={`inline-block w-full px-6 py-3 rounded-lg text-sm font-semibold transition-all ${
@@ -229,9 +233,9 @@ export default function ProductPageClient() {
                                 {ctaLabel}
                               </a>
                             ) : (
-                              <a href="https://t.me/finekot_ai" target="_blank" rel="noopener noreferrer"
+                              <a href="https://t.me/finekot" target="_blank" rel="noopener noreferrer"
                                 className="inline-block w-full px-6 py-3 rounded-lg border border-pink-400/20 text-sm font-semibold text-pink-100/70 hover:bg-pink-400/10 hover:text-pink-100 transition-all">
-                                Contact @finekot_ai →
+                                Contact @finekot →
                               </a>
                             )}
                           </div>
@@ -255,14 +259,14 @@ export default function ProductPageClient() {
                   </ul>
                   <p className="text-[10px] text-pink-100/20 mb-4">{tp.deliveryTemplate}: {product.deliveryTime.template}</p>
                   {product.available ? (
-                    <Link href={buyLink(product.id)}
+                    <a href={botDeepLink(product.contact, product.id, "buy")} target="_blank" rel="noopener noreferrer"
                       className="inline-block w-full px-6 py-3 rounded-lg border border-pink-400/20 text-sm font-semibold text-pink-100/70 hover:bg-pink-400/10 hover:text-pink-100 transition-all">
                       Buy Now &rarr;
-                    </Link>
+                    </a>
                   ) : (
-                    <a href="https://t.me/finekot_ai" target="_blank" rel="noopener noreferrer"
+                    <a href="https://t.me/finekot" target="_blank" rel="noopener noreferrer"
                       className="inline-block w-full px-6 py-3 rounded-lg border border-pink-400/20 text-sm font-semibold text-pink-100/70 hover:bg-pink-400/10 hover:text-pink-100 transition-all">
-                      Contact @finekot_ai &rarr;
+                      Contact @finekot &rarr;
                     </a>
                   )}
                 </div>
@@ -280,14 +284,14 @@ export default function ProductPageClient() {
                   </ul>
                   <p className="text-[10px] text-pink-100/20 mb-4">{tp.deliveryIntegration}: {product.deliveryTime.integration}</p>
                   {product.available ? (
-                    <Link href={buyLink(product.id)}
+                    <a href={botDeepLink(product.contact, product.id, "buy")} target="_blank" rel="noopener noreferrer"
                       className="inline-block w-full px-6 py-3 rounded-lg bg-gradient-to-r from-pink-600 to-purple-600 text-white font-semibold hover:opacity-90 transition-opacity shadow-[0_0_30px_rgba(244,114,182,0.2)]">
                       Buy Now &rarr;
-                    </Link>
+                    </a>
                   ) : (
-                    <a href="https://t.me/finekot_ai" target="_blank" rel="noopener noreferrer"
+                    <a href="https://t.me/finekot" target="_blank" rel="noopener noreferrer"
                       className="inline-block w-full px-6 py-3 rounded-lg bg-gradient-to-r from-pink-600 to-purple-600 text-white font-semibold hover:opacity-90 transition-opacity shadow-[0_0_30px_rgba(244,114,182,0.2)]">
-                      Contact @finekot_ai &rarr;
+                      Contact @finekot &rarr;
                     </a>
                   )}
                 </div>
@@ -305,14 +309,14 @@ export default function ProductPageClient() {
                   </ul>
                   <p className="text-[10px] text-pink-100/20 mb-4">{tp.deliveryTemplate}: {product.deliveryTime.template}</p>
                   {product.available ? (
-                    <Link href={buyLink(product.id)}
+                    <a href={botDeepLink(product.contact, product.id, "buy")} target="_blank" rel="noopener noreferrer"
                       className="inline-block w-full px-6 py-3 rounded-lg bg-gradient-to-r from-pink-600 to-purple-600 text-white font-semibold hover:opacity-90 transition-opacity shadow-[0_0_30px_rgba(244,114,182,0.2)]">
                       Buy Now &rarr;
-                    </Link>
+                    </a>
                   ) : (
-                    <a href="https://t.me/finekot_ai" target="_blank" rel="noopener noreferrer"
+                    <a href="https://t.me/finekot" target="_blank" rel="noopener noreferrer"
                       className="inline-block w-full px-6 py-3 rounded-lg bg-gradient-to-r from-pink-600 to-purple-600 text-white font-semibold hover:opacity-90 transition-opacity shadow-[0_0_30px_rgba(244,114,182,0.2)]">
-                      Contact @finekot_ai &rarr;
+                      Contact @finekot &rarr;
                     </a>
                   )}
                 </div>

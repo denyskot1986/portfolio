@@ -467,25 +467,26 @@ export default function Home() {
 
       <footer className="relative z-10 py-8 font-mono" style={{ borderTop: "1px solid var(--glass-border)" }}>
         <div className="max-w-5xl mx-auto px-6 flex flex-col items-center gap-4">
-          <p className="text-[10px] font-mono mb-1" style={{ color: "var(--muted)" }}>
-            <span style={{ color: "var(--accent2)", opacity: 0.6 }}>&gt; </span>connect --channels
+          <p className="text-[10px] uppercase tracking-wider" style={{ color: "rgba(106,85,128,0.5)" }}>
+            {(() => {
+              const parts = t.footer.split("Denys Kot");
+              return (
+                <>
+                  {parts[0]}
+                  <a
+                    href="https://t.me/finekot"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="transition-colors hover:text-[var(--accent)]"
+                    style={{ color: "var(--accent)" }}
+                  >
+                    Denys Kot
+                  </a>
+                  {parts[1] ?? ""}
+                </>
+              );
+            })()}
           </p>
-          <div className="flex flex-wrap justify-center gap-3">
-            {[
-              { href: "https://instagram.com/finekot.ai", label: "Instagram — @finekot.ai" },
-              { href: "https://t.me/finekot_ai", label: "Telegram EN — @finekot_ai" },
-              { href: "https://t.me/finekot_ai_ua", label: "Telegram UA — @finekot_ai_ua" },
-              { href: "https://t.me/finekot_ai_ru", label: "Telegram RU — @finekot_ai_ru" },
-            ].map((link) => (
-              <a key={link.href} href={link.href} target="_blank" rel="noopener noreferrer"
-                className="text-xs px-3 py-2 rounded-md transition-all font-mono hover:text-[var(--accent)] hover:border-[var(--glass-border-hover)]"
-                style={{ border: "1px solid var(--glass-border)", color: "var(--muted)" }}
-              >
-                {link.label}
-              </a>
-            ))}
-          </div>
-          <p className="text-[10px] uppercase tracking-wider" style={{ color: "rgba(106,85,128,0.5)" }}>{t.footer}</p>
         </div>
       </footer>
 

@@ -41,6 +41,8 @@ interface ProductTranslation {
   features: { title: string; desc: string }[];
   useCases: string[];
   deliveryTime: { template: string; integration: string };
+  /** Translated subscription tier copy (name + features). Only overrides visible strings; prices come from master. */
+  tiers?: { name: string; features: string[] }[];
 }
 
 export const productsData: ProductData[] = [
@@ -515,6 +517,10 @@ const translations: Record<string, Record<string, ProductTranslation>> = {
       ],
       useCases: ["Взрослые 30–55 с родителями 65+", "Семьи, разделённые 500+ км", "Восстановление после инсульта или операции дома", "Одинокие бабушки и дедушки"],
       deliveryTime: { template: "Номер активен за 30 минут", integration: "Подписка — без setup-платы" },
+      tiers: [
+        { name: "Basic", features: ["7 дней бесплатно", "2 голосовых звонка в день", "Напоминания о лекарствах и здоровье", "Еженедельный семейный отчёт", "Экстренная эскалация"] },
+        { name: "Pro", features: ["Всё из Basic", "Безлимит голосовых звонков", "Колонки (Яндекс / Google / Алиса)", "Синхронизация с iDoctor", "Приоритетная поддержка человеком"] },
+      ],
     },
     UA: {
       tagline: "AI-компаньйон для твоїх літніх батьків",
@@ -530,6 +536,10 @@ const translations: Record<string, Record<string, ProductTranslation>> = {
       ],
       useCases: ["Дорослі 30–55 з батьками 65+", "Родини, розділені 500+ км", "Відновлення після інсульту чи операції вдома", "Самотні бабусі й дідусі"],
       deliveryTime: { template: "Номер активний за 30 хвилин", integration: "Підписка — без setup-оплати" },
+      tiers: [
+        { name: "Basic", features: ["7 днів безкоштовно", "2 голосові дзвінки на день", "Нагадування про ліки та здоров'я", "Щотижневий сімейний звіт", "Екстрена ескалація"] },
+        { name: "Pro", features: ["Все з Basic", "Безліміт голосових дзвінків", "Колонки (Яндекс / Google / Аліса)", "Синхронізація з iDoctor", "Пріоритетна підтримка людиною"] },
+      ],
     },
   },
   "orban": {
@@ -547,6 +557,10 @@ const translations: Record<string, Record<string, ProductTranslation>> = {
       ],
       useCases: ["Соло-предприниматели", "Владельцы малого бизнеса (≤10 чел)", "Инфобизнесмены (5k–50k аудитория)", "Консультанты и коучи", "Агентства"],
       deliveryTime: { template: "Telegram + MCP настройка за ~15 мин", integration: "Подписка — без setup-платы" },
+      tiers: [
+        { name: "Basic", features: ["7 дней бесплатно", "Пульс клиентов + утренний бриф", "Рутинные ответы в Telegram/WhatsApp", "Еженедельный отчёт", "Все MCP-коннекторы"] },
+        { name: "Pro", features: ["Всё из Basic", "Opus-тариф (макс. качество)", "Безлимит сообщений", "Кастомные MCP-серверы под твой стек", "Приоритетная поддержка человеком", "Квартальный tune-up с Denys"] },
+      ],
     },
     UA: {
       tagline: "AI-операційний директор для малого бізнесу. MCP-native.",
@@ -562,6 +576,10 @@ const translations: Record<string, Record<string, ProductTranslation>> = {
       ],
       useCases: ["Соло-підприємці", "Власники малого бізнесу (≤10 осіб)", "Інфобізнесмени (5k–50k аудиторія)", "Консультанти та коучі", "Агентства"],
       deliveryTime: { template: "Telegram + MCP налаштування за ~15 хв", integration: "Підписка — без setup-оплати" },
+      tiers: [
+        { name: "Basic", features: ["7 днів безкоштовно", "Пульс клієнтів + ранковий бриф", "Рутинні відповіді у Telegram/WhatsApp", "Тижневий звіт", "Всі MCP-конектори"] },
+        { name: "Pro", features: ["Все з Basic", "Opus-тариф (макс. якість)", "Безліміт повідомлень", "Кастомні MCP-сервери під твій стек", "Пріоритетна підтримка людиною", "Квартальна tune-up сесія з Denys"] },
+      ],
     },
   },
   "idoctor": {
@@ -579,6 +597,10 @@ const translations: Record<string, Record<string, ProductTranslation>> = {
       ],
       useCases: ["Носители хронических болезней, уставшие пересказывать", "Тревожные биохакеры", "Люди с стареющим телом и без ВОПа которому доверяют", "Все кто хочет терапию-лайт 24/7 без $200/час"],
       deliveryTime: { template: "Хранилище активно за 5 минут", integration: "Подписка — без setup-платы" },
+      tiers: [
+        { name: "Basic", features: ["7 дней бесплатно", "Безлимит загрузок документов", "Долгосрочная память здоровья", "Детекция паттернов + еженедельный дайджест", "Режим эмоциональной поддержки", "Эскалация красных флагов"] },
+        { name: "Pro", features: ["Всё из Basic", "До 4 членов семьи", "Общие или приватные хранилища на каждого", "Приоритетная поддержка человеком", "Опциональная синхронизация с iLucy для пожилых родителей"] },
+      ],
     },
     UA: {
       tagline: "AI-лікар + психолог. Знає всю твою історію здоров'я.",
@@ -594,6 +616,10 @@ const translations: Record<string, Record<string, ProductTranslation>> = {
       ],
       useCases: ["Носії хронічних хвороб, втомлені переповідати", "Тривожні біохакери", "Люди зі старіючим тілом і без сімейного лікаря якому довіряють", "Усі хто хоче терапію-лайт 24/7 без $200/год"],
       deliveryTime: { template: "Сховище активне за 5 хвилин", integration: "Підписка — без setup-оплати" },
+      tiers: [
+        { name: "Basic", features: ["7 днів безкоштовно", "Безліміт завантажень документів", "Довгострокова пам'ять здоров'я", "Детекція патернів + щотижневий дайджест", "Режим емоційної підтримки", "Ескалація червоних прапорів"] },
+        { name: "Pro", features: ["Все з Basic", "До 4 членів сім'ї", "Спільні або приватні сховища на кожного", "Пріоритетна підтримка людиною", "Опціональна синхронізація з iLucy для літніх батьків"] },
+      ],
     },
   },
   "ileva": {
@@ -611,6 +637,10 @@ const translations: Record<string, Record<string, ProductTranslation>> = {
       ],
       useCases: ["Родители 30–50 с детьми 5–15", "Семьи на домашнем обучении", "Родители чьи дети уже лазят в ChatGPT", "Бабушки и дедушки, дарящие безопасный AI вместо экранного времени"],
       deliveryTime: { template: "Активация за 10 минут", integration: "Подписка — без setup-платы" },
+      tiers: [
+        { name: "Basic", features: ["7 дней бесплатно", "1 профиль ребёнка", "Все возрасты 5–15", "Еженедельный дайджест родителю", "Стек безопасности Finekot", "EN / RU / UA / DE"] },
+        { name: "Pro", features: ["Всё из Basic", "До 4 профилей детей", "Память, понимающая братьев и сестёр", "Приоритетная поддержка человеком"] },
+      ],
     },
     UA: {
       tagline: "Безпечний AI для дітей 5–15. Під наглядом Finekot.",
@@ -626,6 +656,10 @@ const translations: Record<string, Record<string, ProductTranslation>> = {
       ],
       useCases: ["Батьки 30–50 з дітьми 5–15", "Родини на домашньому навчанні", "Батьки чиї діти вже лазять у ChatGPT", "Бабусі та дідусі, що дарують безпечний AI замість екранного часу"],
       deliveryTime: { template: "Активація за 10 хвилин", integration: "Підписка — без setup-оплати" },
+      tiers: [
+        { name: "Basic", features: ["7 днів безкоштовно", "1 профіль дитини", "Всі вікові групи 5–15", "Щотижневий дайджест батьку", "Стек безпеки Finekot", "EN / RU / UA / DE"] },
+        { name: "Pro", features: ["Все з Basic", "До 4 профілів дітей", "Пам'ять, що розуміє братів і сестер", "Пріоритетна підтримка людиною"] },
+      ],
     },
   },
   "iada": {
@@ -643,6 +677,10 @@ const translations: Record<string, Record<string, ProductTranslation>> = {
       ],
       useCases: ["Консультанты, готовящие клиентские презентации", "Журналисты на дедлайне", "Продактовые менеджеры, сканирующие конкурентов", "Исследователи с literature review", "Основатели на валидации рынка"],
       deliveryTime: { template: "Активация за 2 минуты", integration: "Подписка — без setup-платы" },
+      tiers: [
+        { name: "Basic", features: ["7 дней бесплатно", "Безлимит Fast-запросов", "20 Deep Research отчётов / мес", "Память тредов", "Экспорт Markdown / Notion / Docs"] },
+        { name: "Pro", features: ["Всё из Basic", "Безлимит Deep Research", "Opus-тариф (макс. качество)", "API-доступ для Zapier / n8n / скриптов", "Кастомные доменные источники"] },
+      ],
     },
     UA: {
       tagline: "Твій термінатор-дослідник. Perplexity-killer.",
@@ -658,6 +696,10 @@ const translations: Record<string, Record<string, ProductTranslation>> = {
       ],
       useCases: ["Консультанти, що готують клієнтські презентації", "Журналісти на дедлайні", "Продуктові менеджери, що сканують конкурентів", "Дослідники з literature review", "Засновники на валідації ринку"],
       deliveryTime: { template: "Активація за 2 хвилини", integration: "Підписка — без setup-оплати" },
+      tiers: [
+        { name: "Basic", features: ["7 днів безкоштовно", "Безліміт Fast-запитів", "20 Deep Research звітів / міс", "Пам'ять тредів", "Експорт Markdown / Notion / Docs"] },
+        { name: "Pro", features: ["Все з Basic", "Безліміт Deep Research", "Opus-тариф (макс. якість)", "API-доступ для Zapier / n8n / скриптів", "Кастомні доменні джерела"] },
+      ],
     },
   },
   "ihogol": {
@@ -675,6 +717,10 @@ const translations: Record<string, Record<string, ProductTranslation>> = {
       ],
       useCases: ["Создатели с аудиторией 5k–500k", "Founders, строящие личный бренд", "Агентства ведущие thought-leader аккаунты", "Ghostwriters хотящие в 3 раза ускориться", "Инфобиз запускающий курсы"],
       deliveryTime: { template: "Голос обучен за 10 минут", integration: "Подписка — без setup-платы" },
+      tiers: [
+        { name: "Basic", features: ["7 дней бесплатно", "Voice-профиль из 30+ примеров", "Безлимит черновиков", "Мультиплатформенная адаптация", "Анти-повтор память"] },
+        { name: "Pro", features: ["Всё из Basic", "До 3 голосов (команда / агентство)", "Календарь + workflow согласования", "Разбор engagement", "Приоритетная поддержка"] },
+      ],
     },
     UA: {
       tagline: "Вчить твій голос. Пише в ньому.",
@@ -690,6 +736,10 @@ const translations: Record<string, Record<string, ProductTranslation>> = {
       ],
       useCases: ["Творці з аудиторією 5k–500k", "Founders, що будують особистий бренд", "Агентства що ведуть thought-leader акаунти", "Ghostwriters бажаючі втричі прискоритися", "Інфобіз що запускає курси"],
       deliveryTime: { template: "Голос навчено за 10 хвилин", integration: "Підписка — без setup-оплати" },
+      tiers: [
+        { name: "Basic", features: ["7 днів безкоштовно", "Voice-профіль з 30+ прикладів", "Безліміт чернеток", "Мультиплатформна адаптація", "Анти-повтор пам'ять"] },
+        { name: "Pro", features: ["Все з Basic", "До 3 голосів (команда / агенція)", "Календар + workflow погодження", "Розбір engagement", "Пріоритетна підтримка"] },
+      ],
     },
   },
   "italker": {
@@ -739,6 +789,10 @@ const translations: Record<string, Record<string, ProductTranslation>> = {
       ],
       useCases: ["Соло-предприниматели", "Владельцы малого бизнеса (≤10 чел)", "Инфобизнесмены (5k–50k аудитория)", "Консультанты и коучи", "Агентства"],
       deliveryTime: { template: "Активация за 5 минут", integration: "Подписка — без setup-платы" },
+      tiers: [
+        { name: "Basic", features: ["7 дней бесплатно", "Утренний бриф + триаж почты", "Подготовка и расшифровка встреч", "Голос → задачи", "Персональная память"] },
+        { name: "Pro", features: ["Всё из Basic", "Opus-тариф (макс. качество)", "Безлимит сообщений", "Приоритетная скорость", "API + Zapier доступ", "Кастомные интеграции"] },
+      ],
     },
     UA: {
       tagline: "AI-операційний директор для малого бізнесу",
@@ -754,6 +808,10 @@ const translations: Record<string, Record<string, ProductTranslation>> = {
       ],
       useCases: ["Соло-підприємці", "Власники малого бізнесу (≤10 осіб)", "Інфобізнесмени (5k–50k аудиторія)", "Консультанти та коучі", "Агентства"],
       deliveryTime: { template: "Активація за 5 хвилин", integration: "Підписка — без setup-оплати" },
+      tiers: [
+        { name: "Basic", features: ["7 днів безкоштовно", "Ранковий бриф + тріаж пошти", "Підготовка і розшифровка зустрічей", "Голос → задачі", "Персональна пам'ять"] },
+        { name: "Pro", features: ["Все з Basic", "Opus-тариф (макс. якість)", "Безліміт повідомлень", "Пріоритетна швидкість", "API + Zapier доступ", "Кастомні інтеграції"] },
+      ],
     },
   },
   "skynet-intake": {
@@ -800,6 +858,19 @@ export function getTranslatedProduct(id: string, lang: Lang): ProductData | unde
   const t = translations[id]?.[lang];
   if (!t) return product;
 
+  let pricing = product.pricing;
+  if (t.tiers && product.pricing.subscription?.tiers) {
+    const masterTiers = product.pricing.subscription.tiers;
+    const merged = masterTiers.map((mt, i) => {
+      const tt = t.tiers?.[i];
+      return tt ? { name: tt.name, price: mt.price, features: tt.features } : mt;
+    });
+    pricing = {
+      ...product.pricing,
+      subscription: { ...product.pricing.subscription, tiers: merged },
+    };
+  }
+
   return {
     ...product,
     tagline: t.tagline,
@@ -809,6 +880,7 @@ export function getTranslatedProduct(id: string, lang: Lang): ProductData | unde
     features: t.features,
     useCases: t.useCases,
     deliveryTime: t.deliveryTime,
+    pricing,
   };
 }
 
