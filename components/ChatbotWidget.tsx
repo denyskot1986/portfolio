@@ -14,11 +14,16 @@ export default function ChatbotWidget() {
   const [input, setInput] = useState("");
   const [loading, setLoading] = useState(false);
   const messagesEndRef = useRef<HTMLDivElement>(null);
+  const messagesContainerRef = useRef<HTMLDivElement>(null);
   const inputRef = useRef<HTMLTextAreaElement>(null);
 
   useEffect(() => {
-    messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
-  }, [messages]);
+    // Scroll the chat's own container, not the page. scrollIntoView would
+    // walk up to the document and yank the user away from whatever they
+    // were reading behind the chat widget.
+    const el = messagesContainerRef.current;
+    if (el) el.scrollTop = el.scrollHeight;
+  }, [messages, loading]);
 
   const adjustTextarea = useCallback(() => {
     const el = inputRef.current;
@@ -95,7 +100,8 @@ export default function ChatbotWidget() {
                   initial={{ opacity: 0, height: 0 }}
                   animate={{ opacity: 1, height: "auto" }}
                   exit={{ opacity: 0, height: 0 }}
-                  className="mb-3 overflow-y-auto rounded-2xl p-3 space-y-3"
+                  ref={messagesContainerRef}
+                  className="mb-3 overflow-y-auto overscroll-contain rounded-2xl p-3 space-y-3"
                   style={{
                     maxHeight: "45vh",
                     background: "rgba(10, 6, 8, 0.92)",

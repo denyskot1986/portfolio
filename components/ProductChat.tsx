@@ -49,11 +49,17 @@ export default function ProductChat({ productName, productTagline, productId, la
   const [loading, setLoading] = useState(false);
   const [open, setOpen] = useState(false);
   const messagesEndRef = useRef<HTMLDivElement>(null);
+  const messagesContainerRef = useRef<HTMLDivElement>(null);
   const inputRef = useRef<HTMLTextAreaElement>(null);
 
   useEffect(() => {
-    messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
-  }, [messages]);
+    // Scroll only the chat container, never the page.
+    // Using scrollIntoView() would walk up the ancestor chain and scroll the
+    // whole document when the chat end isn't in the viewport — which threw
+    // the user to the pricing section on first reply.
+    const el = messagesContainerRef.current;
+    if (el) el.scrollTop = el.scrollHeight;
+  }, [messages, loading]);
 
   const adjustTextarea = useCallback(() => {
     const el = inputRef.current;
@@ -153,7 +159,7 @@ export default function ProductChat({ productName, productTagline, productId, la
           </div>
 
           {/* Messages */}
-          <div className="max-h-64 overflow-y-auto p-4 space-y-3">
+          <div ref={messagesContainerRef} className="max-h-64 overflow-y-auto p-4 space-y-3 overscroll-contain">
             {messages.length === 0 && (
               <div className="space-y-3">
                 <p className="text-xs text-pink-100/30 font-mono">
