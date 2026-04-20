@@ -100,34 +100,34 @@ export default function ChatbotWidget() {
   const inputRef = useRef<HTMLTextAreaElement>(null);
   const peekingRef = useRef(false);
   const posControls = useAnimationControls();
-  const sideInitialized = useRef(false);
+  const prevSideRef = useRef<"right" | "left" | null>(null);
 
-  // Initial snap: position without animation on first layout pass.
+  // Initial snap on first mount, wrap-around slide on every subsequent
+  // side change. Wrap direction: exits off the CURRENT edge, teleports
+  // off-screen to the opposite edge, slides back in.
   useLayoutEffect(() => {
     if (typeof window === "undefined") return;
-    if (sideInitialized.current) return;
-    sideInitialized.current = true;
-    const vw = window.innerWidth;
-    posControls.set({
-      left: side === "right" ? vw - CONTAINER_W - EDGE_GAP : EDGE_GAP,
-    });
-  }, [posControls, side]);
-
-  // Wrap-around slide on side change: widget exits off the current edge,
-  // teleports off-screen to the opposite edge, then slides back into view.
-  useEffect(() => {
-    if (typeof window === "undefined") return;
-    if (!sideInitialized.current) return;
 
     const vw = window.innerWidth;
     const rightRest = vw - CONTAINER_W - EDGE_GAP;
     const leftRest = EDGE_GAP;
+
+    if (prevSideRef.current === null) {
+      prevSideRef.current = side;
+      posControls.set({ left: side === "right" ? rightRest : leftRest });
+      setFlexAlign(side === "right" ? "flex-end" : "flex-start");
+      return;
+    }
+    if (prevSideRef.current === side) return;
+    prevSideRef.current = side;
+
     const offRight = vw + EDGE_GAP;
     const offLeft = -CONTAINER_W - EDGE_GAP;
 
     let cancelled = false;
     (async () => {
       if (side === "left") {
+        // going to left side: exit RIGHT edge, re-enter from LEFT
         await posControls.start({
           left: offRight,
           transition: { duration: 0.55, ease: "easeIn" },
@@ -140,6 +140,7 @@ export default function ChatbotWidget() {
           transition: { duration: 0.55, ease: "easeOut" },
         });
       } else {
+        // going to right side: exit LEFT edge, re-enter from RIGHT
         await posControls.start({
           left: offLeft,
           transition: { duration: 0.55, ease: "easeIn" },
