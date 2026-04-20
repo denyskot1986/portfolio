@@ -1,15 +1,5 @@
 import type { Lang } from "./i18n";
 
-/** Per-agent Telegram bots that power the trial/subscription flow. Each entry maps
- *  a product id to the bot username that handles `?start=trial` for that agent.
- *  When an id is absent from this map, the site falls back to the generic sales
- *  bot (`product.contact`). Keep in sync with /opt/finekot-agents/.env on VPS #3. */
-export const TRIAL_BOT_BY_ID: Record<string, string> = {
-  iborya: "https://t.me/iborya_by_finekot_trial_bot",
-  iada: "https://t.me/ada_by_finekot_trial_bot",
-  // ilucy / orban / idoctor / ileva / ihogol — Commander is creating these in @BotFather.
-};
-
 export interface ProductData {
   id: string;
   name: string;
@@ -29,7 +19,6 @@ export interface ProductData {
       monthly: number;
       yearly?: number;
       currency: string;
-      trialDays: number;
       tiers?: { name: string; price: number; features: string[] }[];
     };
   };
@@ -79,9 +68,8 @@ export const productsData: ProductData[] = [
         monthly: 49,
         yearly: 470,
         currency: "USD",
-        trialDays: 7,
         tiers: [
-          { name: "Basic", price: 49, features: ["7-day free trial", "Morning briefing + inbox triage", "Meeting prep & recap", "Voice → tasks", "Personal memory"] },
+          { name: "Basic", price: 49, features: ["Morning briefing + inbox triage", "Meeting prep & recap", "Voice → tasks", "Personal memory"] },
           { name: "Pro", price: 99, features: ["Everything in Basic", "Opus tier (max quality)", "Unlimited messages", "Priority speed", "API + Zapier access", "Custom integrations"] },
         ],
       },
@@ -138,9 +126,8 @@ export const productsData: ProductData[] = [
         monthly: 99,
         yearly: 950,
         currency: "USD",
-        trialDays: 7,
         tiers: [
-          { name: "Basic", price: 99, features: ["7-day free trial", "2 voice calls per day", "Medication + health reminders", "Weekly family report", "Emergency escalation"] },
+          { name: "Basic", price: 99, features: ["2 voice calls per day", "Medication + health reminders", "Weekly family report", "Emergency escalation"] },
           { name: "Pro", price: 149, features: ["Everything in Basic", "Unlimited voice calls", "Smart-speaker deployment (Yandex/Google/Alice)", "Doctor's report sync via iDoctor", "Priority human support"] },
         ],
       },
@@ -194,9 +181,8 @@ export const productsData: ProductData[] = [
         monthly: 79,
         yearly: 760,
         currency: "USD",
-        trialDays: 7,
         tiers: [
-          { name: "Basic", price: 79, features: ["7-day free trial", "Client pulse + morning brief", "Routine replies in Telegram/WhatsApp", "Weekly report", "All MCP connectors"] },
+          { name: "Basic", price: 79, features: ["Client pulse + morning brief", "Routine replies in Telegram/WhatsApp", "Weekly report", "All MCP connectors"] },
           { name: "Pro", price: 199, features: ["Everything in Basic", "Opus tier (max quality)", "Unlimited messages", "Custom MCP servers built for your stack", "Priority human support", "Quarterly tune-up session with Denys"] },
         ],
       },
@@ -250,9 +236,8 @@ export const productsData: ProductData[] = [
         monthly: 99,
         yearly: 950,
         currency: "USD",
-        trialDays: 7,
         tiers: [
-          { name: "Basic", price: 99, features: ["7-day free trial", "Unlimited document uploads", "Longitudinal health memory", "Pattern detection & weekly digest", "Emotional support mode", "Red-flag escalation"] },
+          { name: "Basic", price: 99, features: ["Unlimited document uploads", "Longitudinal health memory", "Pattern detection & weekly digest", "Emotional support mode", "Red-flag escalation"] },
           { name: "Pro", price: 179, features: ["Everything in Basic", "Up to 4 family members", "Shared or private vaults per person", "Priority human support", "Optional sync with iLucy for aging parents"] },
         ],
       },
@@ -306,9 +291,8 @@ export const productsData: ProductData[] = [
         monthly: 49,
         yearly: 470,
         currency: "USD",
-        trialDays: 7,
         tiers: [
-          { name: "Basic", price: 49, features: ["7-day free trial", "1 child profile", "All ages 5–15", "Weekly parent digest", "Finekot safety stack", "EN/RU/UA/DE"] },
+          { name: "Basic", price: 49, features: ["1 child profile", "All ages 5–15", "Weekly parent digest", "Finekot safety stack", "EN/RU/UA/DE"] },
           { name: "Pro", price: 89, features: ["Everything in Basic", "Up to 4 child profiles", "Sibling-aware memory", "Priority human support"] },
         ],
       },
@@ -365,9 +349,8 @@ export const productsData: ProductData[] = [
         monthly: 49,
         yearly: 470,
         currency: "USD",
-        trialDays: 7,
         tiers: [
-          { name: "Basic", price: 49, features: ["7-day free trial", "Unlimited Fast queries", "20 Deep Research reports / mo", "Thread memory", "Markdown / Notion / Docs export"] },
+          { name: "Basic", price: 49, features: ["Unlimited Fast queries", "20 Deep Research reports / mo", "Thread memory", "Markdown / Notion / Docs export"] },
           { name: "Pro", price: 99, features: ["Everything in Basic", "Unlimited Deep Research", "Opus tier (max quality)", "API access for Zapier / n8n / scripts", "Custom domain sources"] },
         ],
       },
@@ -424,9 +407,8 @@ export const productsData: ProductData[] = [
         monthly: 49,
         yearly: 470,
         currency: "USD",
-        trialDays: 7,
         tiers: [
-          { name: "Basic", price: 49, features: ["7-day free trial", "Voice profile from 30+ samples", "Unlimited drafts", "Multi-platform adaptation", "Anti-repeat memory"] },
+          { name: "Basic", price: 49, features: ["Voice profile from 30+ samples", "Unlimited drafts", "Multi-platform adaptation", "Anti-repeat memory"] },
           { name: "Pro", price: 129, features: ["Everything in Basic", "Up to 3 voices (team / agency)", "Calendar + approval workflow", "Engagement debrief", "Priority support"] },
         ],
       },
@@ -528,7 +510,7 @@ const translations: Record<string, Record<string, ProductTranslation>> = {
       useCases: ["Взрослые 30–55 с родителями 65+", "Семьи, разделённые 500+ км", "Восстановление после инсульта или операции дома", "Одинокие бабушки и дедушки"],
       deliveryTime: { template: "Номер активен за 30 минут", integration: "Подписка — без setup-платы" },
       tiers: [
-        { name: "Basic", features: ["7 дней бесплатно", "2 голосовых звонка в день", "Напоминания о лекарствах и здоровье", "Еженедельный семейный отчёт", "Экстренная эскалация"] },
+        { name: "Basic", features: ["2 голосовых звонка в день", "Напоминания о лекарствах и здоровье", "Еженедельный семейный отчёт", "Экстренная эскалация"] },
         { name: "Pro", features: ["Всё из Basic", "Безлимит голосовых звонков", "Колонки (Яндекс / Google / Алиса)", "Синхронизация с iDoctor", "Приоритетная поддержка человеком"] },
       ],
     },
@@ -547,7 +529,7 @@ const translations: Record<string, Record<string, ProductTranslation>> = {
       useCases: ["Дорослі 30–55 з батьками 65+", "Родини, розділені 500+ км", "Відновлення після інсульту чи операції вдома", "Самотні бабусі й дідусі"],
       deliveryTime: { template: "Номер активний за 30 хвилин", integration: "Підписка — без setup-оплати" },
       tiers: [
-        { name: "Basic", features: ["7 днів безкоштовно", "2 голосові дзвінки на день", "Нагадування про ліки та здоров'я", "Щотижневий сімейний звіт", "Екстрена ескалація"] },
+        { name: "Basic", features: ["2 голосові дзвінки на день", "Нагадування про ліки та здоров'я", "Щотижневий сімейний звіт", "Екстрена ескалація"] },
         { name: "Pro", features: ["Все з Basic", "Безліміт голосових дзвінків", "Колонки (Яндекс / Google / Аліса)", "Синхронізація з iDoctor", "Пріоритетна підтримка людиною"] },
       ],
     },
@@ -568,7 +550,7 @@ const translations: Record<string, Record<string, ProductTranslation>> = {
       useCases: ["Соло-предприниматели", "Владельцы малого бизнеса (≤10 чел)", "Инфобизнесмены (5k–50k аудитория)", "Консультанты и коучи", "Агентства"],
       deliveryTime: { template: "Telegram + MCP настройка за ~15 мин", integration: "Подписка — без setup-платы" },
       tiers: [
-        { name: "Basic", features: ["7 дней бесплатно", "Пульс клиентов + утренний бриф", "Рутинные ответы в Telegram/WhatsApp", "Еженедельный отчёт", "Все MCP-коннекторы"] },
+        { name: "Basic", features: ["Пульс клиентов + утренний бриф", "Рутинные ответы в Telegram/WhatsApp", "Еженедельный отчёт", "Все MCP-коннекторы"] },
         { name: "Pro", features: ["Всё из Basic", "Opus-тариф (макс. качество)", "Безлимит сообщений", "Кастомные MCP-серверы под твой стек", "Приоритетная поддержка человеком", "Квартальный tune-up с Denys"] },
       ],
     },
@@ -587,7 +569,7 @@ const translations: Record<string, Record<string, ProductTranslation>> = {
       useCases: ["Соло-підприємці", "Власники малого бізнесу (≤10 осіб)", "Інфобізнесмени (5k–50k аудиторія)", "Консультанти та коучі", "Агентства"],
       deliveryTime: { template: "Telegram + MCP налаштування за ~15 хв", integration: "Підписка — без setup-оплати" },
       tiers: [
-        { name: "Basic", features: ["7 днів безкоштовно", "Пульс клієнтів + ранковий бриф", "Рутинні відповіді у Telegram/WhatsApp", "Тижневий звіт", "Всі MCP-конектори"] },
+        { name: "Basic", features: ["Пульс клієнтів + ранковий бриф", "Рутинні відповіді у Telegram/WhatsApp", "Тижневий звіт", "Всі MCP-конектори"] },
         { name: "Pro", features: ["Все з Basic", "Opus-тариф (макс. якість)", "Безліміт повідомлень", "Кастомні MCP-сервери під твій стек", "Пріоритетна підтримка людиною", "Квартальна tune-up сесія з Denys"] },
       ],
     },
@@ -608,7 +590,7 @@ const translations: Record<string, Record<string, ProductTranslation>> = {
       useCases: ["Носители хронических болезней, уставшие пересказывать историю каждому новому врачу", "Тревожные биохакеры", "Люди без семейного врача, которому доверяют", "Все кто хочет лёгкую терапию 24/7 без $200/час"],
       deliveryTime: { template: "Хранилище активно за 5 минут", integration: "Подписка — без setup-платы" },
       tiers: [
-        { name: "Basic", features: ["7 дней бесплатно", "Безлимит загрузок документов", "Долгосрочная память здоровья", "Детекция паттернов + еженедельный дайджест", "Режим эмоциональной поддержки", "Эскалация красных флагов"] },
+        { name: "Basic", features: ["Безлимит загрузок документов", "Долгосрочная память здоровья", "Детекция паттернов + еженедельный дайджест", "Режим эмоциональной поддержки", "Эскалация красных флагов"] },
         { name: "Pro", features: ["Всё из Basic", "До 4 членов семьи", "Общие или приватные хранилища на каждого", "Приоритетная поддержка человеком", "Опциональная синхронизация с iLucy для пожилых родителей"] },
       ],
     },
@@ -627,7 +609,7 @@ const translations: Record<string, Record<string, ProductTranslation>> = {
       useCases: ["Носії хронічних хвороб, втомлені переповідати історію кожному новому лікарю", "Тривожні біохакери", "Люди без сімейного лікаря, якому довіряють", "Усі хто хоче легку терапію 24/7 без $200/год"],
       deliveryTime: { template: "Сховище активне за 5 хвилин", integration: "Підписка — без setup-оплати" },
       tiers: [
-        { name: "Basic", features: ["7 днів безкоштовно", "Безліміт завантажень документів", "Довгострокова пам'ять здоров'я", "Детекція патернів + щотижневий дайджест", "Режим емоційної підтримки", "Ескалація червоних прапорів"] },
+        { name: "Basic", features: ["Безліміт завантажень документів", "Довгострокова пам'ять здоров'я", "Детекція патернів + щотижневий дайджест", "Режим емоційної підтримки", "Ескалація червоних прапорів"] },
         { name: "Pro", features: ["Все з Basic", "До 4 членів сім'ї", "Спільні або приватні сховища на кожного", "Пріоритетна підтримка людиною", "Опціональна синхронізація з iLucy для літніх батьків"] },
       ],
     },
@@ -648,7 +630,7 @@ const translations: Record<string, Record<string, ProductTranslation>> = {
       useCases: ["Родители 30–50 с детьми 5–15", "Семьи на домашнем обучении", "Родители чьи дети уже сидят в ChatGPT без присмотра", "Бабушки и дедушки, дарящие безопасный AI вместо экранного времени"],
       deliveryTime: { template: "Активация за 10 минут", integration: "Подписка — без setup-платы" },
       tiers: [
-        { name: "Basic", features: ["7 дней бесплатно", "1 профиль ребёнка", "Все возрасты 5–15", "Еженедельный дайджест родителю", "Стек безопасности Finekot", "EN / RU / UA / DE"] },
+        { name: "Basic", features: ["1 профиль ребёнка", "Все возрасты 5–15", "Еженедельный дайджест родителю", "Стек безопасности Finekot", "EN / RU / UA / DE"] },
         { name: "Pro", features: ["Всё из Basic", "До 4 профилей детей", "Память, понимающая братьев и сестёр", "Приоритетная поддержка человеком"] },
       ],
     },
@@ -667,7 +649,7 @@ const translations: Record<string, Record<string, ProductTranslation>> = {
       useCases: ["Батьки 30–50 з дітьми 5–15", "Родини на домашньому навчанні", "Батьки чиї діти вже сидять у ChatGPT без нагляду", "Бабусі та дідусі, що дарують безпечний AI замість екранного часу"],
       deliveryTime: { template: "Активація за 10 хвилин", integration: "Підписка — без setup-оплати" },
       tiers: [
-        { name: "Basic", features: ["7 днів безкоштовно", "1 профіль дитини", "Всі вікові групи 5–15", "Щотижневий дайджест батьку", "Стек безпеки Finekot", "EN / RU / UA / DE"] },
+        { name: "Basic", features: ["1 профіль дитини", "Всі вікові групи 5–15", "Щотижневий дайджест батьку", "Стек безпеки Finekot", "EN / RU / UA / DE"] },
         { name: "Pro", features: ["Все з Basic", "До 4 профілів дітей", "Пам'ять, що розуміє братів і сестер", "Пріоритетна підтримка людиною"] },
       ],
     },
@@ -688,7 +670,7 @@ const translations: Record<string, Record<string, ProductTranslation>> = {
       useCases: ["Консультанты, готовящие клиентские презентации", "Журналисты на дедлайне", "Продактовые менеджеры, сканирующие конкурентов", "Исследователи с literature review", "Основатели на валидации рынка"],
       deliveryTime: { template: "Активация за 2 минуты", integration: "Подписка — без setup-платы" },
       tiers: [
-        { name: "Basic", features: ["7 дней бесплатно", "Безлимит Fast-запросов", "20 Deep Research отчётов / мес", "Память тредов", "Экспорт Markdown / Notion / Docs"] },
+        { name: "Basic", features: ["Безлимит Fast-запросов", "20 Deep Research отчётов / мес", "Память тредов", "Экспорт Markdown / Notion / Docs"] },
         { name: "Pro", features: ["Всё из Basic", "Безлимит Deep Research", "Opus-тариф (макс. качество)", "API-доступ для Zapier / n8n / скриптов", "Кастомные доменные источники"] },
       ],
     },
@@ -707,7 +689,7 @@ const translations: Record<string, Record<string, ProductTranslation>> = {
       useCases: ["Консультанти, що готують клієнтські презентації", "Журналісти на дедлайні", "Продуктові менеджери, що сканують конкурентів", "Дослідники з literature review", "Засновники на валідації ринку"],
       deliveryTime: { template: "Активація за 2 хвилини", integration: "Підписка — без setup-оплати" },
       tiers: [
-        { name: "Basic", features: ["7 днів безкоштовно", "Безліміт Fast-запитів", "20 Deep Research звітів / міс", "Пам'ять тредів", "Експорт Markdown / Notion / Docs"] },
+        { name: "Basic", features: ["Безліміт Fast-запитів", "20 Deep Research звітів / міс", "Пам'ять тредів", "Експорт Markdown / Notion / Docs"] },
         { name: "Pro", features: ["Все з Basic", "Безліміт Deep Research", "Opus-тариф (макс. якість)", "API-доступ для Zapier / n8n / скриптів", "Кастомні доменні джерела"] },
       ],
     },
@@ -728,7 +710,7 @@ const translations: Record<string, Record<string, ProductTranslation>> = {
       useCases: ["Создатели с аудиторией 5k–500k", "Founders, строящие личный бренд", "Агентства ведущие thought-leader аккаунты", "Ghostwriters хотящие в 3 раза ускориться", "Инфобиз запускающий курсы"],
       deliveryTime: { template: "Голос обучен за 10 минут", integration: "Подписка — без setup-платы" },
       tiers: [
-        { name: "Basic", features: ["7 дней бесплатно", "Voice-профиль из 30+ примеров", "Безлимит черновиков", "Мультиплатформенная адаптация", "Анти-повтор память"] },
+        { name: "Basic", features: ["Voice-профиль из 30+ примеров", "Безлимит черновиков", "Мультиплатформенная адаптация", "Анти-повтор память"] },
         { name: "Pro", features: ["Всё из Basic", "До 3 голосов (команда / агентство)", "Календарь + workflow согласования", "Разбор engagement", "Приоритетная поддержка"] },
       ],
     },
@@ -747,7 +729,7 @@ const translations: Record<string, Record<string, ProductTranslation>> = {
       useCases: ["Творці з аудиторією 5k–500k", "Founders, що будують особистий бренд", "Агентства що ведуть thought-leader акаунти", "Ghostwriters бажаючі втричі прискоритися", "Інфобіз що запускає курси"],
       deliveryTime: { template: "Голос навчено за 10 хвилин", integration: "Підписка — без setup-оплати" },
       tiers: [
-        { name: "Basic", features: ["7 днів безкоштовно", "Voice-профіль з 30+ прикладів", "Безліміт чернеток", "Мультиплатформна адаптація", "Анти-повтор пам'ять"] },
+        { name: "Basic", features: ["Voice-профіль з 30+ прикладів", "Безліміт чернеток", "Мультиплатформна адаптація", "Анти-повтор пам'ять"] },
         { name: "Pro", features: ["Все з Basic", "До 3 голосів (команда / агенція)", "Календар + workflow погодження", "Розбір engagement", "Пріоритетна підтримка"] },
       ],
     },
@@ -768,7 +750,7 @@ const translations: Record<string, Record<string, ProductTranslation>> = {
       useCases: ["Профессионалы с 20+ встреч в неделю", "Founders, жонглирующие инбоксом и календарём", "Консультанты на 10+ клиентов", "Все кто когда-либо говорил «мне нужен ассистент»"],
       deliveryTime: { template: "Активация за 10 минут", integration: "Подписка — без setup-платы" },
       tiers: [
-        { name: "Basic", features: ["7 дней бесплатно", "Утренний бриф + триаж почты", "Подготовка и расшифровка встреч", "Голос → задачи", "Персональная память"] },
+        { name: "Basic", features: ["Утренний бриф + триаж почты", "Подготовка и расшифровка встреч", "Голос → задачи", "Персональная память"] },
         { name: "Pro", features: ["Всё из Basic", "Opus-тариф (макс. качество)", "Безлимит сообщений", "Приоритетная скорость", "API + Zapier доступ", "Кастомные интеграции"] },
       ],
     },
@@ -787,7 +769,7 @@ const translations: Record<string, Record<string, ProductTranslation>> = {
       useCases: ["Професіонали з 20+ зустрічей на тиждень", "Founders, що жонглюють інбоксом і календарем", "Консультанти на 10+ клієнтів", "Усі хто колись казав «мені потрібен асистент»"],
       deliveryTime: { template: "Активація за 10 хвилин", integration: "Підписка — без setup-оплати" },
       tiers: [
-        { name: "Basic", features: ["7 днів безкоштовно", "Ранковий бриф + тріаж пошти", "Підготовка і розшифровка зустрічей", "Голос → задачі", "Персональна пам'ять"] },
+        { name: "Basic", features: ["Ранковий бриф + тріаж пошти", "Підготовка і розшифровка зустрічей", "Голос → задачі", "Персональна пам'ять"] },
         { name: "Pro", features: ["Все з Basic", "Opus-тариф (макс. якість)", "Безліміт повідомлень", "Пріоритетна швидкість", "API + Zapier доступ", "Кастомні інтеграції"] },
       ],
     },

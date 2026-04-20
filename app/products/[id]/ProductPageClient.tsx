@@ -3,7 +3,7 @@
 import { useParams } from "next/navigation";
 import Link from "next/link";
 import { motion } from "framer-motion";
-import { productsData, getTranslatedProduct, TRIAL_BOT_BY_ID } from "@/lib/products-data";
+import { productsData, getTranslatedProduct } from "@/lib/products-data";
 import DemoChat from "@/components/DemoChat";
 import ProductChat from "@/components/ProductChat";
 import { getDemoChat } from "@/lib/demo-chats";
@@ -11,15 +11,7 @@ import { i18n } from "@/lib/i18n";
 import { useLang } from "@/lib/lang-context";
 import LangSwitcher from "@/components/LangSwitcher";
 
-/** Build the CTA URL for an agent action.
- *  - `trial`: if a dedicated agent bot exists, link straight into it with `?start=trial`.
- *    Otherwise fall back to the sales bot with `?start=trial_<id>` so it can route.
- *  - `buy` / `order`: always the sales bot, preselecting the product. */
-function botDeepLink(contact: string, id: string, intent: "trial" | "buy" | "order"): string {
-  if (intent === "trial") {
-    const agentBot = TRIAL_BOT_BY_ID[id];
-    if (agentBot) return `${agentBot}?start=trial`;
-  }
+function botDeepLink(contact: string, id: string, intent: "buy" | "order"): string {
   const sep = contact.includes("?") ? "&" : "?";
   return `${contact}${sep}start=${intent}_${id}`;
 }
@@ -190,15 +182,9 @@ export default function ProductPageClient() {
                   { name: "Standard", price: sub.monthly, features: [] },
                 ];
                 const monthLabel = lang === "RU" ? "мес" : lang === "UA" ? "міс" : "mo";
-                const trialLabel = lang === "RU"
-                  ? `${sub.trialDays} дней бесплатно · отмена в 1 клик`
-                  : lang === "UA"
-                    ? `${sub.trialDays} днів безкоштовно · скасування в 1 клік`
-                    : `${sub.trialDays}-day free trial · cancel in 1 click`;
-                const ctaLabel = lang === "RU" ? "Попробовать →" : lang === "UA" ? "Спробувати →" : "Start trial →";
+                const ctaLabel = lang === "RU" ? "Подписаться →" : lang === "UA" ? "Підписатись →" : "Subscribe →";
                 return (
                   <div>
-                    <p className="text-center text-[11px] text-pink-100/40 font-mono mb-6">{trialLabel}</p>
                     <div className={`grid grid-cols-1 ${tiers.length >= 3 ? "md:grid-cols-3" : tiers.length === 2 ? "md:grid-cols-2" : ""} gap-4`}>
                       {tiers.map((tier, idx) => {
                         const isFeatured = idx === 1; // middle tier highlighted when 3 tiers
@@ -228,7 +214,7 @@ export default function ProductPageClient() {
                             </div>
                             {product.available ? (
                               <a
-                                href={botDeepLink(product.contact, product.id, "trial")}
+                                href={botDeepLink(product.contact, product.id, "buy")}
                                 target="_blank"
                                 rel="noopener noreferrer"
                                 className={`inline-block w-full px-6 py-3 rounded-lg text-sm font-semibold transition-all ${

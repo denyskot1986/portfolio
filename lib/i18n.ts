@@ -99,7 +99,7 @@ const EN: T = {
   projectUI: { live: "Live", keyFeatures: "Key Features" },
   about: {
     label: "About", title: "The Forge That Turns Raw Talent Into Results",
-    desc: "Authored AI agents you subscribe to (iБоря and the lineup — from $49/mo, 7-day trial) + production-grade AI systems you own outright (code + docs + deploy). Custom agents built for your business from $15k. Your choice of model.",
+    desc: "Authored AI agents you subscribe to (iБоря and the lineup — from $49/mo) + production-grade AI systems you own outright (code + docs + deploy). Custom agents built for your business from $15k. Your choice of model.",
     boxTitle: "What you get",
     points: ["Authored AI agents by subscription \u2014 iБоря and the lineup", "Production-grade systems with full source code when you want to own", "Custom agent Studio \u2014 your business, your brand, from $15k", "Optional 1-day integration for any owned system", "30 days support on integration & custom builds"],
   },
@@ -405,7 +405,7 @@ const RU: T = {
   projectUI: { live: "Live", keyFeatures: "\u041a\u043b\u044e\u0447\u0435\u0432\u044b\u0435 \u0444\u0438\u0447\u0438" },
   about: {
     label: "Обо мне", title: "Кузница, которая превращает сырой талант в результаты",
-    desc: "Авторские AI-агенты по подписке (iБоря и вся линейка — от $49/мес, 7 дней бесплатно) + production-grade AI-системы с исходным кодом, если хочешь владеть. Кастомные агенты под твой бизнес — от $15k. Выбираешь ту модель, которая тебе удобна.",
+    desc: "Авторские AI-агенты по подписке (iБоря и вся линейка — от $49/мес) + production-grade AI-системы с исходным кодом, если хочешь владеть. Кастомные агенты под твой бизнес — от $15k. Выбираешь ту модель, которая тебе удобна.",
     boxTitle: "Что вы получаете",
     points: ["Авторские AI-агенты по подписке — iБоря и линейка", "Production-системы с полным исходным кодом — если хочешь владеть", "Studio кастомных агентов — твой бизнес, твой бренд, от $15k", "Опциональная интеграция за 1 день для любой купленной системы", "30 дней поддержки при интеграции и кастом-разработке"],
   },
@@ -711,7 +711,7 @@ const UA: T = {
   projectUI: { live: "Live", keyFeatures: "\u041a\u043b\u044e\u0447\u043e\u0432\u0456 \u0444\u0456\u0447\u0456" },
   about: {
     label: "Про мене", title: "Кузня, що перетворює сирий талант на результати",
-    desc: "Авторські AI-агенти за підпискою (iБоря та вся лінійка — від $49/міс, 7 днів безкоштовно) + production-grade AI-системи з вихідним кодом, якщо хочеш володіти. Кастомні агенти під твій бізнес — від $15k. Обираєш ту модель, яка зручна тобі.",
+    desc: "Авторські AI-агенти за підпискою (iБоря та вся лінійка — від $49/міс) + production-grade AI-системи з вихідним кодом, якщо хочеш володіти. Кастомні агенти під твій бізнес — від $15k. Обираєш ту модель, яка зручна тобі.",
     boxTitle: "Що ви отримуєте",
     points: ["Авторські AI-агенти за підпискою — iБоря та лінійка", "Production-системи з повним вихідним кодом — якщо хочеш володіти", "Studio кастомних агентів — твій бізнес, твій бренд, від $15k", "Опціональна інтеграція за 1 день для будь-якої купленої системи", "30 днів підтримки при інтеграції та кастом-розробці"],
   },

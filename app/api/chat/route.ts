@@ -9,7 +9,7 @@ function buildProductCatalog(): string {
   const formatProduct = (p: typeof productsData[0]) => {
     let price: string;
     if (p.pricing.subscription) {
-      price = `$${p.pricing.subscription.monthly}/mo subscription (${p.pricing.subscription.trialDays}-day free trial)`;
+      price = `$${p.pricing.subscription.monthly}/mo subscription`;
     } else if (p.pricing.setup) {
       price = `$${p.pricing.code} (code) / $${p.pricing.setup} (with setup)`;
     } else {
@@ -23,7 +23,7 @@ function buildProductCatalog(): string {
 ${available.map(formatProduct).join("\n")}
 
 PRICING MODELS:
-  (a) Authored agents by subscription — monthly fee, 7-day free trial, cancel anytime. The agent is hosted by Finekot; you get access, not code. Example: iБоря @ $49/mo.
+  (a) Authored agents by subscription — monthly fee, cancel anytime. The agent is hosted by Finekot; you get access, not code. Example: iБоря @ $49/mo.
   (b) System templates — one-time payment for full source code + docs. You deploy & own it.
   (c) Integration — one-time payment where Denys personally sets up a system into your business in 1 day + 30 days support.
   (d) Custom Studio — bespoke authored agent for your business, from $15k, 3–6 weeks.

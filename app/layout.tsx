@@ -42,13 +42,13 @@ const jsonLd = {
   "@type": "ProfessionalService",
   name: "Finekot — AI Agents & Systems",
   url: siteUrl,
-  description: "Authored AI agents by subscription (from $49/mo, 7-day trial) and production-ready AI systems you can own outright ($499 template, $2500 personal integration). Custom agents from $15k.",
+  description: "Authored AI agents by subscription (from $49/mo) and production-ready AI systems you can own outright ($499 template, $2500 personal integration). Custom agents from $15k.",
   contactPoint: { "@type": "ContactPoint", url: "https://t.me/shop_by_finekot_bot", contactType: "sales" },
   hasOfferCatalog: {
     "@type": "OfferCatalog",
     name: "Finekot Store",
     itemListElement: [
-      { "@type": "Offer", name: "iБоря Subscription", price: "49", priceCurrency: "USD", priceSpecification: { "@type": "UnitPriceSpecification", price: "49", priceCurrency: "USD", unitCode: "MON", referenceQuantity: { "@type": "QuantitativeValue", value: 1, unitCode: "MON" } }, description: "AI operations chief for small business. 7-day free trial.", itemOffered: { "@type": "Service", name: "iБоря — AI agent subscription" } },
+      { "@type": "Offer", name: "iБоря Subscription", price: "49", priceCurrency: "USD", priceSpecification: { "@type": "UnitPriceSpecification", price: "49", priceCurrency: "USD", unitCode: "MON", referenceQuantity: { "@type": "QuantitativeValue", value: 1, unitCode: "MON" } }, description: "AI operations chief for small business. Cancel anytime.", itemOffered: { "@type": "Service", name: "iБоря — AI agent subscription" } },
       { "@type": "Offer", name: "System Template", price: "499", priceCurrency: "USD", description: "Full source code + documentation + deployment guide. Deploy it yourself.", itemOffered: { "@type": "Service", name: "AI System Template" } },
       { "@type": "Offer", name: "System Integration", price: "2500", priceCurrency: "USD", description: "Personal setup into your business in 1 day. 30 days support included.", itemOffered: { "@type": "Service", name: "AI System Integration" } },
       { "@type": "Offer", name: "Custom Studio", price: "15000", priceCurrency: "USD", description: "Custom authored AI agent built for your business. From $15k. 3–6 weeks delivery.", itemOffered: { "@type": "Service", name: "Custom Agent Studio" } },

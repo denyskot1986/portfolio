@@ -416,15 +416,6 @@ export default function Home() {
                       {lang === "RU" ? "от" : lang === "UA" ? "від" : "from"} · {lang === "RU" ? "интеграция" : lang === "UA" ? "інтеграція" : "setup"} ${p.pricing.setup}
                     </p>
                   )}
-                  {p.pricing.subscription && (
-                    <p className="text-[9px] font-mono mt-0.5" style={{ color: "var(--cyan)", opacity: 0.6 }}>
-                      {lang === "RU"
-                        ? `${p.pricing.subscription.trialDays} дней бесплатно`
-                        : lang === "UA"
-                          ? `${p.pricing.subscription.trialDays} днів безкоштовно`
-                          : `${p.pricing.subscription.trialDays}-day free trial`}
-                    </p>
-                  )}
                 </div>
                 <Link href={`/products/${p.id}`} className="btn-buy">
                   ./details →
