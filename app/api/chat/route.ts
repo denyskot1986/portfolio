@@ -9,9 +9,10 @@ export const maxDuration = 30;
 
 const OPENROUTER_API_KEY = process.env.OPENROUTER_API_KEY || "";
 
-// Haiku 4.5 — баланс latency/цены/качества для short-form sales-chat.
+// Gemini 2.5 Pro — лучше следует сложным инструкциям промпта (ссылки, handoff-логика),
+// чем Haiku. Медленнее, но качество стоит latency для sales-chat.
 // Override через env при A/B.
-const CHAT_MODEL = process.env.CHAT_MODEL || "anthropic/claude-haiku-4.5";
+const CHAT_MODEL = process.env.CHAT_MODEL || "google/gemini-2.5-pro";
 
 // Rate limits — два окна: burst (минута) + hard cap (час).
 const RL_MIN_MAX = 5;
