@@ -370,9 +370,9 @@ export default function ChatbotWidget() {
           <motion.div
             className="absolute inset-0 pointer-events-none"
             style={{
-              border: "1px solid #00ff41",
+              border: "1px solid #ffb000",
               borderRadius: "4px",
-              boxShadow: "0 0 14px rgba(0, 255, 65, 0.45), inset 0 0 6px rgba(0, 255, 65, 0.15)",
+              boxShadow: "0 0 14px rgba(255, 176, 0, 0.5), inset 0 0 6px rgba(255, 176, 0, 0.15)",
             }}
             animate={{ opacity: [0.85, 0.25, 0.85] }}
             transition={{ duration: 1.1, repeat: Infinity, ease: "easeInOut" }}
