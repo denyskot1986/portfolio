@@ -1,7 +1,7 @@
 "use client";
 
-import { useState, useRef, useEffect, useCallback, useMemo } from "react";
-import { motion, AnimatePresence } from "framer-motion";
+import { useState, useRef, useEffect, useLayoutEffect, useCallback, useMemo } from "react";
+import { motion, AnimatePresence, useAnimationControls } from "framer-motion";
 
 interface ChatMessage {
   role: "user" | "assistant";
@@ -95,24 +95,81 @@ export default function ChatbotWidget() {
   const [loading, setLoading] = useState(false);
   const [hasOpened, setHasOpened] = useState(false);
   const [side, setSide] = useState<"right" | "left">("right");
-  const [leftPx, setLeftPx] = useState<number | null>(null);
+  const [flexAlign, setFlexAlign] = useState<"flex-end" | "flex-start">("flex-end");
   const messagesContainerRef = useRef<HTMLDivElement>(null);
   const inputRef = useRef<HTMLTextAreaElement>(null);
   const peekingRef = useRef(false);
+  const posControls = useAnimationControls();
+  const sideInitialized = useRef(false);
 
-  // Compute left-offset in px from current side + viewport width. Using
-  // numeric `left` on both states so framer can tween the slide smoothly
-  // (animating between `left:auto` and `left:20px` doesn't work).
+  // Initial snap: position without animation on first layout pass.
+  useLayoutEffect(() => {
+    if (typeof window === "undefined") return;
+    if (sideInitialized.current) return;
+    sideInitialized.current = true;
+    const vw = window.innerWidth;
+    posControls.set({
+      left: side === "right" ? vw - CONTAINER_W - EDGE_GAP : EDGE_GAP,
+    });
+  }, [posControls, side]);
+
+  // Wrap-around slide on side change: widget exits off the current edge,
+  // teleports off-screen to the opposite edge, then slides back into view.
   useEffect(() => {
     if (typeof window === "undefined") return;
-    const update = () => {
-      const vw = window.innerWidth;
-      setLeftPx(side === "right" ? vw - CONTAINER_W - EDGE_GAP : EDGE_GAP);
+    if (!sideInitialized.current) return;
+
+    const vw = window.innerWidth;
+    const rightRest = vw - CONTAINER_W - EDGE_GAP;
+    const leftRest = EDGE_GAP;
+    const offRight = vw + EDGE_GAP;
+    const offLeft = -CONTAINER_W - EDGE_GAP;
+
+    let cancelled = false;
+    (async () => {
+      if (side === "left") {
+        await posControls.start({
+          left: offRight,
+          transition: { duration: 0.55, ease: "easeIn" },
+        });
+        if (cancelled) return;
+        setFlexAlign("flex-start");
+        posControls.set({ left: offLeft });
+        await posControls.start({
+          left: leftRest,
+          transition: { duration: 0.55, ease: "easeOut" },
+        });
+      } else {
+        await posControls.start({
+          left: offLeft,
+          transition: { duration: 0.55, ease: "easeIn" },
+        });
+        if (cancelled) return;
+        setFlexAlign("flex-end");
+        posControls.set({ left: offRight });
+        await posControls.start({
+          left: rightRest,
+          transition: { duration: 0.55, ease: "easeOut" },
+        });
+      }
+    })();
+    return () => {
+      cancelled = true;
     };
-    update();
-    window.addEventListener("resize", update);
-    return () => window.removeEventListener("resize", update);
-  }, [side]);
+  }, [side, posControls]);
+
+  // Resize handling — snap to current resting position for the active side.
+  useEffect(() => {
+    if (typeof window === "undefined") return;
+    const onResize = () => {
+      const vw = window.innerWidth;
+      posControls.set({
+        left: side === "right" ? vw - CONTAINER_W - EDGE_GAP : EDGE_GAP,
+      });
+    };
+    window.addEventListener("resize", onResize);
+    return () => window.removeEventListener("resize", onResize);
+  }, [side, posControls]);
 
   useEffect(() => {
     const el = messagesContainerRef.current;
@@ -250,10 +307,10 @@ export default function ChatbotWidget() {
       className="fixed bottom-5 z-[500] flex flex-col gap-3"
       style={{
         width: CONTAINER_W,
-        alignItems: side === "right" ? "flex-end" : "flex-start",
+        alignItems: flexAlign,
       }}
-      animate={{ left: leftPx ?? EDGE_GAP }}
-      transition={{ duration: 0.9, ease: [0.65, 0, 0.35, 1] }}
+      animate={posControls}
+      initial={false}
     >
       {/* Chat panel — V3 Data Stream */}
       <AnimatePresence>
