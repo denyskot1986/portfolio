@@ -365,17 +365,16 @@ export default function ChatbotWidget() {
             transition={{ duration: 2, repeat: Infinity, ease: "easeOut" }}
           />
         )}
-        {/* Blinking status dot — attention grabber while scrolling */}
+        {/* Blinking frame — subtle attention grabber while scrolling */}
         {!open && (
-          <motion.span
-            className="absolute -top-1 -right-1 rounded-full"
+          <motion.div
+            className="absolute inset-0 pointer-events-none"
             style={{
-              width: 10,
-              height: 10,
-              background: "#00ff41",
-              boxShadow: "0 0 10px #00ff41, 0 0 18px rgba(0, 255, 65, 0.7)",
+              border: "1px solid #00ff41",
+              borderRadius: "4px",
+              boxShadow: "0 0 14px rgba(0, 255, 65, 0.45), inset 0 0 6px rgba(0, 255, 65, 0.15)",
             }}
-            animate={{ opacity: [1, 0.15, 1], scale: [1, 0.85, 1] }}
+            animate={{ opacity: [0.85, 0.25, 0.85] }}
             transition={{ duration: 1.1, repeat: Infinity, ease: "easeInOut" }}
           />
         )}
