@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useRef, useEffect, useLayoutEffect, useCallback, useMemo } from "react";
+import { useState, useRef, useEffect, useLayoutEffect, useCallback } from "react";
 import { motion, AnimatePresence, useAnimationControls } from "framer-motion";
 
 interface ChatMessage {
@@ -8,17 +8,9 @@ interface ChatMessage {
   content: string;
 }
 
-const SUGGESTED_PROMPTS = [
-  "Что у вас есть?",
-  "Нужен AI для бизнеса",
-  "Сколько стоит iБоря?",
-  "AI для родителей",
-];
-
 const WELCOME_MESSAGE: ChatMessage = {
   role: "assistant",
-  content:
-    "HELLO !\n\nЗдесь 7 AI-агентов, готовые системы и кастомные студии. Расскажи что ищешь — подскажу что подойдёт.",
+  content: "HELLO !",
 };
 
 const SESSION_KEY = "finekot_chat_session";
@@ -281,13 +273,6 @@ export default function ChatbotWidget() {
     void sendMessage(input);
   }, [input, sendMessage]);
 
-  const onSuggestedClick = useCallback(
-    (prompt: string) => {
-      void sendMessage(prompt);
-    },
-    [sendMessage]
-  );
-
   const handleKeyDown = useCallback(
     (e: React.KeyboardEvent) => {
       if (e.key === "Enter" && !e.shiftKey) {
@@ -296,11 +281,6 @@ export default function ChatbotWidget() {
       }
     },
     [send]
-  );
-
-  const showSuggested = useMemo(
-    () => !messages.some((m) => m.role === "user") && !loading,
-    [messages, loading]
   );
 
   return (
@@ -463,48 +443,6 @@ export default function ChatbotWidget() {
               )}
             </div>
 
-            {/* Suggested prompts */}
-            <AnimatePresence>
-              {showSuggested && messages.length > 0 && (
-                <motion.div
-                  initial={{ opacity: 0, y: 4 }}
-                  animate={{ opacity: 1, y: 0 }}
-                  exit={{ opacity: 0, y: -4 }}
-                  transition={{ duration: 0.18 }}
-                  className="relative px-3 pb-2 flex flex-wrap gap-1.5"
-                >
-                  {SUGGESTED_PROMPTS.map((prompt) => (
-                    <button
-                      key={prompt}
-                      onClick={() => onSuggestedClick(prompt)}
-                      disabled={loading}
-                      className="text-[10px] px-2 py-1 transition-all disabled:opacity-40"
-                      style={{
-                        background: "rgba(0, 255, 65, 0.06)",
-                        border: "1px solid rgba(0, 255, 65, 0.3)",
-                        color: "#d9ffe0",
-                        borderRadius: "3px",
-                      }}
-                      onMouseEnter={(e) => {
-                        if (!e.currentTarget.disabled) {
-                          e.currentTarget.style.background = "rgba(0, 255, 65, 0.15)";
-                          e.currentTarget.style.borderColor = "#00ff41";
-                          e.currentTarget.style.color = "#00ff41";
-                        }
-                      }}
-                      onMouseLeave={(e) => {
-                        e.currentTarget.style.background = "rgba(0, 255, 65, 0.06)";
-                        e.currentTarget.style.borderColor = "rgba(0, 255, 65, 0.3)";
-                        e.currentTarget.style.color = "#d9ffe0";
-                      }}
-                    >
-                      &gt; {prompt}
-                    </button>
-                  ))}
-                </motion.div>
-              )}
-            </AnimatePresence>
-
             {/* Prompt / input */}
             <div
               className="relative px-3 py-2 flex items-start gap-2"
@@ -530,7 +468,7 @@ export default function ChatbotWidget() {
                 value={input}
                 onChange={(e) => { setInput(e.target.value); adjustTextarea(); }}
                 onKeyDown={handleKeyDown}
-                placeholder="type here..."
+                placeholder="↓ ↓ ↓"
                 rows={1}
                 className="flex-1 py-2 bg-transparent text-xs focus:outline-none resize-none leading-relaxed"
                 style={{
