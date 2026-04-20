@@ -32,6 +32,75 @@ interface ChatMessage {
   content: string;
 }
 
+function buildPageContext(pageUrl: string): string {
+  if (!pageUrl || pageUrl === "/") return "";
+
+  // Strip query/hash, then try to match a product page.
+  const clean = pageUrl.split("?")[0].split("#")[0];
+  const productMatch = clean.match(/^\/products\/([^/]+)\/?$/);
+
+  if (productMatch) {
+    const slug = decodeURIComponent(productMatch[1]).toLowerCase();
+    const product = productsData.find((p) => p.id.toLowerCase() === slug);
+    if (product) {
+      const features = product.features
+        .map((f) => `    · ${f.title} — ${f.desc}`)
+        .join("\n");
+      const useCases = product.useCases.map((u) => `    · ${u}`).join("\n");
+      let priceLine: string;
+      if (product.pricing.subscription?.tiers?.length) {
+        priceLine = product.pricing.subscription.tiers
+          .map((t) => `${t.name} $${t.price}/mo`)
+          .join(" / ");
+      } else if (product.pricing.subscription) {
+        priceLine = `$${product.pricing.subscription.monthly}/mo`;
+      } else if (product.pricing.setup) {
+        priceLine = `$${product.pricing.code} code / $${product.pricing.setup} setup`;
+      } else {
+        priceLine = `$${product.pricing.code}`;
+      }
+
+      return `
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+ТЕКУЩАЯ СТРАНИЦА: /products/${product.id}
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+Юзер прямо сейчас смотрит карточку продукта **${product.name}** (id: ${product.id}).
+Если он задаёт неконкретный вопрос ("сколько стоит?", "расскажи", "а что умеет?", "кому подходит?", "как купить?"),
+по умолчанию отвечай именно про ${product.name} — НЕ переспрашивай "какой продукт".
+Переключайся на другие продукты, только если юзер сам их назвал или явно попросил альтернативу.
+
+Дossier ${product.name}:
+  tagline: ${product.tagline}
+  category: ${product.category}
+  pricing: ${priceLine}
+  delivery: ${product.deliveryTime.template} / ${product.deliveryTime.integration}
+  description: ${product.description}
+  long: ${product.longDescription}
+  features:
+${features}
+  use cases:
+${useCases}
+  tech: ${product.techStack.join(", ")}
+  availability: ${product.available ? "LIVE" : "not available yet"}`;
+    }
+
+    // slug didn't match — fall through to generic
+    return `\n\nТЕКУЩАЯ СТРАНИЦА: ${clean} (продуктовая, но продукт не найден в каталоге — уточни у юзера).`;
+  }
+
+  // Non-product pages
+  const pageHints: Record<string, string> = {
+    "/discover": "страница personality-scan / подбора AI под юзера",
+    "/reels-agent": "лендинг reels-agent системы",
+    "/checkout": "страница оформления покупки",
+    "/dashboard": "приватный дашборд клиента",
+  };
+  const hint = Object.entries(pageHints).find(([prefix]) => clean.startsWith(prefix));
+  const suffix = hint ? ` (${hint[1]})` : "";
+  return `\n\nТЕКУЩАЯ СТРАНИЦА: ${clean}${suffix}. Если страница продукта — приоритет именно ему при рекомендации.`;
+}
+
 function buildCatalogContext(): string {
   const available = productsData.filter((p) => p.available);
 
@@ -259,9 +328,7 @@ export async function POST(req: NextRequest) {
     }
 
     const catalog = buildCatalogContext();
-    const pageContext = pageUrl && pageUrl !== "/"
-      ? `\n\nCURRENT PAGE: ${pageUrl}. Если на странице продукта — приоритет именно ему при рекомендации.`
-      : "";
+    const pageContext = buildPageContext(pageUrl);
     const systemContent = SYSTEM_PROMPT + "\n\n" + catalog + pageContext;
 
     const response = await fetch("https://openrouter.ai/api/v1/chat/completions", {
