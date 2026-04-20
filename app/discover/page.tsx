@@ -35,7 +35,7 @@ interface Profile {
   summary: string;
 }
 
-type Stage = "gate" | "intro" | "scanning" | "analyzing" | "result" | "error";
+type Stage = "intro" | "scanning" | "analyzing" | "result" | "error";
 
 const TERM_GREEN = "#00ff41";
 const TERM_AMBER = "#ffb000";
@@ -674,8 +674,7 @@ function ResultView({ profile, onRestart }: { profile: Profile; onRestart: () =>
 // ---------- Main page ----------
 
 export default function DiscoverPage() {
-  const [stage, setStage] = useState<Stage>("gate");
-  const [password, setPassword] = useState<string>("");
+  const [stage, setStage] = useState<Stage>("intro");
   const [history, setHistory] = useState<HistoryItem[]>([]);
   const [currentQuestion, setCurrentQuestion] = useState<Question | null>(null);
   const [profile, setProfile] = useState<Profile | null>(null);
@@ -683,18 +682,8 @@ export default function DiscoverPage() {
   const [isThinking, setIsThinking] = useState(false);
   const stageRef = useRef<HTMLDivElement>(null);
 
-  // Restore password from sessionStorage so user doesn't re-enter on refresh.
-  useEffect(() => {
-    if (typeof window === "undefined") return;
-    const saved = sessionStorage.getItem("discover_pwd");
-    if (saved) {
-      setPassword(saved);
-      setStage("intro");
-    }
-  }, []);
-
   const fetchNext = useCallback(
-    async (currentHistory: HistoryItem[], pwd: string) => {
+    async (currentHistory: HistoryItem[]) => {
       setIsThinking(true);
       try {
         const res = await fetch("/api/discover", {
@@ -703,7 +692,6 @@ export default function DiscoverPage() {
           body: JSON.stringify({
             action: "next",
             history: currentHistory,
-            password: pwd,
           }),
         });
         const data = await res.json();
@@ -720,7 +708,7 @@ export default function DiscoverPage() {
   );
 
   const fetchAnalysis = useCallback(
-    async (finalHistory: HistoryItem[], pwd: string) => {
+    async (finalHistory: HistoryItem[]) => {
       setStage("analyzing");
       try {
         const res = await fetch("/api/discover", {
@@ -729,7 +717,6 @@ export default function DiscoverPage() {
           body: JSON.stringify({
             action: "analyze",
             history: finalHistory,
-            password: pwd,
           }),
         });
         const data = await res.json();
@@ -744,26 +731,13 @@ export default function DiscoverPage() {
     []
   );
 
-  const verifyPassword = useCallback(async (pwd: string): Promise<boolean> => {
-    try {
-      const res = await fetch("/api/discover", {
-        method: "POST",
-        headers: { "content-type": "application/json" },
-        body: JSON.stringify({ action: "auth", history: [], password: pwd }),
-      });
-      return res.ok;
-    } catch {
-      return false;
-    }
-  }, []);
-
   const start = () => {
     setHistory([]);
     setCurrentQuestion(null);
     setProfile(null);
     setErrorMsg("");
     setStage("scanning");
-    fetchNext([], password);
+    fetchNext([]);
   };
 
   const handleAnswer = (answer: string | string[]) => {
@@ -774,27 +748,15 @@ export default function DiscoverPage() {
     setCurrentQuestion(null);
 
     if (newHistory.length >= QUESTION_BUDGET) {
-      fetchAnalysis(newHistory, password);
+      fetchAnalysis(newHistory);
     } else {
-      fetchNext(newHistory, password);
+      fetchNext(newHistory);
     }
 
     // scroll to top of card on mobile
     setTimeout(() => {
       stageRef.current?.scrollIntoView({ behavior: "smooth", block: "start" });
     }, 100);
-  };
-
-  const handleGateSubmit = async (pwd: string) => {
-    const ok = await verifyPassword(pwd);
-    if (!ok) {
-      throw new Error("Неверный пароль");
-    }
-    setPassword(pwd);
-    if (typeof window !== "undefined") {
-      sessionStorage.setItem("discover_pwd", pwd);
-    }
-    setStage("intro");
   };
 
   return (
@@ -957,8 +919,6 @@ export default function DiscoverPage() {
         </div>
 
         {/* Stage routing */}
-        {stage === "gate" && <GateView onSubmit={handleGateSubmit} />}
-
         {stage === "intro" && (
           <IntroView onStart={start} />
         )}
@@ -996,127 +956,6 @@ export default function DiscoverPage() {
 }
 
 // ---------- Stage views ----------
-
-function GateView({
-  onSubmit,
-}: {
-  onSubmit: (pwd: string) => Promise<void>;
-}) {
-  const [pwd, setPwd] = useState("");
-  const [err, setErr] = useState<string>("");
-  const [busy, setBusy] = useState(false);
-
-  const submit = async () => {
-    if (!pwd.trim() || busy) return;
-    setBusy(true);
-    setErr("");
-    try {
-      await onSubmit(pwd.trim());
-    } catch (e) {
-      setErr(e instanceof Error ? e.message : "Ошибка авторизации");
-      setPwd("");
-    } finally {
-      setBusy(false);
-    }
-  };
-
-  const lines = [
-    "> initializing access control...",
-    "> scan module: LOCKED",
-    "> требуется пароль доступа",
-    "",
-  ];
-
-  return (
-    <div style={{ paddingTop: 20 }}>
-      <div style={{ fontSize: 13, color: TERM_DIM, lineHeight: 1.8, marginBottom: 20 }}>
-        {lines.map((l, i) => (
-          <div key={i}>{l || "\u00a0"}</div>
-        ))}
-      </div>
-
-      <div
-        style={{
-          fontSize: 14,
-          color: TERM_AMBER,
-          letterSpacing: "0.15em",
-          marginBottom: 14,
-        }}
-      >
-        // ПАРОЛЬ ДОСТУПА
-      </div>
-
-      <input
-        type="password"
-        value={pwd}
-        onChange={(e) => setPwd(e.target.value)}
-        onKeyDown={(e) => {
-          if (e.key === "Enter") submit();
-        }}
-        placeholder="> введите пароль..."
-        autoFocus
-        disabled={busy}
-        style={{
-          width: "100%",
-          background: "rgba(0,255,65,0.03)",
-          border: `1px solid ${TERM_DIM}`,
-          color: TERM_GREEN,
-          fontFamily: "inherit",
-          fontSize: 16,
-          padding: "14px 16px",
-          borderRadius: 4,
-          outline: "none",
-          letterSpacing: "0.08em",
-        }}
-      />
-
-      {err && (
-        <div
-          style={{
-            fontSize: 12,
-            color: "#ff6666",
-            marginTop: 10,
-            letterSpacing: "0.05em",
-          }}
-        >
-          // {err.toUpperCase()}
-        </div>
-      )}
-
-      <div style={{ marginTop: 20 }}>
-        <button
-          onClick={submit}
-          disabled={!pwd.trim() || busy}
-          className="term-submit"
-        >
-          {busy ? "// ПРОВЕРКА..." : "$ ВОЙТИ →"}
-        </button>
-      </div>
-
-      <div
-        style={{
-          fontSize: 11,
-          color: TERM_DIM,
-          marginTop: 24,
-          lineHeight: 1.6,
-        }}
-      >
-        // Доступ ограничен чтобы случайные гости не жгли токены.
-        <br />
-        // Пароль выдаёт{" "}
-        <a
-          href="https://t.me/finekot"
-          target="_blank"
-          rel="noopener noreferrer"
-          style={{ color: TERM_AMBER, textDecoration: "underline" }}
-        >
-          Командир
-        </a>
-        .
-      </div>
-    </div>
-  );
-}
 
 function IntroView({ onStart }: { onStart: () => void }) {
   const lines = [

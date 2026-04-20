@@ -4,15 +4,16 @@ import {
   ANALYST_SYSTEM_PROMPT,
   QUESTION_BUDGET,
 } from "@/lib/discover-prompts";
+import { kvEnabled, kvGetJSON, kvSetJSON } from "@/lib/kv";
 
 // Все LLM-вызовы в проектах Finekot идут через OpenRouter.
 // Ключ — только серверный, никогда не уходит в браузер.
 const OPENROUTER_API_KEY = process.env.OPENROUTER_API_KEY || "";
 
-// Gate — чтобы случайные люди не жгли OpenRouter-токены.
-// Этот файл серверный, в клиентский бандл не уходит.
-// Можно переопределить через env var DISCOVER_PASSWORD.
-const DISCOVER_PASSWORD = process.env.DISCOVER_PASSWORD || "minikota";
+// Rate limit: один проход сканера на IP раз в N секунд. Ключ живёт
+// всё окно, поэтому он же служит sentinel'ом «сессия активна» — если
+// юзер начал скан, он успеет его закончить (20 вопросов ≈ < 3 мин).
+const RATE_LIMIT_WINDOW_SEC = 600;
 
 const QUESTIONER_MODEL =
   process.env.DISCOVER_QUESTIONER_MODEL || "anthropic/claude-sonnet-4.5";
@@ -34,9 +35,59 @@ interface HistoryItem {
 }
 
 interface NextRequestBody {
-  action: "next" | "analyze" | "auth";
+  action: "next" | "analyze";
   history: HistoryItem[];
-  password?: string;
+}
+
+function getClientIP(req: NextRequest): string {
+  const fwd = req.headers.get("x-forwarded-for");
+  if (fwd) return fwd.split(",")[0].trim();
+  const real = req.headers.get("x-real-ip");
+  if (real) return real.trim();
+  return "unknown";
+}
+
+interface RateLimitRecord {
+  startedAt: number;
+}
+
+async function enforceRateLimit(
+  ip: string,
+  action: "next" | "analyze",
+  historyLength: number
+): Promise<{ ok: true } | { ok: false; status: number; error: string }> {
+  // Если Redis не сконфигурирован (локальная разработка) — пропускаем.
+  if (!kvEnabled()) return { ok: true };
+
+  const key = `discover:rl:${ip}`;
+  const isStart = action === "next" && historyLength === 0;
+  const existing = await kvGetJSON<RateLimitRecord>(key);
+
+  if (isStart) {
+    if (existing) {
+      const elapsed = Math.floor((Date.now() - existing.startedAt) / 1000);
+      const remaining = Math.max(1, RATE_LIMIT_WINDOW_SEC - elapsed);
+      const mins = Math.ceil(remaining / 60);
+      return {
+        ok: false,
+        status: 429,
+        error: `Слишком часто. Попробуй ещё раз через ${mins} мин.`,
+      };
+    }
+    await kvSetJSON(key, { startedAt: Date.now() }, RATE_LIMIT_WINDOW_SEC);
+    return { ok: true };
+  }
+
+  // Продолжение сессии: требуем существующий ключ, иначе сценарий
+  // похож на абьюз (шлют analyze без прохождения сканера).
+  if (!existing) {
+    return {
+      ok: false,
+      status: 429,
+      error: "Сессия истекла или не начата. Обнови страницу и начни заново.",
+    };
+  }
+  return { ok: true };
 }
 
 function formatHistoryForLLM(history: HistoryItem[]): string {
@@ -108,26 +159,26 @@ export async function POST(req: NextRequest) {
     }
 
     const body = (await req.json()) as NextRequestBody;
-    const { action, history, password } = body;
-
-    // Gate — проверка пароля на каждом запросе
-    if (!password || password !== DISCOVER_PASSWORD) {
-      return NextResponse.json(
-        { error: "Доступ запрещён. Неверный пароль." },
-        { status: 401 }
-      );
-    }
-
-    // auth — только проверка пароля без LLM-вызова
-    if (action === "auth") {
-      return NextResponse.json({ ok: true });
-    }
+    const { action, history } = body;
 
     if (!Array.isArray(history)) {
       return NextResponse.json(
         { error: "Некорректный формат history" },
         { status: 400 }
       );
+    }
+
+    if (action !== "next" && action !== "analyze") {
+      return NextResponse.json(
+        { error: `Неизвестное действие: ${action}` },
+        { status: 400 }
+      );
+    }
+
+    const ip = getClientIP(req);
+    const rl = await enforceRateLimit(ip, action, history.length);
+    if (!rl.ok) {
+      return NextResponse.json({ error: rl.error }, { status: rl.status });
     }
 
     if (action === "next") {
