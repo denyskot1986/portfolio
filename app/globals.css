@@ -21,7 +21,8 @@
   --glass-hover: rgba(0, 255, 65, 0.05);
   --glass-border: rgba(0, 255, 65, 0.18);
   --glass-border-hover: rgba(0, 255, 65, 0.45);
-  /* Reserved space under fixed chat bar (ChatbotBar.tsx) */
+  /* Chat frame metrics (ChatbotBar.tsx wraps the page as a terminal window) */
+  --chat-top-h: 34px;
   --chat-bar-h: 72px;
 }
 

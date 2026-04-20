@@ -22,7 +22,6 @@ const NAV_WHITELIST = /^\/(products\/[a-z0-9-]+|discover|reels-agent)\/?$/i;
 // Action directive syntax emitted by the LLM:
 //   [nav:/products/orban]   → next.router.push
 //   [scroll:product-orban]  → document.getElementById(...).scrollIntoView
-// They are stripped from the rendered message and executed on arrival.
 const ACTION_REGEX = /\[(nav|scroll):([^\]\s]+)\]/gi;
 
 type ParsedReply = {
@@ -44,8 +43,7 @@ function parseReply(raw: string): ParsedReply {
   return { visible, actions };
 }
 
-// Legacy markdown-link fallback — LLM might still emit [label](/path).
-// Render as plain text (no nav) since directives are the new path.
+// Legacy markdown links — render as plain text in case the LLM slips.
 const MD_LINK_REGEX = /\[([^\]\n]+)\]\((\/[^\s)]+)\)/g;
 function stripMarkdownLinks(content: string): React.ReactNode {
   const nodes: React.ReactNode[] = [];
@@ -98,30 +96,31 @@ function getSessionId(): string {
   }
 }
 
+const FRAME_BORDER = "rgba(0, 255, 65, 0.4)";
+const FRAME_GLOW = "0 0 24px rgba(0, 255, 65, 0.18)";
+
 export default function ChatbotBar() {
   const router = useRouter();
   const pathname = usePathname();
   const [messages, setMessages] = useState<ChatMessage[]>([WELCOME_MESSAGE]);
   const [input, setInput] = useState("");
   const [loading, setLoading] = useState(false);
-  const [panelOpen, setPanelOpen] = useState(false);
+  const [logOpen, setLogOpen] = useState(false);
   const messagesRef = useRef<HTMLDivElement>(null);
   const inputRef = useRef<HTMLTextAreaElement>(null);
 
   useEffect(() => {
     const el = messagesRef.current;
     if (el) el.scrollTop = el.scrollHeight;
-  }, [messages, loading, panelOpen]);
+  }, [messages, loading, logOpen]);
 
   const executeActions = useCallback(
     (actions: ParsedReply["actions"]) => {
       if (actions.length === 0) return;
-      // Run actions with small delays so the user can visually follow them.
       let delay = 0;
       for (const act of actions) {
         setTimeout(() => {
           if (act.type === "nav") {
-            // Already on target → treat as scroll-to-top anchor.
             if (act.target === pathname) {
               window.scrollTo({ top: 0, behavior: "smooth" });
             } else {
@@ -149,7 +148,7 @@ export default function ChatbotBar() {
     async (text: string) => {
       const trimmed = text.trim();
       if (!trimmed || loading) return;
-      setPanelOpen(true);
+      setLogOpen(true);
 
       const userMsg: ChatMessage = { role: "user", content: trimmed };
       const historyForApi = messages
@@ -224,116 +223,204 @@ export default function ChatbotBar() {
     [messages]
   );
 
+  const hasActivity = messages.length > 1;
+
   return (
     <>
-      {/* Floating messages panel above the bar */}
+      {/* ───── TOP FRAME HEADER ───── */}
+      <div
+        className="fixed top-0 left-0 right-0 z-[499] font-mono"
+        style={{
+          height: "var(--chat-top-h, 34px)",
+          background: "rgba(4, 2, 8, 0.97)",
+          backdropFilter: "blur(18px)",
+          WebkitBackdropFilter: "blur(18px)",
+          borderBottom: `1px solid ${FRAME_BORDER}`,
+          boxShadow: "0 2px 18px rgba(0, 255, 65, 0.12)",
+        }}
+      >
+        <div
+          className="h-full px-3 sm:px-4 flex items-center gap-2 text-[10px]"
+          style={{ color: "#00ff41", letterSpacing: "0.12em" }}
+        >
+          {/* Terminal "traffic lights" */}
+          <div className="flex items-center gap-1.5 mr-1">
+            <span
+              className="w-2 h-2 rounded-full"
+              style={{ background: "#ff5f57", boxShadow: "0 0 6px rgba(255, 95, 87, 0.6)" }}
+            />
+            <span
+              className="w-2 h-2 rounded-full"
+              style={{ background: "#febc2e", boxShadow: "0 0 6px rgba(254, 188, 46, 0.6)" }}
+            />
+            <span
+              className="w-2 h-2 rounded-full"
+              style={{ background: "#28c840", boxShadow: "0 0 6px rgba(40, 200, 64, 0.6)" }}
+            />
+          </div>
+          <span style={{ color: "#ffb000", opacity: 0.7 }}>//</span>
+          <span>finekot.shop</span>
+          <span style={{ opacity: 0.4 }}>::</span>
+          <span>consultant</span>
+          <span style={{ opacity: 0.4 }}>::</span>
+          <span style={{ color: "#ffb000" }}>0x3F</span>
+          <span className="flex-1" />
+          {hasActivity && (
+            <button
+              onClick={() => setLogOpen((v) => !v)}
+              className="transition-colors uppercase px-2 py-0.5 hidden sm:inline-flex items-center gap-1"
+              style={{
+                color: logOpen ? "#00ff41" : "rgba(0, 255, 65, 0.55)",
+                letterSpacing: "0.2em",
+                border: "1px solid rgba(0, 255, 65, 0.3)",
+                borderRadius: "2px",
+              }}
+              onMouseEnter={(e) => (e.currentTarget.style.color = "#00ff41")}
+              onMouseLeave={(e) =>
+                (e.currentTarget.style.color = logOpen
+                  ? "#00ff41"
+                  : "rgba(0, 255, 65, 0.55)")
+              }
+              aria-label={logOpen ? "Hide log" : "Show log"}
+            >
+              {logOpen ? "hide log" : "log"}
+              <span
+                className="w-1.5 h-1.5 rounded-full"
+                style={{
+                  background: "#00ff41",
+                  boxShadow: "0 0 6px rgba(0, 255, 65, 0.8)",
+                }}
+              />
+            </button>
+          )}
+          <button
+            onClick={() => {
+              setMessages([WELCOME_MESSAGE]);
+              setLogOpen(false);
+            }}
+            className="transition-colors uppercase"
+            style={{
+              color: "rgba(0, 255, 65, 0.45)",
+              letterSpacing: "0.2em",
+            }}
+            onMouseEnter={(e) => (e.currentTarget.style.color = "#00ff41")}
+            onMouseLeave={(e) =>
+              (e.currentTarget.style.color = "rgba(0, 255, 65, 0.45)")
+            }
+            aria-label="Clear log"
+          >
+            clr
+          </button>
+        </div>
+      </div>
+
+      {/* ───── LEFT FRAME BORDER ───── */}
+      <div
+        aria-hidden
+        className="fixed left-0 z-[498] pointer-events-none"
+        style={{
+          top: "var(--chat-top-h, 34px)",
+          bottom: "var(--chat-bar-h, 72px)",
+          width: "2px",
+          background:
+            "linear-gradient(180deg, rgba(0,255,65,0.0) 0%, rgba(0,255,65,0.5) 12%, rgba(0,255,65,0.5) 88%, rgba(0,255,65,0) 100%)",
+          boxShadow: "0 0 12px rgba(0, 255, 65, 0.25)",
+        }}
+      />
+      {/* ───── RIGHT FRAME BORDER ───── */}
+      <div
+        aria-hidden
+        className="fixed right-0 z-[498] pointer-events-none"
+        style={{
+          top: "var(--chat-top-h, 34px)",
+          bottom: "var(--chat-bar-h, 72px)",
+          width: "2px",
+          background:
+            "linear-gradient(180deg, rgba(0,255,65,0.0) 0%, rgba(0,255,65,0.5) 12%, rgba(0,255,65,0.5) 88%, rgba(0,255,65,0) 100%)",
+          boxShadow: "0 0 12px rgba(0, 255, 65, 0.25)",
+        }}
+      />
+
+      {/* ───── MESSAGE LOG (floats above bottom bar, inside frame) ───── */}
       <AnimatePresence>
-        {panelOpen && (
+        {logOpen && (
           <motion.div
-            initial={{ opacity: 0, y: 24 }}
+            initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
-            exit={{ opacity: 0, y: 24 }}
+            exit={{ opacity: 0, y: 20 }}
             transition={{ duration: 0.22, ease: "easeOut" }}
             className="fixed left-0 right-0 z-[498] pointer-events-none"
             style={{ bottom: "var(--chat-bar-h, 72px)" }}
           >
-            <div className="max-w-5xl mx-auto px-3 sm:px-6 pb-3">
+            <div className="max-w-5xl mx-auto px-3 sm:px-6 pb-2">
               <div
                 className="pointer-events-auto relative font-mono overflow-hidden"
                 style={{
-                  background: "rgba(4, 2, 8, 0.96)",
+                  background: "rgba(4, 2, 8, 0.97)",
                   backdropFilter: "blur(20px)",
                   WebkitBackdropFilter: "blur(20px)",
-                  border: "1px solid rgba(0, 255, 65, 0.28)",
+                  border: `1px solid ${FRAME_BORDER}`,
                   borderRadius: "6px",
-                  boxShadow:
-                    "0 0 36px rgba(0, 255, 65, 0.18), inset 0 0 24px rgba(0, 255, 65, 0.03)",
+                  boxShadow: FRAME_GLOW,
                 }}
               >
-                {/* Header */}
+                {/* slim log header strip */}
                 <div
-                  className="relative px-3 py-2 flex items-center gap-2 text-[10px]"
+                  className="px-3 py-1.5 flex items-center gap-2 text-[10px]"
                   style={{
                     background: "rgba(0, 255, 65, 0.06)",
                     borderBottom: "1px solid rgba(0, 255, 65, 0.2)",
-                    color: "#00ff41",
-                    letterSpacing: "0.12em",
+                    color: "rgba(0, 255, 65, 0.7)",
+                    letterSpacing: "0.15em",
                   }}
                 >
-                  <span style={{ color: "#ffb000", opacity: 0.7 }}>//</span>
-                  <span>finekot.shop</span>
-                  <span style={{ opacity: 0.4 }}>::</span>
-                  <span>consultant</span>
-                  <span style={{ opacity: 0.4 }}>::</span>
-                  <span style={{ color: "#ffb000" }}>0x3F</span>
+                  <span style={{ color: "#ffb000", opacity: 0.7 }}>└─</span>
+                  <span className="uppercase">session log</span>
                   <span className="flex-1" />
                   <button
-                    onClick={() => setMessages([WELCOME_MESSAGE])}
-                    className="transition-colors uppercase"
-                    style={{
-                      color: "rgba(0, 255, 65, 0.4)",
-                      letterSpacing: "0.15em",
-                    }}
-                    onMouseEnter={(e) =>
-                      (e.currentTarget.style.color = "#00ff41")
-                    }
-                    onMouseLeave={(e) =>
-                      (e.currentTarget.style.color = "rgba(0, 255, 65, 0.4)")
-                    }
-                    aria-label="Clear"
-                  >
-                    clr
-                  </button>
-                  <button
-                    onClick={() => setPanelOpen(false)}
-                    className="transition-all flex items-center gap-1 px-2 py-1 uppercase"
+                    onClick={() => setLogOpen(false)}
+                    className="transition-all flex items-center gap-1 px-2 py-0.5 uppercase"
                     style={{
                       color: "#ff4d6d",
                       background: "rgba(255, 77, 109, 0.08)",
                       border: "1px solid rgba(255, 77, 109, 0.5)",
-                      borderRadius: "3px",
+                      borderRadius: "2px",
                       letterSpacing: "0.2em",
                       fontSize: "10px",
                       fontWeight: 600,
                       textShadow: "0 0 6px rgba(255, 77, 109, 0.5)",
-                      boxShadow: "0 0 10px rgba(255, 77, 109, 0.18)",
                     }}
                     onMouseEnter={(e) => {
                       e.currentTarget.style.background = "#ff4d6d";
                       e.currentTarget.style.color = "#040208";
-                      e.currentTarget.style.boxShadow =
-                        "0 0 20px rgba(255, 77, 109, 0.6)";
                     }}
                     onMouseLeave={(e) => {
                       e.currentTarget.style.background =
                         "rgba(255, 77, 109, 0.08)";
                       e.currentTarget.style.color = "#ff4d6d";
-                      e.currentTarget.style.boxShadow =
-                        "0 0 10px rgba(255, 77, 109, 0.18)";
                     }}
-                    aria-label="Close consultant log"
+                    aria-label="Hide log"
                   >
                     <svg
-                      width="10"
-                      height="10"
+                      width="9"
+                      height="9"
                       viewBox="0 0 24 24"
                       fill="none"
                       stroke="currentColor"
-                      strokeWidth="2.8"
+                      strokeWidth="3"
                       strokeLinecap="round"
                     >
                       <line x1="18" y1="6" x2="6" y2="18" />
                       <line x1="6" y1="6" x2="18" y2="18" />
                     </svg>
-                    <span>close</span>
+                    <span>hide</span>
                   </button>
                 </div>
 
-                {/* Log */}
                 <div
                   ref={messagesRef}
                   className="relative px-3 py-3 space-y-1.5 text-xs leading-relaxed overflow-y-auto overscroll-contain"
-                  style={{ maxHeight: "min(50vh, 360px)" }}
+                  style={{ maxHeight: "min(45vh, 320px)" }}
                 >
                   {visibleMessages.map((msg, i) => {
                     const isUsr = msg.role === "user";
@@ -430,21 +517,21 @@ export default function ChatbotBar() {
         )}
       </AnimatePresence>
 
-      {/* Bottom chat bar — always visible */}
+      {/* ───── BOTTOM INPUT BAR ───── */}
       <div
         className="fixed bottom-0 left-0 right-0 z-[499] font-mono"
         style={{
           background: "rgba(4, 2, 8, 0.97)",
           backdropFilter: "blur(18px)",
           WebkitBackdropFilter: "blur(18px)",
-          borderTop: "1px solid rgba(0, 255, 65, 0.35)",
+          borderTop: `1px solid ${FRAME_BORDER}`,
           boxShadow: "0 -6px 24px rgba(0, 255, 65, 0.12)",
         }}
       >
         <div className="max-w-6xl mx-auto px-3 sm:px-4 py-2.5 flex items-stretch gap-2 sm:gap-3">
           {/* Terminal indicator (orange >_) */}
           <button
-            onClick={() => setPanelOpen((v) => !v)}
+            onClick={() => setLogOpen((v) => !v)}
             className="shrink-0 w-11 h-11 flex items-center justify-center transition-all relative"
             style={{
               background: "rgba(255, 176, 0, 0.08)",
@@ -456,10 +543,10 @@ export default function ChatbotBar() {
                 "0 0 18px rgba(255, 176, 0, 0.25), inset 0 0 10px rgba(255, 176, 0, 0.05)",
               letterSpacing: "-0.05em",
             }}
-            aria-label={panelOpen ? "Hide consultant log" : "Show consultant log"}
+            aria-label={logOpen ? "Hide log" : "Show log"}
           >
             <span className="text-lg font-bold">&gt;_</span>
-            {!panelOpen && messages.length > 1 && (
+            {!logOpen && hasActivity && (
               <span
                 className="absolute -top-1 -right-1 w-2 h-2 rounded-full"
                 style={{
@@ -470,7 +557,7 @@ export default function ChatbotBar() {
             )}
           </button>
 
-          {/* Input (green) */}
+          {/* Input */}
           <div
             className="flex-1 flex items-center gap-2 px-3"
             style={{
@@ -503,7 +590,7 @@ export default function ChatbotBar() {
                 adjustTextarea();
               }}
               onKeyDown={handleKeyDown}
-              onFocus={() => setPanelOpen(true)}
+              onFocus={() => setLogOpen(true)}
               placeholder="Спроси про продукт — я открою страницу..."
               rows={1}
               className="flex-1 py-2 bg-transparent text-xs sm:text-sm focus:outline-none resize-none leading-relaxed placeholder:text-[rgba(77,122,94,0.7)]"
@@ -516,7 +603,7 @@ export default function ChatbotBar() {
             />
           </div>
 
-          {/* PROMPT button (cyan/blue accent kept green-family for site coherence) */}
+          {/* PROMPT button */}
           <button
             onClick={send}
             disabled={loading || !input.trim()}

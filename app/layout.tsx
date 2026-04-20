@@ -65,7 +65,10 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
       </head>
       <body
         className={`${jetbrainsMono.variable} antialiased`}
-        style={{ paddingBottom: "var(--chat-bar-h, 72px)" }}
+        style={{
+          paddingTop: "var(--chat-top-h, 34px)",
+          paddingBottom: "var(--chat-bar-h, 72px)",
+        }}
       >
         <LangProvider>
           {children}
