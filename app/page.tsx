@@ -16,9 +16,8 @@ import { useLang } from "../lib/lang-context";
 
 
 
-const navLinks = [
-  { href: "#projects", label: "Projects" },
-];
+// Nav trimmed to logo-only — the chat bar now drives product discovery.
+const navLinks: { href: string; label: string }[] = [];
 
 
 /* ═══════════════════════════════════════════════════════
@@ -202,14 +201,16 @@ export default function Home() {
             })}
           </div>
 
-          <div className="flex items-center gap-3">
-            {/* Hamburger — terminal style */}
-            <button onClick={() => setMenuOpen((v) => !v)} className="md:hidden w-9 h-9 flex flex-col items-center justify-center gap-1.5 rounded-md border border-[var(--glass-border)] hover:border-[var(--glass-border-hover)] transition-colors" aria-label="Menu">
-              <motion.span animate={menuOpen ? { rotate: 45, y: 6 } : { rotate: 0, y: 0 }} className="w-5 h-px block" style={{ background: "var(--accent)" }} />
-              <motion.span animate={menuOpen ? { opacity: 0 } : { opacity: 1 }} className="w-5 h-px block" style={{ background: "var(--accent)" }} />
-              <motion.span animate={menuOpen ? { rotate: -45, y: -6 } : { rotate: 0, y: 0 }} className="w-5 h-px block" style={{ background: "var(--accent)" }} />
-            </button>
-          </div>
+          {navLinks.length > 0 && (
+            <div className="flex items-center gap-3">
+              {/* Hamburger — terminal style */}
+              <button onClick={() => setMenuOpen((v) => !v)} className="md:hidden w-9 h-9 flex flex-col items-center justify-center gap-1.5 rounded-md border border-[var(--glass-border)] hover:border-[var(--glass-border-hover)] transition-colors" aria-label="Menu">
+                <motion.span animate={menuOpen ? { rotate: 45, y: 6 } : { rotate: 0, y: 0 }} className="w-5 h-px block" style={{ background: "var(--accent)" }} />
+                <motion.span animate={menuOpen ? { opacity: 0 } : { opacity: 1 }} className="w-5 h-px block" style={{ background: "var(--accent)" }} />
+                <motion.span animate={menuOpen ? { rotate: -45, y: -6 } : { rotate: 0, y: 0 }} className="w-5 h-px block" style={{ background: "var(--accent)" }} />
+              </button>
+            </div>
+          )}
         </div>
 
         {/* Mobile dropdown */}
