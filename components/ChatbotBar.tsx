@@ -287,27 +287,46 @@ export default function ChatbotBar() {
                   </button>
                   <button
                     onClick={() => setPanelOpen(false)}
-                    className="transition-colors"
-                    style={{ color: "rgba(0, 255, 65, 0.45)" }}
-                    onMouseEnter={(e) =>
-                      (e.currentTarget.style.color = "#00ff41")
-                    }
-                    onMouseLeave={(e) =>
-                      (e.currentTarget.style.color = "rgba(0, 255, 65, 0.45)")
-                    }
-                    aria-label="Minimize"
+                    className="transition-all flex items-center gap-1 px-2 py-1 uppercase"
+                    style={{
+                      color: "#ff4d6d",
+                      background: "rgba(255, 77, 109, 0.08)",
+                      border: "1px solid rgba(255, 77, 109, 0.5)",
+                      borderRadius: "3px",
+                      letterSpacing: "0.2em",
+                      fontSize: "10px",
+                      fontWeight: 600,
+                      textShadow: "0 0 6px rgba(255, 77, 109, 0.5)",
+                      boxShadow: "0 0 10px rgba(255, 77, 109, 0.18)",
+                    }}
+                    onMouseEnter={(e) => {
+                      e.currentTarget.style.background = "#ff4d6d";
+                      e.currentTarget.style.color = "#040208";
+                      e.currentTarget.style.boxShadow =
+                        "0 0 20px rgba(255, 77, 109, 0.6)";
+                    }}
+                    onMouseLeave={(e) => {
+                      e.currentTarget.style.background =
+                        "rgba(255, 77, 109, 0.08)";
+                      e.currentTarget.style.color = "#ff4d6d";
+                      e.currentTarget.style.boxShadow =
+                        "0 0 10px rgba(255, 77, 109, 0.18)";
+                    }}
+                    aria-label="Close consultant log"
                   >
                     <svg
-                      width="11"
-                      height="11"
+                      width="10"
+                      height="10"
                       viewBox="0 0 24 24"
                       fill="none"
                       stroke="currentColor"
-                      strokeWidth="2.5"
+                      strokeWidth="2.8"
                       strokeLinecap="round"
                     >
-                      <line x1="5" y1="12" x2="19" y2="12" />
+                      <line x1="18" y1="6" x2="6" y2="18" />
+                      <line x1="6" y1="6" x2="18" y2="18" />
                     </svg>
+                    <span>close</span>
                   </button>
                 </div>
 
