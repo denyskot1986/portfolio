@@ -10,6 +10,8 @@ import {
 } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { useRouter, usePathname } from "next/navigation";
+import { useLang } from "@/lib/lang-context";
+import type { Lang } from "@/lib/i18n";
 
 interface ChatMessage {
   role: "user" | "assistant";
@@ -171,33 +173,101 @@ function saveHistory(messages: ChatMessage[]) {
 const FRAME_BORDER = "rgba(0, 255, 65, 0.4)";
 const FRAME_GLOW = "0 0 24px rgba(0, 255, 65, 0.18)";
 
+const PLACEHOLDER_BY_LANG: Record<Lang, string> = {
+  EN: "agent control",
+  RU: "агентное управление",
+  UA: "агентне керування",
+};
+
+// Quick-command presets surfaced from the "cmd" menu next to the >_ button.
+// Clicking a preset sends its prompt immediately — no typing.
+type QuickCommand = {
+  id: string;
+  label: Record<Lang, string>;
+  emoji: string;
+  prompt: Record<Lang, string>;
+};
+
+const QUICK_COMMANDS: QuickCommand[] = [
+  {
+    id: "tour",
+    emoji: "🎬",
+    label: { EN: "Presentation mode", RU: "Экскурсия по товарам", UA: "Екскурсія по товарах" },
+    prompt: {
+      EN: "Start presentation mode — walk me through every product one by one",
+      RU: "Включи presentation mode — проведи экскурсию по всем товарам по очереди",
+      UA: "Увімкни presentation mode — проведи екскурсію по всіх товарах по черзі",
+    },
+  },
+  {
+    id: "match",
+    emoji: "🎯",
+    label: { EN: "Match for my task", RU: "Подбор под задачу", UA: "Підбір під задачу" },
+    prompt: {
+      EN: "Help me pick the right product for my task — ask me what I need",
+      RU: "Помоги подобрать продукт под мою задачу — спроси что мне нужно",
+      UA: "Допоможи підібрати продукт під мою задачу — спитай що мені потрібно",
+    },
+  },
+  {
+    id: "prices",
+    emoji: "💰",
+    label: { EN: "Compare prices", RU: "Сравнить цены", UA: "Порівняти ціни" },
+    prompt: {
+      EN: "Compare prices across all products — shortest overview",
+      RU: "Сравни цены на все продукты — коротким обзором",
+      UA: "Порівняй ціни на всі продукти — коротким оглядом",
+    },
+  },
+  {
+    id: "explain",
+    emoji: "🧠",
+    label: { EN: "What is an AI agent?", RU: "Что такое AI-агенты", UA: "Що таке AI-агенти" },
+    prompt: {
+      EN: "In 3 sentences — what is an AI agent and how is it different from a chatbot",
+      RU: "В 3 предложениях — что такое AI-агент и чем он отличается от чат-бота",
+      UA: "У 3 реченнях — що таке AI-агент і чим він відрізняється від чат-бота",
+    },
+  },
+  {
+    id: "founder",
+    emoji: "💬",
+    label: { EN: "Talk to the founder", RU: "Связаться с основателем", UA: "Зв'язатися з засновником" },
+    prompt: {
+      EN: "I want to contact the founder about a custom project",
+      RU: "Хочу связаться с основателем по кастомному проекту",
+      UA: "Хочу зв'язатися з засновником щодо кастомного проєкту",
+    },
+  },
+];
+
 export default function ChatbotBar() {
   const router = useRouter();
   const pathname = usePathname();
+  const { lang } = useLang();
   const [messages, setMessages] = useState<ChatMessage[]>([WELCOME_MESSAGE]);
   const [input, setInput] = useState("");
   const [loading, setLoading] = useState(false);
   const [logOpen, setLogOpen] = useState(false);
+  const [cmdOpen, setCmdOpen] = useState(false);
   const messagesRef = useRef<HTMLDivElement>(null);
   const inputRef = useRef<HTMLTextAreaElement>(null);
   const logPanelRef = useRef<HTMLDivElement>(null);
   const barRef = useRef<HTMLDivElement>(null);
   const topBarRef = useRef<HTMLDivElement>(null);
+  const cmdMenuRef = useRef<HTMLDivElement>(null);
   const hydratedRef = useRef(false);
 
   // On first mount, hydrate messages from sessionStorage so the log
-  // survives navigation between product pages.
+  // survives navigation between product pages. Keep the log CLOSED —
+  // user opens it themselves via >_ or by focusing input (commander
+  // explicitly did not want auto-open on refresh).
   useEffect(() => {
     if (hydratedRef.current) return;
     hydratedRef.current = true;
     const restored = loadHistory();
     if (restored && restored.length) {
       setMessages(restored);
-      // If there's real activity (anything besides the welcome line),
-      // show the log so the user sees context on landing.
-      if (restored.some((m) => m.content !== WELCOME_MESSAGE.content)) {
-        setLogOpen(true);
-      }
     }
   }, []);
 
@@ -231,6 +301,25 @@ export default function ChatbotBar() {
       document.removeEventListener("touchstart", handler);
     };
   }, [logOpen]);
+
+  // Close the quick-commands menu on outside click.
+  useEffect(() => {
+    if (!cmdOpen) return;
+    const handler = (e: MouseEvent | TouchEvent) => {
+      const target = e.target as Node | null;
+      if (!target) return;
+      if (cmdMenuRef.current?.contains(target)) return;
+      // Click on the bar itself (e.g. the cmd toggle) is handled via its own onClick.
+      if (barRef.current?.contains(target)) return;
+      setCmdOpen(false);
+    };
+    document.addEventListener("mousedown", handler);
+    document.addEventListener("touchstart", handler, { passive: true });
+    return () => {
+      document.removeEventListener("mousedown", handler);
+      document.removeEventListener("touchstart", handler);
+    };
+  }, [cmdOpen]);
 
   const executeActions = useCallback(
     (actions: ParsedReply["actions"]) => {
@@ -644,6 +733,92 @@ export default function ChatbotBar() {
         )}
       </AnimatePresence>
 
+      {/* ───── QUICK COMMANDS MENU (floats above bottom bar) ───── */}
+      <AnimatePresence>
+        {cmdOpen && (
+          <motion.div
+            initial={{ opacity: 0, y: 16 }}
+            animate={{ opacity: 1, y: 0 }}
+            exit={{ opacity: 0, y: 16 }}
+            transition={{ duration: 0.18, ease: "easeOut" }}
+            className="fixed left-0 right-0 z-[500] pointer-events-none"
+            style={{ bottom: "var(--chat-bar-h, 72px)" }}
+          >
+            <div className="max-w-6xl mx-auto px-3 sm:px-4 pb-2">
+              <div
+                ref={cmdMenuRef}
+                className="pointer-events-auto font-mono overflow-hidden"
+                style={{
+                  background: "rgba(4, 2, 8, 0.97)",
+                  backdropFilter: "blur(18px)",
+                  WebkitBackdropFilter: "blur(18px)",
+                  border: `1px solid ${FRAME_BORDER}`,
+                  borderRadius: "6px",
+                  boxShadow: FRAME_GLOW,
+                }}
+              >
+                <div
+                  className="px-3 py-1.5 flex items-center gap-2 text-[10px]"
+                  style={{
+                    background: "rgba(0, 255, 65, 0.06)",
+                    borderBottom: "1px solid rgba(0, 255, 65, 0.2)",
+                    color: "rgba(0, 255, 65, 0.7)",
+                    letterSpacing: "0.2em",
+                  }}
+                >
+                  <span style={{ color: "#ffb000", opacity: 0.7 }}>⌘</span>
+                  <span className="uppercase">
+                    {lang === "RU"
+                      ? "быстрые команды"
+                      : lang === "UA"
+                      ? "швидкі команди"
+                      : "quick commands"}
+                  </span>
+                </div>
+                <div className="p-2 grid grid-cols-1 sm:grid-cols-2 gap-1.5">
+                  {QUICK_COMMANDS.map((cmd) => (
+                    <button
+                      key={cmd.id}
+                      onClick={() => {
+                        setCmdOpen(false);
+                        void sendMessage(cmd.prompt[lang]);
+                      }}
+                      className="flex items-center gap-2 px-3 py-2 text-left transition-all group"
+                      style={{
+                        background: "rgba(0, 255, 65, 0.03)",
+                        border: "1px solid rgba(0, 255, 65, 0.18)",
+                        borderRadius: "3px",
+                        color: "rgba(217, 255, 224, 0.88)",
+                      }}
+                      onMouseEnter={(e) => {
+                        e.currentTarget.style.background =
+                          "rgba(0, 255, 65, 0.1)";
+                        e.currentTarget.style.borderColor =
+                          "rgba(0, 255, 65, 0.5)";
+                      }}
+                      onMouseLeave={(e) => {
+                        e.currentTarget.style.background =
+                          "rgba(0, 255, 65, 0.03)";
+                        e.currentTarget.style.borderColor =
+                          "rgba(0, 255, 65, 0.18)";
+                      }}
+                    >
+                      <span className="text-base shrink-0">{cmd.emoji}</span>
+                      <span
+                        className="text-xs leading-tight"
+                        style={{ letterSpacing: "0.02em" }}
+                      >
+                        {cmd.label[lang]}
+                      </span>
+                    </button>
+                  ))}
+                </div>
+              </div>
+            </div>
+          </motion.div>
+        )}
+      </AnimatePresence>
+
       {/* ───── BOTTOM INPUT BAR ───── */}
       <div
         ref={barRef}
@@ -657,32 +832,75 @@ export default function ChatbotBar() {
         }}
       >
         <div className="max-w-6xl mx-auto px-3 sm:px-4 py-2.5 flex items-stretch gap-2 sm:gap-3">
-          {/* Terminal indicator (orange >_) */}
+          {/* Terminal indicator (orange >_) with cmd menu split-button */}
+          <div className="shrink-0 flex flex-col">
+            <button
+              onClick={() => setLogOpen((v) => !v)}
+              className="w-11 h-11 flex items-center justify-center transition-all relative"
+              style={{
+                background: "rgba(255, 176, 0, 0.08)",
+                border: "1px solid #ffb000",
+                color: "#ffb000",
+                borderRadius: "4px",
+                textShadow: "0 0 8px rgba(255, 176, 0, 0.7)",
+                boxShadow:
+                  "0 0 18px rgba(255, 176, 0, 0.25), inset 0 0 10px rgba(255, 176, 0, 0.05)",
+                letterSpacing: "-0.05em",
+              }}
+              aria-label={logOpen ? "Hide log" : "Show log"}
+            >
+              <span className="text-lg font-bold">&gt;_</span>
+              {!logOpen && hasActivity && (
+                <span
+                  className="absolute -top-1 -right-1 w-2 h-2 rounded-full"
+                  style={{
+                    background: "#00ff41",
+                    boxShadow: "0 0 8px rgba(0, 255, 65, 0.9)",
+                  }}
+                />
+              )}
+            </button>
+          </div>
+
+          {/* Quick commands trigger — small chip before the input */}
           <button
-            onClick={() => setLogOpen((v) => !v)}
-            className="shrink-0 w-11 h-11 flex items-center justify-center transition-all relative"
+            onClick={() => setCmdOpen((v) => !v)}
+            className="shrink-0 h-11 px-2.5 sm:px-3 flex items-center justify-center gap-1.5 transition-all font-mono uppercase"
             style={{
-              background: "rgba(255, 176, 0, 0.08)",
-              border: "1px solid #ffb000",
-              color: "#ffb000",
+              background: cmdOpen
+                ? "rgba(0, 255, 65, 0.18)"
+                : "rgba(0, 255, 65, 0.05)",
+              border: `1px solid ${
+                cmdOpen ? "#00ff41" : "rgba(0, 255, 65, 0.4)"
+              }`,
+              color: cmdOpen ? "#040208" : "#00ff41",
               borderRadius: "4px",
-              textShadow: "0 0 8px rgba(255, 176, 0, 0.7)",
+              fontSize: "10px",
+              fontWeight: 700,
+              letterSpacing: "0.2em",
+              textShadow: cmdOpen
+                ? "none"
+                : "0 0 6px rgba(0, 255, 65, 0.5)",
               boxShadow:
-                "0 0 18px rgba(255, 176, 0, 0.25), inset 0 0 10px rgba(255, 176, 0, 0.05)",
-              letterSpacing: "-0.05em",
+                "0 0 12px rgba(0, 255, 65, 0.18), inset 0 0 6px rgba(0, 255, 65, 0.04)",
             }}
-            aria-label={logOpen ? "Hide log" : "Show log"}
+            aria-label={cmdOpen ? "Close commands" : "Open commands"}
           >
-            <span className="text-lg font-bold">&gt;_</span>
-            {!logOpen && hasActivity && (
-              <span
-                className="absolute -top-1 -right-1 w-2 h-2 rounded-full"
-                style={{
-                  background: "#00ff41",
-                  boxShadow: "0 0 8px rgba(0, 255, 65, 0.9)",
-                }}
-              />
-            )}
+            <span>CMD</span>
+            <motion.svg
+              width="10"
+              height="10"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              strokeWidth="3"
+              strokeLinecap="round"
+              strokeLinejoin="round"
+              animate={{ rotate: cmdOpen ? 180 : 0 }}
+              transition={{ duration: 0.18 }}
+            >
+              <polyline points="6 15 12 9 18 15" />
+            </motion.svg>
           </button>
 
           {/* Input */}
@@ -720,7 +938,7 @@ export default function ChatbotBar() {
               }}
               onKeyDown={handleKeyDown}
               onFocus={() => setLogOpen(true)}
-              placeholder="Спроси про продукт — я открою страницу..."
+              placeholder={PLACEHOLDER_BY_LANG[lang]}
               rows={1}
               className="flex-1 py-2 bg-transparent focus:outline-none resize-none leading-relaxed placeholder:text-[rgba(77,122,94,0.7)]"
               style={{
