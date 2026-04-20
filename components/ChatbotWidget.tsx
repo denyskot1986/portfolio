@@ -455,18 +455,9 @@ export default function ChatbotWidget() {
                 style={{
                   maxHeight: 100,
                   color: "rgba(217, 255, 224, 0.92)",
+                  caretColor: "#ffb000",
                 }}
               />
-              {!input && !loading && (
-                <motion.span
-                  className="absolute left-[92px] top-[10px] text-xs pointer-events-none"
-                  style={{ color: "#ffb000", textShadow: "0 0 6px rgba(255, 176, 0, 0.7)" }}
-                  animate={{ opacity: [1, 0, 1] }}
-                  transition={{ duration: 0.9, repeat: Infinity, ease: "linear" }}
-                >
-                  ▊
-                </motion.span>
-              )}
               <button
                 onClick={send}
                 disabled={loading || !input.trim()}
