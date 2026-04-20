@@ -314,33 +314,6 @@ export default function ChatbotBar() {
         </div>
       </div>
 
-      {/* ───── LEFT FRAME BORDER ───── */}
-      <div
-        aria-hidden
-        className="fixed left-0 z-[498] pointer-events-none"
-        style={{
-          top: "var(--chat-top-h, 34px)",
-          bottom: "var(--chat-bar-h, 72px)",
-          width: "2px",
-          background:
-            "linear-gradient(180deg, rgba(0,255,65,0.0) 0%, rgba(0,255,65,0.5) 12%, rgba(0,255,65,0.5) 88%, rgba(0,255,65,0) 100%)",
-          boxShadow: "0 0 12px rgba(0, 255, 65, 0.25)",
-        }}
-      />
-      {/* ───── RIGHT FRAME BORDER ───── */}
-      <div
-        aria-hidden
-        className="fixed right-0 z-[498] pointer-events-none"
-        style={{
-          top: "var(--chat-top-h, 34px)",
-          bottom: "var(--chat-bar-h, 72px)",
-          width: "2px",
-          background:
-            "linear-gradient(180deg, rgba(0,255,65,0.0) 0%, rgba(0,255,65,0.5) 12%, rgba(0,255,65,0.5) 88%, rgba(0,255,65,0) 100%)",
-          boxShadow: "0 0 12px rgba(0, 255, 65, 0.25)",
-        }}
-      />
-
       {/* ───── MESSAGE LOG (floats above bottom bar, inside frame) ───── */}
       <AnimatePresence>
         {logOpen && (
