@@ -92,7 +92,6 @@ export default function ChatbotWidget() {
   const [flexAlign, setFlexAlign] = useState<"flex-end" | "flex-start">("flex-end");
   const messagesContainerRef = useRef<HTMLDivElement>(null);
   const inputRef = useRef<HTMLTextAreaElement>(null);
-  const peekingRef = useRef(false);
   const posControls = useAnimationControls();
   const prevSideRef = useRef<"right" | "left" | null>(null);
 
@@ -180,40 +179,18 @@ export default function ChatbotWidget() {
     }
   }, [open, hasOpened, messages.length]);
 
-  // Peek animation on every page load — panel briefly opens then folds
-  // back into the toggle so the chat gets noticed. Cancelled if the user
-  // clicks the button themselves during the peek window.
+  // Toggle slides from right to left on load — no panel peek.
   useEffect(() => {
     if (typeof window === "undefined") return;
-    const openTimer = setTimeout(() => {
-      peekingRef.current = true;
-      setOpen(true);
-    }, 1200);
-    const closeTimer = setTimeout(() => {
-      if (peekingRef.current) {
-        setOpen(false);
-        peekingRef.current = false;
-      }
-    }, 2300);
-    // After the panel finishes folding away (~200ms framer exit anim),
-    // slide the toggle button from right to left and park it there.
-    const sideTimer = setTimeout(() => {
-      if (peekingRef.current === false) setSide("left");
-    }, 2650);
-    return () => {
-      clearTimeout(openTimer);
-      clearTimeout(closeTimer);
-      clearTimeout(sideTimer);
-    };
+    const sideTimer = setTimeout(() => setSide("left"), 1400);
+    return () => clearTimeout(sideTimer);
   }, []);
 
   const handleToggle = useCallback(() => {
-    peekingRef.current = false;
     setOpen((v) => !v);
   }, []);
 
   const handleClose = useCallback(() => {
-    peekingRef.current = false;
     setOpen(false);
   }, []);
 
