@@ -90,7 +90,7 @@ export default async function Image() {
               fontWeight: 600,
             }}
           >
-            Subscribe to iБоря. Or own the code.
+            Subscribe to Boris. Or own the code.
           </span>
           <div style={{ display: "flex", gap: 24, marginTop: 8 }}>
             <span style={{ fontSize: 14, color: "rgba(244,114,182,0.4)", fontFamily: "monospace" }}>

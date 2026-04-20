@@ -11,10 +11,10 @@ import { useEffect, useRef } from "react";
 
 const demo = [
   { role: "sys", text: "stream opened. ready." },
-  { role: "usr", text: "расскажи про Orban" },
-  { role: "sys", text: "Orban — AI-директор для малого бизнеса. CRM, календарь, мессенджеры через MCP. $79/mo." },
+  { role: "usr", text: "расскажи про David" },
+  { role: "sys", text: "David — AI-директор для малого бизнеса. CRM, календарь, мессенджеры через MCP. $79/mo." },
   { role: "usr", text: "подробнее" },
-  { role: "sys", text: "24/7 держит клиентов и задачи. инфо: /products/orban" },
+  { role: "sys", text: "24/7 держит клиентов и задачи. инфо: /products/david" },
 ];
 
 function MatrixRain() {

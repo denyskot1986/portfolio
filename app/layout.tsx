@@ -17,17 +17,17 @@ export const metadata: Metadata = {
   metadataBase: new URL(siteUrl),
   title: "Finekot — Authored AI Agents & Production-Ready Systems",
   description:
-    "Authored AI agents by subscription + production-ready AI systems you can own outright. iБоря, Ада and the Finekot lineup — built by an engineer, not a committee.",
+    "Authored AI agents by subscription + production-ready AI systems you can own outright. Boris, Ada and the Finekot lineup — built by an engineer, not a committee.",
   keywords: [
     "AI agents", "AI subscription", "authored AI agents", "AI systems", "AI templates",
-    "multi-agent systems", "voice AI", "RAG", "business automation", "Finekot", "iБоря",
+    "multi-agent systems", "voice AI", "RAG", "business automation", "Finekot", "Boris", "Ada", "David", "Eva", "Patrik", "Taras", "Hanna",
   ],
   authors: [{ name: "Finekot", url: siteUrl }],
   openGraph: {
     type: "website",
     url: siteUrl,
     title: "Finekot — Authored AI Agents & Production-Ready Systems",
-    description: "Subscribe to authored AI agents like iБоря and Ада — or buy full systems with source code. Your choice.",
+    description: "Subscribe to authored AI agents like Boris and Ada — or buy full systems with source code. Your choice.",
     images: [{ url: "/opengraph-image", width: 1200, height: 630 }],
   },
   twitter: {
@@ -48,7 +48,7 @@ const jsonLd = {
     "@type": "OfferCatalog",
     name: "Finekot Store",
     itemListElement: [
-      { "@type": "Offer", name: "iБоря Subscription", price: "49", priceCurrency: "USD", priceSpecification: { "@type": "UnitPriceSpecification", price: "49", priceCurrency: "USD", unitCode: "MON", referenceQuantity: { "@type": "QuantitativeValue", value: 1, unitCode: "MON" } }, description: "AI operations chief for small business. Cancel anytime.", itemOffered: { "@type": "Service", name: "iБоря — AI agent subscription" } },
+      { "@type": "Offer", name: "Boris Subscription", price: "49", priceCurrency: "USD", priceSpecification: { "@type": "UnitPriceSpecification", price: "49", priceCurrency: "USD", unitCode: "MON", referenceQuantity: { "@type": "QuantitativeValue", value: 1, unitCode: "MON" } }, description: "Personal AI chief of staff. Cancel anytime.", itemOffered: { "@type": "Service", name: "Boris — AI agent subscription" } },
       { "@type": "Offer", name: "System Template", price: "499", priceCurrency: "USD", description: "Full source code + documentation + deployment guide. Deploy it yourself.", itemOffered: { "@type": "Service", name: "AI System Template" } },
       { "@type": "Offer", name: "System Integration", price: "2500", priceCurrency: "USD", description: "Personal setup into your business in 1 day. 30 days support included.", itemOffered: { "@type": "Service", name: "AI System Integration" } },
       { "@type": "Offer", name: "Custom Studio", price: "15000", priceCurrency: "USD", description: "Custom authored AI agent built for your business. From $15k. 3–6 weeks delivery.", itemOffered: { "@type": "Service", name: "Custom Agent Studio" } },

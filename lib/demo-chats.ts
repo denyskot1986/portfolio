@@ -25,7 +25,7 @@ const demoChatEN: Record<string, DemoConfig> = {
     tryLink: buyLink("skynet-intake"),
     tryLabel: "Get SKYNET Intake →",
   },
-  "iborya": {
+  "boris": {
     messages: [
       { from: "bot", text: "🌞 Good morning, Denys. I've been through your inbox and calendar. Want your morning brief?" },
       { from: "user", text: "yes" },
@@ -33,10 +33,10 @@ const demoChatEN: Record<string, DemoConfig> = {
       { from: "user", text: "draft the reply to Sarah" },
       { from: "bot", text: "✍️ Draft in your voice:\n\n«Sarah — thanks for the patience. Scope is locked, sending the proposal by 18:00 CET today. One q before: are you still targeting the Q2 launch?»\n\n→ Send / Edit / Redo" },
     ],
-    tryLink: buyLink("iborya"),
-    tryLabel: "Get iБоря →",
+    tryLink: buyLink("boris"),
+    tryLabel: "Meet Boris →",
   },
-  "ilucy": {
+  "eva": {
     messages: [
       { from: "bot", text: "📞 10:00 — calling mom (scheduled check-in)... 📲 connected, 8-min conversation complete." },
       { from: "user", text: "how was it?" },
@@ -44,10 +44,10 @@ const demoChatEN: Record<string, DemoConfig> = {
       { from: "user", text: "yes and remind me to send flowers this week" },
       { from: "bot", text: "🌷 Noted. I'll:\n1. Watch for dizziness keywords on the 19:00 call → alert you instantly\n2. Friday 14:00 — remind you «send mom flowers» with 3 local delivery options\n\nWeekly family report lands Sunday 10:00." },
     ],
-    tryLink: buyLink("ilucy"),
-    tryLabel: "Get iLucy →",
+    tryLink: buyLink("eva"),
+    tryLabel: "Meet Eva →",
   },
-  "orban": {
+  "david": {
     messages: [
       { from: "bot", text: "⚠️ Client pulse — 2 accounts went silent this week:\n\n🔴 Martin (Agency42) — 23 days silent, last invoice $8,400 pending\n🟡 Laura (BrightPath) — 18 days silent, renewal due in 9 days" },
       { from: "user", text: "draft a message to Martin" },
@@ -55,10 +55,10 @@ const demoChatEN: Record<string, DemoConfig> = {
       { from: "user", text: "what about Laura?" },
       { from: "bot", text: "📊 Laura (BrightPath) profile:\n• Signed Jan 12, $2,400/mo\n• Last renewal blocker: wanted custom reporting → we built it in March\n• Last CSAT: 9/10\n\n💡 Move: remind her custom reports are live + offer a 2-call quarterly review. Draft ready?" },
     ],
-    tryLink: buyLink("orban"),
-    tryLabel: "Get Orban →",
+    tryLink: buyLink("david"),
+    tryLabel: "Meet David →",
   },
-  "idoctor": {
+  "patrik": {
     messages: [
       { from: "bot", text: "🩺 New document ingested: CBC + ferritin, 2026-04-18. Indexed. Ask me anything." },
       { from: "user", text: "ferritin is 23, doctor said it's fine. is it?" },
@@ -66,32 +66,32 @@ const demoChatEN: Record<string, DemoConfig> = {
       { from: "user", text: "is this dangerous?" },
       { from: "bot", text: "🟡 Not emergency — not «fine» either.\n\nThink: low fuel, not engine failure. Common downstream effects: fatigue, cold hands, exercise intolerance, sleep quality drop — any of those feel familiar?\n\nThis isn't a diagnosis. It's context your GP didn't have. Follow-up labs in 6–8 weeks." },
     ],
-    tryLink: buyLink("idoctor"),
-    tryLabel: "Get iDoctor →",
+    tryLink: buyLink("patrik"),
+    tryLabel: "Meet Patrik →",
   },
-  "ileva": {
+  "taras": {
     messages: [
-      { from: "bot", text: "Hi, I'm iLeva 👋 Age profile: Sofia, 9. Ready for homework, stories, or just questions. What's up?" },
+      { from: "bot", text: "Hi, I'm Taras 👋 Age profile: Sofia, 9. Ready for homework, stories, or just questions. What's up?" },
       { from: "user", text: "why does the sky change color at sunset" },
       { from: "bot", text: "Great question, Sofia 🌅\n\nThink of sunlight as a rainbow packed together. When the sun is high, blue light scatters most — that's why noon sky is blue.\n\nAt sunset, the sun is low, so light travels through MORE air. Blue scatters so much it gets «used up» along the way. Only red and orange reach your eyes 🟠\n\nWant to see it yourself? I can show a simple experiment with a glass of water + flashlight 🔦" },
       { from: "user", text: "yes and what about clouds" },
       { from: "bot", text: "Experiment:\n1. Fill a clear glass with water\n2. Shine a phone flashlight through it in a dark room\n3. Look from the side → bluish glow (that's scatter!)\n4. Look straight through → yellowish light (that's what gets through, like sunset)\n\n☁️ Sunset clouds: water droplets are bigger than air molecules, so they REFLECT the orange light from the low sun. That's why they glow pink & gold ✨\n\n(📩 your parents will see «Sofia learned about Rayleigh scattering today» in Sunday's digest)" },
     ],
-    tryLink: buyLink("ileva"),
-    tryLabel: "Get iLeva →",
+    tryLink: buyLink("taras"),
+    tryLabel: "Meet Taras →",
   },
-  "iada": {
+  "ada": {
     messages: [
-      { from: "bot", text: "🛰️ iAda ready. Fast or Deep Research?\n\nFast — 30s answer with sources\nDeep — 3–10min structured report" },
+      { from: "bot", text: "🛰️ Ada ready. Fast or Deep Research?\n\nFast — 30s answer with sources\nDeep — 3–10min structured report" },
       { from: "user", text: "Deep: is the GLP-1 market peaking or still growing through 2027?" },
       { from: "bot", text: "⚙️ Deep Research in progress...\n• 27 sources pulled (Exa + Tavily + direct crawl)\n• Cross-verifying Bloomberg, Evaluate Pharma, JPM Healthcare 2026 deck, 4 earnings calls\n• 2 contradictions flagged" },
       { from: "user", text: "how long?" },
       { from: "bot", text: "📑 Report ready — 4m 12s.\n\n**GLP-1 market 2026–2027 outlook**\n\n🟢 Consensus (high confidence): $95B → $130B by end-2027, +37%\n🟡 Driver shift: weight-loss overtakes diabetes as #1 revenue segment Q3 2026\n🔴 Contradiction: Evaluate forecasts supply-unconstrained by mid-2026; JPM deck says 14 months minimum. Source review → JPM more grounded.\n\n❓ Open: oral GLP-1 readouts (Lilly orforglipron Ph3 — H2 2026)\n\n📤 Export: Markdown / Notion / Google Docs / Telegram?" },
     ],
-    tryLink: buyLink("iada"),
-    tryLabel: "Get iAda →",
+    tryLink: buyLink("ada"),
+    tryLabel: "Meet Ada →",
   },
-  "ihogol": {
+  "hanna": {
     messages: [
       { from: "bot", text: "✍️ Voice profile loaded: you (42 samples, updated 3d ago). Punch style, first-person, no motivational fluff. What are we shipping?" },
       { from: "user", text: "post about why I stopped doing free consultations" },
@@ -99,8 +99,8 @@ const demoChatEN: Record<string, DemoConfig> = {
       { from: "user", text: "adapt for LinkedIn — more professional" },
       { from: "bot", text: "📝 LinkedIn version:\n\n---\nI stopped offering free discovery calls last year.\n\nThe data was clear: ~80% converted into unpaid strategy sessions, with the work later going to lower-priced competitors.\n\nNow the first call is $200 — credited if we work together. Conversion to paid engagements is up 3.2×. Signal quality is incomparable.\n\nCharging for your expertise isn't gatekeeping. It's respect — for your time and for the client's commitment.\n---\n\n📌 Same core, tuned for LinkedIn. Ready to publish?" },
     ],
-    tryLink: buyLink("ihogol"),
-    tryLabel: "Get iHogol →",
+    tryLink: buyLink("hanna"),
+    tryLabel: "Meet Hanna →",
   },
 };
 
@@ -116,7 +116,7 @@ const demoChatRU: Record<string, DemoConfig> = {
     tryLink: buyLink("skynet-intake"),
     tryLabel: "Получить SKYNET Intake →",
   },
-  "iborya": {
+  "boris": {
     messages: [
       { from: "bot", text: "🌞 Доброе утро, Denys. Прошёлся по инбоксу и календарю. Дать утренний бриф?" },
       { from: "user", text: "давай" },
@@ -124,10 +124,10 @@ const demoChatRU: Record<string, DemoConfig> = {
       { from: "user", text: "напиши ответ Саре" },
       { from: "bot", text: "✍️ Черновик в твоём тоне:\n\n«Сара — спасибо за терпение. Скоуп зафиксировал, пришлю предложение сегодня до 18:00 CET. Один вопрос перед этим: вы всё ещё целитесь в Q2 запуск?»\n\n→ Отправить / Править / Переписать" },
     ],
-    tryLink: buyLink("iborya"),
-    tryLabel: "Получить iБоря →",
+    tryLink: buyLink("boris"),
+    tryLabel: "Встретить Boris →",
   },
-  "ilucy": {
+  "eva": {
     messages: [
       { from: "bot", text: "📞 10:00 — звоню маме (плановый check-in)... 📲 соединение, разговор 8 минут." },
       { from: "user", text: "как она?" },
@@ -135,10 +135,10 @@ const demoChatRU: Record<string, DemoConfig> = {
       { from: "user", text: "да и напомни в пятницу отправить цветы" },
       { from: "bot", text: "🌷 Принято. Я:\n1. Слежу за ключевыми словами про головокружение на 19:00-звонке → алерчу тебя моментально\n2. Пятница 14:00 — напомню «отправить маме цветы» + 3 варианта локальной доставки\n\nСемейный отчёт придёт в воскресенье 10:00." },
     ],
-    tryLink: buyLink("ilucy"),
-    tryLabel: "Получить iLucy →",
+    tryLink: buyLink("eva"),
+    tryLabel: "Встретить Eva →",
   },
-  "orban": {
+  "david": {
     messages: [
       { from: "bot", text: "⚠️ Пульс клиентов — 2 аккаунта замолчали на этой неделе:\n\n🔴 Мартин (Agency42) — молчит 23 дня, последний инвойс $8,400 висит\n🟡 Лаура (BrightPath) — молчит 18 дней, renewal через 9 дней" },
       { from: "user", text: "напиши Мартину" },
@@ -146,10 +146,10 @@ const demoChatRU: Record<string, DemoConfig> = {
       { from: "user", text: "а Лаура?" },
       { from: "bot", text: "📊 Профиль Лауры (BrightPath):\n• Подписана 12 января, $2,400/мес\n• Блокер на прошлом renewal: хотела кастомный репортинг → сделали в марте\n• Последний CSAT: 9/10\n\n💡 Ход: напомни что кастомный репорт запущен + предложи 2-звонковый квартальный review. Черновик готов?" },
     ],
-    tryLink: buyLink("orban"),
-    tryLabel: "Получить Orban →",
+    tryLink: buyLink("david"),
+    tryLabel: "Встретить David →",
   },
-  "idoctor": {
+  "patrik": {
     messages: [
       { from: "bot", text: "🩺 Новый документ загружен: общий анализ крови + ферритин, 18.04.2026. Проиндексирован. Спрашивай что угодно." },
       { from: "user", text: "ферритин 23, врач сказал всё ок. правда?" },
@@ -157,32 +157,32 @@ const demoChatRU: Record<string, DemoConfig> = {
       { from: "user", text: "это опасно?" },
       { from: "bot", text: "🟡 Не скорая — но и не «всё ок».\n\nАналогия: мало топлива, не поломка двигателя. Типичные последствия: усталость, холодные руки, непереносимость нагрузок, падение качества сна — что-то из этого знакомо?\n\nЭто не диагноз. Это контекст, которого у врача не было. Следующие анализы через 6–8 недель." },
     ],
-    tryLink: buyLink("idoctor"),
-    tryLabel: "Получить iDoctor →",
+    tryLink: buyLink("patrik"),
+    tryLabel: "Встретить Patrik →",
   },
-  "ileva": {
+  "taras": {
     messages: [
-      { from: "bot", text: "Привет, я iLeva 👋 Профиль: София, 9 лет. Готова к урокам, историям или просто вопросам. Что интересно?" },
+      { from: "bot", text: "Привет, я Taras 👋 Профиль: София, 9 лет. Готова к урокам, историям или просто вопросам. Что интересно?" },
       { from: "user", text: "почему небо на закате меняет цвет" },
       { from: "bot", text: "Классный вопрос, Соня 🌅\n\nПредставь солнечный свет как сложенную радугу. Когда солнце высоко, синий цвет рассеивается сильнее всего — поэтому в полдень небо синее.\n\nНа закате солнце низко, и свет проходит через БОЛЬШЕ воздуха. Синий рассеивается так сильно, что «заканчивается» по пути. До твоих глаз долетают только красный и оранжевый 🟠\n\nХочешь увидеть сама? Я покажу простой опыт со стаканом воды и фонариком 🔦" },
       { from: "user", text: "да а облака" },
       { from: "bot", text: "Опыт:\n1. Налей прозрачный стакан воды\n2. Посвети фонариком телефона через него в тёмной комнате\n3. Смотри сбоку → голубоватое свечение (это рассеяние!)\n4. Смотри прямо → желтоватый свет (это то что проходит, как закат)\n\n☁️ Облака на закате: капельки воды больше молекул воздуха, поэтому они ОТРАЖАЮТ оранжевый свет от низкого солнца. Вот почему закатные облака розовые и золотые ✨\n\n(📩 мама/папа увидят «Соня сегодня изучила рэлеевское рассеяние» в воскресном дайджесте)" },
     ],
-    tryLink: buyLink("ileva"),
-    tryLabel: "Получить iLeva →",
+    tryLink: buyLink("taras"),
+    tryLabel: "Встретить Taras →",
   },
-  "iada": {
+  "ada": {
     messages: [
-      { from: "bot", text: "🛰️ iAda готова. Fast или Deep Research?\n\nFast — ответ за 30 сек с источниками\nDeep — структурированный отчёт за 3–10 мин" },
+      { from: "bot", text: "🛰️ Ada готова. Fast или Deep Research?\n\nFast — ответ за 30 сек с источниками\nDeep — структурированный отчёт за 3–10 мин" },
       { from: "user", text: "Deep: рынок GLP-1 на пике или растёт до 2027?" },
       { from: "bot", text: "⚙️ Deep Research в работе...\n• 27 источников (Exa + Tavily + прямой краулинг)\n• Кросс-верификация Bloomberg, Evaluate Pharma, JPM Healthcare 2026 deck, 4 earnings-колла аналитиков\n• 2 противоречия на флаге" },
       { from: "user", text: "сколько ещё?" },
       { from: "bot", text: "📑 Отчёт готов — 4м 12с.\n\n**Рынок GLP-1 — прогноз 2026–2027**\n\n🟢 Консенсус (высокая достоверность): $95B → $130B к концу 2027, +37%\n🟡 Сдвиг драйверов: weight-loss обгоняет диабет как #1 сегмент выручки в Q3 2026\n🔴 Противоречие: Evaluate прогнозирует снятие дефицита к середине 2026; JPM deck — минимум 14 месяцев. Обзор источников → JPM более обоснован.\n\n❓ Открытое: рид-ауты пероральных GLP-1 (Lilly orforglipron Ph3 — H2 2026)\n\n📤 Экспорт: Markdown / Notion / Google Docs / Telegram?" },
     ],
-    tryLink: buyLink("iada"),
-    tryLabel: "Получить iAda →",
+    tryLink: buyLink("ada"),
+    tryLabel: "Встретить Ada →",
   },
-  "ihogol": {
+  "hanna": {
     messages: [
       { from: "bot", text: "✍️ Voice-профиль загружен: ты (42 примера, обновлён 3 дня назад). Панчи, первое лицо, без мотивационной воды. Что пишем?" },
       { from: "user", text: "пост почему я перестал давать бесплатные консультации" },
@@ -190,8 +190,8 @@ const demoChatRU: Record<string, DemoConfig> = {
       { from: "user", text: "адаптируй под LinkedIn — посерьёзнее" },
       { from: "bot", text: "📝 LinkedIn версия:\n\n---\nГод назад я перестал давать бесплатные discovery-звонки.\n\nДанные были однозначны: ~80% превращались в неоплачиваемые стратсессии, а работа уходила более дешёвым конкурентам.\n\nТеперь первый звонок — $200, засчитывается в оплату если работаем дальше. Конверсия в платные проекты выросла в 3.2×. Качество сигнала — несравнимо.\n\nБрать деньги за экспертизу — не gatekeeping. Это уважение: к твоему времени и к готовности клиента идти в работу.\n---\n\n📌 То же ядро, настроено под LinkedIn. Публикуем?" },
     ],
-    tryLink: buyLink("ihogol"),
-    tryLabel: "Получить iHogol →",
+    tryLink: buyLink("hanna"),
+    tryLabel: "Встретить Hanna →",
   },
 };
 
@@ -207,7 +207,7 @@ const demoChatUA: Record<string, DemoConfig> = {
     tryLink: buyLink("skynet-intake"),
     tryLabel: "Отримати SKYNET Intake →",
   },
-  "iborya": {
+  "boris": {
     messages: [
       { from: "bot", text: "🌞 Доброго ранку, Denys. Пройшовся по інбоксу та календарю. Дати ранковий бриф?" },
       { from: "user", text: "давай" },
@@ -215,10 +215,10 @@ const demoChatUA: Record<string, DemoConfig> = {
       { from: "user", text: "напиши відповідь Сарі" },
       { from: "bot", text: "✍️ Чернетка у твоєму тоні:\n\n«Сара — дякую за терпіння. Скоуп зафіксував, пришлю пропозицію сьогодні до 18:00 CET. Одне питання перед цим: ви все ще цілитесь на Q2 запуск?»\n\n→ Надіслати / Правити / Переписати" },
     ],
-    tryLink: buyLink("iborya"),
-    tryLabel: "Отримати iБоря →",
+    tryLink: buyLink("boris"),
+    tryLabel: "Зустріти Boris →",
   },
-  "ilucy": {
+  "eva": {
     messages: [
       { from: "bot", text: "📞 10:00 — дзвоню мамі (плановий check-in)... 📲 з'єднання, розмова 8 хвилин." },
       { from: "user", text: "як вона?" },
@@ -226,10 +226,10 @@ const demoChatUA: Record<string, DemoConfig> = {
       { from: "user", text: "так і нагадай у п'ятницю надіслати квіти" },
       { from: "bot", text: "🌷 Прийнято. Я:\n1. Стежу за ключовими словами про запаморочення на 19:00-дзвінку → алерчу тебе миттєво\n2. П'ятниця 14:00 — нагадаю «надіслати мамі квіти» + 3 варіанти локальної доставки\n\nСімейний звіт прийде в неділю 10:00." },
     ],
-    tryLink: buyLink("ilucy"),
-    tryLabel: "Отримати iLucy →",
+    tryLink: buyLink("eva"),
+    tryLabel: "Зустріти Eva →",
   },
-  "orban": {
+  "david": {
     messages: [
       { from: "bot", text: "⚠️ Пульс клієнтів — 2 акаунти замовкли цього тижня:\n\n🔴 Мартін (Agency42) — мовчить 23 дні, останній інвойс $8,400 висить\n🟡 Лаура (BrightPath) — мовчить 18 днів, renewal через 9 днів" },
       { from: "user", text: "напиши Мартіну" },
@@ -237,10 +237,10 @@ const demoChatUA: Record<string, DemoConfig> = {
       { from: "user", text: "а Лаура?" },
       { from: "bot", text: "📊 Профіль Лаури (BrightPath):\n• Підписана 12 січня, $2,400/міс\n• Блокер на минулому renewal: хотіла кастомний репортинг → зробили в березні\n• Остання CSAT: 9/10\n\n💡 Хід: нагадай що кастомний репорт запущено + запропонуй 2-дзвінковий квартальний review. Чернетка готова?" },
     ],
-    tryLink: buyLink("orban"),
-    tryLabel: "Отримати Orban →",
+    tryLink: buyLink("david"),
+    tryLabel: "Зустріти David →",
   },
-  "idoctor": {
+  "patrik": {
     messages: [
       { from: "bot", text: "🩺 Новий документ завантажено: загальний аналіз крові + феритин, 18.04.2026. Проіндексовано. Питай будь-що." },
       { from: "user", text: "феритин 23, лікар сказав все ок. правда?" },
@@ -248,32 +248,32 @@ const demoChatUA: Record<string, DemoConfig> = {
       { from: "user", text: "це небезпечно?" },
       { from: "bot", text: "🟡 Не швидка — але й не «все ок».\n\nАналогія: мало палива, не поломка двигуна. Типові наслідки: втома, холодні руки, непереносимість навантажень, падіння якості сну — щось із цього знайоме?\n\nЦе не діагноз. Це контекст, якого у лікаря не було. Наступні аналізи через 6–8 тижнів." },
     ],
-    tryLink: buyLink("idoctor"),
-    tryLabel: "Отримати iDoctor →",
+    tryLink: buyLink("patrik"),
+    tryLabel: "Зустріти Patrik →",
   },
-  "ileva": {
+  "taras": {
     messages: [
-      { from: "bot", text: "Привіт, я iLeva 👋 Профіль: Софія, 9 років. Готова до уроків, історій або просто питань. Що цікаво?" },
+      { from: "bot", text: "Привіт, я Taras 👋 Профіль: Софія, 9 років. Готова до уроків, історій або просто питань. Що цікаво?" },
       { from: "user", text: "чому небо на заході змінює колір" },
       { from: "bot", text: "Класне питання, Соня 🌅\n\nУяви сонячне світло як складену веселку. Коли сонце високо, синій колір розсіюється найбільше — тому опівдні небо синє.\n\nНа заході сонце низько, і світло проходить через БІЛЬШЕ повітря. Синій розсіюється так сильно, що «закінчується» по дорозі. До твоїх очей долітають лише червоний та помаранчевий 🟠\n\nХочеш побачити сама? Я покажу простий дослід зі склянкою води та ліхтариком 🔦" },
       { from: "user", text: "так а хмари" },
       { from: "bot", text: "Дослід:\n1. Налий прозору склянку води\n2. Посвіти ліхтариком телефону крізь неї в темній кімнаті\n3. Дивись збоку → блакитне сяйво (це розсіювання!)\n4. Дивись прямо → жовтувате світло (це те що проходить, як захід)\n\n☁️ Хмари на заході: крапельки води більші за молекули повітря, тому вони ВІДБИВАЮТЬ помаранчеве світло від низького сонця. Ось чому західні хмари рожеві та золоті ✨\n\n(📩 мама/тато побачать «Соня сьогодні вивчила релеївське розсіювання» у недільному дайджесті)" },
     ],
-    tryLink: buyLink("ileva"),
-    tryLabel: "Отримати iLeva →",
+    tryLink: buyLink("taras"),
+    tryLabel: "Зустріти Taras →",
   },
-  "iada": {
+  "ada": {
     messages: [
-      { from: "bot", text: "🛰️ iAda готова. Fast чи Deep Research?\n\nFast — відповідь за 30 сек з джерелами\nDeep — структурований звіт за 3–10 хв" },
+      { from: "bot", text: "🛰️ Ada готова. Fast чи Deep Research?\n\nFast — відповідь за 30 сек з джерелами\nDeep — структурований звіт за 3–10 хв" },
       { from: "user", text: "Deep: ринок GLP-1 на піку чи росте до 2027?" },
       { from: "bot", text: "⚙️ Deep Research у роботі...\n• 27 джерел (Exa + Tavily + прямий краулінг)\n• Крос-верифікація Bloomberg, Evaluate Pharma, JPM Healthcare 2026 deck, 4 earnings-колли аналітиків\n• 2 протиріччя на прапорі" },
       { from: "user", text: "скільки ще?" },
       { from: "bot", text: "📑 Звіт готовий — 4хв 12с.\n\n**Ринок GLP-1 — прогноз 2026–2027**\n\n🟢 Консенсус (висока достовірність): $95B → $130B до кінця 2027, +37%\n🟡 Зсув драйверів: weight-loss обганяє діабет як #1 сегмент виторгу в Q3 2026\n🔴 Протиріччя: Evaluate прогнозує зняття дефіциту до середини 2026; JPM deck — мінімум 14 місяців. Огляд джерел → JPM обґрунтованіший.\n\n❓ Відкрите: рід-аути пероральних GLP-1 (Lilly orforglipron Ph3 — H2 2026)\n\n📤 Експорт: Markdown / Notion / Google Docs / Telegram?" },
     ],
-    tryLink: buyLink("iada"),
-    tryLabel: "Отримати iAda →",
+    tryLink: buyLink("ada"),
+    tryLabel: "Зустріти Ada →",
   },
-  "ihogol": {
+  "hanna": {
     messages: [
       { from: "bot", text: "✍️ Voice-профіль завантажено: ти (42 приклади, оновлений 3 дні тому). Панчі, перша особа, без мотиваційної води. Що пишемо?" },
       { from: "user", text: "пост чому я перестав давати безкоштовні консультації" },
@@ -281,8 +281,8 @@ const demoChatUA: Record<string, DemoConfig> = {
       { from: "user", text: "адаптуй під LinkedIn — серйозніше" },
       { from: "bot", text: "📝 LinkedIn версія:\n\n---\nРік тому я перестав давати безкоштовні discovery-дзвінки.\n\nДані були однозначні: ~80% перетворювались на неоплачувані стратсесії, а робота йшла дешевшим конкурентам.\n\nТепер перший дзвінок — $200, зараховується в оплату якщо працюємо далі. Конверсія в платні проєкти зросла в 3.2×. Якість сигналу — незрівнянна.\n\nБрати гроші за експертизу — не gatekeeping. Це повага: до твого часу і готовності клієнта йти в роботу.\n---\n\n📌 Те саме ядро, налаштоване під LinkedIn. Публікуємо?" },
     ],
-    tryLink: buyLink("ihogol"),
-    tryLabel: "Отримати iHogol →",
+    tryLink: buyLink("hanna"),
+    tryLabel: "Зустріти Hanna →",
   },
 };
 

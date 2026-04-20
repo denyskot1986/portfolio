@@ -20,8 +20,8 @@ interface ChatMessage {
 const NAV_WHITELIST = /^\/(products\/[a-z0-9-]+|discover|reels-agent)\/?$/i;
 
 // Action directive syntax emitted by the LLM:
-//   [nav:/products/orban]   → next.router.push
-//   [scroll:product-orban]  → document.getElementById(...).scrollIntoView
+//   [nav:/products/david]   → next.router.push
+//   [scroll:product-david]  → document.getElementById(...).scrollIntoView
 const ACTION_REGEX = /\[(nav|scroll):([^\]\s]+)\]/gi;
 
 type ParsedReply = {
@@ -101,6 +101,8 @@ const WELCOME_MESSAGE: ChatMessage = {
 };
 
 const SESSION_KEY = "finekot_chat_session";
+const HISTORY_KEY = "finekot_chat_history";
+const HISTORY_MAX = 40;
 
 function getSessionId(): string {
   if (typeof window === "undefined") return "";
@@ -115,6 +117,42 @@ function getSessionId(): string {
     return fresh;
   } catch {
     return `s_${Date.now()}_${Math.random().toString(36).slice(2, 10)}`;
+  }
+}
+
+function loadHistory(): ChatMessage[] | null {
+  if (typeof window === "undefined") return null;
+  try {
+    const raw = sessionStorage.getItem(HISTORY_KEY);
+    if (!raw) return null;
+    const parsed = JSON.parse(raw);
+    if (!Array.isArray(parsed)) return null;
+    const out: ChatMessage[] = [];
+    for (const m of parsed) {
+      if (
+        m &&
+        typeof m === "object" &&
+        (m.role === "user" || m.role === "assistant") &&
+        typeof m.content === "string"
+      ) {
+        out.push({ role: m.role, content: m.content });
+      }
+    }
+    return out.length ? out.slice(-HISTORY_MAX) : null;
+  } catch {
+    return null;
+  }
+}
+
+function saveHistory(messages: ChatMessage[]) {
+  if (typeof window === "undefined") return;
+  try {
+    sessionStorage.setItem(
+      HISTORY_KEY,
+      JSON.stringify(messages.slice(-HISTORY_MAX))
+    );
+  } catch {
+    /* quota / disabled — ignore */
   }
 }
 
@@ -133,6 +171,29 @@ export default function ChatbotBar() {
   const logPanelRef = useRef<HTMLDivElement>(null);
   const barRef = useRef<HTMLDivElement>(null);
   const topBarRef = useRef<HTMLDivElement>(null);
+  const hydratedRef = useRef(false);
+
+  // On first mount, hydrate messages from sessionStorage so the log
+  // survives navigation between product pages.
+  useEffect(() => {
+    if (hydratedRef.current) return;
+    hydratedRef.current = true;
+    const restored = loadHistory();
+    if (restored && restored.length) {
+      setMessages(restored);
+      // If there's real activity (anything besides the welcome line),
+      // show the log so the user sees context on landing.
+      if (restored.some((m) => m.content !== WELCOME_MESSAGE.content)) {
+        setLogOpen(true);
+      }
+    }
+  }, []);
+
+  // Persist on every change.
+  useEffect(() => {
+    if (!hydratedRef.current) return;
+    saveHistory(messages);
+  }, [messages]);
 
   useEffect(() => {
     const el = messagesRef.current;
@@ -162,6 +223,10 @@ export default function ChatbotBar() {
   const executeActions = useCallback(
     (actions: ParsedReply["actions"]) => {
       if (actions.length === 0) return;
+      // Tour mode: many scrolls in one reply → slower pacing so the user
+      // can actually read each card. 3+ actions → 2.2s between beats.
+      const isTour = actions.filter((a) => a.type === "scroll").length >= 3;
+      const stepMs = isTour ? 2200 : 550;
       let delay = 0;
       for (const act of actions) {
         setTimeout(() => {
@@ -183,7 +248,8 @@ export default function ChatbotBar() {
             }
           }
         }, delay);
-        delay += 550;
+        // nav needs less pause than a read-a-card pause.
+        delay += act.type === "nav" ? 600 : stepMs;
       }
     },
     [router, pathname]
@@ -343,6 +409,9 @@ export default function ChatbotBar() {
             onClick={() => {
               setMessages([WELCOME_MESSAGE]);
               setLogOpen(false);
+              try {
+                sessionStorage.removeItem(HISTORY_KEY);
+              } catch {}
             }}
             className="transition-colors uppercase"
             style={{

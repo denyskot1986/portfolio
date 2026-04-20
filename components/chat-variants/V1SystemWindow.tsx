@@ -10,9 +10,9 @@ import { motion } from "framer-motion";
 
 const demo = [
   { role: "sys", text: "consultant online. how can i help?" },
-  { role: "usr", text: "расскажи про Orban" },
-  { role: "sys", text: "Orban — AI-операционный директор для малого бизнеса. держит клиентов, задачи и финансы 24/7. $79/mo. подробности: /products/orban" },
-  { role: "usr", text: "а iDoctor?" },
+  { role: "usr", text: "расскажи про David" },
+  { role: "sys", text: "David — AI-операционный директор для малого бизнеса. держит клиентов, задачи и финансы 24/7. $79/mo. подробности: /products/david" },
+  { role: "usr", text: "а Patrik?" },
 ];
 
 export default function V1SystemWindow() {

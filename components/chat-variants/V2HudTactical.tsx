@@ -10,8 +10,8 @@ import { motion } from "framer-motion";
 
 const demo = [
   { role: "sys", text: "сканирую запрос…" },
-  { role: "usr", text: "расскажи про Orban" },
-  { role: "sys", text: "Orban · AI-операционный директор. держит клиентов, задачи и финансы малого бизнеса 24/7 через MCP. $79/mo." },
+  { role: "usr", text: "расскажи про David" },
+  { role: "sys", text: "David · AI-операционный директор. держит клиентов, задачи и финансы малого бизнеса 24/7 через MCP. $79/mo." },
 ];
 
 function Corner({ pos }: { pos: "tl" | "tr" | "bl" | "br" }) {
