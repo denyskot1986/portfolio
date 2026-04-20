@@ -1,5 +1,6 @@
 "use client";
 
+import { useState } from "react";
 import { useParams } from "next/navigation";
 import Link from "next/link";
 import { motion } from "framer-motion";
@@ -23,6 +24,9 @@ export default function ProductPageClient() {
   const tp = i18n[lang].pages.product;
   const product = getTranslatedProduct(params.id as string, lang);
   const demo = product ? getDemoChat(product.id, lang) : undefined;
+  const [descExpanded, setDescExpanded] = useState(false);
+  const MORE_LABEL = lang === "RU" ? "подробнее" : lang === "UA" ? "детальніше" : "more";
+  const LESS_LABEL = lang === "RU" ? "свернуть" : lang === "UA" ? "згорнути" : "less";
 
   if (!product) {
     return (
@@ -62,7 +66,49 @@ export default function ProductPageClient() {
               <span className="gradient-text">{product.name}</span>
             </h1>
             <p className="text-base sm:text-xl md:text-2xl text-pink-100/50 font-semibold mb-6">{product.tagline}</p>
-            <p className="text-pink-100/30 text-base leading-relaxed max-w-3xl mx-auto">{product.longDescription}</p>
+            {(() => {
+              const COLLAPSE_CHARS = 180;
+              const full = product.longDescription;
+              const needsCollapse = full.length > COLLAPSE_CHARS;
+              // Truncate at the nearest whitespace before COLLAPSE_CHARS so we
+              // don't slice mid-word.
+              let short = full.slice(0, COLLAPSE_CHARS);
+              if (needsCollapse) {
+                const lastSpace = short.lastIndexOf(" ");
+                if (lastSpace > COLLAPSE_CHARS * 0.6) short = short.slice(0, lastSpace);
+              }
+              const visible = !needsCollapse || descExpanded ? full : short + "…";
+              return (
+                <p className="text-pink-100/30 text-base leading-relaxed max-w-3xl mx-auto">
+                  {visible}
+                  {needsCollapse && (
+                    <>
+                      {" "}
+                      <button
+                        onClick={() => setDescExpanded((v) => !v)}
+                        className="inline-flex items-center gap-1 font-mono text-xs uppercase tracking-wider transition-colors"
+                        style={{
+                          color: "#00ff41",
+                          textShadow: "0 0 6px rgba(0, 255, 65, 0.4)",
+                          letterSpacing: "0.15em",
+                        }}
+                        onMouseEnter={(e) => {
+                          e.currentTarget.style.color = "#a0ff60";
+                        }}
+                        onMouseLeave={(e) => {
+                          e.currentTarget.style.color = "#00ff41";
+                        }}
+                      >
+                        {descExpanded ? LESS_LABEL : MORE_LABEL}
+                        <span aria-hidden style={{ fontSize: "10px" }}>
+                          {descExpanded ? "▲" : "▼"}
+                        </span>
+                      </button>
+                    </>
+                  )}
+                </p>
+              );
+            })()}
           </motion.div>
         </div>
       </section>

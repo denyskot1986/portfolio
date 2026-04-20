@@ -72,8 +72,8 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
       >
         <LangProvider>
           {children}
+          <ChatbotBar />
         </LangProvider>
-        <ChatbotBar />
         <Analytics />
       </body>
     </html>
