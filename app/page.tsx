@@ -349,12 +349,13 @@ export default function Home() {
         const renderCard = (p: (typeof allProducts)[number], i: number) => (
           <motion.div
             key={p.id}
+            id={`product-${p.id}`}
             layout
             initial={{ opacity: 0, scale: 0.95 }}
             animate={{ opacity: 1, scale: 1 }}
             exit={{ opacity: 0, scale: 0.95 }}
             transition={{ delay: i * 0.04, duration: 0.3 }}
-            className="rounded-lg overflow-hidden group transition-all"
+            className="rounded-lg overflow-hidden group transition-all scroll-mt-24"
             style={{ border: "1px solid var(--glass-border)" }}
           >
             {/* Terminal window header */}

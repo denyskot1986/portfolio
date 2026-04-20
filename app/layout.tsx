@@ -2,7 +2,7 @@ import type { Metadata } from "next";
 import { JetBrains_Mono } from "next/font/google";
 import { Analytics } from "@vercel/analytics/next";
 import { LangProvider } from "@/lib/lang-context";
-import ChatbotWidget from "@/components/ChatbotWidget";
+import ChatbotBar from "@/components/ChatbotBar";
 import "./globals.css";
 
 const jetbrainsMono = JetBrains_Mono({
@@ -63,11 +63,14 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
         <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }} />
         <link rel="alternate" type="application/json" href="/api/products" title="AI Products API" />
       </head>
-      <body className={`${jetbrainsMono.variable} antialiased`}>
+      <body
+        className={`${jetbrainsMono.variable} antialiased`}
+        style={{ paddingBottom: "var(--chat-bar-h, 72px)" }}
+      >
         <LangProvider>
           {children}
         </LangProvider>
-        <ChatbotWidget />
+        <ChatbotBar />
         <Analytics />
       </body>
     </html>
