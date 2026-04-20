@@ -85,15 +85,34 @@ function MatrixRain() {
   );
 }
 
+const CONTAINER_W = 360; // matches sm:w-[360px] panel width
+const EDGE_GAP = 20; // tailwind *-5
+
 export default function ChatbotWidget() {
   const [open, setOpen] = useState(false);
   const [messages, setMessages] = useState<ChatMessage[]>([]);
   const [input, setInput] = useState("");
   const [loading, setLoading] = useState(false);
   const [hasOpened, setHasOpened] = useState(false);
+  const [side, setSide] = useState<"right" | "left">("right");
+  const [leftPx, setLeftPx] = useState<number | null>(null);
   const messagesContainerRef = useRef<HTMLDivElement>(null);
   const inputRef = useRef<HTMLTextAreaElement>(null);
   const peekingRef = useRef(false);
+
+  // Compute left-offset in px from current side + viewport width. Using
+  // numeric `left` on both states so framer can tween the slide smoothly
+  // (animating between `left:auto` and `left:20px` doesn't work).
+  useEffect(() => {
+    if (typeof window === "undefined") return;
+    const update = () => {
+      const vw = window.innerWidth;
+      setLeftPx(side === "right" ? vw - CONTAINER_W - EDGE_GAP : EDGE_GAP);
+    };
+    update();
+    window.addEventListener("resize", update);
+    return () => window.removeEventListener("resize", update);
+  }, [side]);
 
   useEffect(() => {
     const el = messagesContainerRef.current;
@@ -124,9 +143,15 @@ export default function ChatbotWidget() {
         peekingRef.current = false;
       }
     }, 2300);
+    // After the panel finishes folding away (~200ms framer exit anim),
+    // slide the toggle button from right to left and park it there.
+    const sideTimer = setTimeout(() => {
+      if (peekingRef.current === false) setSide("left");
+    }, 2650);
     return () => {
       clearTimeout(openTimer);
       clearTimeout(closeTimer);
+      clearTimeout(sideTimer);
     };
   }, []);
 
@@ -221,7 +246,15 @@ export default function ChatbotWidget() {
   );
 
   return (
-    <div className="fixed bottom-5 right-5 z-[500] flex flex-col items-end gap-3">
+    <motion.div
+      className="fixed bottom-5 z-[500] flex flex-col gap-3"
+      style={{
+        width: CONTAINER_W,
+        alignItems: side === "right" ? "flex-end" : "flex-start",
+      }}
+      animate={{ left: leftPx ?? EDGE_GAP }}
+      transition={{ duration: 0.9, ease: [0.65, 0, 0.35, 1] }}
+    >
       {/* Chat panel — V3 Data Stream */}
       <AnimatePresence>
         {open && (
@@ -554,6 +587,6 @@ export default function ChatbotWidget() {
           />
         )}
       </motion.button>
-    </div>
+    </motion.div>
   );
 }
