@@ -85,8 +85,6 @@ function MatrixRain() {
   );
 }
 
-const PEEK_KEY = "finekot_chat_peeked";
-
 export default function ChatbotWidget() {
   const [open, setOpen] = useState(false);
   const [messages, setMessages] = useState<ChatMessage[]>([]);
@@ -111,16 +109,11 @@ export default function ChatbotWidget() {
     }
   }, [open, hasOpened, messages.length]);
 
-  // First-visit "peek": panel briefly pops open then folds back into the
-  // toggle button — a one-shot teaser per tab-session so the chat gets
-  // noticed. Skipped if the user already opened it themselves earlier.
+  // Peek animation on every page load — panel briefly opens then folds
+  // back into the toggle so the chat gets noticed. Cancelled if the user
+  // clicks the button themselves during the peek window.
   useEffect(() => {
     if (typeof window === "undefined") return;
-    try {
-      if (sessionStorage.getItem(PEEK_KEY)) return;
-    } catch {
-      return;
-    }
     const openTimer = setTimeout(() => {
       peekingRef.current = true;
       setOpen(true);
@@ -130,9 +123,6 @@ export default function ChatbotWidget() {
         setOpen(false);
         peekingRef.current = false;
       }
-      try {
-        sessionStorage.setItem(PEEK_KEY, "1");
-      } catch {}
     }, 2300);
     return () => {
       clearTimeout(openTimer);
