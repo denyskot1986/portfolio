@@ -18,9 +18,6 @@ export default function ChatbotWidget() {
   const inputRef = useRef<HTMLTextAreaElement>(null);
 
   useEffect(() => {
-    // Scroll the chat's own container, not the page. scrollIntoView would
-    // walk up to the document and yank the user away from whatever they
-    // were reading behind the chat widget.
     const el = messagesContainerRef.current;
     if (el) el.scrollTop = el.scrollHeight;
   }, [messages, loading]);
@@ -101,21 +98,25 @@ export default function ChatbotWidget() {
                   animate={{ opacity: 1, height: "auto" }}
                   exit={{ opacity: 0, height: 0 }}
                   ref={messagesContainerRef}
-                  className="mb-3 overflow-y-auto overscroll-contain rounded-2xl p-3 space-y-3"
+                  className="mb-3 overflow-y-auto overscroll-contain p-3 space-y-3"
                   style={{
                     maxHeight: "45vh",
-                    background: "rgba(10, 6, 8, 0.92)",
+                    background: "rgba(4, 2, 8, 0.92)",
                     backdropFilter: "blur(20px)",
-                    border: "1px solid rgba(244, 114, 182, 0.12)",
-                    boxShadow: "0 0 40px rgba(244,114,182,0.08)",
+                    border: "1px solid rgba(0, 255, 65, 0.22)",
+                    borderRadius: "4px",
+                    boxShadow: "0 0 32px rgba(0, 255, 65, 0.14), inset 0 0 24px rgba(0, 255, 65, 0.03)",
                   }}
                 >
                   <div className="sticky top-0 flex justify-end">
                     <button
                       onClick={() => setMessages([])}
-                      className="text-pink-300/40 hover:text-pink-300/70 transition-colors text-[10px] font-mono px-1"
+                      className="transition-colors text-[10px] font-mono px-1 uppercase tracking-[0.12em]"
+                      style={{ color: "rgba(0, 255, 65, 0.35)" }}
+                      onMouseEnter={(e) => (e.currentTarget.style.color = "rgba(0, 255, 65, 0.8)")}
+                      onMouseLeave={(e) => (e.currentTarget.style.color = "rgba(0, 255, 65, 0.35)")}
                     >
-                      очистить
+                      $ clear
                     </button>
                   </div>
                   {messages.map((msg, i) => (
@@ -127,20 +128,38 @@ export default function ChatbotWidget() {
                       className={`flex ${msg.role === "user" ? "justify-end" : "justify-start"}`}
                     >
                       {msg.role === "assistant" && (
-                        <div className="w-5 h-5 rounded-full bg-gradient-to-br from-pink-600 to-purple-600 flex items-center justify-center text-white text-[6px] font-bold mr-2 mt-0.5 shrink-0">
+                        <div
+                          className="w-5 h-5 flex items-center justify-center text-[7px] font-bold mr-2 mt-0.5 shrink-0"
+                          style={{
+                            background: "rgba(0, 255, 65, 0.1)",
+                            border: "1px solid rgba(0, 255, 65, 0.5)",
+                            color: "#00ff41",
+                            borderRadius: "3px",
+                            textShadow: "0 0 6px rgba(0, 255, 65, 0.7)",
+                          }}
+                        >
                           AI
                         </div>
                       )}
                       <div
-                        className={`max-w-[82%] px-3 py-2 rounded-2xl text-xs leading-relaxed ${
-                          msg.role === "user"
-                            ? "bg-gradient-to-r from-pink-600/60 to-purple-600/60 text-white rounded-br-sm"
-                            : "text-pink-100/70 rounded-bl-sm"
-                        }`}
+                        className="max-w-[82%] px-3 py-2 text-xs leading-relaxed font-mono"
                         style={
-                          msg.role === "assistant"
-                            ? { background: "rgba(244,114,182,0.06)", border: "1px solid rgba(244,114,182,0.1)" }
-                            : {}
+                          msg.role === "user"
+                            ? {
+                                background: "rgba(255, 176, 0, 0.08)",
+                                border: "1px solid rgba(255, 176, 0, 0.3)",
+                                color: "#ffb000",
+                                borderRadius: "4px",
+                                borderBottomRightRadius: "1px",
+                                textShadow: "0 0 4px rgba(255, 176, 0, 0.3)",
+                              }
+                            : {
+                                background: "rgba(0, 255, 65, 0.04)",
+                                border: "1px solid rgba(0, 255, 65, 0.18)",
+                                color: "rgba(217, 255, 224, 0.85)",
+                                borderRadius: "4px",
+                                borderBottomLeftRadius: "1px",
+                              }
                         }
                       >
                         {msg.content}
@@ -149,19 +168,34 @@ export default function ChatbotWidget() {
                   ))}
                   {loading && (
                     <div className="flex justify-start">
-                      <div className="w-5 h-5 rounded-full bg-gradient-to-br from-pink-600 to-purple-600 flex items-center justify-center text-white text-[6px] font-bold mr-2 mt-0.5 shrink-0">
+                      <div
+                        className="w-5 h-5 flex items-center justify-center text-[7px] font-bold mr-2 mt-0.5 shrink-0"
+                        style={{
+                          background: "rgba(0, 255, 65, 0.1)",
+                          border: "1px solid rgba(0, 255, 65, 0.5)",
+                          color: "#00ff41",
+                          borderRadius: "3px",
+                          textShadow: "0 0 6px rgba(0, 255, 65, 0.7)",
+                        }}
+                      >
                         AI
                       </div>
                       <div
-                        className="px-3 py-2 rounded-2xl rounded-bl-sm"
-                        style={{ background: "rgba(244,114,182,0.06)", border: "1px solid rgba(244,114,182,0.1)" }}
+                        className="px-3 py-2 font-mono"
+                        style={{
+                          background: "rgba(0, 255, 65, 0.04)",
+                          border: "1px solid rgba(0, 255, 65, 0.18)",
+                          borderRadius: "4px",
+                          borderBottomLeftRadius: "1px",
+                        }}
                       >
                         <motion.span
-                          className="text-pink-300/40 font-mono text-[10px]"
+                          className="text-[10px]"
+                          style={{ color: "#00ff41", textShadow: "0 0 6px rgba(0, 255, 65, 0.5)" }}
                           animate={{ opacity: [0.3, 1, 0.3] }}
                           transition={{ duration: 1.2, repeat: Infinity }}
                         >
-                          thinking...
+                          &gt; processing...
                         </motion.span>
                       </div>
                     </div>
@@ -172,25 +206,41 @@ export default function ChatbotWidget() {
             </AnimatePresence>
 
             {/* Input with spinning border */}
-            <div className="relative rounded-2xl p-[1.5px] overflow-hidden">
-              <div className="absolute inset-0 rounded-2xl chat-input-border" />
-              <div className="absolute inset-0 rounded-2xl chat-input-glow" />
+            <div className="relative p-[1.5px] overflow-hidden" style={{ borderRadius: "4px" }}>
+              <div className="absolute inset-0 chat-input-border" style={{ borderRadius: "4px" }} />
+              <div className="absolute inset-0 chat-input-glow" style={{ borderRadius: "4px" }} />
               <div
-                className="relative rounded-2xl"
-                style={{ background: "rgba(10, 6, 8, 0.95)", backdropFilter: "blur(20px)" }}
+                className="relative"
+                style={{
+                  background: "rgba(4, 2, 8, 0.95)",
+                  backdropFilter: "blur(20px)",
+                  borderRadius: "4px",
+                }}
               >
-                {/* Header */}
-                <div className="px-4 pt-3 pb-1 flex items-center gap-2">
-                  <div className="w-4 h-4 rounded-full bg-gradient-to-br from-pink-600 to-purple-600 flex items-center justify-center text-white text-[6px] font-bold shrink-0">
-                    AI
-                  </div>
-                  <span className="gradient-text text-[9px] font-mono uppercase tracking-[0.25em] font-semibold">
-                    Finekot Shop
+                {/* Terminal header */}
+                <div
+                  className="px-3 py-2 flex items-center gap-2"
+                  style={{
+                    background: "rgba(0, 255, 65, 0.05)",
+                    borderBottom: "1px solid rgba(0, 255, 65, 0.18)",
+                  }}
+                >
+                  <span className="term-dot term-dot-r" />
+                  <span className="term-dot term-dot-y" />
+                  <span className="term-dot term-dot-g" />
+                  <span
+                    className="text-[10px] font-mono flex-1 ml-1"
+                    style={{ color: "#00ff41", opacity: 0.75, letterSpacing: "0.08em" }}
+                  >
+                    ./consultant.sh
                   </span>
-                  <div className="flex-1 h-px bg-gradient-to-r from-pink-500/15 to-transparent" />
                   <button
                     onClick={() => setOpen(false)}
-                    className="text-pink-300/30 hover:text-pink-300/60 transition-colors"
+                    className="transition-colors"
+                    style={{ color: "rgba(0, 255, 65, 0.45)" }}
+                    onMouseEnter={(e) => (e.currentTarget.style.color = "#00ff41")}
+                    onMouseLeave={(e) => (e.currentTarget.style.color = "rgba(0, 255, 65, 0.45)")}
+                    aria-label="Close"
                   >
                     <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round">
                       <line x1="18" y1="6" x2="6" y2="18" />
@@ -198,33 +248,63 @@ export default function ChatbotWidget() {
                     </svg>
                   </button>
                 </div>
-                {/* Input */}
-                <div className="flex items-end gap-2 px-3 pb-3 pt-1">
+                {/* Input row */}
+                <div className="flex items-end gap-2 px-3 py-2">
+                  <span
+                    className="font-mono text-xs pb-2 shrink-0"
+                    style={{ color: "#00ff41", textShadow: "0 0 6px rgba(0, 255, 65, 0.5)" }}
+                  >
+                    &gt;
+                  </span>
                   <textarea
                     ref={inputRef}
                     value={input}
                     onChange={(e) => { setInput(e.target.value); adjustTextarea(); }}
                     onKeyDown={handleKeyDown}
-                    placeholder="Спросите о наших продуктах..."
+                    placeholder="спросить консультанта..."
                     rows={1}
-                    className="flex-1 px-2 py-2 bg-transparent text-xs text-pink-100/70 placeholder:text-pink-300/25 focus:outline-none resize-none font-mono leading-relaxed"
-                    style={{ maxHeight: 100 }}
+                    className="flex-1 px-1 py-2 bg-transparent text-xs focus:outline-none resize-none font-mono leading-relaxed"
+                    style={{
+                      maxHeight: 100,
+                      color: "rgba(217, 255, 224, 0.9)",
+                    }}
                   />
                   <button
                     onClick={send}
                     disabled={loading || !input.trim()}
-                    className="shrink-0 w-8 h-8 rounded-xl bg-gradient-to-br from-pink-500 to-purple-500 text-white flex items-center justify-center hover:opacity-90 transition-all disabled:opacity-30 shadow-[0_0_20px_rgba(244,114,182,0.3)]"
+                    className="shrink-0 w-8 h-8 flex items-center justify-center transition-all disabled:opacity-30"
+                    style={{
+                      background: "rgba(0, 255, 65, 0.1)",
+                      border: "1px solid #00ff41",
+                      color: "#00ff41",
+                      borderRadius: "4px",
+                      textShadow: "0 0 6px rgba(0, 255, 65, 0.6)",
+                      boxShadow: "0 0 12px rgba(0, 255, 65, 0.25)",
+                    }}
+                    onMouseEnter={(e) => {
+                      if (!e.currentTarget.disabled) {
+                        e.currentTarget.style.background = "#00ff41";
+                        e.currentTarget.style.color = "#040208";
+                        e.currentTarget.style.boxShadow = "0 0 28px rgba(0, 255, 65, 0.6)";
+                      }
+                    }}
+                    onMouseLeave={(e) => {
+                      e.currentTarget.style.background = "rgba(0, 255, 65, 0.1)";
+                      e.currentTarget.style.color = "#00ff41";
+                      e.currentTarget.style.boxShadow = "0 0 12px rgba(0, 255, 65, 0.25)";
+                    }}
+                    aria-label="Send"
                   >
                     {loading ? (
                       <motion.div
-                        className="w-3 h-3 border border-white/30 border-t-white rounded-full"
+                        className="w-3 h-3 rounded-full"
+                        style={{ border: "1px solid rgba(0, 255, 65, 0.3)", borderTopColor: "#00ff41" }}
                         animate={{ rotate: 360 }}
                         transition={{ duration: 0.8, repeat: Infinity, ease: "linear" }}
                       />
                     ) : (
-                      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round">
-                        <line x1="5" y1="12" x2="19" y2="12" />
-                        <polyline points="12 5 19 12 12 19" />
+                      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                        <polyline points="9 18 15 12 9 6" />
                       </svg>
                     )}
                   </button>
@@ -238,11 +318,16 @@ export default function ChatbotWidget() {
       {/* Toggle button */}
       <motion.button
         onClick={() => setOpen((v) => !v)}
-        className="relative w-12 h-12 rounded-2xl flex items-center justify-center shadow-[0_0_30px_rgba(244,114,182,0.25)]"
+        className="relative w-12 h-12 flex items-center justify-center font-mono"
         style={{
-          background: "linear-gradient(135deg, #db2777, #9333ea)",
+          background: "rgba(0, 255, 65, 0.08)",
+          border: "1px solid #00ff41",
+          color: "#00ff41",
+          borderRadius: "4px",
+          textShadow: "0 0 8px rgba(0, 255, 65, 0.7)",
+          boxShadow: "0 0 24px rgba(0, 255, 65, 0.3), inset 0 0 12px rgba(0, 255, 65, 0.05)",
         }}
-        whileHover={{ scale: 1.05 }}
+        whileHover={{ scale: 1.05, boxShadow: "0 0 36px rgba(0, 255, 65, 0.55), inset 0 0 12px rgba(0, 255, 65, 0.08)" }}
         whileTap={{ scale: 0.95 }}
         aria-label="Open shop consultant"
       >
@@ -253,28 +338,29 @@ export default function ChatbotWidget() {
               initial={{ opacity: 0, rotate: -90 }}
               animate={{ opacity: 1, rotate: 0 }}
               exit={{ opacity: 0, rotate: 90 }}
-              width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="white" strokeWidth="2.5" strokeLinecap="round"
+              width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round"
             >
               <line x1="18" y1="6" x2="6" y2="18" />
               <line x1="6" y1="6" x2="18" y2="18" />
             </motion.svg>
           ) : (
-            <motion.svg
-              key="chat"
-              initial={{ opacity: 0, rotate: 90 }}
-              animate={{ opacity: 1, rotate: 0 }}
-              exit={{ opacity: 0, rotate: -90 }}
-              width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="white" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"
+            <motion.span
+              key="prompt"
+              initial={{ opacity: 0, y: 4 }}
+              animate={{ opacity: 1, y: 0 }}
+              exit={{ opacity: 0, y: -4 }}
+              className="text-lg font-bold flex items-center"
+              style={{ letterSpacing: "-0.05em" }}
             >
-              <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z" />
-            </motion.svg>
+              &gt;_
+            </motion.span>
           )}
         </AnimatePresence>
         {/* Pulse ring when closed */}
         {!open && (
           <motion.div
-            className="absolute inset-0 rounded-2xl"
-            style={{ border: "1px solid rgba(244,114,182,0.5)" }}
+            className="absolute inset-0"
+            style={{ border: "1px solid rgba(0, 255, 65, 0.5)", borderRadius: "4px" }}
             animate={{ scale: [1, 1.3], opacity: [0.5, 0] }}
             transition={{ duration: 2, repeat: Infinity, ease: "easeOut" }}
           />
