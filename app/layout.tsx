@@ -2,7 +2,6 @@ import type { Metadata } from "next";
 import { JetBrains_Mono } from "next/font/google";
 import { Analytics } from "@vercel/analytics/next";
 import { LangProvider } from "@/lib/lang-context";
-import { ThemeProvider } from "@/lib/theme-context";
 import ChatbotWidget from "@/components/ChatbotWidget";
 import "./globals.css";
 
@@ -59,23 +58,16 @@ const jsonLd = {
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
-    <html lang="en" className="dark" data-theme="matrix" suppressHydrationWarning>
+    <html lang="en" className="dark">
       <head>
         <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }} />
         <link rel="alternate" type="application/json" href="/api/products" title="AI Products API" />
-        <script
-          dangerouslySetInnerHTML={{
-            __html: `(function(){try{var t=localStorage.getItem('theme');if(t==='vanilla'||t==='matrix'){document.documentElement.setAttribute('data-theme',t);}}catch(e){}})();`,
-          }}
-        />
       </head>
       <body className={`${jetbrainsMono.variable} antialiased`}>
-        <ThemeProvider>
-          <LangProvider>
-            {children}
-          </LangProvider>
-          <ChatbotWidget />
-        </ThemeProvider>
+        <LangProvider>
+          {children}
+        </LangProvider>
+        <ChatbotWidget />
         <Analytics />
       </body>
     </html>

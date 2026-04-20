@@ -7,7 +7,6 @@ import Link from "next/link";
 import { i18n, langs, type Lang } from "../lib/i18n";
 import { getTranslatedProducts } from "../lib/products-data";
 import { useLang } from "../lib/lang-context";
-import { useTheme } from "../lib/theme-context";
 
 /* ═══════════════════════════════════════════════════════
    DATA
@@ -89,14 +88,7 @@ const fade = { initial: { opacity: 0, y: 30 }, whileInView: { opacity: 1, y: 0 }
 
 export default function Home() {
   const { lang, setLang } = useLang();
-  const { theme, toggle: toggleTheme } = useTheme();
   const t = i18n[lang];
-
-  const themeLabel =
-    theme === "matrix"
-      ? lang === "RU" ? "Светлая тема" : lang === "UA" ? "Світла тема" : "Light theme"
-      : lang === "RU" ? "Тёмная тема" : lang === "UA" ? "Темна тема" : "Dark theme";
-  const themeAria = theme === "matrix" ? "Switch to vanilla (light) theme" : "Switch to matrix (dark) theme";
 
   // Single-line typewriter effect
   const [displayText, setDisplayText] = useState("");
@@ -184,32 +176,10 @@ export default function Home() {
         }`}
       >
         <div className="max-w-6xl mx-auto px-6 py-4 flex items-center justify-between">
-          {/* Logo + theme toggle */}
-          <div className="flex items-center gap-3">
-            <a href="#hero" className="text-base font-bold tracking-tight font-mono" style={{ color: "var(--accent)" }}>
-              <span style={{ color: "var(--accent2)", opacity: 0.7 }}>&gt; </span>&lt;FK/&gt;
-            </a>
-            <button
-              type="button"
-              onClick={toggleTheme}
-              className="theme-toggle"
-              aria-label={themeAria}
-              title={themeLabel}
-            >
-              {theme === "matrix" ? (
-                /* sun icon — suggests switching to vanilla/light */
-                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-                  <circle cx="12" cy="12" r="4" />
-                  <path d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2M4.93 19.07l1.41-1.41M17.66 6.34l1.41-1.41" />
-                </svg>
-              ) : (
-                /* moon icon — suggests switching back to matrix/dark */
-                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-                  <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z" />
-                </svg>
-              )}
-            </button>
-          </div>
+          {/* Logo — terminal prompt style */}
+          <a href="#hero" className="text-base font-bold tracking-tight font-mono" style={{ color: "var(--accent)" }}>
+            <span style={{ color: "var(--accent2)", opacity: 0.7 }}>&gt; </span>&lt;FK/&gt;
+          </a>
 
           {/* Desktop links */}
           <div className="hidden md:flex items-center gap-2">
@@ -261,14 +231,6 @@ export default function Home() {
                     </a>
                   );
                 })}
-                <button
-                  type="button"
-                  onClick={() => { toggleTheme(); setMenuOpen(false); }}
-                  className="mt-1 px-4 py-3 rounded-md text-sm font-mono uppercase tracking-wider transition-all text-left border border-[var(--glass-border)] text-[var(--accent)] hover:bg-[var(--glass-bg)] hover:border-[var(--glass-border-hover)] flex items-center gap-2"
-                >
-                  <span style={{ color: "var(--accent2)", opacity: 0.5 }}>./</span>
-                  {themeLabel}
-                </button>
               </div>
             </motion.div>
           )}
