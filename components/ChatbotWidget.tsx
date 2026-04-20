@@ -85,6 +85,8 @@ function MatrixRain() {
   );
 }
 
+const PEEK_KEY = "finekot_chat_peeked";
+
 export default function ChatbotWidget() {
   const [open, setOpen] = useState(false);
   const [messages, setMessages] = useState<ChatMessage[]>([]);
@@ -93,6 +95,7 @@ export default function ChatbotWidget() {
   const [hasOpened, setHasOpened] = useState(false);
   const messagesContainerRef = useRef<HTMLDivElement>(null);
   const inputRef = useRef<HTMLTextAreaElement>(null);
+  const peekingRef = useRef(false);
 
   useEffect(() => {
     const el = messagesContainerRef.current;
@@ -107,6 +110,45 @@ export default function ChatbotWidget() {
       }
     }
   }, [open, hasOpened, messages.length]);
+
+  // First-visit "peek": panel briefly pops open then folds back into the
+  // toggle button — a one-shot teaser per tab-session so the chat gets
+  // noticed. Skipped if the user already opened it themselves earlier.
+  useEffect(() => {
+    if (typeof window === "undefined") return;
+    try {
+      if (sessionStorage.getItem(PEEK_KEY)) return;
+    } catch {
+      return;
+    }
+    const openTimer = setTimeout(() => {
+      peekingRef.current = true;
+      setOpen(true);
+    }, 1200);
+    const closeTimer = setTimeout(() => {
+      if (peekingRef.current) {
+        setOpen(false);
+        peekingRef.current = false;
+      }
+      try {
+        sessionStorage.setItem(PEEK_KEY, "1");
+      } catch {}
+    }, 2300);
+    return () => {
+      clearTimeout(openTimer);
+      clearTimeout(closeTimer);
+    };
+  }, []);
+
+  const handleToggle = useCallback(() => {
+    peekingRef.current = false;
+    setOpen((v) => !v);
+  }, []);
+
+  const handleClose = useCallback(() => {
+    peekingRef.current = false;
+    setOpen(false);
+  }, []);
 
   const adjustTextarea = useCallback(() => {
     const el = inputRef.current;
@@ -248,7 +290,7 @@ export default function ChatbotWidget() {
                 clr
               </button>
               <button
-                onClick={() => setOpen(false)}
+                onClick={handleClose}
                 className="transition-colors"
                 style={{ color: "rgba(0, 255, 65, 0.45)" }}
                 onMouseEnter={(e) => (e.currentTarget.style.color = "#00ff41")}
@@ -471,7 +513,7 @@ export default function ChatbotWidget() {
 
       {/* Toggle button */}
       <motion.button
-        onClick={() => setOpen((v) => !v)}
+        onClick={handleToggle}
         className="relative w-12 h-12 flex items-center justify-center font-mono"
         style={{
           background: "rgba(255, 176, 0, 0.08)",
