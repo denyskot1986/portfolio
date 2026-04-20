@@ -240,7 +240,7 @@ export default function Home() {
       </motion.nav>
 
       {/* ─── HERO ─── */}
-      <section id="hero" className="relative z-10 min-h-[85vh] flex items-center justify-center dot-grid overflow-hidden pt-16">
+      <section id="hero" className="relative z-10 min-h-[85vh] flex items-center justify-center overflow-hidden pt-16">
         <div className="relative z-10 text-center px-6 max-w-4xl">
           {/* Terminal system header */}
           <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.6 }}
