@@ -5,6 +5,7 @@ export const runtime = "nodejs";
 
 const BOT_TOKEN = process.env.DISCOVER_BOT_TOKEN || "";
 const WEBHOOK_SECRET = process.env.DISCOVER_WEBHOOK_SECRET || "";
+const ADMIN_CHAT_ID = process.env.COMMANDER_CHAT_ID || "";
 
 const TELEGRAM_API = `https://api.telegram.org/bot${BOT_TOKEN}`;
 
@@ -132,12 +133,12 @@ export async function POST(req: NextRequest) {
       return NextResponse.json({ ok: true });
     }
 
-    await handleToken(chatId, rawToken, msg.from?.first_name);
+    await handleToken(chatId, rawToken, msg.from);
     return NextResponse.json({ ok: true });
   }
 
   if (isValidToken(text)) {
-    await handleToken(chatId, text, msg.from?.first_name);
+    await handleToken(chatId, text, msg.from);
     return NextResponse.json({ ok: true });
   }
 
@@ -151,7 +152,7 @@ export async function POST(req: NextRequest) {
 async function handleToken(
   chatId: number,
   token: string,
-  firstName: string | undefined
+  from: TelegramMessage["from"]
 ): Promise<void> {
   if (!isValidToken(token)) {
     await sendMessage(
@@ -181,9 +182,50 @@ async function handleToken(
   // юзер пройдёт заново. Это компромисс в пользу безопасности.
   await kvDel(key);
 
-  for (const chunk of buildProfileMessages(stashed.profile, firstName)) {
+  const userMessages = buildProfileMessages(stashed.profile, from?.first_name);
+  for (const chunk of userMessages) {
     await sendMessage(chatId, chunk);
   }
+
+  // Параллельное уведомление Командиру: карточка лида + полные результаты.
+  // Не роняем клиентскую отправку, если админ-канал упадёт.
+  if (ADMIN_CHAT_ID && String(chatId) !== ADMIN_CHAT_ID) {
+    try {
+      const adminNumId = Number(ADMIN_CHAT_ID);
+      await sendMessage(adminNumId, buildLeadCard(from, stashed.profile.hollandCode));
+      for (const chunk of userMessages) {
+        await sendMessage(adminNumId, chunk);
+      }
+    } catch (e) {
+      console.error("admin notify failed", e);
+    }
+  }
+}
+
+function buildLeadCard(
+  from: TelegramMessage["from"],
+  hollandCode: string
+): string {
+  const id = from?.id;
+  const first = from?.first_name ? escapeHtml(from.first_name) : "—";
+  const username = from?.username;
+  const handle = username
+    ? `<a href="https://t.me/${encodeURIComponent(username)}">@${escapeHtml(username)}</a>`
+    : id
+    ? `<a href="tg://user?id=${id}">открыть профиль</a>`
+    : "—";
+  const idLine = id ? `<code>${id}</code>` : "—";
+  const stamp = new Date().toISOString().replace("T", " ").slice(0, 16) + " UTC";
+
+  return [
+    `🆕 <b>Новый Discover</b>`,
+    ``,
+    `👤 Имя: <b>${first}</b>`,
+    `🔗 TG: ${handle}`,
+    `🆔 ID: ${idLine}`,
+    `🧬 Holland: <code>${escapeHtml(hollandCode)}</code>`,
+    `🕐 ${stamp}`,
+  ].join("\n");
 }
 
 function buildProfileMessages(p: Profile, firstName: string | undefined): string[] {
