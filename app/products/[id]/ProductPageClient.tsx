@@ -48,7 +48,7 @@ export default function ProductPageClient() {
           <div className="flex items-center gap-4">
             <LangSwitcher />
             <a href={botDeepLink(product.contact, product.id, "order")} target="_blank" rel="noopener noreferrer" className="text-xs font-mono text-pink-400/40 hover:text-pink-400/80 transition-colors">
-              Order &rarr;
+              {i18n[lang].pages.order} &rarr;
             </a>
           </div>
         </div>
