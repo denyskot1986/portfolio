@@ -77,8 +77,7 @@ function stripMarkdownLinks(content: string): React.ReactNode {
 
 const WELCOME_MESSAGE: ChatMessage = {
   role: "assistant",
-  content:
-    "> SKYNET consultant.on — спроси что угодно про продукты Finekot Systems. Я открою нужную страницу сам.",
+  content: "Finekot Systems: online",
 };
 
 const SESSION_KEY = "finekot_chat_session";
