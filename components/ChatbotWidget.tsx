@@ -11,7 +11,7 @@ interface ChatMessage {
 const WELCOME_MESSAGE: ChatMessage = {
   role: "assistant",
   content:
-    "╔══════════════════╗\n║   SKYNET v3.0    ║\n║   consultant.on  ║\n╚══════════════════╝",
+    "╔══════════════════╗\n║   SKYNET v3.0    ║\n║   consultant.on  ║\n║   • link stable  ║\n╚══════════════════╝",
 };
 
 const SESSION_KEY = "finekot_chat_session";
