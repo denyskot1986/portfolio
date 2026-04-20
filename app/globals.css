@@ -412,3 +412,194 @@ input.term-input::placeholder {
 [class*="shadow-[0_0_20px_rgba(244,114,182"] {
   box-shadow: 0 0 32px rgba(0, 255, 65, 0.25) !important;
 }
+
+/* ═══════════════════════════════════════════════════════
+   VARIANT 2 — VANILLA (light, coffee-cream)
+   Warm cream background, coffee-brown text, caramel accent.
+   Activated via <html data-theme="vanilla">
+   ═══════════════════════════════════════════════════════ */
+
+html[data-theme="vanilla"] {
+  --bg: #faf5ec;
+  --bg2: #f1e6d1;
+  --fg: #3d2b1f;
+  --accent: #a0522d;       /* coffee / sienna */
+  --accent2: #c9782d;      /* caramel */
+  --cyan: #a0522d;
+  --muted: #8a7866;
+  --border: #e6d9c3;
+  --border-accent: rgba(160, 82, 45, 0.22);
+  --border-accent-hover: rgba(160, 82, 45, 0.5);
+  --glass-bg: rgba(160, 82, 45, 0.04);
+  --glass-hover: rgba(160, 82, 45, 0.08);
+  --glass-border: rgba(160, 82, 45, 0.22);
+  --glass-border-hover: rgba(160, 82, 45, 0.5);
+}
+
+html[data-theme="vanilla"] body { background: var(--bg); color: var(--fg); }
+
+/* Kill CRT effects in vanilla */
+html[data-theme="vanilla"] body::after { display: none; }
+html[data-theme="vanilla"] body::before { display: none; }
+
+html[data-theme="vanilla"] ::selection { background: rgba(160, 82, 45, 0.25); color: #3d2b1f; }
+
+html[data-theme="vanilla"] .gradient-text {
+  background: linear-gradient(135deg, #a0522d, #c9782d, #d4a373);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  text-shadow: 0 0 18px rgba(160, 82, 45, 0.18);
+}
+
+html[data-theme="vanilla"] .glass:hover {
+  box-shadow: 0 0 20px rgba(160, 82, 45, 0.12);
+}
+
+html[data-theme="vanilla"] .terminal-card-header {
+  background: rgba(160, 82, 45, 0.05);
+}
+
+html[data-theme="vanilla"] .btn-terminal {
+  text-shadow: none;
+  box-shadow: inset 0 0 10px rgba(160, 82, 45, 0.04), 0 0 8px rgba(160, 82, 45, 0.1);
+}
+html[data-theme="vanilla"] .btn-terminal:hover {
+  background: var(--accent);
+  color: #faf5ec;
+  text-shadow: none;
+  box-shadow: 0 0 22px rgba(160, 82, 45, 0.4);
+}
+
+html[data-theme="vanilla"] .btn-buy {
+  color: #faf5ec;
+  box-shadow: 0 0 16px rgba(160, 82, 45, 0.35);
+}
+html[data-theme="vanilla"] .btn-buy:hover {
+  box-shadow: 0 0 26px rgba(160, 82, 45, 0.55);
+}
+
+html[data-theme="vanilla"] .blob { opacity: 0.22; filter: blur(120px); }
+html[data-theme="vanilla"] .blob-2 { opacity: 0.18; }
+
+html[data-theme="vanilla"] .dot-grid {
+  background-image:
+    linear-gradient(rgba(160, 82, 45, 0.07) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(160, 82, 45, 0.07) 1px, transparent 1px);
+}
+
+html[data-theme="vanilla"] ::-webkit-scrollbar-track { background: var(--bg); }
+html[data-theme="vanilla"] ::-webkit-scrollbar-thumb { background: rgba(160, 82, 45, 0.3); }
+html[data-theme="vanilla"] ::-webkit-scrollbar-thumb:hover { background: var(--accent); }
+
+html[data-theme="vanilla"] pre.diagram {
+  color: rgba(160, 82, 45, 0.75);
+  text-shadow: none;
+}
+
+html[data-theme="vanilla"] .chat-input-border {
+  background: conic-gradient(
+    from var(--border-angle),
+    transparent 35%,
+    rgba(160, 82, 45, 0.55) 48%,
+    rgba(201, 120, 45, 0.55) 52%,
+    transparent 65%
+  );
+}
+html[data-theme="vanilla"] .chat-input-glow {
+  background: conic-gradient(
+    from var(--border-angle),
+    transparent 35%,
+    rgba(160, 82, 45, 0.22) 48%,
+    rgba(201, 120, 45, 0.22) 52%,
+    transparent 65%
+  );
+}
+
+html[data-theme="vanilla"] .term-tag-live {
+  background: rgba(160, 82, 45, 0.08);
+  border-color: rgba(160, 82, 45, 0.35);
+  color: var(--accent);
+  text-shadow: none;
+}
+html[data-theme="vanilla"] .term-tag-id,
+html[data-theme="vanilla"] .term-tag-cat {
+  background: rgba(201, 120, 45, 0.07);
+  border-color: rgba(201, 120, 45, 0.3);
+  color: var(--accent2);
+}
+
+html[data-theme="vanilla"] input.term-input {
+  background: rgba(160, 82, 45, 0.04);
+  border-color: rgba(160, 82, 45, 0.25);
+}
+html[data-theme="vanilla"] input.term-input:focus {
+  border-color: rgba(160, 82, 45, 0.6);
+  box-shadow: 0 0 0 2px rgba(160, 82, 45, 0.14);
+}
+
+/* Re-skin hardcoded pink-* on vanilla */
+html[data-theme="vanilla"] [class*="text-pink-100"] { color: #3d2b1f !important; }
+html[data-theme="vanilla"] [class*="text-pink-100\\/80"],
+html[data-theme="vanilla"] [class*="text-pink-100/80"] { color: rgba(61, 43, 31, 0.85) !important; }
+html[data-theme="vanilla"] [class*="text-pink-100\\/70"],
+html[data-theme="vanilla"] [class*="text-pink-100/70"] { color: rgba(61, 43, 31, 0.75) !important; }
+html[data-theme="vanilla"] [class*="text-pink-100\\/60"],
+html[data-theme="vanilla"] [class*="text-pink-100/60"] { color: rgba(61, 43, 31, 0.65) !important; }
+html[data-theme="vanilla"] [class*="text-pink-100\\/50"],
+html[data-theme="vanilla"] [class*="text-pink-100/50"] { color: rgba(61, 43, 31, 0.55) !important; }
+html[data-theme="vanilla"] [class*="text-pink-100\\/40"],
+html[data-theme="vanilla"] [class*="text-pink-100/40"] { color: rgba(61, 43, 31, 0.45) !important; }
+html[data-theme="vanilla"] [class*="text-pink-100\\/30"],
+html[data-theme="vanilla"] [class*="text-pink-100/30"] { color: rgba(61, 43, 31, 0.4) !important; }
+html[data-theme="vanilla"] [class*="text-pink-100\\/20"],
+html[data-theme="vanilla"] [class*="text-pink-100/20"] { color: rgba(61, 43, 31, 0.3) !important; }
+
+html[data-theme="vanilla"] [class*="text-pink-300"],
+html[data-theme="vanilla"] [class*="text-pink-400"],
+html[data-theme="vanilla"] [class*="text-pink-500"] { color: var(--accent) !important; }
+
+html[data-theme="vanilla"] [class*="border-pink-400"] { border-color: rgba(160, 82, 45, 0.3) !important; }
+html[data-theme="vanilla"] [class*="border-pink-500"] { border-color: rgba(160, 82, 45, 0.4) !important; }
+
+html[data-theme="vanilla"] [class*="bg-pink-400"] { background-color: rgba(160, 82, 45, 0.1) !important; }
+html[data-theme="vanilla"] [class*="bg-pink-500"] { background-color: rgba(160, 82, 45, 0.14) !important; }
+html[data-theme="vanilla"] [class*="bg-pink-600"] { background-color: rgba(160, 82, 45, 0.2) !important; }
+html[data-theme="vanilla"] [class*="bg-purple-600"] { background-color: rgba(201, 120, 45, 0.18) !important; }
+
+html[data-theme="vanilla"] .bg-gradient-to-r.from-pink-600,
+html[data-theme="vanilla"] [class*="from-pink-600"][class*="to-purple-600"] {
+  background: linear-gradient(90deg, var(--accent), var(--accent2)) !important;
+  color: #faf5ec !important;
+}
+
+html[data-theme="vanilla"] [class*="shadow-[0_0_30px_rgba(244,114,182"],
+html[data-theme="vanilla"] [class*="shadow-[0_0_40px_rgba(244,114,182"],
+html[data-theme="vanilla"] [class*="shadow-[0_0_20px_rgba(244,114,182"] {
+  box-shadow: 0 0 22px rgba(160, 82, 45, 0.25) !important;
+}
+
+/* ═══════════════════════════════════════════════════════
+   THEME TOGGLE BUTTON (shared)
+   ═══════════════════════════════════════════════════════ */
+.theme-toggle {
+  width: 36px;
+  height: 36px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 9999px;
+  border: 1px solid var(--glass-border);
+  background: var(--glass-bg);
+  color: var(--accent);
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+.theme-toggle:hover {
+  border-color: var(--glass-border-hover);
+  background: var(--glass-hover);
+  box-shadow: 0 0 14px rgba(0, 255, 65, 0.25);
+}
+html[data-theme="vanilla"] .theme-toggle:hover {
+  box-shadow: 0 0 14px rgba(160, 82, 45, 0.3);
+}
