@@ -9,10 +9,11 @@ export const maxDuration = 30;
 
 const OPENROUTER_API_KEY = process.env.OPENROUTER_API_KEY || "";
 
-// Gemini 2.5 Pro — лучше следует сложным инструкциям промпта (ссылки, handoff-логика),
-// чем Haiku. Медленнее, но качество стоит latency для sales-chat.
+// Gemini 2.5 Flash — instruction-following уровня Pro, но sub-second latency.
+// Thinking отключаем через reasoning.max_tokens=0 (см. fetch body ниже) чтобы
+// модель не тратила время на внутренние reasoning-токены для простого sales-chat.
 // Override через env при A/B.
-const CHAT_MODEL = process.env.CHAT_MODEL || "google/gemini-2.5-pro";
+const CHAT_MODEL = process.env.CHAT_MODEL || "google/gemini-2.5-flash";
 
 // Rate limits — два окна: burst (минута) + hard cap (час).
 const RL_MIN_MAX = 5;
@@ -385,6 +386,10 @@ export async function POST(req: NextRequest) {
         ],
         max_tokens: MAX_REPLY_TOKENS,
         temperature: 0.7,
+        // Отключаем thinking для всех моделей, которые его поддерживают
+        // (Gemini 2.5 *, Claude extended thinking, GPT-5 reasoning и т.д.).
+        // Для чистого sales-chat reasoning не нужен, убирает 2-5 сек latency.
+        reasoning: { max_tokens: 0 },
       }),
     });
 
