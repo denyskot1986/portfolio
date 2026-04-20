@@ -67,14 +67,63 @@ export default function ProductPageClient() {
         </div>
       </section>
 
-      {/* ARCHITECTURE DIAGRAM */}
-      <section className="relative z-10 py-12 px-6">
-        <div className="max-w-4xl mx-auto">
-          <motion.div {...fade} className="glass rounded-xl p-6 sm:p-10 overflow-x-auto flex justify-center">
-            <pre className="diagram text-[10px] md:text-xs text-pink-300/50">{product.diagram}</pre>
-          </motion.div>
-        </div>
-      </section>
+      {/* HOW IT WORKS — step cards */}
+      {product.features.length > 0 && (
+        <section className="relative z-10 py-12 px-6">
+          <div className="max-w-5xl mx-auto">
+            <motion.div {...fade}>
+              <h2 className="text-xl sm:text-2xl md:text-3xl font-black mb-8 text-center tracking-tight">
+                <span className="gradient-text">{tp.howItWorks}</span>
+              </h2>
+              <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 sm:gap-3">
+                {product.features.slice(0, 4).map((f, i) => (
+                  <motion.div
+                    key={i}
+                    initial={{ opacity: 0, y: 12 }}
+                    whileInView={{ opacity: 1, y: 0 }}
+                    viewport={{ once: true, margin: "-40px" }}
+                    transition={{ duration: 0.35, delay: i * 0.08 }}
+                    className="relative rounded-lg p-5"
+                    style={{
+                      background: "rgba(0, 255, 65, 0.025)",
+                      border: "1px solid rgba(0, 255, 65, 0.22)",
+                      boxShadow: "inset 0 0 20px rgba(0, 255, 65, 0.04)",
+                    }}
+                  >
+                    <div
+                      className="font-mono text-[10px] mb-3 tracking-[0.3em]"
+                      style={{
+                        color: "#ffb000",
+                        textShadow: "0 0 6px rgba(255, 176, 0, 0.5)",
+                      }}
+                    >
+                      {String(i + 1).padStart(2, "0")}
+                      <span
+                        className="ml-2"
+                        style={{ color: "rgba(0, 255, 65, 0.4)" }}
+                      >
+                        {i < Math.min(product.features.length, 4) - 1 ? "→" : "✓"}
+                      </span>
+                    </div>
+                    <h3
+                      className="text-sm font-bold mb-2 leading-tight"
+                      style={{
+                        color: "#00ff41",
+                        textShadow: "0 0 8px rgba(0, 255, 65, 0.3)",
+                      }}
+                    >
+                      {f.title}
+                    </h3>
+                    <p className="text-xs leading-relaxed text-pink-100/35">
+                      {f.desc}
+                    </p>
+                  </motion.div>
+                ))}
+              </div>
+            </motion.div>
+          </div>
+        </section>
+      )}
 
       {/* INTERACTIVE DEMO / VIDEO — only render if demo chat or YouTube video exists */}
       {(demo || product.youtubeId) && (
