@@ -39,13 +39,58 @@ function getSessionId(): string {
   }
 }
 
+function MatrixRain() {
+  const ref = useRef<HTMLCanvasElement>(null);
+  useEffect(() => {
+    const canvas = ref.current;
+    if (!canvas) return;
+    const ctx = canvas.getContext("2d");
+    if (!ctx) return;
+    let raf = 0;
+    let timer: ReturnType<typeof setTimeout> | null = null;
+    const resize = () => {
+      canvas.width = canvas.offsetWidth;
+      canvas.height = canvas.offsetHeight;
+    };
+    resize();
+    const cols = Math.max(1, Math.floor(canvas.width / 14));
+    const drops = Array(cols).fill(0);
+    const draw = () => {
+      ctx.fillStyle = "rgba(4, 2, 8, 0.12)";
+      ctx.fillRect(0, 0, canvas.width, canvas.height);
+      ctx.fillStyle = "rgba(0, 255, 65, 0.4)";
+      ctx.font = "11px 'JetBrains Mono', monospace";
+      for (let i = 0; i < drops.length; i++) {
+        const ch = String.fromCharCode(0x30a0 + ((Math.random() * 96) | 0));
+        ctx.fillText(ch, i * 14, drops[i] * 14);
+        if (drops[i] * 14 > canvas.height && Math.random() > 0.97) drops[i] = 0;
+        drops[i]++;
+      }
+      timer = setTimeout(() => {
+        raf = requestAnimationFrame(draw);
+      }, 110);
+    };
+    draw();
+    return () => {
+      if (timer) clearTimeout(timer);
+      cancelAnimationFrame(raf);
+    };
+  }, []);
+  return (
+    <canvas
+      ref={ref}
+      className="absolute inset-0 w-full h-full pointer-events-none"
+      style={{ opacity: 0.09 }}
+    />
+  );
+}
+
 export default function ChatbotWidget() {
   const [open, setOpen] = useState(false);
   const [messages, setMessages] = useState<ChatMessage[]>([]);
   const [input, setInput] = useState("");
   const [loading, setLoading] = useState(false);
   const [hasOpened, setHasOpened] = useState(false);
-  const messagesEndRef = useRef<HTMLDivElement>(null);
   const messagesContainerRef = useRef<HTMLDivElement>(null);
   const inputRef = useRef<HTMLTextAreaElement>(null);
 
@@ -54,7 +99,6 @@ export default function ChatbotWidget() {
     if (el) el.scrollTop = el.scrollHeight;
   }, [messages, loading]);
 
-  // При первом открытии — показываем welcome.
   useEffect(() => {
     if (open && !hasOpened) {
       setHasOpened(true);
@@ -78,7 +122,6 @@ export default function ChatbotWidget() {
       if (!trimmed || loading) return;
 
       const userMsg: ChatMessage = { role: "user", content: trimmed };
-      // История для API — без welcome-сообщения (оно client-only).
       const historyForApi = messages
         .filter((m) => m !== WELCOME_MESSAGE)
         .concat(userMsg);
@@ -140,7 +183,6 @@ export default function ChatbotWidget() {
     [send]
   );
 
-  // Suggested prompts показываем только пока юзер ни разу не написал.
   const showSuggested = useMemo(
     () => !messages.some((m) => m.role === "user") && !loading,
     [messages, loading]
@@ -148,7 +190,7 @@ export default function ChatbotWidget() {
 
   return (
     <div className="fixed bottom-5 right-5 z-[500] flex flex-col items-end gap-3">
-      {/* Chat panel */}
+      {/* Chat panel — V3 Data Stream */}
       <AnimatePresence>
         {open && (
           <motion.div
@@ -156,125 +198,149 @@ export default function ChatbotWidget() {
             animate={{ opacity: 1, y: 0, scale: 1 }}
             exit={{ opacity: 0, y: 16, scale: 0.95 }}
             transition={{ duration: 0.2 }}
-            className="w-[320px] sm:w-[360px] flex flex-col"
-            style={{ maxHeight: "70vh" }}
+            className="relative w-[320px] sm:w-[360px] overflow-hidden font-mono"
+            style={{
+              maxHeight: "70vh",
+              background: "rgba(4, 2, 8, 0.97)",
+              backdropFilter: "blur(24px)",
+              WebkitBackdropFilter: "blur(24px)",
+              border: "1px solid rgba(0, 255, 65, 0.28)",
+              borderRadius: "4px",
+              boxShadow: "0 0 32px rgba(0, 255, 65, 0.18), inset 0 0 24px rgba(0, 255, 65, 0.03)",
+              display: "flex",
+              flexDirection: "column",
+            }}
           >
-            {/* Messages */}
-            <AnimatePresence>
-              {messages.length > 0 && (
-                <motion.div
-                  initial={{ opacity: 0, height: 0 }}
-                  animate={{ opacity: 1, height: "auto" }}
-                  exit={{ opacity: 0, height: 0 }}
-                  ref={messagesContainerRef}
-                  className="mb-3 overflow-y-auto overscroll-contain p-3 space-y-3"
-                  style={{
-                    maxHeight: "45vh",
-                    background: "rgba(4, 2, 8, 0.92)",
-                    backdropFilter: "blur(20px)",
-                    border: "1px solid rgba(0, 255, 65, 0.22)",
-                    borderRadius: "4px",
-                    boxShadow: "0 0 32px rgba(0, 255, 65, 0.14), inset 0 0 24px rgba(0, 255, 65, 0.03)",
-                  }}
-                >
-                  <div className="sticky top-0 flex justify-end">
-                    <button
-                      onClick={() => setMessages([WELCOME_MESSAGE])}
-                      className="transition-colors text-[10px] font-mono px-1 uppercase tracking-[0.12em]"
-                      style={{ color: "rgba(0, 255, 65, 0.35)" }}
-                      onMouseEnter={(e) => (e.currentTarget.style.color = "rgba(0, 255, 65, 0.8)")}
-                      onMouseLeave={(e) => (e.currentTarget.style.color = "rgba(0, 255, 65, 0.35)")}
-                    >
-                      $ clear
-                    </button>
-                  </div>
-                  {messages.map((msg, i) => (
-                    <motion.div
-                      key={i}
-                      initial={{ opacity: 0, y: 6 }}
-                      animate={{ opacity: 1, y: 0 }}
-                      transition={{ duration: 0.18 }}
-                      className={`flex ${msg.role === "user" ? "justify-end" : "justify-start"}`}
-                    >
-                      {msg.role === "assistant" && (
-                        <div
-                          className="w-5 h-5 flex items-center justify-center text-[7px] font-bold mr-2 mt-0.5 shrink-0"
-                          style={{
-                            background: "rgba(0, 255, 65, 0.1)",
-                            border: "1px solid rgba(0, 255, 65, 0.5)",
-                            color: "#00ff41",
-                            borderRadius: "3px",
-                            textShadow: "0 0 6px rgba(0, 255, 65, 0.7)",
-                          }}
-                        >
-                          AI
-                        </div>
-                      )}
-                      <div
-                        className="max-w-[82%] px-3 py-2 text-xs leading-relaxed font-mono whitespace-pre-wrap"
-                        style={
-                          msg.role === "user"
-                            ? {
-                                background: "rgba(255, 176, 0, 0.08)",
-                                border: "1px solid rgba(255, 176, 0, 0.3)",
-                                color: "#ffb000",
-                                borderRadius: "4px",
-                                borderBottomRightRadius: "1px",
-                                textShadow: "0 0 4px rgba(255, 176, 0, 0.3)",
-                              }
-                            : {
-                                background: "rgba(0, 255, 65, 0.04)",
-                                border: "1px solid rgba(0, 255, 65, 0.18)",
-                                color: "rgba(217, 255, 224, 0.85)",
-                                borderRadius: "4px",
-                                borderBottomLeftRadius: "1px",
-                              }
-                        }
-                      >
-                        {msg.content}
-                      </div>
-                    </motion.div>
-                  ))}
-                  {loading && (
-                    <div className="flex justify-start">
-                      <div
-                        className="w-5 h-5 flex items-center justify-center text-[7px] font-bold mr-2 mt-0.5 shrink-0"
-                        style={{
-                          background: "rgba(0, 255, 65, 0.1)",
-                          border: "1px solid rgba(0, 255, 65, 0.5)",
-                          color: "#00ff41",
-                          borderRadius: "3px",
-                          textShadow: "0 0 6px rgba(0, 255, 65, 0.7)",
-                        }}
-                      >
-                        AI
-                      </div>
-                      <div
-                        className="px-3 py-2 font-mono"
-                        style={{
-                          background: "rgba(0, 255, 65, 0.04)",
-                          border: "1px solid rgba(0, 255, 65, 0.18)",
-                          borderRadius: "4px",
-                          borderBottomLeftRadius: "1px",
-                        }}
-                      >
-                        <motion.span
-                          className="text-[10px]"
-                          style={{ color: "#00ff41", textShadow: "0 0 6px rgba(0, 255, 65, 0.5)" }}
-                          animate={{ opacity: [0.3, 1, 0.3] }}
-                          transition={{ duration: 1.2, repeat: Infinity }}
-                        >
-                          &gt; processing...
-                        </motion.span>
-                      </div>
-                    </div>
-                  )}
-                  <div ref={messagesEndRef} />
-                </motion.div>
-              )}
-            </AnimatePresence>
+            <MatrixRain />
 
-            {/* Suggested prompts — видны только до первого user-сообщения */}
+            {/* Header */}
+            <div
+              className="relative px-3 py-2 flex items-center gap-2 text-[10px]"
+              style={{
+                background: "rgba(0, 255, 65, 0.06)",
+                borderBottom: "1px solid rgba(0, 255, 65, 0.2)",
+                color: "#00ff41",
+                letterSpacing: "0.12em",
+              }}
+            >
+              <span style={{ color: "#ffb000", opacity: 0.7 }}>//</span>
+              <span>finekot.shop</span>
+              <span style={{ opacity: 0.4 }}>::</span>
+              <span>stream</span>
+              <span style={{ opacity: 0.4 }}>::</span>
+              <span style={{ color: "#ffb000" }}>0x3F</span>
+              <span className="flex-1" />
+              <motion.span
+                animate={{ opacity: [1, 0.2, 1] }}
+                transition={{ duration: 1.4, repeat: Infinity }}
+                style={{ color: "#00ff41", textShadow: "0 0 6px rgba(0, 255, 65, 0.7)" }}
+              >
+                ●
+              </motion.span>
+              <button
+                onClick={() => setMessages([WELCOME_MESSAGE])}
+                className="transition-colors ml-1 uppercase"
+                style={{ color: "rgba(0, 255, 65, 0.4)", letterSpacing: "0.15em" }}
+                onMouseEnter={(e) => (e.currentTarget.style.color = "#00ff41")}
+                onMouseLeave={(e) => (e.currentTarget.style.color = "rgba(0, 255, 65, 0.4)")}
+                aria-label="Clear"
+              >
+                clr
+              </button>
+              <button
+                onClick={() => setOpen(false)}
+                className="transition-colors"
+                style={{ color: "rgba(0, 255, 65, 0.45)" }}
+                onMouseEnter={(e) => (e.currentTarget.style.color = "#00ff41")}
+                onMouseLeave={(e) => (e.currentTarget.style.color = "rgba(0, 255, 65, 0.45)")}
+                aria-label="Close"
+              >
+                <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round">
+                  <line x1="18" y1="6" x2="6" y2="18" />
+                  <line x1="6" y1="6" x2="18" y2="18" />
+                </svg>
+              </button>
+            </div>
+
+            {/* Tree log */}
+            <div
+              ref={messagesContainerRef}
+              className="relative p-3 space-y-1.5 text-xs leading-relaxed overflow-y-auto overscroll-contain"
+              style={{ minHeight: 160, maxHeight: "40vh" }}
+            >
+              {messages.map((msg, i) => {
+                const isUsr = msg.role === "user";
+                return (
+                  <motion.div
+                    key={i}
+                    initial={{ opacity: 0, x: -4 }}
+                    animate={{ opacity: 1, x: 0 }}
+                    transition={{ duration: 0.18 }}
+                    className="flex gap-2"
+                  >
+                    <span
+                      className="shrink-0 pt-0.5"
+                      style={{ color: "rgba(0, 255, 65, 0.5)" }}
+                    >
+                      ├─
+                    </span>
+                    <span
+                      className="shrink-0 text-[10px] pt-[3px]"
+                      style={{
+                        color: isUsr ? "#ffb000" : "#00ff41",
+                        letterSpacing: "0.12em",
+                        textShadow: `0 0 6px ${isUsr ? "rgba(255, 176, 0, 0.5)" : "rgba(0, 255, 65, 0.5)"}`,
+                        width: 26,
+                      }}
+                    >
+                      {isUsr ? "USR" : "SYS"}
+                    </span>
+                    <span
+                      className="shrink-0 pt-0.5"
+                      style={{ color: "rgba(0, 255, 65, 0.4)" }}
+                    >
+                      │
+                    </span>
+                    <span
+                      className="flex-1 whitespace-pre-wrap break-words"
+                      style={{
+                        color: isUsr ? "rgba(255, 200, 120, 0.95)" : "rgba(217, 255, 224, 0.88)",
+                      }}
+                    >
+                      {msg.content}
+                    </span>
+                  </motion.div>
+                );
+              })}
+
+              {loading && (
+                <div className="flex gap-2">
+                  <span className="shrink-0 pt-0.5" style={{ color: "rgba(0, 255, 65, 0.5)" }}>├─</span>
+                  <span
+                    className="shrink-0 text-[10px] pt-[3px]"
+                    style={{
+                      color: "#00ff41",
+                      letterSpacing: "0.12em",
+                      textShadow: "0 0 6px rgba(0, 255, 65, 0.5)",
+                      width: 26,
+                    }}
+                  >
+                    SYS
+                  </span>
+                  <span className="shrink-0 pt-0.5" style={{ color: "rgba(0, 255, 65, 0.4)" }}>│</span>
+                  <motion.span
+                    className="text-[11px]"
+                    style={{ color: "#00ff41", textShadow: "0 0 6px rgba(0, 255, 65, 0.5)" }}
+                    animate={{ opacity: [0.3, 1, 0.3] }}
+                    transition={{ duration: 1.2, repeat: Infinity }}
+                  >
+                    processing...
+                  </motion.span>
+                </div>
+              )}
+            </div>
+
+            {/* Suggested prompts */}
             <AnimatePresence>
               {showSuggested && messages.length > 0 && (
                 <motion.div
@@ -282,20 +348,19 @@ export default function ChatbotWidget() {
                   animate={{ opacity: 1, y: 0 }}
                   exit={{ opacity: 0, y: -4 }}
                   transition={{ duration: 0.18 }}
-                  className="mb-3 flex flex-wrap gap-1.5"
+                  className="relative px-3 pb-2 flex flex-wrap gap-1.5"
                 >
                   {SUGGESTED_PROMPTS.map((prompt) => (
                     <button
                       key={prompt}
                       onClick={() => onSuggestedClick(prompt)}
                       disabled={loading}
-                      className="text-[10px] font-mono px-2 py-1 transition-all disabled:opacity-40"
+                      className="text-[10px] px-2 py-1 transition-all disabled:opacity-40"
                       style={{
                         background: "rgba(0, 255, 65, 0.06)",
-                        border: "1px solid rgba(0, 255, 65, 0.35)",
+                        border: "1px solid rgba(0, 255, 65, 0.3)",
                         color: "#d9ffe0",
                         borderRadius: "3px",
-                        textShadow: "0 0 4px rgba(0, 255, 65, 0.25)",
                       }}
                       onMouseEnter={(e) => {
                         if (!e.currentTarget.disabled) {
@@ -306,7 +371,7 @@ export default function ChatbotWidget() {
                       }}
                       onMouseLeave={(e) => {
                         e.currentTarget.style.background = "rgba(0, 255, 65, 0.06)";
-                        e.currentTarget.style.borderColor = "rgba(0, 255, 65, 0.35)";
+                        e.currentTarget.style.borderColor = "rgba(0, 255, 65, 0.3)";
                         e.currentTarget.style.color = "#d9ffe0";
                       }}
                     >
@@ -317,111 +382,88 @@ export default function ChatbotWidget() {
               )}
             </AnimatePresence>
 
-            {/* Input with spinning border */}
-            <div className="relative p-[1.5px] overflow-hidden" style={{ borderRadius: "4px" }}>
-              <div className="absolute inset-0 chat-input-border" style={{ borderRadius: "4px" }} />
-              <div className="absolute inset-0 chat-input-glow" style={{ borderRadius: "4px" }} />
-              <div
-                className="relative"
+            {/* Prompt / input */}
+            <div
+              className="relative px-3 py-2 flex items-start gap-2"
+              style={{
+                borderTop: "1px solid rgba(0, 255, 65, 0.22)",
+                background: "rgba(0, 255, 65, 0.04)",
+              }}
+            >
+              <span className="shrink-0 pt-2 text-xs" style={{ color: "rgba(0, 255, 65, 0.6)" }}>└─</span>
+              <span
+                className="shrink-0 pt-2 text-[10px]"
                 style={{
-                  background: "rgba(4, 2, 8, 0.95)",
-                  backdropFilter: "blur(20px)",
-                  borderRadius: "4px",
+                  color: "#ffb000",
+                  letterSpacing: "0.15em",
+                  textShadow: "0 0 6px rgba(255, 176, 0, 0.5)",
                 }}
               >
-                {/* Terminal header */}
-                <div
-                  className="px-3 py-2 flex items-center gap-2"
-                  style={{
-                    background: "rgba(0, 255, 65, 0.05)",
-                    borderBottom: "1px solid rgba(0, 255, 65, 0.18)",
-                  }}
+                QUERY
+              </span>
+              <span className="shrink-0 pt-2 text-xs" style={{ color: "rgba(0, 255, 65, 0.4)" }}>│</span>
+              <textarea
+                ref={inputRef}
+                value={input}
+                onChange={(e) => { setInput(e.target.value); adjustTextarea(); }}
+                onKeyDown={handleKeyDown}
+                placeholder="type here..."
+                rows={1}
+                className="flex-1 py-2 bg-transparent text-xs focus:outline-none resize-none leading-relaxed"
+                style={{
+                  maxHeight: 100,
+                  color: "rgba(217, 255, 224, 0.92)",
+                }}
+              />
+              {!input && !loading && (
+                <motion.span
+                  className="absolute left-[92px] top-[10px] text-xs pointer-events-none"
+                  style={{ color: "#ffb000", textShadow: "0 0 6px rgba(255, 176, 0, 0.7)" }}
+                  animate={{ opacity: [1, 0, 1] }}
+                  transition={{ duration: 0.9, repeat: Infinity, ease: "linear" }}
                 >
-                  <span className="term-dot term-dot-r" />
-                  <span className="term-dot term-dot-y" />
-                  <span className="term-dot term-dot-g" />
-                  <span
-                    className="text-[10px] font-mono flex-1 ml-1"
-                    style={{ color: "#00ff41", opacity: 0.75, letterSpacing: "0.08em" }}
-                  >
-                    ./consultant.sh
-                  </span>
-                  <button
-                    onClick={() => setOpen(false)}
-                    className="transition-colors"
-                    style={{ color: "rgba(0, 255, 65, 0.45)" }}
-                    onMouseEnter={(e) => (e.currentTarget.style.color = "#00ff41")}
-                    onMouseLeave={(e) => (e.currentTarget.style.color = "rgba(0, 255, 65, 0.45)")}
-                    aria-label="Close"
-                  >
-                    <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round">
-                      <line x1="18" y1="6" x2="6" y2="18" />
-                      <line x1="6" y1="6" x2="18" y2="18" />
-                    </svg>
-                  </button>
-                </div>
-                {/* Input row */}
-                <div className="flex items-end gap-2 px-3 py-2">
-                  <span
-                    className="font-mono text-xs pb-2 shrink-0"
-                    style={{ color: "#00ff41", textShadow: "0 0 6px rgba(0, 255, 65, 0.5)" }}
-                  >
-                    &gt;
-                  </span>
-                  <textarea
-                    ref={inputRef}
-                    value={input}
-                    onChange={(e) => { setInput(e.target.value); adjustTextarea(); }}
-                    onKeyDown={handleKeyDown}
-                    placeholder="спросить консультанта..."
-                    rows={1}
-                    className="flex-1 px-1 py-2 bg-transparent text-xs focus:outline-none resize-none font-mono leading-relaxed"
-                    style={{
-                      maxHeight: 100,
-                      color: "rgba(217, 255, 224, 0.9)",
-                    }}
+                  ▊
+                </motion.span>
+              )}
+              <button
+                onClick={send}
+                disabled={loading || !input.trim()}
+                className="shrink-0 w-7 h-7 flex items-center justify-center transition-all disabled:opacity-30"
+                style={{
+                  background: "rgba(0, 255, 65, 0.1)",
+                  border: "1px solid #00ff41",
+                  color: "#00ff41",
+                  borderRadius: "3px",
+                  textShadow: "0 0 6px rgba(0, 255, 65, 0.6)",
+                  boxShadow: "0 0 10px rgba(0, 255, 65, 0.2)",
+                }}
+                onMouseEnter={(e) => {
+                  if (!e.currentTarget.disabled) {
+                    e.currentTarget.style.background = "#00ff41";
+                    e.currentTarget.style.color = "#040208";
+                    e.currentTarget.style.boxShadow = "0 0 24px rgba(0, 255, 65, 0.55)";
+                  }
+                }}
+                onMouseLeave={(e) => {
+                  e.currentTarget.style.background = "rgba(0, 255, 65, 0.1)";
+                  e.currentTarget.style.color = "#00ff41";
+                  e.currentTarget.style.boxShadow = "0 0 10px rgba(0, 255, 65, 0.2)";
+                }}
+                aria-label="Send"
+              >
+                {loading ? (
+                  <motion.div
+                    className="w-3 h-3 rounded-full"
+                    style={{ border: "1px solid rgba(0, 255, 65, 0.3)", borderTopColor: "#00ff41" }}
+                    animate={{ rotate: 360 }}
+                    transition={{ duration: 0.8, repeat: Infinity, ease: "linear" }}
                   />
-                  <button
-                    onClick={send}
-                    disabled={loading || !input.trim()}
-                    className="shrink-0 w-8 h-8 flex items-center justify-center transition-all disabled:opacity-30"
-                    style={{
-                      background: "rgba(0, 255, 65, 0.1)",
-                      border: "1px solid #00ff41",
-                      color: "#00ff41",
-                      borderRadius: "4px",
-                      textShadow: "0 0 6px rgba(0, 255, 65, 0.6)",
-                      boxShadow: "0 0 12px rgba(0, 255, 65, 0.25)",
-                    }}
-                    onMouseEnter={(e) => {
-                      if (!e.currentTarget.disabled) {
-                        e.currentTarget.style.background = "#00ff41";
-                        e.currentTarget.style.color = "#040208";
-                        e.currentTarget.style.boxShadow = "0 0 28px rgba(0, 255, 65, 0.6)";
-                      }
-                    }}
-                    onMouseLeave={(e) => {
-                      e.currentTarget.style.background = "rgba(0, 255, 65, 0.1)";
-                      e.currentTarget.style.color = "#00ff41";
-                      e.currentTarget.style.boxShadow = "0 0 12px rgba(0, 255, 65, 0.25)";
-                    }}
-                    aria-label="Send"
-                  >
-                    {loading ? (
-                      <motion.div
-                        className="w-3 h-3 rounded-full"
-                        style={{ border: "1px solid rgba(0, 255, 65, 0.3)", borderTopColor: "#00ff41" }}
-                        animate={{ rotate: 360 }}
-                        transition={{ duration: 0.8, repeat: Infinity, ease: "linear" }}
-                      />
-                    ) : (
-                      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-                        <polyline points="9 18 15 12 9 6" />
-                      </svg>
-                    )}
-                  </button>
-                </div>
-              </div>
+                ) : (
+                  <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                    <polyline points="9 18 15 12 9 6" />
+                  </svg>
+                )}
+              </button>
             </div>
           </motion.div>
         )}
@@ -468,7 +510,6 @@ export default function ChatbotWidget() {
             </motion.span>
           )}
         </AnimatePresence>
-        {/* Pulse ring when closed */}
         {!open && (
           <motion.div
             className="absolute inset-0"
@@ -477,7 +518,6 @@ export default function ChatbotWidget() {
             transition={{ duration: 2.2, repeat: Infinity, ease: "easeOut" }}
           />
         )}
-        {/* Blinking frame — subtle attention grabber while scrolling */}
         {!open && (
           <motion.div
             className="absolute inset-0 pointer-events-none"
