@@ -43,33 +43,55 @@ function parseReply(raw: string): ParsedReply {
   return { visible, actions };
 }
 
-// Legacy markdown links — render as plain text in case the LLM slips.
+// Legacy markdown links — render as plain text (directives are the new path).
 const MD_LINK_REGEX = /\[([^\]\n]+)\]\((\/[^\s)]+)\)/g;
-function stripMarkdownLinks(content: string): React.ReactNode {
+// Telegram handle — make the @shop_by_finekot_bot clickable in reply text.
+// Matches @name (letters/digits/underscore, 3-32 chars per Telegram rules).
+const TG_HANDLE_REGEX = /@([a-zA-Z0-9_]{3,32})/g;
+
+function renderAssistantText(content: string): React.ReactNode {
+  // 1) Strip markdown-link wrappers — keep only the label text.
+  const flat = content.replace(MD_LINK_REGEX, (_, label) => label);
+
+  // 2) Linkify any @telegram_handle occurrences.
   const nodes: React.ReactNode[] = [];
   let cursor = 0;
   let key = 0;
-  const re = new RegExp(MD_LINK_REGEX.source, MD_LINK_REGEX.flags);
+  const re = new RegExp(TG_HANDLE_REGEX.source, TG_HANDLE_REGEX.flags);
   let m: RegExpExecArray | null;
-  while ((m = re.exec(content)) !== null) {
-    const [, label] = m;
-    if (m.index > cursor) nodes.push(content.slice(cursor, m.index));
+  while ((m = re.exec(flat)) !== null) {
+    const [full, handle] = m;
+    if (m.index > cursor) nodes.push(flat.slice(cursor, m.index));
     nodes.push(
-      <span
+      <a
         key={key++}
+        href={`https://t.me/${handle}`}
+        target="_blank"
+        rel="noopener noreferrer"
+        className="underline decoration-dotted underline-offset-2 transition-colors"
         style={{
           color: "#ffb000",
-          textShadow: "0 0 6px rgba(255, 176, 0, 0.45)",
+          textShadow: "0 0 6px rgba(255, 176, 0, 0.5)",
+        }}
+        onMouseEnter={(e) => {
+          e.currentTarget.style.color = "#ffd36b";
+          e.currentTarget.style.textShadow =
+            "0 0 10px rgba(255, 176, 0, 0.85)";
+        }}
+        onMouseLeave={(e) => {
+          e.currentTarget.style.color = "#ffb000";
+          e.currentTarget.style.textShadow =
+            "0 0 6px rgba(255, 176, 0, 0.5)";
         }}
       >
-        {label}
-      </span>
+        {full}
+      </a>
     );
     cursor = re.lastIndex;
   }
-  if (cursor < content.length) nodes.push(content.slice(cursor));
+  if (cursor < flat.length) nodes.push(flat.slice(cursor));
   return nodes.length === 0
-    ? content
+    ? flat
     : nodes.map((n, i) => <Fragment key={i}>{n}</Fragment>);
 }
 
@@ -465,7 +487,7 @@ export default function ChatbotBar() {
                               : "rgba(217, 255, 224, 0.88)",
                           }}
                         >
-                          {isUsr ? msg.content : stripMarkdownLinks(msg.content)}
+                          {isUsr ? msg.content : renderAssistantText(msg.content)}
                         </span>
                       </motion.div>
                     );
