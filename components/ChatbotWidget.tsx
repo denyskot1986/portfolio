@@ -18,7 +18,7 @@ const SUGGESTED_PROMPTS = [
 const WELCOME_MESSAGE: ChatMessage = {
   role: "assistant",
   content:
-    "> finekot://consultant_online\n\nЗдесь 7 AI-агентов, готовые системы и кастомные студии. Расскажи что ищешь — подскажу что подойдёт.",
+    "HELLO !\n\nЗдесь 7 AI-агентов, готовые системы и кастомные студии. Расскажи что ищешь — подскажу что подойдёт.",
 };
 
 const SESSION_KEY = "finekot_chat_session";
