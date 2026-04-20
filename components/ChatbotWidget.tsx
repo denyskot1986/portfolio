@@ -1,12 +1,59 @@
 "use client";
 
-import { useState, useRef, useEffect, useLayoutEffect, useCallback } from "react";
+import { useState, useRef, useEffect, useLayoutEffect, useCallback, Fragment } from "react";
 import { motion, AnimatePresence, useAnimationControls } from "framer-motion";
 import RobotFace from "./RobotFace";
 
 interface ChatMessage {
   role: "user" | "assistant";
   content: string;
+}
+
+// Internal-only link whitelist. Matches the rule in route.ts SYSTEM_PROMPT.
+const LINK_WHITELIST = /^\/(products\/[a-z0-9-]+|discover|reels-agent)\/?$/i;
+const LINK_REGEX = /\[([^\]\n]+)\]\((\/[^\s)]+)\)/g;
+
+function renderWithLinks(content: string): React.ReactNode {
+  const nodes: React.ReactNode[] = [];
+  let cursor = 0;
+  let key = 0;
+  const re = new RegExp(LINK_REGEX.source, LINK_REGEX.flags);
+  let m: RegExpExecArray | null;
+  while ((m = re.exec(content)) !== null) {
+    const [, label, href] = m;
+    if (m.index > cursor) nodes.push(content.slice(cursor, m.index));
+    if (LINK_WHITELIST.test(href)) {
+      nodes.push(
+        <a
+          key={key++}
+          href={href}
+          className="underline decoration-dotted underline-offset-2 transition-colors"
+          style={{
+            color: "#ffb000",
+            textShadow: "0 0 6px rgba(255, 176, 0, 0.45)",
+          }}
+          onMouseEnter={(e) => {
+            e.currentTarget.style.color = "#ffd36b";
+            e.currentTarget.style.textShadow = "0 0 10px rgba(255, 176, 0, 0.8)";
+          }}
+          onMouseLeave={(e) => {
+            e.currentTarget.style.color = "#ffb000";
+            e.currentTarget.style.textShadow = "0 0 6px rgba(255, 176, 0, 0.45)";
+          }}
+        >
+          {label}
+        </a>
+      );
+    } else {
+      // Non-whitelisted path — strip markdown, show label as plain text.
+      nodes.push(label);
+    }
+    cursor = re.lastIndex;
+  }
+  if (cursor < content.length) nodes.push(content.slice(cursor));
+  return nodes.length === 0
+    ? content
+    : nodes.map((n, i) => <Fragment key={i}>{n}</Fragment>);
 }
 
 const WELCOME_MESSAGE: ChatMessage = {
@@ -282,7 +329,7 @@ export default function ChatbotWidget() {
             transition={{ duration: 0.2 }}
             className="relative w-[320px] sm:w-[360px] overflow-hidden font-mono"
             style={{
-              maxHeight: "70vh",
+              maxHeight: "85vh",
               background: "rgba(4, 2, 8, 0.97)",
               backdropFilter: "blur(24px)",
               WebkitBackdropFilter: "blur(24px)",
@@ -342,7 +389,7 @@ export default function ChatbotWidget() {
             <div
               ref={messagesContainerRef}
               className="relative p-3 space-y-1.5 text-xs leading-relaxed overflow-y-auto overscroll-contain"
-              style={{ minHeight: 160, maxHeight: "40vh" }}
+              style={{ minHeight: 160, maxHeight: "62vh" }}
             >
               {messages.map((msg, i) => {
                 const isUsr = msg.role === "user";
@@ -383,7 +430,7 @@ export default function ChatbotWidget() {
                         color: isUsr ? "rgba(255, 200, 120, 0.95)" : "rgba(217, 255, 224, 0.88)",
                       }}
                     >
-                      {msg.content}
+                      {isUsr ? msg.content : renderWithLinks(msg.content)}
                     </span>
                   </motion.div>
                 );
