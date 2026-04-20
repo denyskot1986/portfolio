@@ -169,7 +169,8 @@ export default function Home() {
       {/* ─── NAV (from 3000 — hamburger, active section, scroll-aware) ─── */}
       <motion.nav
         initial={{ y: -80 }} animate={{ y: 0 }} transition={{ duration: 0.6, ease: "easeOut" }}
-        className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 ${
+        style={{ top: "var(--chat-top-h, 34px)" }}
+        className={`fixed left-0 right-0 z-50 transition-all duration-300 ${
           scrolled || menuOpen
             ? "bg-[var(--bg)]/92 border-b border-[var(--glass-border)]"
             : "bg-transparent"

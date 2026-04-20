@@ -108,11 +108,34 @@ export default function ChatbotBar() {
   const [logOpen, setLogOpen] = useState(false);
   const messagesRef = useRef<HTMLDivElement>(null);
   const inputRef = useRef<HTMLTextAreaElement>(null);
+  const logPanelRef = useRef<HTMLDivElement>(null);
+  const barRef = useRef<HTMLDivElement>(null);
+  const topBarRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
     const el = messagesRef.current;
     if (el) el.scrollTop = el.scrollHeight;
   }, [messages, loading, logOpen]);
+
+  // Close log when user clicks outside of the chat chrome (log panel + bars).
+  useEffect(() => {
+    if (!logOpen) return;
+    const handler = (e: MouseEvent | TouchEvent) => {
+      const target = e.target as Node | null;
+      if (!target) return;
+      const inside =
+        logPanelRef.current?.contains(target) ||
+        barRef.current?.contains(target) ||
+        topBarRef.current?.contains(target);
+      if (!inside) setLogOpen(false);
+    };
+    document.addEventListener("mousedown", handler);
+    document.addEventListener("touchstart", handler, { passive: true });
+    return () => {
+      document.removeEventListener("mousedown", handler);
+      document.removeEventListener("touchstart", handler);
+    };
+  }, [logOpen]);
 
   const executeActions = useCallback(
     (actions: ParsedReply["actions"]) => {
@@ -229,6 +252,7 @@ export default function ChatbotBar() {
     <>
       {/* ───── TOP FRAME HEADER ───── */}
       <div
+        ref={topBarRef}
         className="fixed top-0 left-0 right-0 z-[499] font-mono"
         style={{
           height: "var(--chat-top-h, 34px)",
@@ -327,6 +351,7 @@ export default function ChatbotBar() {
           >
             <div className="max-w-5xl mx-auto px-3 sm:px-6 pb-2">
               <div
+                ref={logPanelRef}
                 className="pointer-events-auto relative font-mono overflow-hidden"
                 style={{
                   background: "rgba(4, 2, 8, 0.97)",
@@ -492,6 +517,7 @@ export default function ChatbotBar() {
 
       {/* ───── BOTTOM INPUT BAR ───── */}
       <div
+        ref={barRef}
         className="fixed bottom-0 left-0 right-0 z-[499] font-mono"
         style={{
           background: "rgba(4, 2, 8, 0.97)",

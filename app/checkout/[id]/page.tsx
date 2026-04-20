@@ -74,7 +74,10 @@ export default function CheckoutPage() {
   return (
     <main className="min-h-screen bg-black text-pink-100/80 overflow-x-hidden">
       {/* NAV */}
-      <nav className="fixed top-0 left-0 right-0 z-50 backdrop-blur-xl bg-black/60 border-b border-pink-400/5">
+      <nav
+        style={{ top: "var(--chat-top-h, 34px)" }}
+        className="fixed left-0 right-0 z-50 backdrop-blur-xl bg-black/60 border-b border-pink-400/5"
+      >
         <div className="max-w-5xl mx-auto px-6 h-14 flex items-center justify-between">
           <Link href={`/products/${product.id}`} className="text-sm font-mono text-pink-400/40 hover:text-pink-400/80 transition-colors">&larr; {product.name}</Link>
           <div className="flex items-center gap-4">
