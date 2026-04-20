@@ -10,6 +10,7 @@ const TELEGRAM_API = `https://api.telegram.org/bot${BOT_TOKEN}`;
 
 const RATE_LIMIT_WINDOW_S = 60;
 const RATE_LIMIT_MAX = 10;
+const TG_MESSAGE_LIMIT = 3800;
 
 interface TelegramUpdate {
   message?: TelegramMessage;
@@ -22,9 +23,25 @@ interface TelegramMessage {
   text?: string;
 }
 
+interface Profile {
+  hollandCode: string;
+  hollandDescription: string;
+  bigFive: {
+    openness: number;
+    conscientiousness: number;
+    extraversion: number;
+    agreeableness: number;
+    neuroticism: number;
+  };
+  bigFiveNotes?: Record<string, string>;
+  strengths: { title: string; evidence: string }[];
+  professions: { title: string; match: number; note: string }[];
+  developmentPlan: string[];
+  summary: string;
+}
+
 interface StashedResult {
-  markdown: string;
-  hollandCode: string | null;
+  profile: Profile;
   createdAt: number;
 }
 
@@ -50,27 +67,6 @@ async function sendMessage(chatId: number, text: string): Promise<void> {
   });
 }
 
-async function sendDocument(chatId: number, filename: string, markdown: string, caption: string): Promise<void> {
-  // Telegram не принимает JSON для sendDocument с файлом — используем multipart/form-data.
-  const form = new FormData();
-  form.append("chat_id", String(chatId));
-  form.append("caption", caption);
-  form.append("parse_mode", "HTML");
-  form.append(
-    "document",
-    new Blob([markdown], { type: "text/markdown;charset=utf-8" }),
-    filename
-  );
-  const res = await fetch(`${TELEGRAM_API}/sendDocument`, {
-    method: "POST",
-    body: form,
-  });
-  if (!res.ok) {
-    const text = await res.text();
-    console.error(`Telegram sendDocument failed: ${res.status} ${text}`);
-  }
-}
-
 function escapeHtml(s: string): string {
   return s.replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;");
 }
@@ -81,8 +77,6 @@ function isValidToken(s: string): boolean {
 }
 
 export async function POST(req: NextRequest) {
-  // Telegram шлёт secret_token в заголовке. Если не совпадает — 401.
-  // Это защита от подделки webhook-запросов.
   if (WEBHOOK_SECRET) {
     const got = req.headers.get("x-telegram-bot-api-secret-token");
     if (got !== WEBHOOK_SECRET) {
@@ -109,7 +103,6 @@ export async function POST(req: NextRequest) {
   const chatId = msg.chat.id;
   const text = msg.text.trim();
 
-  // Rate limit: max 10 команд в минуту на chat.
   const rlKey = `rl:tg:${chatId}`;
   const count = await kvIncrWithExpire(rlKey, RATE_LIMIT_WINDOW_S);
   if (count > RATE_LIMIT_MAX) {
@@ -120,7 +113,6 @@ export async function POST(req: NextRequest) {
     return NextResponse.json({ ok: true });
   }
 
-  // /start [token] — главный сценарий
   const startMatch = text.match(/^\/start(?:\s+(\S+))?/);
   if (startMatch) {
     const rawToken = startMatch[1];
@@ -134,7 +126,7 @@ export async function POST(req: NextRequest) {
           "Я доставляю результаты теста личности с <a href=\"https://finekot.ai/discover\">finekot.ai/discover</a>.",
           "",
           "Если у тебя уже есть <b>код синхронизации</b> — пришли его одним сообщением.",
-          "Если нет — пройди тест, в конце появится кнопка «Открыть в Telegram».",
+          "Если нет — пройди тест, в конце появится кнопка «Забрать результаты у бота».",
         ].join("\n")
       );
       return NextResponse.json({ ok: true });
@@ -144,7 +136,6 @@ export async function POST(req: NextRequest) {
     return NextResponse.json({ ok: true });
   }
 
-  // Любой другой текст — пробуем как токен (ручной ввод).
   if (isValidToken(text)) {
     await handleToken(chatId, text, msg.from?.first_name);
     return NextResponse.json({ ok: true });
@@ -186,26 +177,117 @@ async function handleToken(
     return;
   }
 
-  // One-shot: удаляем токен сразу. Если sendDocument упадёт —
-  // юзер должен будет пройти тест заново. Это компромисс в пользу безопасности.
+  // One-shot: удаляем токен до отправки. Если что-то упадёт посередине —
+  // юзер пройдёт заново. Это компромисс в пользу безопасности.
   await kvDel(key);
 
-  const hollandCode = stashed.hollandCode || "profile";
-  const stamp = new Date().toISOString().slice(0, 10);
-  const filename = `finekot-discover-${hollandCode}-${stamp}.md`;
-
-  const greet = firstName ? `, ${escapeHtml(firstName)}` : "";
-  const caption = [
-    `✅ Держи отчёт Discover${greet}.`,
-    ``,
-    `Holland-код: <b>${escapeHtml(hollandCode)}</b>`,
-    `Файл .md откроется в любом редакторе (Obsidian, VS Code, Notion).`,
-  ].join("\n");
-
-  await sendDocument(chatId, filename, stashed.markdown, caption);
+  for (const chunk of buildProfileMessages(stashed.profile, firstName)) {
+    await sendMessage(chatId, chunk);
+  }
 }
 
-// Health-check и верификация webhook.
+function buildProfileMessages(p: Profile, firstName: string | undefined): string[] {
+  const greet = firstName ? `, ${escapeHtml(firstName)}` : "";
+  const messages: string[] = [];
+
+  // 1. Приветствие + Holland-код + описание
+  messages.push(
+    [
+      `✅ Держи результаты Discover${greet}.`,
+      ``,
+      `🧬 <b>Holland-код:</b> <code>${escapeHtml(p.hollandCode)}</code>`,
+      ``,
+      escapeHtml(p.hollandDescription),
+    ].join("\n")
+  );
+
+  // 2. Big Five
+  const bf = p.bigFive;
+  const bfn = p.bigFiveNotes || {};
+  const bfLine = (label: string, val: number, note?: string) => {
+    const bar = renderBar(val);
+    const tail = note ? `\n   <i>${escapeHtml(note)}</i>` : "";
+    return `<b>${label}</b>  ${bar}  ${val}/100${tail}`;
+  };
+  messages.push(
+    [
+      `📊 <b>Big Five (OCEAN)</b>`,
+      ``,
+      bfLine("Openness", bf.openness, bfn.openness),
+      bfLine("Conscientiousness", bf.conscientiousness, bfn.conscientiousness),
+      bfLine("Extraversion", bf.extraversion, bfn.extraversion),
+      bfLine("Agreeableness", bf.agreeableness, bfn.agreeableness),
+      bfLine("Neuroticism", bf.neuroticism, bfn.neuroticism),
+    ].join("\n")
+  );
+
+  // 3. Сильные стороны — разбиваем если длинно
+  const strengthsHeader = `💪 <b>Ключевые сильные стороны</b>`;
+  const strengthBlocks = p.strengths.map(
+    (s, i) =>
+      `<b>${String(i + 1).padStart(2, "0")}. ${escapeHtml(s.title)}</b>\n${escapeHtml(s.evidence)}`
+  );
+  for (const chunk of chunkBlocks(strengthsHeader, strengthBlocks)) {
+    messages.push(chunk);
+  }
+
+  // 4. Направления
+  const professionsHeader = `🎯 <b>Рекомендованные направления</b>`;
+  const professionBlocks = p.professions.map(
+    (pr) => `• <b>${pr.match}% — ${escapeHtml(pr.title)}</b>\n  ${escapeHtml(pr.note)}`
+  );
+  for (const chunk of chunkBlocks(professionsHeader, professionBlocks)) {
+    messages.push(chunk);
+  }
+
+  // 5. План развития
+  const planHeader = `🗺 <b>План развития (3–6 месяцев)</b>`;
+  const planBlocks = p.developmentPlan.map(
+    (step, i) => `<b>${i + 1}.</b> ${escapeHtml(step)}`
+  );
+  for (const chunk of chunkBlocks(planHeader, planBlocks)) {
+    messages.push(chunk);
+  }
+
+  // 6. Итог + CTA
+  messages.push(
+    [
+      `🏁 <b>Итог</b>`,
+      ``,
+      escapeHtml(p.summary),
+      ``,
+      `—`,
+      `<i>Методики: Holland Codes (RIASEC) + Big Five (OCEAN).</i>`,
+      `Пройти ещё раз: <a href="https://finekot.ai/discover">finekot.ai/discover</a>`,
+    ].join("\n")
+  );
+
+  return messages;
+}
+
+function renderBar(value: number): string {
+  const filled = Math.round((Math.max(0, Math.min(100, value)) / 100) * 10);
+  return "▰".repeat(filled) + "▱".repeat(10 - filled);
+}
+
+// Собирает блоки в сообщения так, чтобы ни одно не превысило TG_MESSAGE_LIMIT.
+// Первое сообщение начинается с header; продолжения — без него.
+function chunkBlocks(header: string, blocks: string[]): string[] {
+  const out: string[] = [];
+  let current = header;
+  for (const block of blocks) {
+    const candidate = current + "\n\n" + block;
+    if (candidate.length > TG_MESSAGE_LIMIT && current !== header) {
+      out.push(current);
+      current = block;
+    } else {
+      current = candidate;
+    }
+  }
+  if (current.length > 0) out.push(current);
+  return out;
+}
+
 export async function GET() {
   return NextResponse.json({
     ok: true,

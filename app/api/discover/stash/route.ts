@@ -6,17 +6,46 @@ export const runtime = "nodejs";
 
 const BOT_USERNAME = process.env.DISCOVER_BOT_USERNAME || "taras_by_finekot_bot";
 const TTL_SECONDS = 60 * 60 * 24;
-const MAX_MARKDOWN_BYTES = 40_000;
+const MAX_PROFILE_BYTES = 40_000;
 
-// 16 URL-safe символов (base64url без паддинга) = 96 бит энтропии.
-// Подбор через бот невозможен: rate limit + one-shot delete.
 function makeToken(): string {
   return randomBytes(12).toString("base64url");
 }
 
+interface ProfilePayload {
+  hollandCode: string;
+  hollandDescription: string;
+  bigFive: {
+    openness: number;
+    conscientiousness: number;
+    extraversion: number;
+    agreeableness: number;
+    neuroticism: number;
+  };
+  bigFiveNotes?: Record<string, string>;
+  strengths: { title: string; evidence: string }[];
+  professions: { title: string; match: number; note: string }[];
+  developmentPlan: string[];
+  summary: string;
+}
+
 interface StashBody {
-  markdown?: string;
-  hollandCode?: string;
+  profile?: ProfilePayload;
+}
+
+function isValidProfile(p: unknown): p is ProfilePayload {
+  if (!p || typeof p !== "object") return false;
+  const o = p as Record<string, unknown>;
+  return (
+    typeof o.hollandCode === "string" &&
+    typeof o.hollandDescription === "string" &&
+    typeof o.summary === "string" &&
+    Array.isArray(o.strengths) &&
+    Array.isArray(o.professions) &&
+    Array.isArray(o.developmentPlan) &&
+    o.bigFive !== null &&
+    typeof o.bigFive === "object"
+  );
 }
 
 export async function POST(req: NextRequest) {
@@ -29,24 +58,22 @@ export async function POST(req: NextRequest) {
     }
 
     const body = (await req.json()) as StashBody;
-    const markdown = body?.markdown;
-    const hollandCode = typeof body?.hollandCode === "string" ? body.hollandCode.slice(0, 16) : null;
+    const profile = body?.profile;
 
-    if (!markdown || typeof markdown !== "string") {
-      return NextResponse.json({ error: "markdown required" }, { status: 400 });
+    if (!isValidProfile(profile)) {
+      return NextResponse.json({ error: "profile required" }, { status: 400 });
     }
 
-    const size = new TextEncoder().encode(markdown).length;
-    if (size > MAX_MARKDOWN_BYTES) {
-      return NextResponse.json({ error: "markdown too large" }, { status: 413 });
+    const size = new TextEncoder().encode(JSON.stringify(profile)).length;
+    if (size > MAX_PROFILE_BYTES) {
+      return NextResponse.json({ error: "profile too large" }, { status: 413 });
     }
 
     const token = makeToken();
     await kvSetJSON(
       `discover:${token}`,
       {
-        markdown,
-        hollandCode,
+        profile,
         createdAt: Date.now(),
       },
       TTL_SECONDS
