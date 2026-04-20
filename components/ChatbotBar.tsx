@@ -712,6 +712,7 @@ export default function ChatbotBar() {
             </span>
             <textarea
               ref={inputRef}
+              data-chat-input
               value={input}
               onChange={(e) => {
                 setInput(e.target.value);
@@ -721,12 +722,15 @@ export default function ChatbotBar() {
               onFocus={() => setLogOpen(true)}
               placeholder="Спроси про продукт — я открою страницу..."
               rows={1}
-              className="flex-1 py-2 bg-transparent text-xs sm:text-sm focus:outline-none resize-none leading-relaxed placeholder:text-[rgba(77,122,94,0.7)]"
+              className="flex-1 py-2 bg-transparent focus:outline-none resize-none leading-relaxed placeholder:text-[rgba(77,122,94,0.7)]"
               style={{
                 minHeight: 28,
                 maxHeight: 120,
                 color: "rgba(217, 255, 224, 0.95)",
                 caretColor: "#ffb000",
+                // iOS Safari zooms into inputs with font-size < 16px. Keep 16px
+                // here to block the zoom, then shrink visually on desktop.
+                fontSize: "16px",
               }}
             />
           </div>

@@ -26,6 +26,13 @@
   --chat-bar-h: 72px;
 }
 
+/* iOS Safari zooms in when an input font-size is under 16px.
+   The ChatbotBar textarea runs at 16px inline to block that zoom.
+   On larger viewports we can shrink it back to 14px for aesthetic. */
+@media (min-width: 640px) {
+  textarea[data-chat-input] { font-size: 14px !important; }
+}
+
 /* Flash highlight when the consultant scrolls to a product card */
 @keyframes chat-scroll-flash {
   0%   { box-shadow: 0 0 0 0 rgba(0, 255, 65, 0), 0 0 0 0 rgba(0, 255, 65, 0); border-color: var(--glass-border); }
