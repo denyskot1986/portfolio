@@ -320,14 +320,14 @@ export default function ChatbotWidget() {
         onClick={() => setOpen((v) => !v)}
         className="relative w-12 h-12 flex items-center justify-center font-mono"
         style={{
-          background: "rgba(0, 255, 65, 0.08)",
-          border: "1px solid #00ff41",
-          color: "#00ff41",
+          background: "rgba(255, 176, 0, 0.08)",
+          border: "1px solid #ffb000",
+          color: "#ffb000",
           borderRadius: "4px",
-          textShadow: "0 0 8px rgba(0, 255, 65, 0.7)",
-          boxShadow: "0 0 24px rgba(0, 255, 65, 0.3), inset 0 0 12px rgba(0, 255, 65, 0.05)",
+          textShadow: "0 0 8px rgba(255, 176, 0, 0.7)",
+          boxShadow: "0 0 24px rgba(255, 176, 0, 0.3), inset 0 0 12px rgba(255, 176, 0, 0.05)",
         }}
-        whileHover={{ scale: 1.05, boxShadow: "0 0 36px rgba(0, 255, 65, 0.55), inset 0 0 12px rgba(0, 255, 65, 0.08)" }}
+        whileHover={{ scale: 1.05, boxShadow: "0 0 36px rgba(255, 176, 0, 0.55), inset 0 0 12px rgba(255, 176, 0, 0.08)" }}
         whileTap={{ scale: 0.95 }}
         aria-label="Open shop consultant"
       >
@@ -360,9 +360,9 @@ export default function ChatbotWidget() {
         {!open && (
           <motion.div
             className="absolute inset-0"
-            style={{ border: "1px solid rgba(0, 255, 65, 0.5)", borderRadius: "4px" }}
+            style={{ border: "1px solid rgba(255, 176, 0, 0.5)", borderRadius: "4px" }}
             animate={{ scale: [1, 1.3], opacity: [0.5, 0] }}
-            transition={{ duration: 2, repeat: Infinity, ease: "easeOut" }}
+            transition={{ duration: 2.2, repeat: Infinity, ease: "easeOut" }}
           />
         )}
         {/* Blinking frame — subtle attention grabber while scrolling */}
@@ -375,7 +375,7 @@ export default function ChatbotWidget() {
               boxShadow: "0 0 14px rgba(255, 176, 0, 0.5), inset 0 0 6px rgba(255, 176, 0, 0.15)",
             }}
             animate={{ opacity: [0.85, 0.25, 0.85] }}
-            transition={{ duration: 1.1, repeat: Infinity, ease: "easeInOut" }}
+            transition={{ duration: 2.2, repeat: Infinity, ease: "easeOut" }}
           />
         )}
       </motion.button>
