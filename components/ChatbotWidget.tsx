@@ -220,7 +220,7 @@ export default function ChatbotWidget() {
     const el = inputRef.current;
     if (el) {
       el.style.height = "auto";
-      el.style.height = Math.min(el.scrollHeight, 100) + "px";
+      el.style.height = Math.min(el.scrollHeight, 140) + "px";
     }
   }, []);
 
@@ -469,11 +469,12 @@ export default function ChatbotWidget() {
                 value={input}
                 onChange={(e) => { setInput(e.target.value); adjustTextarea(); }}
                 onKeyDown={handleKeyDown}
-                placeholder="↓ ↓ ↓"
-                rows={1}
+                placeholder="input"
+                rows={3}
                 className="flex-1 py-2 bg-transparent text-xs focus:outline-none resize-none leading-relaxed"
                 style={{
-                  maxHeight: 100,
+                  minHeight: 64,
+                  maxHeight: 140,
                   color: "rgba(217, 255, 224, 0.92)",
                   caretColor: "#ffb000",
                 }}
