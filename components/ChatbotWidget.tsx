@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useRef, useEffect, useCallback } from "react";
+import { useState, useRef, useEffect, useCallback, useMemo } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 
 interface ChatMessage {
@@ -8,11 +8,43 @@ interface ChatMessage {
   content: string;
 }
 
+const SUGGESTED_PROMPTS = [
+  "Что у вас есть?",
+  "Нужен AI для бизнеса",
+  "Сколько стоит iБоря?",
+  "AI для родителей",
+];
+
+const WELCOME_MESSAGE: ChatMessage = {
+  role: "assistant",
+  content:
+    "> finekot://consultant_online\n\nЗдесь 7 AI-агентов, готовые системы и кастомные студии. Расскажи что ищешь — подскажу что подойдёт.",
+};
+
+const SESSION_KEY = "finekot_chat_session";
+
+function getSessionId(): string {
+  if (typeof window === "undefined") return "";
+  try {
+    const existing = sessionStorage.getItem(SESSION_KEY);
+    if (existing) return existing;
+    const fresh =
+      typeof crypto !== "undefined" && crypto.randomUUID
+        ? crypto.randomUUID()
+        : `s_${Date.now()}_${Math.random().toString(36).slice(2, 10)}`;
+    sessionStorage.setItem(SESSION_KEY, fresh);
+    return fresh;
+  } catch {
+    return `s_${Date.now()}_${Math.random().toString(36).slice(2, 10)}`;
+  }
+}
+
 export default function ChatbotWidget() {
   const [open, setOpen] = useState(false);
   const [messages, setMessages] = useState<ChatMessage[]>([]);
   const [input, setInput] = useState("");
   const [loading, setLoading] = useState(false);
+  const [hasOpened, setHasOpened] = useState(false);
   const messagesEndRef = useRef<HTMLDivElement>(null);
   const messagesContainerRef = useRef<HTMLDivElement>(null);
   const inputRef = useRef<HTMLTextAreaElement>(null);
@@ -22,6 +54,16 @@ export default function ChatbotWidget() {
     if (el) el.scrollTop = el.scrollHeight;
   }, [messages, loading]);
 
+  // При первом открытии — показываем welcome.
+  useEffect(() => {
+    if (open && !hasOpened) {
+      setHasOpened(true);
+      if (messages.length === 0) {
+        setMessages([WELCOME_MESSAGE]);
+      }
+    }
+  }, [open, hasOpened, messages.length]);
+
   const adjustTextarea = useCallback(() => {
     const el = inputRef.current;
     if (el) {
@@ -30,42 +72,63 @@ export default function ChatbotWidget() {
     }
   }, []);
 
-  const send = useCallback(async () => {
-    if (!input.trim() || loading) return;
-    const userMsg: ChatMessage = { role: "user", content: input.trim() };
-    const newMessages = [...messages, userMsg];
-    setMessages(newMessages);
-    setInput("");
-    setLoading(true);
-    if (inputRef.current) inputRef.current.style.height = "auto";
+  const sendMessage = useCallback(
+    async (text: string) => {
+      const trimmed = text.trim();
+      if (!trimmed || loading) return;
 
-    try {
-      const res = await fetch("/api/chat", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({
-          messages: newMessages,
-          pageUrl: typeof window !== "undefined" ? window.location.pathname : "/",
-          mode: "sales",
-        }),
-      });
-      const data = await res.json();
-      setMessages((prev) => [
-        ...prev,
-        {
-          role: "assistant",
-          content: data.reply || "Connection issue. Try @shop_by_finekot_bot",
-        },
-      ]);
-    } catch {
-      setMessages((prev) => [
-        ...prev,
-        { role: "assistant", content: "Connection error. Try Telegram: @shop_by_finekot_bot" },
-      ]);
-    } finally {
-      setLoading(false);
-    }
-  }, [input, loading, messages]);
+      const userMsg: ChatMessage = { role: "user", content: trimmed };
+      // История для API — без welcome-сообщения (оно client-only).
+      const historyForApi = messages
+        .filter((m) => m !== WELCOME_MESSAGE)
+        .concat(userMsg);
+      setMessages((prev) => [...prev, userMsg]);
+      setInput("");
+      setLoading(true);
+      if (inputRef.current) inputRef.current.style.height = "auto";
+
+      try {
+        const res = await fetch("/api/chat", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({
+            messages: historyForApi,
+            pageUrl: typeof window !== "undefined" ? window.location.pathname : "/",
+            sessionId: getSessionId(),
+          }),
+        });
+        const data = await res.json();
+        const reply: string =
+          data.reply ||
+          data.error ||
+          "Связь прервана. Напиши в Telegram: @shop_by_finekot_bot";
+        setMessages((prev) => [...prev, { role: "assistant", content: reply }]);
+      } catch {
+        setMessages((prev) => [
+          ...prev,
+          {
+            role: "assistant",
+            content:
+              "Ошибка соединения. Напиши в Telegram: @shop_by_finekot_bot",
+          },
+        ]);
+      } finally {
+        setLoading(false);
+      }
+    },
+    [loading, messages]
+  );
+
+  const send = useCallback(() => {
+    void sendMessage(input);
+  }, [input, sendMessage]);
+
+  const onSuggestedClick = useCallback(
+    (prompt: string) => {
+      void sendMessage(prompt);
+    },
+    [sendMessage]
+  );
 
   const handleKeyDown = useCallback(
     (e: React.KeyboardEvent) => {
@@ -75,6 +138,12 @@ export default function ChatbotWidget() {
       }
     },
     [send]
+  );
+
+  // Suggested prompts показываем только пока юзер ни разу не написал.
+  const showSuggested = useMemo(
+    () => !messages.some((m) => m.role === "user") && !loading,
+    [messages, loading]
   );
 
   return (
@@ -110,7 +179,7 @@ export default function ChatbotWidget() {
                 >
                   <div className="sticky top-0 flex justify-end">
                     <button
-                      onClick={() => setMessages([])}
+                      onClick={() => setMessages([WELCOME_MESSAGE])}
                       className="transition-colors text-[10px] font-mono px-1 uppercase tracking-[0.12em]"
                       style={{ color: "rgba(0, 255, 65, 0.35)" }}
                       onMouseEnter={(e) => (e.currentTarget.style.color = "rgba(0, 255, 65, 0.8)")}
@@ -142,7 +211,7 @@ export default function ChatbotWidget() {
                         </div>
                       )}
                       <div
-                        className="max-w-[82%] px-3 py-2 text-xs leading-relaxed font-mono"
+                        className="max-w-[82%] px-3 py-2 text-xs leading-relaxed font-mono whitespace-pre-wrap"
                         style={
                           msg.role === "user"
                             ? {
@@ -201,6 +270,49 @@ export default function ChatbotWidget() {
                     </div>
                   )}
                   <div ref={messagesEndRef} />
+                </motion.div>
+              )}
+            </AnimatePresence>
+
+            {/* Suggested prompts — видны только до первого user-сообщения */}
+            <AnimatePresence>
+              {showSuggested && messages.length > 0 && (
+                <motion.div
+                  initial={{ opacity: 0, y: 4 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  exit={{ opacity: 0, y: -4 }}
+                  transition={{ duration: 0.18 }}
+                  className="mb-3 flex flex-wrap gap-1.5"
+                >
+                  {SUGGESTED_PROMPTS.map((prompt) => (
+                    <button
+                      key={prompt}
+                      onClick={() => onSuggestedClick(prompt)}
+                      disabled={loading}
+                      className="text-[10px] font-mono px-2 py-1 transition-all disabled:opacity-40"
+                      style={{
+                        background: "rgba(0, 255, 65, 0.06)",
+                        border: "1px solid rgba(0, 255, 65, 0.35)",
+                        color: "#d9ffe0",
+                        borderRadius: "3px",
+                        textShadow: "0 0 4px rgba(0, 255, 65, 0.25)",
+                      }}
+                      onMouseEnter={(e) => {
+                        if (!e.currentTarget.disabled) {
+                          e.currentTarget.style.background = "rgba(0, 255, 65, 0.15)";
+                          e.currentTarget.style.borderColor = "#00ff41";
+                          e.currentTarget.style.color = "#00ff41";
+                        }
+                      }}
+                      onMouseLeave={(e) => {
+                        e.currentTarget.style.background = "rgba(0, 255, 65, 0.06)";
+                        e.currentTarget.style.borderColor = "rgba(0, 255, 65, 0.35)";
+                        e.currentTarget.style.color = "#d9ffe0";
+                      }}
+                    >
+                      &gt; {prompt}
+                    </button>
+                  ))}
                 </motion.div>
               )}
             </AnimatePresence>
