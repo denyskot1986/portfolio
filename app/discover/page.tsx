@@ -870,6 +870,10 @@ export default function DiscoverPage() {
           margin-bottom: 14px;
           font-weight: 600;
         }
+        .term-home-link:hover {
+          color: ${TERM_AMBER} !important;
+          text-shadow: 0 0 10px rgba(255, 176, 0, 0.5);
+        }
       `}</style>
 
       {/* CRT scanlines overlay */}
@@ -904,15 +908,19 @@ export default function DiscoverPage() {
             marginBottom: 28,
           }}
         >
-          <div
+          <a
+            href="/"
+            className="term-home-link"
             style={{
               fontSize: 11,
               color: TERM_GREEN,
               letterSpacing: "0.2em",
+              textDecoration: "none",
             }}
           >
+            <span style={{ opacity: 0.6, marginRight: 6 }}>← cd ..</span>
             SKYNET://discover
-          </div>
+          </a>
           <div style={{ fontSize: 11, color: TERM_DIM, letterSpacing: "0.15em" }}>
             v1.0 · personality.scan
           </div>
