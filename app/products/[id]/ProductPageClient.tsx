@@ -5,7 +5,6 @@ import Link from "next/link";
 import { motion } from "framer-motion";
 import { productsData, getTranslatedProduct } from "@/lib/products-data";
 import DemoChat from "@/components/DemoChat";
-import ProductChat from "@/components/ProductChat";
 import { getDemoChat } from "@/lib/demo-chats";
 import { i18n } from "@/lib/i18n";
 import { useLang } from "@/lib/lang-context";
@@ -142,34 +141,6 @@ export default function ProductPageClient() {
               ))}
             </div>
           </motion.div>
-        </div>
-      </section>
-
-      {/* TECH STACK */}
-      <section className="relative z-10 py-12 px-6">
-        <div className="max-w-4xl mx-auto">
-          <motion.div {...fade}>
-            <h2 className="text-xl sm:text-2xl md:text-3xl font-black mb-6 text-center tracking-tight">
-              <span className="gradient-text">{tp.techStack}</span>
-            </h2>
-            <div className="flex flex-wrap justify-center gap-3">
-              {product.techStack.map((tech, i) => (
-                <span key={i} className="glass rounded-lg px-4 py-2 text-xs text-pink-300/40 font-mono border border-pink-400/10">{tech}</span>
-              ))}
-            </div>
-          </motion.div>
-        </div>
-      </section>
-
-      {/* AI SALES CHAT */}
-      <section className="relative z-10 py-8 px-6">
-        <div className="max-w-2xl mx-auto">
-          <ProductChat
-            productName={product.name}
-            productTagline={product.tagline}
-            productId={product.id}
-            lang={lang}
-          />
         </div>
       </section>
 

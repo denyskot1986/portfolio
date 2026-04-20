@@ -43,6 +43,18 @@ function parseReply(raw: string): ParsedReply {
   return { visible, actions };
 }
 
+// Tour mode: LLM separates product beats with "===" on its own line.
+// We split, parse each as a ParsedReply, drop empty ones.
+const BEAT_SEPARATOR = /\n\s*={3,}\s*\n/;
+function parseBeats(raw: string): ParsedReply[] {
+  const parts = raw.split(BEAT_SEPARATOR);
+  if (parts.length < 2) return [parseReply(raw)];
+  const beats = parts
+    .map((p) => parseReply(p))
+    .filter((b) => b.visible.length > 0 || b.actions.length > 0);
+  return beats.length ? beats : [parseReply(raw)];
+}
+
 // Legacy markdown links — render as plain text (directives are the new path).
 const MD_LINK_REGEX = /\[([^\]\n]+)\]\((\/[^\s)]+)\)/g;
 // Telegram handle — make the @shop_by_finekot_bot clickable in reply text.
@@ -286,12 +298,38 @@ export default function ChatbotBar() {
           data.reply ||
           data.error ||
           "Связь прервана. Напиши в Telegram: @shop_by_finekot_bot";
-        const parsed = parseReply(raw);
-        setMessages((prev) => [
-          ...prev,
-          { role: "assistant", content: parsed.visible || "> done." },
-        ]);
-        executeActions(parsed.actions);
+        const beats = parseBeats(raw);
+        if (beats.length === 1) {
+          const parsed = beats[0];
+          setMessages((prev) => [
+            ...prev,
+            { role: "assistant", content: parsed.visible || "> done." },
+          ]);
+          executeActions(parsed.actions);
+        } else {
+          // Tour streaming — emit each beat as its own message with a pause
+          // so the user can read + the scroll flash lands before the next.
+          let delay = 0;
+          const BEAT_GAP_MS = 2400;
+          for (const beat of beats) {
+            const text = beat.visible || "";
+            const beatActions = beat.actions;
+            setTimeout(() => {
+              if (text) {
+                setMessages((prev) => [
+                  ...prev,
+                  { role: "assistant", content: text },
+                ]);
+              }
+              // Scroll/nav fires right after the message lands.
+              if (beatActions.length) {
+                setTimeout(() => executeActions(beatActions), 120);
+              }
+            }, delay);
+            // Pure-action beats (just [nav:/] intro) need less read-time.
+            delay += text ? BEAT_GAP_MS : 700;
+          }
+        }
       } catch {
         setMessages((prev) => [
           ...prev,
@@ -742,18 +780,23 @@ export default function ChatbotBar() {
             ) : (
               <>
                 <span className="hidden sm:inline">PROMPT</span>
-                <svg
-                  width="14"
-                  height="14"
-                  viewBox="0 0 24 24"
-                  fill="none"
-                  stroke="currentColor"
-                  strokeWidth="2.2"
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
+                <span
+                  className="sm:hidden font-bold"
+                  style={{
+                    fontSize: "16px",
+                    lineHeight: 1,
+                    letterSpacing: "-0.02em",
+                  }}
+                  aria-hidden
                 >
-                  <polyline points="9 18 15 12 9 6" />
-                </svg>
+                  SEND
+                </span>
+                <span
+                  className="hidden sm:inline font-bold text-[15px] leading-none"
+                  aria-hidden
+                >
+                  →
+                </span>
               </>
             )}
           </button>
