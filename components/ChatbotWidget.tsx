@@ -2,6 +2,7 @@
 
 import { useState, useRef, useEffect, useLayoutEffect, useCallback } from "react";
 import { motion, AnimatePresence, useAnimationControls } from "framer-motion";
+import RobotFace from "./RobotFace";
 
 interface ChatMessage {
   role: "user" | "assistant";
@@ -334,13 +335,7 @@ export default function ChatbotWidget() {
               <span style={{ opacity: 0.4 }}>::</span>
               <span style={{ color: "#ffb000" }}>0x3F</span>
               <span className="flex-1" />
-              <motion.span
-                animate={{ opacity: [1, 0.2, 1] }}
-                transition={{ duration: 1.4, repeat: Infinity }}
-                style={{ color: "#00ff41", textShadow: "0 0 6px rgba(0, 255, 65, 0.7)" }}
-              >
-                ●
-              </motion.span>
+              <RobotFace size={14} color="#00ff41" />
               <button
                 onClick={() => setMessages([WELCOME_MESSAGE])}
                 className="transition-colors ml-1 uppercase"
