@@ -207,13 +207,13 @@ type QuickCommand = {
 
 const QUICK_COMMANDS: QuickCommand[] = [
   {
-    id: "match",
-    emoji: "🎯",
-    label: { EN: "Match for my task", RU: "Подбор под задачу", UA: "Підбір під задачу" },
+    id: "help-decide",
+    emoji: "",
+    label: { EN: "Help me decide", RU: "Помочь определиться", UA: "Допоможи визначитися" },
     prompt: {
-      EN: "Help me pick the right product for my task — ask me what I need",
-      RU: "Помоги подобрать продукт под мою задачу — спроси что мне нужно",
-      UA: "Допоможи підібрати продукт під мою задачу — спитай що мені потрібно",
+      EN: "Help me decide which agent I need. Offer the personality scan and, if I agree, open /discover.",
+      RU: "Помоги мне определиться, какой агент мне нужен. Предложи пройти скан личности, и если я соглашусь — открой /discover.",
+      UA: "Допоможи визначитись, який агент мені потрібен. Запропонуй пройти скан особистості, і якщо я погоджусь — відкрий /discover.",
     },
   },
 ];
@@ -918,13 +918,12 @@ export default function ChatbotBar() {
                         "rgba(255, 176, 0, 0.28)";
                     }}
                   >
-                    <span className="text-base shrink-0" aria-hidden>🛒</span>
                     <span className="text-xs leading-tight">
                       {lang === "RU"
-                        ? "Демо · Товары"
+                        ? "Товары"
                         : lang === "UA"
-                        ? "Демо · Товари"
-                        : "Demo · Products"}
+                        ? "Товари"
+                        : "Products"}
                     </span>
                   </button>
                   <button
@@ -954,13 +953,12 @@ export default function ChatbotBar() {
                         "rgba(255, 176, 0, 0.28)";
                     }}
                   >
-                    <span className="text-base shrink-0" aria-hidden>🏭</span>
                     <span className="text-xs leading-tight">
                       {lang === "RU"
-                        ? "Демо · Сборочный цех"
+                        ? "Сборочный цех"
                         : lang === "UA"
-                        ? "Демо · Складальний цех"
-                        : "Demo · Factory"}
+                        ? "Складальний цех"
+                        : "Factory"}
                     </span>
                   </button>
                   {QUICK_COMMANDS.map((cmd) => (
@@ -990,7 +988,6 @@ export default function ChatbotBar() {
                           "rgba(0, 255, 65, 0.18)";
                       }}
                     >
-                      <span className="text-base shrink-0">{cmd.emoji}</span>
                       <span
                         className="text-xs leading-tight"
                         style={{ letterSpacing: "0.02em" }}
