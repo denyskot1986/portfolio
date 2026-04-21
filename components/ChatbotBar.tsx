@@ -1016,57 +1016,38 @@ export default function ChatbotBar() {
         }}
       >
         <div className="max-w-6xl mx-auto px-2 sm:px-4 py-2.5 flex items-stretch gap-1.5 sm:gap-3">
-          {/* Terminal indicator (orange >_) with cmd menu split-button */}
-          <div className="shrink-0 flex flex-col">
-            <button
-              onClick={() => setLogOpen((v) => !v)}
-              className="w-11 h-11 flex items-center justify-center transition-all relative"
-              style={{
-                background: "rgba(255, 176, 0, 0.08)",
-                border: "1px solid #ffb000",
-                color: "#ffb000",
-                borderRadius: "4px",
-                textShadow: "0 0 8px rgba(255, 176, 0, 0.7)",
-                boxShadow:
-                  "0 0 18px rgba(255, 176, 0, 0.25), inset 0 0 10px rgba(255, 176, 0, 0.05)",
-                letterSpacing: "-0.05em",
-              }}
-              aria-label={logOpen ? "Hide log" : "Show log"}
-            >
-              <span className="text-lg font-bold">&gt;_</span>
-              {!logOpen && hasActivity && (
-                <span
-                  className="absolute -top-1 -right-1 w-2 h-2 rounded-full"
-                  style={{
-                    background: "#00ff41",
-                    boxShadow: "0 0 8px rgba(0, 255, 65, 0.9)",
-                  }}
-                />
-              )}
-            </button>
-          </div>
-
-          {/* Quick commands trigger — small chip before the input */}
+          {/* Combined CMD button — also flashes the green activity dot that
+              used to live on the removed >_ log toggle. Log опен/тугл
+              теперь прячется за "log" button в хедере session-log. */}
           <button
             onClick={() => setCmdOpen((v) => !v)}
-            className="shrink-0 h-11 px-2.5 sm:px-3 flex items-center justify-center gap-1.5 transition-all font-mono uppercase"
+            className="relative shrink-0 h-11 px-4 sm:px-5 flex items-center justify-center gap-2 transition-all font-mono uppercase"
             style={{
               background: cmdOpen
                 ? "#ffb000"
                 : "rgba(255, 176, 0, 0.1)",
-              border: "1px solid rgba(255, 176, 0, 0.55)",
+              border: "1px solid #ffb000",
               color: cmdOpen ? "#040208" : "#ffb000",
               borderRadius: "4px",
-              fontSize: "10px",
+              fontSize: "11px",
               fontWeight: 700,
-              letterSpacing: "0.2em",
+              letterSpacing: "0.28em",
               textShadow: cmdOpen
                 ? "none"
-                : "0 0 6px rgba(255, 176, 0, 0.45)",
-              boxShadow: "0 0 10px rgba(255, 176, 0, 0.16)",
+                : "0 0 8px rgba(255, 176, 0, 0.55)",
+              boxShadow: cmdOpen
+                ? "0 0 18px rgba(255, 176, 0, 0.45)"
+                : "0 0 16px rgba(255, 176, 0, 0.22), inset 0 0 10px rgba(255, 176, 0, 0.06)",
             }}
             aria-label={cmdOpen ? "Close commands" : "Open commands"}
           >
+            <span
+              aria-hidden
+              className="text-sm font-bold"
+              style={{ letterSpacing: "-0.05em", opacity: cmdOpen ? 0.8 : 1 }}
+            >
+              &gt;_
+            </span>
             <span>CMD</span>
             <motion.svg
               width="10"
@@ -1082,6 +1063,15 @@ export default function ChatbotBar() {
             >
               <polyline points="6 15 12 9 18 15" />
             </motion.svg>
+            {!cmdOpen && hasActivity && (
+              <span
+                className="absolute -top-1 -right-1 w-2 h-2 rounded-full"
+                style={{
+                  background: "#00ff41",
+                  boxShadow: "0 0 8px rgba(0, 255, 65, 0.9)",
+                }}
+              />
+            )}
           </button>
 
           {/* Input */}
