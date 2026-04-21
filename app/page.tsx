@@ -175,7 +175,7 @@ export default function Home() {
             : "bg-transparent"
         }`}
       >
-        <div className="max-w-6xl mx-auto px-6 py-4 flex items-center justify-between">
+        <div className="max-w-6xl mx-auto px-6 py-4 flex items-center gap-3 sm:gap-5 min-w-0">
           {/* Logo — terminal prompt style. Click focuses the chat input. */}
           <button
             type="button"
@@ -183,12 +183,22 @@ export default function Home() {
               const el = document.querySelector<HTMLTextAreaElement>("[data-chat-input]");
               if (el) { el.focus(); el.scrollIntoView({ block: "nearest" }); }
             }}
-            className="text-base font-bold tracking-tight font-mono cursor-pointer bg-transparent border-0 p-0"
+            className="shrink-0 text-base font-bold tracking-tight font-mono cursor-pointer bg-transparent border-0 p-0"
             style={{ color: "var(--accent)" }}
             aria-label="Open chat"
           >
             <span style={{ color: "var(--accent2)", opacity: 0.7 }}>&gt; </span>AGENT_CONTROL /&gt;
           </button>
+
+          {/* Brand typewriter — rotates the hero roles so the nav reads as a live agent prompt */}
+          <p
+            className="flex-1 min-w-0 truncate text-xs sm:text-sm font-mono tracking-wide"
+            style={{ color: "rgba(240,224,255,0.45)" }}
+            aria-live="polite"
+          >
+            <span style={{ color: "var(--accent2)", opacity: 0.6 }}>&gt; </span>
+            {displayText}
+          </p>
 
           {/* Desktop links */}
           <div className="hidden md:flex items-center gap-2">
@@ -334,13 +344,6 @@ export default function Home() {
             </Link>
           </motion.div>
 
-          {/* Typewriter with terminal prompt — moved here, sits between the CTA buttons and the language switcher */}
-          <div className="flex items-center justify-center h-[48px] mt-10 mb-2 overflow-hidden">
-            <p className="text-sm sm:text-base md:text-lg font-mono tracking-wide" style={{ color: "rgba(240,224,255,0.45)" }}>
-              <span style={{ color: "var(--accent2)", opacity: 0.65 }}>&gt; </span>
-              {displayText}
-            </p>
-          </div>
         </div>
 
         {/* Language switcher — pinned to the bottom of the hero (where the scroll indicator used to sit) */}
