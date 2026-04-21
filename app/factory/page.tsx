@@ -80,8 +80,8 @@ const COPY: Record<
   },
 };
 
-const LINE_DELAY_MS = 650;
-const CHAR_DELAY_MS = 14;
+const LINE_DELAY_MS = 180;
+const CHAR_DELAY_MS = 5;
 
 type TypedLine = {
   full: string;
@@ -113,7 +113,7 @@ function useBootSequence(reducedMotion: boolean, runId: number) {
       BOOT_LINES.map((l) => ({ full: l, visible: "", done: false }))
     );
 
-    let cumulative = 400;
+    let cumulative = 150;
     BOOT_LINES.forEach((line, idx) => {
       for (let i = 1; i <= line.length; i++) {
         const t = setTimeout(() => {
