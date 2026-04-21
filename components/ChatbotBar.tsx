@@ -802,29 +802,56 @@ export default function ChatbotBar() {
                     const isUsr = msg.role === "user";
                     const isLast = i === visibleMessages.length - 1;
                     const hasLlmReplies = !!msg.replies?.length;
-                    // Only fall back to QUICK_COMMANDS chips under the very
-                    // first welcome message — otherwise mid-conversation
-                    // replies without LLM chips would show "Помочь определиться"
-                    // and a click would restart the scan from scratch (loop).
                     const isWelcome =
                       i === 0 && msg.content === WELCOME_MESSAGE.content;
+                    // Под welcome — QUICK_COMMANDS фулл-набор.
+                    // Под любым другим assistant-сообщением всегда даём
+                    // чипы: LLM-replies если есть, иначе generic fallback
+                    // («Подробнее / Примеры / Варианты») на языке юзера —
+                    // чтобы диалог не обрывался, когда модель забыла
+                    // приложить [reply:...]. Важно: generic fallback НЕ
+                    // содержит «Помочь определиться», иначе зациклит scan.
                     const showReplies =
-                      !isUsr &&
-                      isLast &&
-                      !loading &&
-                      !agentDriving &&
-                      (hasLlmReplies || isWelcome);
-                    const fallbackChips: Array<{
+                      !isUsr && isLast && !loading && !agentDriving;
+                    const welcomeChips: Array<{
                       label: string;
                       prompt: string;
                     }> = QUICK_COMMANDS.slice(0, 4).map((c) => ({
                       label: c.label[lang],
                       prompt: c.prompt[lang],
                     }));
+                    const genericFallback: Array<{
+                      label: string;
+                      prompt: string;
+                    }> = (() => {
+                      const variants: Record<Lang, Array<[string, string]>> = {
+                        EN: [
+                          ["Tell me more", "Tell me more."],
+                          ["Show me examples", "Show me concrete examples."],
+                          ["What are my options?", "What options do I have?"],
+                        ],
+                        RU: [
+                          ["Расскажи подробнее", "Расскажи подробнее."],
+                          ["Покажи примеры", "Покажи конкретные примеры."],
+                          ["Какие есть варианты?", "Какие у меня есть варианты?"],
+                        ],
+                        UA: [
+                          ["Розкажи детальніше", "Розкажи детальніше."],
+                          ["Покажи приклади", "Покажи конкретні приклади."],
+                          ["Які є варіанти?", "Які у мене є варіанти?"],
+                        ],
+                      };
+                      return variants[lang].map(([label, prompt]) => ({
+                        label,
+                        prompt,
+                      }));
+                    })();
                     const chips: Array<{ label: string; prompt: string }> =
                       hasLlmReplies
                         ? msg.replies!.map((r) => ({ label: r, prompt: r }))
-                        : fallbackChips;
+                        : isWelcome
+                        ? welcomeChips
+                        : genericFallback;
                     return (
                       <motion.div
                         key={i}
