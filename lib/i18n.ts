@@ -24,13 +24,11 @@ export interface T {
     recommended: string;
   };
   svetlana: { label: string; title: string; subtitle: string; desc: string; features: { icon: string; title: string; text: string }[]; ctaTemplate: string; ctaIntegration: string; diagramTitle: string };
-  skynetProduct: { label: string; title: string; subtitle: string; desc: string; features: { icon: string; title: string; text: string }[]; ctaTemplate: string; ctaIntegration: string; diagramTitle: string };
   callAgent: { label: string; title: string; subtitle: string; desc: string; features: { icon: string; title: string; text: string }[]; ctaTemplate: string; ctaIntegration: string; diagramTitle: string };
   docMind: { label: string; title: string; subtitle: string; desc: string; features: { icon: string; title: string; text: string }[]; ctaTemplate: string; ctaIntegration: string; diagramTitle: string };
   hiringAutopilot: { label: string; title: string; subtitle: string; desc: string; features: { icon: string; title: string; text: string }[]; ctaTemplate: string; ctaIntegration: string; diagramTitle: string };
   leadHunter: { label: string; title: string; subtitle: string; desc: string; features: { icon: string; title: string; text: string }[]; ctaTemplate: string; ctaIntegration: string; diagramTitle: string };
   contentFactory: { label: string; title: string; subtitle: string; desc: string; features: { icon: string; title: string; text: string }[]; ctaTemplate: string; ctaIntegration: string; diagramTitle: string };
-  skynetIntake: { label: string; title: string; subtitle: string; desc: string; features: { icon: string; title: string; text: string }[]; ctaTemplate: string; ctaIntegration: string; diagramTitle: string };
   cAdmin: { label: string; title: string; subtitle: string; desc: string; features: { icon: string; title: string; text: string }[]; ctaTemplate: string; ctaIntegration: string; diagramTitle: string };
   supportBot: { label: string; title: string; subtitle: string; desc: string; features: { icon: string; title: string; text: string }[]; ctaTemplate: string; ctaIntegration: string; diagramTitle: string };
   realEstateAi: { label: string; title: string; subtitle: string; desc: string; features: { icon: string; title: string; text: string }[]; ctaTemplate: string; ctaIntegration: string; diagramTitle: string };
@@ -113,21 +111,6 @@ const EN: T = {
     ctaTemplate: "Buy AI-Admin", ctaIntegration: "AI-Admin + Integration",
     diagramTitle: "How AI-Admin Works",
   },
-  skynetProduct: {
-    label: "Product", title: "SKYNET",
-    subtitle: "Your Personal AI Army. Command It From Telegram.",
-    desc: "Stop hiring. Start commanding. SKYNET gives you a team of autonomous AI agents \u2014 each a specialist \u2014 managed by a central coordinator. You text a task in Telegram. The system decomposes it, routes it to the right agent, executes, quality-checks, and delivers. No meetings. No delays. No excuses. Your digital workforce operates 24/7, never sleeps, never quits, and costs a fraction of a human team.",
-    features: [
-      { icon: "[*]", title: "AI Coordinator", text: "A central brain that decomposes any task, picks the best agent, and ensures quality before delivery." },
-      { icon: "[!]", title: "Instant Execution", text: "Send a message in Telegram \u2014 get results back. Code, research, automation, content \u2014 anything." },
-      { icon: "[@]", title: "Specialized Agents", text: "Fullstack dev, backend engineer, DevOps, researcher \u2014 each agent masters their domain." },
-      { icon: "[:]", title: "24/7 Operations", text: "Your agents never sleep, never take vacations, never call in sick. Always on. Always ready." },
-      { icon: "[|]", title: "Your Infrastructure", text: "Runs on your servers. Your data stays yours. No third-party access. Full control." },
-      { icon: "[/]", title: "Scale Instantly", text: "Need more agents? Clone the config. From 4 agents to 40 in minutes, not months." },
-    ],
-    ctaTemplate: "Buy SKYNET", ctaIntegration: "SKYNET + Integration",
-    diagramTitle: "SKYNET Architecture",
-  },
   callAgent: {
     label: "Voice AI", title: "AI Call Agent",
     subtitle: "Your Personal Assistant That Handles Every Call For You.",
@@ -197,18 +180,6 @@ const EN: T = {
       { icon: "[%]", title: "Content Recycling", text: "Top performers get repurposed automatically." },
     ],
     ctaTemplate: "Buy ContentFactory", ctaIntegration: "ContentFactory + Integration", diagramTitle: "How ContentFactory Works",
-  },
-  skynetIntake: {
-    label: "Task AI", title: "SKYNET Intake",
-    subtitle: "Text or Voice a Task. AI Structures, Prioritizes, Routes It.",
-    desc: "A Telegram bot that turns raw ideas (text/voice) into structured tasks. AI prioritization and routing across agents. Recommended for use with SKYNET 3.0 and above.",
-    features: [
-      { icon: "[>]", title: "Voice Input", text: "Send a voice message. Whisper transcribes. AI structures." },
-      { icon: "[=]", title: "AI Structuring & Task Routing", text: "AI parses input and routes tasks to the right agent automatically." },
-      { icon: "[!]", title: "Auto-Prioritization", text: "AI assigns urgency and importance. No manual sorting." },
-      { icon: "[~]", title: "Integration with Todoist, Notion, Linear", text: "Tasks sync to your preferred project management tool instantly." },
-    ],
-    ctaTemplate: "Buy SKYNET Intake", ctaIntegration: "Intake + Integration", diagramTitle: "How SKYNET Intake Works",
   },
   cAdmin: {
     label: "Client AI", title: "C-Admin",
@@ -416,21 +387,6 @@ const RU: T = {
     ctaTemplate: "AI-Admin", ctaIntegration: "AI-Admin + интеграция",
     diagramTitle: "Как работает AI-Admin",
   },
-  skynetProduct: {
-    label: "Продукт", title: "SKYNET",
-    subtitle: "Ваша личная армия AI. Командуйте из Telegram.",
-    desc: "Хватит нанимать. Начните командовать. SKYNET даёт вам команду автономных AI-агентов — каждый специалист в своём деле — под управлением центрального координатора. Вы пишете задачу в Telegram. Система декомпозирует её, направляет нужному агенту, выполняет, проверяет качество и доставляет результат. Без совещаний. Без задержек. Без отговорок. Ваша цифровая рабочая сила работает 24/7, никогда не спит, не увольняется и стоит в разы меньше человеческой команды.",
-    features: [
-      { icon: "[*]", title: "AI-координатор", text: "Центральный мозг: декомпозирует любую задачу, выбирает лучшего агента, проверяет качество перед отправкой." },
-      { icon: "[!]", title: "Мгновенное исполнение", text: "Отправьте сообщение в Telegram — получите результат. Код, исследования, автоматизация, контент — что угодно." },
-      { icon: "[@]", title: "Специализированные агенты", text: "Fullstack-разработчик, backend-инженер, DevOps, исследователь — каждый агент мастер своего дела." },
-      { icon: "[:]", title: "Работа 24/7", text: "Ваши агенты никогда не спят, не берут отпуск, не уходят на больничный. Всегда на связи. Всегда готовы." },
-      { icon: "[|]", title: "Ваша инфраструктура", text: "Работает на ваших серверах. Ваши данные остаются вашими. Никакого стороннего доступа. Полный контроль." },
-      { icon: "[/]", title: "Масштабируйтесь мгновенно", text: "Нужно больше агентов? Легко! От 4 агентов до 40 за минуты, а не месяцы." },
-    ],
-    ctaTemplate: "\u041a\u0443\u043f\u0438\u0442\u044c SKYNET", ctaIntegration: "SKYNET + \u0438\u043d\u0442\u0435\u0433\u0440\u0430\u0446\u0438\u044f",
-    diagramTitle: "Архитектура SKYNET",
-  },
   callAgent: {
     label: "Голосовой AI", title: "AI Call Agent",
     subtitle: "Личный ассистент, который проводит все звонки вместо вас.",
@@ -500,18 +456,6 @@ const RU: T = {
       { icon: "[%]", title: "Переработка контента", text: "Лучшие публикации переиспользуются автоматически." },
     ],
     ctaTemplate: "\u041a\u0443\u043f\u0438\u0442\u044c ContentFactory", ctaIntegration: "ContentFactory + \u0438\u043d\u0442\u0435\u0433\u0440\u0430\u0446\u0438\u044f", diagramTitle: "Как работает ContentFactory",
-  },
-  skynetIntake: {
-    label: "Task AI", title: "SKYNET Intake",
-    subtitle: "Напиши или надиктуй задачу. AI структурирует, приоритезирует, маршрутизирует.",
-    desc: "Telegram-бот, превращающий сырые идеи (текст/голос) в структурированные задачи. AI-приоритизация и маршрутизация по агентам. Рекомендуется использовать в системе SKYNET 3.0 и выше.",
-    features: [
-      { icon: "[>]", title: "Голосовой ввод", text: "Отправь голосовое. Whisper транскрибирует. AI структурирует." },
-      { icon: "[=]", title: "AI-структурирование и маршрутизация задач", text: "AI разбирает ввод и маршрутизирует задачи нужному агенту автоматически." },
-      { icon: "[!]", title: "Автоприоритизация", text: "AI назначает срочность и важность. Без ручной сортировки." },
-      { icon: "[~]", title: "Интеграция с Todoist, Notion, Linear", text: "Задачи синхронизируются с вашим менеджером задач мгновенно." },
-    ],
-    ctaTemplate: "Купить SKYNET Intake", ctaIntegration: "Intake + интеграция", diagramTitle: "Как работает SKYNET Intake",
   },
   cAdmin: {
     label: "Клиент AI", title: "C-Admin",
@@ -719,21 +663,6 @@ const UA: T = {
     ctaTemplate: "AI-Admin", ctaIntegration: "AI-Admin + інтеграція",
     diagramTitle: "Як працює AI-Admin",
   },
-  skynetProduct: {
-    label: "Продукт", title: "SKYNET",
-    subtitle: "Ваша особиста армія AI. Командуйте з Telegram.",
-    desc: "Досить наймати. Починайте командувати. SKYNET дає вам команду автономних AI-агентів — кожен спеціаліст у своїй справі — під керуванням центрального координатора. Ви пишете завдання у Telegram. Система декомпозує його, спрямовує потрібному агенту, виконує, перевіряє якість і доставляє результат. Без нарад. Без затримок. Без відмовок. Ваша цифрова робоча сила працює 24/7, ніколи не спить, не звільняється і коштує у рази менше людської команди.",
-    features: [
-      { icon: "[*]", title: "AI-координатор", text: "Центральний мозок: декомпозує будь-яке завдання, обирає найкращого агента, перевіряє якість перед відправкою." },
-      { icon: "[!]", title: "Миттєве виконання", text: "Відправте повідомлення у Telegram — отримайте результат. Код, дослідження, автоматизація, контент — будь-що." },
-      { icon: "[@]", title: "Спеціалізовані агенти", text: "Fullstack-розробник, backend-інженер, DevOps, дослідник — кожен агент майстер своєї справи." },
-      { icon: "[:]", title: "Робота 24/7", text: "Ваші агенти ніколи не сплять, не беруть відпустку, не йдуть на лікарняний. Завжди на зв'язку. Завжди готові." },
-      { icon: "[|]", title: "Ваша інфраструктура", text: "Працює на ваших серверах. Ваші дані залишаються вашими. Жодного стороннього доступу. Повний контроль." },
-      { icon: "[/]", title: "Масштабуйтесь миттєво", text: "Потрібно більше агентів? Клонуйте конфіг. Від 4 агентів до 40 за хвилини, а не місяці." },
-    ],
-    ctaTemplate: "\u041a\u0443\u043f\u0438\u0442\u0438 SKYNET", ctaIntegration: "SKYNET + \u0456\u043d\u0442\u0435\u0433\u0440\u0430\u0446\u0456\u044f",
-    diagramTitle: "\u0410\u0440\u0445\u0456\u0442\u0435\u043a\u0442\u0443\u0440\u0430 SKYNET",
-  },
   callAgent: {
     label: "Голосовий AI", title: "AI Call Agent",
     subtitle: "Особистий асистент, який проводить усі дзвінки замість вас.",
@@ -803,18 +732,6 @@ const UA: T = {
       { icon: "[%]", title: "Переробка контенту", text: "Найкращі публікації перевикористовуються." },
     ],
     ctaTemplate: "\u041a\u0443\u043f\u0438\u0442\u0438 ContentFactory", ctaIntegration: "ContentFactory + \u0456\u043d\u0442\u0435\u0433\u0440\u0430\u0446\u0456\u044f", diagramTitle: "\u042f\u043a \u043f\u0440\u0430\u0446\u044e\u0454 ContentFactory",
-  },
-  skynetIntake: {
-    label: "Task AI", title: "SKYNET Intake",
-    subtitle: "Напиши або надиктуй задачу. AI структурує, пріоритизує, маршрутизує.",
-    desc: "Telegram-бот, що перетворює сирі ідеї (текст/голос) на структуровані задачі. AI-пріоритизація та маршрутизація по агентах. Рекомендується використовувати в системі SKYNET 3.0 і вище.",
-    features: [
-      { icon: "[>]", title: "Голосовий ввід", text: "Надішли голосове. Whisper транскрибує. AI структурує." },
-      { icon: "[=]", title: "AI-структурування та маршрутизація задач", text: "AI розбирає ввід та маршрутизує задачі потрібному агенту автоматично." },
-      { icon: "[!]", title: "Автопріоритизація", text: "AI призначає терміновість та важливість. Без ручного сортування." },
-      { icon: "[~]", title: "Інтеграція з Todoist, Notion, Linear", text: "Задачі синхронізуються з вашим менеджером задач миттєво." },
-    ],
-    ctaTemplate: "Купити SKYNET Intake", ctaIntegration: "Intake + інтеграція", diagramTitle: "Як працює SKYNET Intake",
   },
   cAdmin: {
     label: "Клієнт AI", title: "C-Admin",
