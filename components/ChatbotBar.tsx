@@ -177,9 +177,9 @@ const FRAME_BORDER = "rgba(0, 255, 65, 0.4)";
 const FRAME_GLOW = "0 0 24px rgba(0, 255, 65, 0.18)";
 
 const PLACEHOLDER_BY_LANG: Record<Lang, string> = {
-  EN: "agent control",
-  RU: "агентное управление",
-  UA: "агентне керування",
+  EN: "input...",
+  RU: "input...",
+  UA: "input...",
 };
 
 // Quick-command presets surfaced from the "cmd" menu next to the >_ button.
