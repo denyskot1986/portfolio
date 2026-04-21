@@ -21,7 +21,7 @@ interface ChatMessage {
 }
 
 // Allowed internal routes for nav actions (mirrors SYSTEM_PROMPT whitelist).
-const NAV_WHITELIST = /^\/(products\/[a-z0-9-]+|discover|reels-agent)\/?$/i;
+const NAV_WHITELIST = /^\/(products\/[a-z0-9-]+|discover|reels-agent|genesis)\/?$/i;
 
 // Action directive syntax emitted by the LLM:
 //   [nav:/products/david]   → next.router.push

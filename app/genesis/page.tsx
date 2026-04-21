@@ -275,6 +275,15 @@ export default function GenesisPage() {
         }
       `}</style>
 
+      {/* STAGE — контент внутри chat-рамки (между --chat-top-h и --chat-bar-h),
+          чтобы ничего не пряталось за верхней/нижней панелями ChatbotBar */}
+      <div
+        className="absolute left-0 right-0 z-10 overflow-hidden"
+        style={{
+          top: "var(--chat-top-h, 34px)",
+          bottom: "var(--chat-bar-h, 72px)",
+        }}
+      >
       {/* SCENE 0 — empty cursor in the middle */}
       <AnimatePresence>
         {scene === 0 && (
@@ -617,13 +626,8 @@ export default function GenesisPage() {
                   transition={{ duration: 0.6 }}
                   className="mt-10 flex flex-col items-center gap-6"
                 >
-                  <div className="flex flex-col items-center gap-2">
-                    <div className="text-2xl sm:text-4xl tracking-[0.35em] text-[var(--accent)]">
-                      АГЕНТЫ ВЕДУТ БИЗНЕС
-                    </div>
-                    <div className="text-[10px] sm:text-xs tracking-[0.3em] opacity-60 text-[var(--accent)]">
-                      GENESIS: ПОСМОТРЕТЬ КАК РОДИЛОСЬ
-                    </div>
+                  <div className="text-2xl sm:text-4xl tracking-[0.35em] text-[var(--accent)]">
+                    АГЕНТЫ ВЕДУТ БИЗНЕС
                   </div>
                   <Link
                     href="/"
@@ -657,6 +661,7 @@ export default function GenesisPage() {
         >
           replay ↺
         </button>
+      </div>
       </div>
     </main>
   );

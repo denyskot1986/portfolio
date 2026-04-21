@@ -342,6 +342,34 @@ export default function Home() {
                 </span>
               </span>
             </Link>
+            <Link href="/genesis" className="btn-terminal">
+              <span className="flex flex-col items-start leading-tight text-left">
+                <span>
+                  {lang === "RU"
+                    ? "GENESIS · посмотреть как родилось"
+                    : lang === "UA"
+                    ? "GENESIS · подивитись як народилося"
+                    : "GENESIS · watch how it was born"}
+                </span>
+                <span
+                  style={{
+                    fontSize: 10,
+                    fontWeight: 400,
+                    opacity: 0.6,
+                    letterSpacing: "0.02em",
+                    textTransform: "none",
+                    marginTop: 2,
+                    textShadow: "none",
+                  }}
+                >
+                  {lang === "RU"
+                    ? "кинематографичное демо как появилась система"
+                    : lang === "UA"
+                    ? "кінематографічне демо як з'явилася система"
+                    : "cinematic demo of how the system came to life"}
+                </span>
+              </span>
+            </Link>
           </motion.div>
 
         </div>
