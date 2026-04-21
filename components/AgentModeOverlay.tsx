@@ -49,8 +49,11 @@ export function AgentModeOverlay({
     ];
   }, [resolved]);
 
-  const spread = profile.glowBlur; // глубина свечения внутрь
-  const strength = profile.glowOpacityMax; // максимальная сила
+  // ~2× smaller footprint vs original: thinner inset ring + tighter edge
+  // gradients so the takeover overlay hugs the bezel instead of washing
+  // the whole viewport.
+  const spread = profile.glowBlur * 0.5;
+  const strength = profile.glowOpacityMax;
   const alpha = (hex: string, a: number) => {
     // поддерживаем только #rrggbb
     const m = hex.replace("#", "");
@@ -86,10 +89,10 @@ export function AgentModeOverlay({
   // Используем радиальные градиенты из-за пределов viewport:
   // центр чуть снаружи → цвет яркий у края, затухает к центру.
   const edgeGlow = `
-    radial-gradient(ellipse 80% 60% at 50% -15%, ${alpha(cTop, strength)} 0%, transparent 60%),
-    radial-gradient(ellipse 60% 80% at 115% 50%, ${alpha(cRight, strength)} 0%, transparent 60%),
-    radial-gradient(ellipse 80% 60% at 50% 115%, ${alpha(cBottom, strength)} 0%, transparent 60%),
-    radial-gradient(ellipse 60% 80% at -15% 50%, ${alpha(cLeft, strength)} 0%, transparent 60%)
+    radial-gradient(ellipse 50% 35% at 50% -10%, ${alpha(cTop, strength)} 0%, transparent 55%),
+    radial-gradient(ellipse 35% 50% at 110% 50%, ${alpha(cRight, strength)} 0%, transparent 55%),
+    radial-gradient(ellipse 50% 35% at 50% 110%, ${alpha(cBottom, strength)} 0%, transparent 55%),
+    radial-gradient(ellipse 35% 50% at -10% 50%, ${alpha(cLeft, strength)} 0%, transparent 55%)
   `;
 
   return (
