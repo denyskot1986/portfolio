@@ -191,9 +191,9 @@ const FRAME_BORDER = "rgba(0, 255, 65, 0.4)";
 const FRAME_GLOW = "0 0 24px rgba(0, 255, 65, 0.18)";
 
 const PLACEHOLDER_BY_LANG: Record<Lang, string> = {
-  EN: "input...",
-  RU: "input...",
-  UA: "input...",
+  EN: "prompt",
+  RU: "prompt",
+  UA: "prompt",
 };
 
 // Quick-command presets surfaced from the "cmd" menu next to the >_ button.
@@ -1105,17 +1105,17 @@ export default function ChatbotBar() {
                     paddingLeft: 2,
                   }}
                 >
-                  <span>{PLACEHOLDER_BY_LANG[lang]}</span>
                   <span
-                    className="ml-1 inline-block align-[-1px]"
+                    className="mr-2 inline-block align-[-1px]"
                     style={{
                       width: "0.22em",
                       height: "1em",
-                      background: "#00ff41",
-                      boxShadow: "0 0 8px rgba(0, 255, 65, 0.85)",
+                      background: "rgba(0, 255, 65, 0.8)",
+                      boxShadow: "0 0 8px rgba(0, 255, 65, 0.68)",
                       animation: "blink 1s step-end infinite",
                     }}
                   />
+                  <span>{PLACEHOLDER_BY_LANG[lang]}</span>
                 </div>
               )}
               <textarea
