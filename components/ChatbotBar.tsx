@@ -448,13 +448,27 @@ export default function ChatbotBar() {
           const scrollCount = parsed.actions.filter(
             (a) => a.type === "scroll"
           ).length;
-          if (scrollCount >= 3) {
+          const actionCount = parsed.actions.length;
+          // ЛЮБАЯ навигация/скролл агентом = юзер видит оверлей «Давид ведёт».
+          // Даже короткое действие (1 nav или 1 scroll) — чтоб юзер сразу
+          // понял, что им управляют, а не сайт сам «прыгнул».
+          if (actionCount > 0) {
             setAgentDriving(true);
             if (tourTimeoutRef.current) clearTimeout(tourTimeoutRef.current);
+            let duration: number;
+            if (scrollCount >= 3) {
+              duration = 2200 * scrollCount + 1500; // tour
+            } else if (scrollCount > 0) {
+              duration = 1200 * scrollCount + 900; // 1-2 скролла
+            } else {
+              duration = 1600; // одна nav-переброска: хватает чтобы юзер заметил
+            }
             tourTimeoutRef.current = setTimeout(() => {
               setAgentDriving(false);
-              window.scrollTo({ top: 0, behavior: "smooth" });
-            }, 2200 * scrollCount + 1500);
+              if (scrollCount >= 3) {
+                window.scrollTo({ top: 0, behavior: "smooth" });
+              }
+            }, duration);
           }
           executeActions(parsed.actions);
         } else {
