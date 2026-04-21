@@ -511,7 +511,7 @@ export default function GenesisPage() {
                 </motion.div>
               ))}
             </div>
-          </div>
+          </motion.div>
 
           {/* SCENE 4 counter — top-right */}
           {scene === 4 && (
