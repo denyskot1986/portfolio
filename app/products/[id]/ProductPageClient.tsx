@@ -250,6 +250,166 @@ export default function ProductPageClient() {
         </div>
       </section>
 
+      {/* ОПИСАНИЕ ТОВАРА — подробное, но БЕЗ техстека/архитектуры.
+          Источники: longDescription + features (title/desc) + useCases.
+          techStack, внутренняя сборка, конкретные модели/API — НЕ
+          показываем (защищаем know-how от конкурентов). */}
+      <section className="relative z-10 py-14 px-4 sm:px-6 border-t border-pink-400/5">
+        <div className="max-w-3xl mx-auto">
+          <motion.div {...fade}>
+            <p
+              className="text-center text-[10px] uppercase tracking-[0.32em] mb-6 font-mono"
+              style={{ color: "rgba(0,255,65,0.55)", textShadow: "0 0 6px rgba(0,255,65,0.3)" }}
+            >
+              {lang === "RU"
+                ? "// описание товара"
+                : lang === "UA"
+                ? "// опис товару"
+                : "// product details"}
+            </p>
+
+            <div
+              className="font-mono rounded-lg overflow-hidden"
+              style={{
+                background: "rgba(2,10,4,0.6)",
+                border: "1px solid rgba(0,255,65,0.25)",
+                boxShadow:
+                  "0 0 18px rgba(0,255,65,0.08), inset 0 0 40px rgba(0,255,65,0.03)",
+              }}
+            >
+              {/* header */}
+              <div
+                className="flex items-center gap-2 px-3 py-1.5 text-[10px] uppercase"
+                style={{
+                  borderBottom: "1px solid rgba(0,255,65,0.25)",
+                  color: "rgba(0,255,65,0.7)",
+                  letterSpacing: "0.22em",
+                  background: "rgba(0,255,65,0.04)",
+                }}
+              >
+                <span className="inline-block w-2 h-2 rounded-full" style={{ background: "#ff5f57" }} />
+                <span className="inline-block w-2 h-2 rounded-full" style={{ background: "#febc2e" }} />
+                <span className="inline-block w-2 h-2 rounded-full" style={{ background: "#28c840" }} />
+                <span className="ml-2" style={{ color: "rgba(0,255,65,0.55)" }}>
+                  {product.id}.product.md
+                </span>
+              </div>
+
+              <div className="px-4 sm:px-5 py-5 space-y-5 text-[13.5px] leading-[1.65]" style={{ color: "rgba(217,255,224,0.9)" }}>
+                {/* Lead */}
+                <p>{product.longDescription}</p>
+
+                {/* Возможности */}
+                <div>
+                  <p
+                    className="text-[10px] uppercase mb-2"
+                    style={{ color: "#ffb000", letterSpacing: "0.22em", textShadow: "0 0 6px rgba(255,176,0,0.4)" }}
+                  >
+                    {lang === "RU"
+                      ? "$ capabilities"
+                      : lang === "UA"
+                      ? "$ capabilities"
+                      : "$ capabilities"}
+                  </p>
+                  <ul className="space-y-2.5">
+                    {product.features.map((f, i) => (
+                      <li key={i} className="flex gap-2.5">
+                        <span
+                          className="shrink-0 text-[11px] pt-[3px] tabular-nums"
+                          style={{ color: "rgba(0,255,65,0.55)", letterSpacing: "0.1em", width: "2ch" }}
+                        >
+                          {String(i + 1).padStart(2, "0")}
+                        </span>
+                        <span className="shrink-0 pt-0.5" style={{ color: "rgba(0,255,65,0.4)" }}>│</span>
+                        <span className="flex-1">
+                          <span
+                            className="font-semibold"
+                            style={{ color: "#00ff41", textShadow: "0 0 6px rgba(0,255,65,0.3)" }}
+                          >
+                            {f.title}
+                          </span>
+                          <span style={{ color: "rgba(217,255,224,0.65)" }}>{" — "}{f.desc}</span>
+                        </span>
+                      </li>
+                    ))}
+                  </ul>
+                </div>
+
+                {/* Для кого */}
+                <div>
+                  <p
+                    className="text-[10px] uppercase mb-2"
+                    style={{ color: "#ffb000", letterSpacing: "0.22em", textShadow: "0 0 6px rgba(255,176,0,0.4)" }}
+                  >
+                    {lang === "RU"
+                      ? "$ fits"
+                      : lang === "UA"
+                      ? "$ fits"
+                      : "$ fits"}
+                  </p>
+                  <ul className="space-y-1.5">
+                    {product.useCases.map((uc, i) => (
+                      <li key={i} className="flex gap-2" style={{ color: "rgba(217,255,224,0.75)" }}>
+                        <span style={{ color: "rgba(0,255,65,0.55)" }}>→</span>
+                        <span>{uc}</span>
+                      </li>
+                    ))}
+                  </ul>
+                </div>
+
+                {/* Доставка / срок */}
+                <div className="pt-2" style={{ borderTop: "1px dashed rgba(0,255,65,0.18)" }}>
+                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-y-1.5 gap-x-6 text-[12px]">
+                    <div className="flex justify-between gap-3">
+                      <span style={{ color: "rgba(0,255,65,0.55)" }}>
+                        {lang === "RU" ? "доставка (шаблон)" : lang === "UA" ? "доставка (шаблон)" : "delivery (template)"}
+                      </span>
+                      <span className="tabular-nums text-right">{product.deliveryTime.template}</span>
+                    </div>
+                    <div className="flex justify-between gap-3">
+                      <span style={{ color: "rgba(0,255,65,0.55)" }}>
+                        {lang === "RU" ? "интеграция" : lang === "UA" ? "інтеграція" : "integration"}
+                      </span>
+                      <span className="tabular-nums text-right">{product.deliveryTime.integration}</span>
+                    </div>
+                    <div className="flex justify-between gap-3">
+                      <span style={{ color: "rgba(0,255,65,0.55)" }}>
+                        {lang === "RU" ? "доступ" : lang === "UA" ? "доступ" : "access"}
+                      </span>
+                      <span className="text-right" style={{ color: "rgba(217,255,224,0.75)" }}>
+                        Telegram · {lang === "RU" ? "по твоему ID" : lang === "UA" ? "за твоїм ID" : "by your ID"}
+                      </span>
+                    </div>
+                    <div className="flex justify-between gap-3">
+                      <span style={{ color: "rgba(0,255,65,0.55)" }}>
+                        {lang === "RU" ? "статус" : lang === "UA" ? "статус" : "status"}
+                      </span>
+                      <span className="text-right" style={{ color: product.available ? "#00ff41" : "rgba(255,176,0,0.8)" }}>
+                        {product.available
+                          ? lang === "RU" ? "● live" : lang === "UA" ? "● live" : "● live"
+                          : lang === "RU" ? "в разработке" : lang === "UA" ? "у розробці" : "in progress"}
+                      </span>
+                    </div>
+                  </div>
+                </div>
+
+                {/* Дисклеймер — защита know-how */}
+                <p
+                  className="pt-1 text-[10px] italic"
+                  style={{ color: "rgba(217,255,224,0.35)", letterSpacing: "0.02em" }}
+                >
+                  {lang === "RU"
+                    ? "* внутренняя архитектура, модели и конфигурация не раскрываются — это авторская сборка Finekot Systems."
+                    : lang === "UA"
+                    ? "* внутрішня архітектура, моделі та конфігурація не розкриваються — це авторське складання Finekot Systems."
+                    : "* internal architecture, models and configuration are proprietary — authored build by Finekot Systems."}
+                </p>
+              </div>
+            </div>
+          </motion.div>
+        </div>
+      </section>
+
       {/* OTHER PRODUCTS */}
       <section className="relative z-10 py-16 px-6 border-t border-pink-400/5">
         <div className="max-w-5xl mx-auto">
