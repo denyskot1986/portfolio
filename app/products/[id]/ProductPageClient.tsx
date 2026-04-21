@@ -1,6 +1,5 @@
 "use client";
 
-import { useState } from "react";
 import { useParams } from "next/navigation";
 import Link from "next/link";
 import { motion } from "framer-motion";
@@ -8,7 +7,6 @@ import { productsData, getTranslatedProduct } from "@/lib/products-data";
 import { i18n } from "@/lib/i18n";
 import { useLang } from "@/lib/lang-context";
 import LangSwitcher from "@/components/LangSwitcher";
-import AgentFace from "@/components/AgentFace";
 import ProductBoot from "@/components/ProductBoot";
 import LiveVitals from "@/components/LiveVitals";
 import InlineAgentChat from "@/components/InlineAgentChat";
@@ -34,9 +32,6 @@ export default function ProductPageClient() {
   const { lang } = useLang();
   const tp = i18n[lang].pages.product;
   const product = getTranslatedProduct(params.id as string, lang);
-  const [descExpanded, setDescExpanded] = useState(false);
-  const MORE_LABEL = lang === "RU" ? "подробнее" : lang === "UA" ? "детальніше" : "more";
-  const LESS_LABEL = lang === "RU" ? "свернуть" : lang === "UA" ? "згорнути" : "less";
 
   if (!product) {
     return (
@@ -80,82 +75,12 @@ export default function ProductPageClient() {
         </div>
       </nav>
 
-      {/* HERO */}
-      <section className="relative z-10 pt-28 pb-16 px-6">
-        <div className="max-w-5xl mx-auto text-center">
-          <motion.div {...fade}>
-            <p className="text-xs text-pink-400/30 uppercase tracking-[0.4em] mb-3 font-mono">{product.category}</p>
-            <div className="flex items-center justify-center gap-4 sm:gap-6 mb-4">
-              <AgentFace
-                size={72}
-                eyeStyle={product.faceConfig?.eyeStyle ?? "round"}
-                antennaColor={product.faceConfig?.antennaColor}
-                extra={product.faceConfig?.extra ?? "none"}
-                className="hidden sm:block shrink-0"
-              />
-              <h1 className="text-3xl sm:text-5xl md:text-7xl font-black tracking-tight">
-                <span className="gradient-text">{product.name}</span>
-              </h1>
-            </div>
-            <div className="sm:hidden flex justify-center mb-3">
-              <AgentFace
-                size={56}
-                eyeStyle={product.faceConfig?.eyeStyle ?? "round"}
-                antennaColor={product.faceConfig?.antennaColor}
-                extra={product.faceConfig?.extra ?? "none"}
-              />
-            </div>
-            <p className="text-base sm:text-xl md:text-2xl text-pink-100/50 font-semibold mb-6">{product.tagline}</p>
-
-            {(() => {
-              const COLLAPSE_CHARS = 180;
-              const full = product.longDescription;
-              const needsCollapse = full.length > COLLAPSE_CHARS;
-              // Truncate at the nearest whitespace before COLLAPSE_CHARS so we
-              // don't slice mid-word.
-              let short = full.slice(0, COLLAPSE_CHARS);
-              if (needsCollapse) {
-                const lastSpace = short.lastIndexOf(" ");
-                if (lastSpace > COLLAPSE_CHARS * 0.6) short = short.slice(0, lastSpace);
-              }
-              const visible = !needsCollapse || descExpanded ? full : short + "…";
-              return (
-                <p className="text-pink-100/30 text-base leading-relaxed max-w-3xl mx-auto">
-                  {visible}
-                  {needsCollapse && (
-                    <>
-                      {" "}
-                      <button
-                        onClick={() => setDescExpanded((v) => !v)}
-                        className="inline-flex items-center gap-1 font-mono text-xs uppercase tracking-wider transition-colors"
-                        style={{
-                          color: "#00ff41",
-                          textShadow: "0 0 6px rgba(0, 255, 65, 0.4)",
-                          letterSpacing: "0.15em",
-                        }}
-                        onMouseEnter={(e) => {
-                          e.currentTarget.style.color = "#a0ff60";
-                        }}
-                        onMouseLeave={(e) => {
-                          e.currentTarget.style.color = "#00ff41";
-                        }}
-                      >
-                        {descExpanded ? LESS_LABEL : MORE_LABEL}
-                        <span aria-hidden style={{ fontSize: "10px" }}>
-                          {descExpanded ? "▲" : "▼"}
-                        </span>
-                      </button>
-                    </>
-                  )}
-                </p>
-              );
-            })()}
-          </motion.div>
-        </div>
-      </section>
+      {/* Hero (категория + имя + лицо + tagline + длинное описание) убран
+          по запросу Командира — юзер заходит на страницу и сразу видит
+          чат с агентом. Всё что нужно — агент сам расскажет в диалоге. */}
 
       {/* LIVE AGENT CHAT — speak with the agent right on their page */}
-      <section id="agent-chat" className="relative z-10 py-10 px-4 sm:px-6 scroll-mt-20">
+      <section id="agent-chat" className="relative z-10 pt-28 pb-10 px-4 sm:px-6 scroll-mt-20">
         <div className="max-w-3xl mx-auto">
           <motion.div {...fade}>
             <h2 className="text-xl sm:text-2xl md:text-3xl font-black mb-5 text-center tracking-tight">
