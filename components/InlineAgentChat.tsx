@@ -99,37 +99,33 @@ function freshSessionId(): string {
 const UI_COPY: Record<Lang, {
   title: string;
   send: string;
-  reset: string;
   newChat: string;
+  confirm: string;
   placeholderCycle: (name: string) => string;
-  resetConfirm: string;
   initChip: string[];
 }> = {
   EN: {
     title: "agent channel",
     send: "SEND",
-    reset: "start a new chat",
     newChat: "new chat",
+    confirm: "confirm?",
     placeholderCycle: (n) => `${n} online`,
-    resetConfirm: "start a new chat? current dialogue will be cleared.",
     initChip: ["What do you actually do?", "How much does it cost?", "Show me a typical day"],
   },
   RU: {
     title: "канал агента",
     send: "SEND",
-    reset: "начать новый чат",
     newChat: "новый чат",
+    confirm: "подтвердить?",
     placeholderCycle: (n) => `${n} online`,
-    resetConfirm: "начать новый чат? текущий диалог очистится.",
     initChip: ["Что ты умеешь?", "Сколько стоишь?", "Покажи типичный день"],
   },
   UA: {
     title: "канал агента",
     send: "SEND",
-    reset: "почати новий чат",
     newChat: "новий чат",
+    confirm: "підтвердити?",
     placeholderCycle: (n) => `${n} online`,
-    resetConfirm: "почати новий чат? поточний діалог очиститься.",
     initChip: ["Що ти вмієш?", "Скільки коштуєш?", "Покажи типовий день"],
   },
 };
@@ -150,7 +146,9 @@ export default function InlineAgentChat({
   const [input, setInput] = useState("");
   const [loading, setLoading] = useState(false);
   const [placeholder, setPlaceholder] = useState("");
+  const [confirmReset, setConfirmReset] = useState(false);
   const hydrated = useRef(false);
+  const confirmTimerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
   const streamRef = useRef<HTMLDivElement>(null);
   const inputRef = useRef<HTMLTextAreaElement>(null);
 
@@ -310,12 +308,28 @@ export default function InlineAgentChat({
     [input, sendMessage]
   );
 
-  const reset = () => {
-    if (!window.confirm(t.resetConfirm)) return;
+  // Two-click reset: first click flips the button into "confirm?" state for
+  // 3 seconds, second click actually clears. No native confirm() modal —
+  // stays inside the CRT aesthetic.
+  const handleResetClick = () => {
+    if (confirmTimerRef.current) {
+      clearTimeout(confirmTimerRef.current);
+      confirmTimerRef.current = null;
+    }
+    if (!confirmReset) {
+      setConfirmReset(true);
+      confirmTimerRef.current = setTimeout(() => setConfirmReset(false), 3000);
+      return;
+    }
     const fresh = freshSessionId();
     setSessionId(fresh);
     setMessages([initialGreeting]);
+    setConfirmReset(false);
   };
+
+  useEffect(() => () => {
+    if (confirmTimerRef.current) clearTimeout(confirmTimerRef.current);
+  }, []);
 
   return (
     <div
@@ -375,28 +389,40 @@ export default function InlineAgentChat({
         </div>
         <button
           type="button"
-          onClick={reset}
+          onClick={handleResetClick}
           className="shrink-0 flex items-center gap-1.5 px-2.5 py-1 rounded uppercase text-[10px] transition-all"
           style={{
-            color: "#ffb000",
-            background: "rgba(255,176,0,0.06)",
-            border: "1px solid rgba(255,176,0,0.45)",
+            color: confirmReset ? "#ff4d6d" : "#ffb000",
+            background: confirmReset
+              ? "rgba(255,77,109,0.08)"
+              : "rgba(255,176,0,0.06)",
+            border: `1px solid ${
+              confirmReset ? "rgba(255,77,109,0.6)" : "rgba(255,176,0,0.45)"
+            }`,
             letterSpacing: "0.2em",
-            textShadow: "0 0 6px rgba(255,176,0,0.5)",
+            textShadow: confirmReset
+              ? "0 0 6px rgba(255,77,109,0.5)"
+              : "0 0 6px rgba(255,176,0,0.5)",
           }}
-          title={t.reset}
-          aria-label={t.reset}
+          title={confirmReset ? t.confirm : t.newChat}
+          aria-label={confirmReset ? t.confirm : t.newChat}
           onMouseEnter={(e) => {
+            if (confirmReset) return;
             e.currentTarget.style.background = "rgba(255,176,0,0.18)";
             e.currentTarget.style.borderColor = "rgba(255,176,0,0.75)";
           }}
           onMouseLeave={(e) => {
+            if (confirmReset) return;
             e.currentTarget.style.background = "rgba(255,176,0,0.06)";
             e.currentTarget.style.borderColor = "rgba(255,176,0,0.45)";
           }}
         >
-          <span aria-hidden className="text-[14px] leading-none font-bold">+</span>
-          <span className="hidden sm:inline">{t.newChat}</span>
+          <span aria-hidden className="text-[14px] leading-none font-bold">
+            {confirmReset ? "!" : "+"}
+          </span>
+          <span className="hidden sm:inline">
+            {confirmReset ? t.confirm : t.newChat}
+          </span>
         </button>
       </div>
 
