@@ -535,7 +535,7 @@ export default function ChatbotBar() {
         theme="blue"
         intensity="normal"
         showBadge={true}
-        agentName="Ada"
+        agentName="Давид"
         onTakeOver={handleTakeOver}
       />
       {/* ───── TOP FRAME HEADER ───── */}
