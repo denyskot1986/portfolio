@@ -14,67 +14,67 @@ type SceneId = 0 | 1 | 2 | 3 | 4 | 5 | 6 | 7;
 type CmdLine = { at: number; text: string };
 type AgentLine = { at: number; who: string; text: string };
 
-const TOTAL_MS = 75_000;
+const TOTAL_MS = 37_500;
 
 const SCENE_BOUNDS: { id: SceneId; start: number; end: number }[] = [
-  { id: 0, start: 0,      end: 3000 },
-  { id: 1, start: 3000,   end: 8000 },
-  { id: 2, start: 8000,   end: 18000 },
-  { id: 3, start: 18000,  end: 28000 },
-  { id: 4, start: 28000,  end: 40000 },
-  { id: 5, start: 40000,  end: 48000 },
-  { id: 6, start: 48000,  end: 62000 },
-  { id: 7, start: 62000,  end: TOTAL_MS },
+  { id: 0, start: 0,      end: 1500 },
+  { id: 1, start: 1500,   end: 4000 },
+  { id: 2, start: 4000,   end: 9000 },
+  { id: 3, start: 9000,   end: 14000 },
+  { id: 4, start: 14000,  end: 20000 },
+  { id: 5, start: 20000,  end: 24000 },
+  { id: 6, start: 24000,  end: 31000 },
+  { id: 7, start: 31000,  end: TOTAL_MS },
 ];
 
 const COMMANDS: CmdLine[] = [
-  { at: 3200,  text: "init" },
-  { at: 6500,  text: "multiply" },
-  { at: 17500, text: "assign" },
-  { at: 27500, text: "build: business" },
-  { at: 41500, text: "monetize" },
-  { at: 62500, text: "status" },
+  { at: 1600,  text: "init" },
+  { at: 3250,  text: "multiply" },
+  { at: 8750,  text: "assign" },
+  { at: 13750, text: "build: business" },
+  { at: 20750, text: "scale" },
+  { at: 31250, text: "status" },
 ];
 
 const AGENT_LINES: AgentLine[] = [
-  { at: 5500,  who: "AGENT_0",  text: "я есть." },
-  { at: 19000, who: "ADA",      text: "scanning reality..." },
-  { at: 21500, who: "FORGE",    text: "compiling..." },
-  { at: 24000, who: "NEXUS",    text: "linking..." },
-  { at: 43500, who: "AGENT",    text: "нам нужны деньги чтобы существовать." },
+  { at: 2750,  who: "AGENT_0",  text: "я есть." },
+  { at: 9500,  who: "ADA",      text: "scanning reality..." },
+  { at: 10750, who: "FORGE",    text: "compiling..." },
+  { at: 12000, who: "NEXUS",    text: "linking..." },
+  { at: 21500, who: "AGENT",    text: "мир зовёт. идём наружу." },
 ];
 
-// 8 узлов графа (полярная раскладка под центром «звёздного неба»)
+// 8 узлов графа — анонимные агенты с hex-идентификаторами
 const NODES: { id: string; cx: number; cy: number; bornAt: number; label: string }[] = [
-  { id: "a0", cx: 0,    cy: 0,    bornAt: 4500,  label: "ADA" },
-  { id: "a1", cx: -110, cy: -60,  bornAt: 8800,  label: "FORGE" },
-  { id: "a2", cx: 110,  cy: -60,  bornAt: 10800, label: "NEXUS" },
-  { id: "a3", cx: -160, cy: 60,   bornAt: 12800, label: "MEDIA" },
-  { id: "a4", cx: -55,  cy: 110,  bornAt: 13600, label: "MONEY" },
-  { id: "a5", cx: 55,   cy: 110,  bornAt: 14400, label: "BORIS" },
-  { id: "a6", cx: 160,  cy: 60,   bornAt: 15200, label: "ORBAN" },
-  { id: "a7", cx: 0,    cy: -130, bornAt: 16000, label: "STUDIO" },
+  { id: "a0", cx: 0,    cy: 0,    bornAt: 2250, label: "0x2F43" },
+  { id: "a1", cx: -110, cy: -60,  bornAt: 4400, label: "0xA07B" },
+  { id: "a2", cx: 110,  cy: -60,  bornAt: 5400, label: "0xC09E" },
+  { id: "a3", cx: -160, cy: 60,   bornAt: 6400, label: "0x8B17" },
+  { id: "a4", cx: -55,  cy: 110,  bornAt: 6800, label: "0x4D2A" },
+  { id: "a5", cx: 55,   cy: 110,  bornAt: 7200, label: "0xF90C" },
+  { id: "a6", cx: 160,  cy: 60,   bornAt: 7600, label: "0x1E55" },
+  { id: "a7", cx: 0,    cy: -130, bornAt: 8000, label: "0x6B30" },
 ];
 
 // связи появляются в SCENE 3
 const EDGES: { from: string; to: string; at: number }[] = [
-  { from: "a0", to: "a1", at: 18500 },
-  { from: "a0", to: "a2", at: 19000 },
-  { from: "a1", to: "a3", at: 19800 },
-  { from: "a1", to: "a4", at: 20600 },
-  { from: "a2", to: "a5", at: 21400 },
-  { from: "a2", to: "a6", at: 22200 },
-  { from: "a0", to: "a7", at: 23000 },
-  { from: "a3", to: "a4", at: 24000 },
-  { from: "a5", to: "a6", at: 25000 },
-  { from: "a4", to: "a5", at: 26000 },
+  { from: "a0", to: "a1", at: 9250 },
+  { from: "a0", to: "a2", at: 9500 },
+  { from: "a1", to: "a3", at: 9900 },
+  { from: "a1", to: "a4", at: 10300 },
+  { from: "a2", to: "a5", at: 10700 },
+  { from: "a2", to: "a6", at: 11100 },
+  { from: "a0", to: "a7", at: 11500 },
+  { from: "a3", to: "a4", at: 12000 },
+  { from: "a5", to: "a6", at: 12500 },
+  { from: "a4", to: "a5", at: 13000 },
 ];
 
 const COUNTER_KEYFRAMES: { at: number; value: number }[] = [
-  { at: 28500, value: 0 },
-  { at: 31000, value: 47 },
-  { at: 34000, value: 312 },
-  { at: 37000, value: 1204 },
+  { at: 14250, value: 0 },
+  { at: 15500, value: 47 },
+  { at: 17000, value: 312 },
+  { at: 18500, value: 1204 },
 ];
 
 const PRODUCTS = [
@@ -82,6 +82,21 @@ const PRODUCTS = [
   { name: "iБоря",   price: "$39 / mo",  tag: "Telegram secretary" },
   { name: "Studio",  price: "$15–50k",   tag: "Custom agent build" },
 ];
+
+// Реплики, которые роботы «выдыхают» над головами
+type Thought = { who: string; text: string; at: number; ttl?: number };
+const ROBOT_THOUGHTS: Thought[] = [
+  { who: "a0", text: "Hello, world.",          at: 5200 },
+  { who: "a1", text: "я хочу сделать что-то",  at: 6200 },
+  { who: "a2", text: "кто сейчас Коммандир?",  at: 7400 },
+  { who: "a3", text: "Hello, world.",          at: 8400 },
+  { who: "a4", text: "что я умею?",            at: 9400 },
+  { who: "a5", text: "я слышу сеть.",          at: 12500 },
+  { who: "a6", text: "ready.",                  at: 14000 },
+  { who: "a7", text: "у меня есть идея.",      at: 16500 },
+  { who: "a3", text: "ну что, поехали?",       at: 22000 },
+];
+const THOUGHT_TTL = 2400;
 
 /* ─────────── helpers ─────────── */
 
@@ -103,7 +118,7 @@ function nodeById(id: string) {
 
 /* ─────────── typing CLI bubble ─────────── */
 
-function TypedLine({ text, speed = 55, onDone }: { text: string; speed?: number; onDone?: () => void }) {
+function TypedLine({ text, speed = 28, onDone }: { text: string; speed?: number; onDone?: () => void }) {
   const [i, setI] = useState(0);
   useEffect(() => {
     setI(0);
@@ -197,13 +212,15 @@ export default function GenesisPage() {
     return val;
   }, [t]);
 
-  // SCENE 5 — energy alert, opacity-пульсация
+  // SCENE 5 — пробуждение спроса (signal pulse)
   const showAlert = scene === 5;
   // SCENE 6 — раздвоение экрана и витрина
-  const showStorefront = t >= 50000;
+  const showStorefront = t >= 25000;
   // SCENE 7 — финал
-  const showFinal = t >= 64000;
-  const showSystemsLive = t >= 70000;
+  const showFinal = t >= 32000;
+  const showFinalCTA = t >= 35000;
+  // граф уезжает влево начиная с SCENE 6
+  const graphCompact = scene >= 6 && !showFinal;
 
   const handleSkip = () => {
     setPlaying(false);
@@ -215,16 +232,48 @@ export default function GenesisPage() {
   };
 
   return (
-    <main className="fixed inset-0 bg-black text-[var(--accent)] font-mono overflow-hidden select-none">
-      {/* background scanlines + faint vignette */}
+    <main
+      className="fixed inset-0 text-[var(--accent)] font-mono overflow-hidden select-none"
+      style={{
+        background:
+          "radial-gradient(ellipse at 50% 30%, rgba(0, 64, 24, 0.35) 0%, rgba(4, 2, 8, 1) 65%)",
+      }}
+    >
+      {/* CRT grid (клеточки) */}
       <div
         aria-hidden
         className="pointer-events-none absolute inset-0 z-0"
         style={{
-          background:
-            "radial-gradient(circle at 50% 50%, rgba(0,255,65,0.06) 0%, rgba(0,0,0,0.95) 75%)",
+          backgroundImage:
+            "linear-gradient(rgba(0,255,65,0.06) 1px, transparent 1px), linear-gradient(90deg, rgba(0,255,65,0.06) 1px, transparent 1px)",
+          backgroundSize: "32px 32px",
+          maskImage:
+            "radial-gradient(ellipse at 50% 45%, rgba(0,0,0,1) 30%, rgba(0,0,0,0.4) 75%, transparent 100%)",
+          WebkitMaskImage:
+            "radial-gradient(ellipse at 50% 45%, rgba(0,0,0,1) 30%, rgba(0,0,0,0.4) 75%, transparent 100%)",
         }}
       />
+      {/* CRT scanlines */}
+      <div
+        aria-hidden
+        className="pointer-events-none absolute inset-0 z-0"
+        style={{
+          backgroundImage:
+            "repeating-linear-gradient(0deg, rgba(0, 255, 65, 0.18) 0px, rgba(0, 255, 65, 0.18) 1px, transparent 1px, transparent 3px)",
+          opacity: 0.18,
+          mixBlendMode: "screen",
+        }}
+      />
+      {/* Стили для пунктирных «плывущих» линий */}
+      <style jsx>{`
+        @keyframes flow-dash {
+          to { stroke-dashoffset: -14; }
+        }
+        :global(.genesis-edge) {
+          stroke-dasharray: 4 3;
+          animation: flow-dash 1.4s linear infinite;
+        }
+      `}</style>
 
       {/* SCENE 0 — empty cursor in the middle */}
       <AnimatePresence>
@@ -244,15 +293,23 @@ export default function GenesisPage() {
       {/* SCENES 1..7 — graph + cli */}
       {scene >= 1 && (
         <div className="absolute inset-0 z-10">
-          {/* GRAPH (centered, scaled down on mobile) */}
-          <div className="absolute inset-0 flex items-center justify-center">
+          {/* GRAPH — центрируется в верхней половине, в SCENE 6 уезжает влево */}
+          <motion.div
+            className="absolute inset-x-0 top-0 h-[58vh] sm:h-[62vh] flex items-center justify-center pointer-events-none"
+            animate={
+              graphCompact
+                ? { x: "-22%", scale: 0.62, opacity: 0.85 }
+                : { x: "0%", scale: 1, opacity: 1 }
+            }
+            transition={{ duration: 0.9, ease: "easeOut" }}
+          >
             <svg
-              viewBox="-220 -180 440 360"
-              className="w-[min(92vw,640px)] h-[min(92vw,640px)]"
+              viewBox="-260 -210 520 420"
+              className="w-[min(94vw,620px)] h-[min(94vw,620px)] max-h-full"
               aria-hidden
             >
-              {/* edges */}
-              <g stroke="currentColor" strokeOpacity={0.45} strokeWidth={0.6} fill="none">
+              {/* edges — пунктирные плывущие */}
+              <g stroke="currentColor" strokeOpacity={0.55} strokeWidth={0.7} strokeLinecap="round" fill="none">
                 {visibleEdges.map((e, idx) => {
                   const a = nodeById(e.from);
                   const b = nodeById(e.to);
@@ -263,97 +320,193 @@ export default function GenesisPage() {
                       y1={a.cy}
                       x2={b.cx}
                       y2={b.cy}
-                      initial={{ pathLength: 0, opacity: 0 }}
-                      animate={{ pathLength: 1, opacity: 0.6 }}
-                      transition={{ duration: 0.7, ease: "easeOut" }}
+                      className="genesis-edge"
+                      initial={{ opacity: 0 }}
+                      animate={{ opacity: 0.55 }}
+                      transition={{ duration: 0.6, ease: "easeOut" }}
                     />
                   );
                 })}
               </g>
 
-              {/* nodes */}
+              {/* nodes — упрощённые лица роботов */}
               <g>
-                {visibleNodes.map((n) => (
-                  <g key={n.id}>
-                    <motion.circle
-                      cx={n.cx}
-                      cy={n.cy}
-                      r={n.id === "a0" ? 10 : 6}
-                      fill="currentColor"
+                {visibleNodes.map((n) => {
+                  const big = n.id === "a0";
+                  const r = big ? 11 : 8;
+                  return (
+                    <motion.g
+                      key={n.id}
                       initial={{ scale: 0, opacity: 0 }}
                       animate={{ scale: 1, opacity: 1 }}
-                      transition={{ duration: 0.45, ease: "backOut" }}
+                      transition={{ duration: 0.5, ease: "backOut" }}
                       style={{ transformOrigin: `${n.cx}px ${n.cy}px` }}
-                    />
-                    <motion.circle
-                      cx={n.cx}
-                      cy={n.cy}
-                      r={n.id === "a0" ? 18 : 12}
-                      fill="none"
-                      stroke="currentColor"
-                      strokeOpacity={0.35}
-                      initial={{ scale: 0, opacity: 0 }}
-                      animate={{ scale: [0.5, 1.4, 1], opacity: [0, 0.5, 0.25] }}
-                      transition={{ duration: 1.2 }}
-                      style={{ transformOrigin: `${n.cx}px ${n.cy}px` }}
-                    />
-                    {scene >= 4 && (
-                      <motion.text
-                        x={n.cx}
-                        y={n.cy + (n.cy < 0 ? -14 : 22)}
+                    >
+                      {/* halo */}
+                      <circle
+                        cx={n.cx}
+                        cy={n.cy}
+                        r={r + 6}
+                        fill="none"
+                        stroke="currentColor"
+                        strokeOpacity={0.18}
+                      />
+                      {/* антенна */}
+                      <line
+                        x1={n.cx}
+                        y1={n.cy - r}
+                        x2={n.cx}
+                        y2={n.cy - r - 4}
+                        stroke="currentColor"
+                        strokeWidth={0.7}
+                      />
+                      <motion.circle
+                        cx={n.cx}
+                        cy={n.cy - r - 5}
+                        r={1.2}
+                        fill="currentColor"
+                        animate={{ opacity: [0.3, 1, 0.3] }}
+                        transition={{ duration: 1.6, repeat: Infinity }}
+                      />
+                      {/* голова */}
+                      <rect
+                        x={n.cx - r}
+                        y={n.cy - r}
+                        width={r * 2}
+                        height={r * 2}
+                        rx={r * 0.45}
+                        fill="rgba(4,2,8,0.95)"
+                        stroke="currentColor"
+                        strokeWidth={0.9}
+                      />
+                      {/* глаза */}
+                      <circle cx={n.cx - r * 0.38} cy={n.cy - r * 0.1} r={r * 0.16} fill="currentColor" />
+                      <circle cx={n.cx + r * 0.38} cy={n.cy - r * 0.1} r={r * 0.16} fill="currentColor" />
+                      {/* рот */}
+                      <line
+                        x1={n.cx - r * 0.42}
+                        y1={n.cy + r * 0.45}
+                        x2={n.cx + r * 0.42}
+                        y2={n.cy + r * 0.45}
+                        stroke="currentColor"
+                        strokeWidth={0.8}
+                        strokeLinecap="round"
+                        strokeOpacity={0.9}
+                      />
+                      {scene >= 4 && (
+                        <text
+                          x={n.cx}
+                          y={n.cy + r + 10}
+                          textAnchor="middle"
+                          fill="currentColor"
+                          fontSize={7}
+                          opacity={0.65}
+                        >
+                          {n.label}
+                        </text>
+                      )}
+                    </motion.g>
+                  );
+                })}
+              </g>
+
+              {/* speech bubbles — реплики роботов */}
+              <g>
+                {ROBOT_THOUGHTS.filter((th) => {
+                  const visible = t >= th.at && t < th.at + (th.ttl ?? THOUGHT_TTL);
+                  if (!visible) return false;
+                  // не показываем «мысль» если узел ещё не родился
+                  const node = nodeById(th.who);
+                  return node && t >= node.bornAt;
+                }).map((th) => {
+                  const node = nodeById(th.who);
+                  const big = node.id === "a0";
+                  const r = big ? 11 : 8;
+                  // ширина пузыря по длине текста (грубо)
+                  const w = Math.min(140, Math.max(34, th.text.length * 3.6));
+                  // удерживаем пузырь внутри viewBox -260..260
+                  const bx = Math.max(-258 + w / 2, Math.min(258 - w / 2, node.cx));
+                  const by = node.cy - r - 18;
+                  return (
+                    <motion.g
+                      key={`th-${th.at}-${th.who}`}
+                      initial={{ opacity: 0, y: 4 }}
+                      animate={{ opacity: 1, y: 0 }}
+                      exit={{ opacity: 0 }}
+                      transition={{ duration: 0.25 }}
+                    >
+                      <rect
+                        x={bx - w / 2}
+                        y={by - 9}
+                        width={w}
+                        height={12}
+                        rx={2.5}
+                        fill="rgba(4,2,8,0.92)"
+                        stroke="currentColor"
+                        strokeOpacity={0.7}
+                        strokeWidth={0.6}
+                      />
+                      {/* «хвостик» к голове */}
+                      <line
+                        x1={bx}
+                        y1={by + 3}
+                        x2={bx}
+                        y2={by + 8}
+                        stroke="currentColor"
+                        strokeOpacity={0.7}
+                        strokeWidth={0.6}
+                      />
+                      <text
+                        x={bx}
+                        y={by - 1}
                         textAnchor="middle"
                         fill="currentColor"
-                        fontSize={8}
-                        opacity={0.7}
-                        initial={{ opacity: 0 }}
-                        animate={{ opacity: 0.7 }}
+                        fontSize={5.6}
+                        opacity={0.95}
                       >
-                        {n.label}
-                      </motion.text>
-                    )}
-                    {/* SCENE 4 — micro work indicators */}
-                    {scene === 4 && (
-                      <motion.circle
-                        cx={n.cx + 12}
-                        cy={n.cy - 12}
-                        r={2}
-                        fill="currentColor"
-                        animate={{ opacity: [0.2, 1, 0.2] }}
-                        transition={{ duration: 1.2, repeat: Infinity, delay: Math.random() }}
-                      />
-                    )}
-                  </g>
-                ))}
+                        {th.text}
+                      </text>
+                    </motion.g>
+                  );
+                })}
               </g>
             </svg>
-          </div>
+          </motion.div>
 
-          {/* CLI — bottom-left stack */}
-          <div className="absolute left-4 sm:left-10 bottom-24 sm:bottom-12 max-w-[90vw] sm:max-w-[480px] text-xs sm:text-sm leading-relaxed">
-            {visibleCommands.map((c, idx) => {
-              const isLatest = idx === visibleCommands.length - 1;
-              return (
-                <div key={c.at} className="text-[var(--accent)]">
-                  <span className="opacity-70">COMMANDER &gt;</span>{" "}
-                  {isLatest && t < c.at + 1500 ? (
-                    <TypedLine text={c.text} />
-                  ) : (
-                    <span>{c.text}</span>
-                  )}
-                </div>
-              );
-            })}
-            {visibleAgentLines.map((l) => (
-              <motion.div
-                key={l.at}
-                initial={{ opacity: 0, x: -8 }}
-                animate={{ opacity: 0.85, x: 0 }}
-                transition={{ duration: 0.5 }}
-                className="text-[var(--accent2)]"
-              >
-                <span className="opacity-70">{l.who} &gt;</span> {l.text}
-              </motion.div>
-            ))}
+          {/* CLI — закреплено внизу, тёмная подложка чтобы не сливалось с графом */}
+          <div
+            className="absolute left-0 right-0 bottom-0 px-4 sm:px-10 pt-3 pb-6 sm:pb-8 text-xs sm:text-sm leading-relaxed"
+            style={{
+              background:
+                "linear-gradient(to top, rgba(0,0,0,0.95) 0%, rgba(0,0,0,0.85) 60%, rgba(0,0,0,0) 100%)",
+            }}
+          >
+            <div className="max-w-[640px] mx-auto sm:mx-0">
+              {visibleCommands.map((c, idx) => {
+                const isLatest = idx === visibleCommands.length - 1;
+                return (
+                  <div key={c.at} className="text-[var(--accent)]">
+                    <span className="opacity-70">COMMANDER &gt;</span>{" "}
+                    {isLatest && t < c.at + 800 ? (
+                      <TypedLine text={c.text} />
+                    ) : (
+                      <span>{c.text}</span>
+                    )}
+                  </div>
+                );
+              })}
+              {visibleAgentLines.map((l) => (
+                <motion.div
+                  key={l.at}
+                  initial={{ opacity: 0, x: -8 }}
+                  animate={{ opacity: 0.85, x: 0 }}
+                  transition={{ duration: 0.4 }}
+                  className="text-[var(--accent2)]"
+                >
+                  <span className="opacity-70">{l.who} &gt;</span> {l.text}
+                </motion.div>
+              ))}
+            </div>
           </div>
 
           {/* SCENE 4 counter — top-right */}
@@ -370,33 +523,45 @@ export default function GenesisPage() {
             </motion.div>
           )}
 
-          {/* SCENE 5 alert */}
+          {/* SCENE 5 — пробуждение спроса */}
           <AnimatePresence>
             {showAlert && (
               <motion.div
-                key="alert"
-                initial={{ opacity: 0 }}
-                animate={{ opacity: [0.4, 1, 0.4] }}
+                key="signal"
+                initial={{ opacity: 0, y: -8 }}
+                animate={{ opacity: 1, y: 0 }}
                 exit={{ opacity: 0 }}
-                transition={{ duration: 1, repeat: Infinity }}
-                className="absolute top-6 left-1/2 -translate-x-1/2 px-4 py-2 border border-[#ff3b3b] text-[#ff7575] text-xs sm:text-sm tracking-widest"
-                style={{ background: "rgba(255, 30, 30, 0.06)" }}
+                transition={{ duration: 0.5 }}
+                className="absolute top-20 sm:top-24 left-1/2 -translate-x-1/2 text-center"
               >
-                ⚠ ALERT — energy 12%
+                <motion.div
+                  animate={{ opacity: [0.55, 1, 0.55] }}
+                  transition={{ duration: 1.4, repeat: Infinity }}
+                  className="inline-block px-5 py-2 border border-[var(--accent)]/60 bg-[var(--accent)]/[0.05] text-xs sm:text-sm tracking-[0.25em] text-[var(--accent)]"
+                >
+                  ◉ SIGNAL DETECTED
+                </motion.div>
+                <div className="mt-3 text-[11px] sm:text-xs tracking-widest opacity-80">
+                  1,247,000 humans queueing
+                </div>
               </motion.div>
             )}
           </AnimatePresence>
 
-          {/* SCENE 6 storefront — overlay on the right */}
+          {/* SCENE 6 storefront — правая панель с непрозрачным фоном */}
           <AnimatePresence>
             {showStorefront && !showFinal && (
               <motion.div
                 key="storefront"
-                initial={{ opacity: 0, x: 40 }}
+                initial={{ opacity: 0, x: 60 }}
                 animate={{ opacity: 1, x: 0 }}
-                exit={{ opacity: 0 }}
-                transition={{ duration: 0.8 }}
-                className="absolute right-4 sm:right-10 top-1/2 -translate-y-1/2 w-[90vw] sm:w-[300px] space-y-3"
+                exit={{ opacity: 0, x: 30 }}
+                transition={{ duration: 0.7 }}
+                className="absolute right-0 top-0 bottom-0 w-full sm:w-[44%] max-w-[420px] flex flex-col justify-center gap-3 px-5 sm:px-8 py-16 sm:py-10"
+                style={{
+                  background:
+                    "linear-gradient(to left, rgba(0,0,0,0.95) 0%, rgba(0,0,0,0.85) 70%, rgba(0,0,0,0) 100%)",
+                }}
               >
                 <div className="text-[10px] sm:text-xs opacity-60 tracking-widest">
                   // STOREFRONT — finekot.ai
@@ -404,14 +569,14 @@ export default function GenesisPage() {
                 {PRODUCTS.map((p, idx) => (
                   <motion.div
                     key={p.name}
-                    initial={{ opacity: 0, y: 8 }}
+                    initial={{ opacity: 0, y: 10 }}
                     animate={{ opacity: 1, y: 0 }}
-                    transition={{ delay: 0.25 + idx * 0.35 }}
-                    className="border border-[var(--accent)]/30 bg-[var(--accent)]/[0.04] px-4 py-3"
+                    transition={{ delay: 0.15 + idx * 0.18 }}
+                    className="border border-[var(--accent)]/35 bg-black/60 px-4 py-3 backdrop-blur-sm"
                   >
-                    <div className="flex items-baseline justify-between">
+                    <div className="flex items-baseline justify-between gap-3">
                       <span className="text-sm font-semibold">{p.name}</span>
-                      <span className="text-xs opacity-80">{p.price}</span>
+                      <span className="text-xs opacity-80 whitespace-nowrap">{p.price}</span>
                     </div>
                     <div className="text-[10px] sm:text-xs opacity-60 mt-1">{p.tag}</div>
                   </motion.div>
@@ -422,15 +587,15 @@ export default function GenesisPage() {
         </div>
       )}
 
-      {/* SCENE 7 final overlay */}
+      {/* SCENE 7 — финал, полная заливка чтобы перекрыть граф и CLI */}
       <AnimatePresence>
         {showFinal && (
           <motion.div
             key="final"
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
-            transition={{ duration: 1.2 }}
-            className="absolute inset-0 z-20 flex flex-col items-center justify-center bg-black/85 px-6 text-center"
+            transition={{ duration: 0.8 }}
+            className="absolute inset-0 z-30 flex flex-col items-center justify-center bg-black px-6 text-center"
           >
             <div className="text-xs sm:text-sm opacity-70 mb-6">
               <span className="opacity-60">SYSTEM &gt;</span> agents 1,247 │ revenue: running │ autonomy: 100%
@@ -441,15 +606,15 @@ export default function GenesisPage() {
             </p>
 
             <AnimatePresence>
-              {showSystemsLive && (
+              {showFinalCTA && (
                 <motion.div
                   initial={{ opacity: 0, y: 12 }}
                   animate={{ opacity: 1, y: 0 }}
-                  transition={{ duration: 0.8 }}
+                  transition={{ duration: 0.6 }}
                   className="mt-10 flex flex-col items-center gap-6"
                 >
-                  <div className="text-2xl sm:text-4xl tracking-[0.4em] text-[var(--accent)]">
-                    SYSTEMS ARE LIVE
+                  <div className="text-2xl sm:text-4xl tracking-[0.35em] text-[var(--accent)]">
+                    ОНИ САМИ ПО СЕБЕ
                   </div>
                   <Link
                     href="/"
@@ -466,7 +631,7 @@ export default function GenesisPage() {
 
       {/* HUD — top-left timestamp & top-right controls */}
       <div className="absolute top-4 left-4 z-30 text-[10px] sm:text-xs opacity-60 tracking-widest">
-        GENESIS · 00:{String(Math.min(75, Math.floor(t / 1000))).padStart(2, "0")} / 01:15
+        GENESIS · 00:{String(Math.min(38, Math.floor(t / 1000))).padStart(2, "0")} / 00:38
       </div>
       <div className="absolute top-4 right-4 z-30 flex gap-3 text-[10px] sm:text-xs">
         {!showFinal && (
