@@ -229,6 +229,24 @@ export default function ChatbotBar() {
   const [cmdOpen, setCmdOpen] = useState(false);
   const [agentDriving, setAgentDriving] = useState(false);
   const tourTimeoutRef = useRef<ReturnType<typeof setTimeout> | null>(null);
+  // Все setTimeout, которые шедулятся туром/скроллами. Когда пользователь
+  // жмёт «забрать управление» / ESC — мы их все глушим, иначе агент
+  // продолжит скроллить страницу уже после отмены.
+  const scheduledTimeoutsRef = useRef<Array<ReturnType<typeof setTimeout>>>([]);
+  const schedule = useCallback((fn: () => void, delay: number) => {
+    const id = setTimeout(() => {
+      scheduledTimeoutsRef.current = scheduledTimeoutsRef.current.filter(
+        (t) => t !== id
+      );
+      fn();
+    }, delay);
+    scheduledTimeoutsRef.current.push(id);
+    return id;
+  }, []);
+  const clearAllScheduled = useCallback(() => {
+    for (const id of scheduledTimeoutsRef.current) clearTimeout(id);
+    scheduledTimeoutsRef.current = [];
+  }, []);
   const messagesRef = useRef<HTMLDivElement>(null);
   const inputRef = useRef<HTMLTextAreaElement>(null);
   const logPanelRef = useRef<HTMLDivElement>(null);
@@ -309,7 +327,7 @@ export default function ChatbotBar() {
       const stepMs = isTour ? 2200 : 550;
       let delay = 0;
       for (const act of actions) {
-        setTimeout(() => {
+        schedule(() => {
           if (act.type === "nav") {
             if (act.target === pathname) {
               window.scrollTo({ top: 0, behavior: "smooth" });
@@ -321,7 +339,7 @@ export default function ChatbotBar() {
             if (el) {
               el.scrollIntoView({ behavior: "smooth", block: "center" });
               el.classList.add("chat-scroll-flash");
-              setTimeout(
+              schedule(
                 () => el.classList.remove("chat-scroll-flash"),
                 1600
               );
@@ -332,7 +350,7 @@ export default function ChatbotBar() {
         delay += act.type === "nav" ? 600 : stepMs;
       }
     },
-    [router, pathname]
+    [router, pathname, schedule]
   );
 
   const sendMessage = useCallback(
@@ -405,7 +423,7 @@ export default function ChatbotBar() {
           for (const beat of beats) {
             const text = beat.visible || "";
             const beatActions = beat.actions;
-            setTimeout(() => {
+            schedule(() => {
               if (text) {
                 setMessages((prev) => [
                   ...prev,
@@ -418,7 +436,7 @@ export default function ChatbotBar() {
               }
               // Scroll/nav fires right after the message lands.
               if (beatActions.length) {
-                setTimeout(() => executeActions(beatActions), 120);
+                schedule(() => executeActions(beatActions), 120);
               }
             }, delay);
             // Pure-action beats (just [nav:/] intro) need less read-time.
@@ -457,6 +475,33 @@ export default function ChatbotBar() {
     void sendMessage(input);
   }, [input, sendMessage]);
 
+  // «Забрать управление» — останавливает агент-режим: гасим все отложенные
+  // beat'ы/скроллы, снимаем оверлей, снимаем loading. После этого юзер снова
+  // рулит страницей сам. Ничего не удаляем из уже вставленных сообщений —
+  // лог остаётся читаемым.
+  const handleTakeOver = useCallback(() => {
+    if (tourTimeoutRef.current) {
+      clearTimeout(tourTimeoutRef.current);
+      tourTimeoutRef.current = null;
+    }
+    clearAllScheduled();
+    setAgentDriving(false);
+    setLoading(false);
+  }, [clearAllScheduled]);
+
+  // ESC → забрать управление, когда агент ведёт или идёт fetch.
+  useEffect(() => {
+    if (!agentDriving && !loading) return;
+    const onKey = (e: KeyboardEvent) => {
+      if (e.key === "Escape") {
+        e.preventDefault();
+        handleTakeOver();
+      }
+    };
+    window.addEventListener("keydown", onKey);
+    return () => window.removeEventListener("keydown", onKey);
+  }, [agentDriving, loading, handleTakeOver]);
+
   const handleKeyDown = useCallback(
     (e: React.KeyboardEvent) => {
       if (e.key === "Enter" && !e.shiftKey) {
@@ -477,6 +522,8 @@ export default function ChatbotBar() {
   useEffect(
     () => () => {
       if (tourTimeoutRef.current) clearTimeout(tourTimeoutRef.current);
+      for (const id of scheduledTimeoutsRef.current) clearTimeout(id);
+      scheduledTimeoutsRef.current = [];
     },
     []
   );
@@ -487,7 +534,9 @@ export default function ChatbotBar() {
         active={agentDriving}
         theme="blue"
         intensity="normal"
-        showBadge={false}
+        showBadge={true}
+        agentName="Ada"
+        onTakeOver={handleTakeOver}
       />
       {/* ───── TOP FRAME HEADER ───── */}
       <div

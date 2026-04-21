@@ -185,7 +185,9 @@ function AgentStatusBadge({
       style={{
         position: "absolute",
         right: 20,
-        bottom: 20,
+        // Поднимаем бейдж над фиксированным ChatBar-ом, чтобы кнопка
+        // «Забрать управление» не перекрывалась полем ввода.
+        bottom: "calc(var(--chat-bar-h, 72px) + 20px)",
         pointerEvents: "auto",
         display: "flex",
         alignItems: "center",
