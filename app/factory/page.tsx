@@ -619,11 +619,19 @@ export default function FactoryPage() {
                               {pitchVisible[ctaIdx] && (
                                 <Link
                                   href="/products/boris"
-                                  className="mt-4 inline-flex items-center gap-2 text-[11px] uppercase tracking-[0.22em] transition-colors"
+                                  className="mt-4 inline-flex items-center gap-2 text-[12px] uppercase tracking-[0.22em] transition-all"
                                   style={{
-                                    color: "#ffb000",
+                                    padding: "8px 14px",
+                                    background: "rgba(255, 176, 0, 0.08)",
+                                    border:
+                                      "1px solid rgba(255, 176, 0, 0.5)",
+                                    borderRadius: 4,
+                                    color: "#ffd88a",
+                                    fontWeight: 700,
                                     textShadow:
                                       "0 0 6px rgba(255, 176, 0, 0.5)",
+                                    boxShadow:
+                                      "0 0 10px rgba(255, 176, 0, 0.15)",
                                   }}
                                 >
                                   <span>

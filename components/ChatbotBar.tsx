@@ -216,54 +216,6 @@ const QUICK_COMMANDS: QuickCommand[] = [
       UA: "Допоможи підібрати продукт під мою задачу — спитай що мені потрібно",
     },
   },
-  {
-    id: "interview",
-    emoji: "🎤",
-    label: {
-      EN: "Interview an agent",
-      RU: "Собеседование с агентом",
-      UA: "Співбесіда з агентом",
-    },
-    prompt: {
-      EN: "Pick one of your agents and let me interview them like a candidate — I'll ask questions, the agent answers in first person",
-      RU: "Выбери одного из своих агентов и дай мне провести с ним собеседование как с кандидатом — я задаю вопросы, агент отвечает от первого лица",
-      UA: "Обери одного зі своїх агентів і дай мені провести з ним співбесіду як з кандидатом — я ставлю питання, агент відповідає від першої особи",
-    },
-  },
-  {
-    id: "roi",
-    emoji: "💹",
-    label: {
-      EN: "Estimate my ROI",
-      RU: "Посчитать мою выгоду",
-      UA: "Порахувати мою вигоду",
-    },
-    prompt: {
-      EN: "Ask me 3 quick questions about my business and estimate the ROI of hiring a Finekot agent vs a human — in dollars and hours saved",
-      RU: "Задай мне 3 коротких вопроса про мой бизнес и прикинь выгоду от найма агента Finekot vs человека — в долларах и сэкономленных часах",
-      UA: "Постав мені 3 короткі питання про мій бізнес і прикинь вигоду від найму агента Finekot vs людини — в доларах і зекономлених годинах",
-    },
-  },
-  {
-    id: "explain",
-    emoji: "🧠",
-    label: { EN: "What is an AI agent?", RU: "Что такое AI-агенты", UA: "Що таке AI-агенти" },
-    prompt: {
-      EN: "In 3 sentences — what is an AI agent and how is it different from a chatbot",
-      RU: "В 3 предложениях — что такое AI-агент и чем он отличается от чат-бота",
-      UA: "У 3 реченнях — що таке AI-агент і чим він відрізняється від чат-бота",
-    },
-  },
-  {
-    id: "founder",
-    emoji: "💬",
-    label: { EN: "Talk to the founder", RU: "Связаться с основателем", UA: "Зв'язатися з засновником" },
-    prompt: {
-      EN: "I want to contact the founder about a custom project",
-      RU: "Хочу связаться с основателем по кастомному проекту",
-      UA: "Хочу зв'язатися з засновником щодо кастомного проєкту",
-    },
-  },
 ];
 
 export default function ChatbotBar() {

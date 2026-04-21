@@ -30,7 +30,7 @@ export default function ProductPageClient() {
 
   if (!product) {
     return (
-      <main className="min-h-screen bg-black text-pink-100/80 flex items-center justify-center">
+      <main className="min-h-screen bg-[var(--bg)] text-pink-100/80 flex items-center justify-center">
         <div className="text-center">
           <h1 className="text-4xl font-black mb-4">{tp.notFound}</h1>
           <Link href="/" className="text-pink-400/60 hover:text-pink-400 transition-colors">&larr; {i18n[lang].pages.backHome}</Link>
@@ -40,11 +40,11 @@ export default function ProductPageClient() {
   }
 
   return (
-    <main className="min-h-screen bg-black text-pink-100/80 overflow-x-hidden">
+    <main className="min-h-screen bg-[var(--bg)] text-pink-100/80 overflow-x-hidden">
       {/* NAV */}
       <nav
         style={{ top: "var(--chat-top-h, 34px)" }}
-        className="fixed left-0 right-0 z-50 backdrop-blur-xl bg-black/60 border-b border-pink-400/5"
+        className="fixed left-0 right-0 z-50 backdrop-blur-xl bg-[var(--bg)]/60 border-b border-pink-400/5"
       >
         <div className="max-w-5xl mx-auto px-6 h-14 flex items-center justify-between">
           <Link href="/" className="text-sm font-mono text-pink-400/40 hover:text-pink-400/80 transition-colors">&larr; {i18n[lang].pages.backHome}</Link>

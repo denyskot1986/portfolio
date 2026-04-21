@@ -7,8 +7,12 @@
    ═══════════════════════════════════════════════════════ */
 
 :root {
-  --bg: #040208;
-  --bg2: #06030c;
+  /* Near-black tuned to sit between pure #000 and the harsh #040208
+     original. Halved from the previous #141417 pass — easier on the
+     eyes than pure black but still lets cards and chat chrome read
+     clearly on top. */
+  --bg: #0a0a0c;
+  --bg2: #070709;
   --fg: #d9ffe0;
   --accent: #00ff41;
   --accent2: #ffb000;
