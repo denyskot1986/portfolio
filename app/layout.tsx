@@ -2,7 +2,9 @@ import type { Metadata } from "next";
 import { JetBrains_Mono } from "next/font/google";
 import { Analytics } from "@vercel/analytics/next";
 import { LangProvider } from "@/lib/lang-context";
+import { AgentChatProvider } from "@/lib/agent-chat-context";
 import ChatbotBar from "@/components/ChatbotBar";
+import AgentDock from "@/components/AgentDock";
 import "./globals.css";
 
 const jetbrainsMono = JetBrains_Mono({
@@ -71,8 +73,11 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
         }}
       >
         <LangProvider>
-          {children}
-          <ChatbotBar />
+          <AgentChatProvider>
+            {children}
+            <AgentDock />
+            <ChatbotBar />
+          </AgentChatProvider>
         </LangProvider>
         <Analytics />
       </body>
