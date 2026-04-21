@@ -114,8 +114,8 @@ const COPY: Record<Lang, Copy> = {
   },
 };
 
-const LINE_DELAY_MS = 180;
-const CHAR_DELAY_MS = 5;
+const LINE_DELAY_MS = 90;
+const CHAR_DELAY_MS = 3;
 
 type TypedLine = {
   full: string;
@@ -217,12 +217,65 @@ export default function FactoryPage() {
     };
   }, [finished, reducedMotion, t.firstMsg, runId]);
 
+  // Pitch block types line-by-line after the greeting lands.
+  const pitchRawLines = useMemo<string[]>(() => {
+    const out: string[] = [];
+    out.push(t.pitchHeader);
+    out.push(t.pitchOneLiner);
+    out.push("$ boris.spec");
+    for (const [, v] of t.spec) out.push(v);
+    out.push("$ pricing");
+    out.push(t.pricing);
+    out.push(t.fullSpec);
+    return out;
+  }, [t]);
+
+  const [pitchVisible, setPitchVisible] = useState<string[]>([]);
+  const [pitchDone, setPitchDone] = useState(false);
+
+  useEffect(() => {
+    setPitchVisible(pitchRawLines.map(() => ""));
+    setPitchDone(false);
+    if (!greetingDone) return;
+    if (reducedMotion) {
+      setPitchVisible(pitchRawLines.slice());
+      setPitchDone(true);
+      return;
+    }
+    const timers: Array<ReturnType<typeof setTimeout>> = [];
+    const CHAR = 3;
+    const GAP = 70;
+    let cumulative = 250;
+    pitchRawLines.forEach((line, idx) => {
+      for (let i = 1; i <= line.length; i++) {
+        timers.push(
+          setTimeout(() => {
+            setPitchVisible((prev) => {
+              const next = prev.slice();
+              next[idx] = line.slice(0, i);
+              return next;
+            });
+          }, cumulative + i * CHAR)
+        );
+      }
+      cumulative += line.length * CHAR + GAP;
+    });
+    timers.push(setTimeout(() => setPitchDone(true), cumulative + 150));
+    return () => {
+      timers.forEach(clearTimeout);
+    };
+  }, [greetingDone, reducedMotion, pitchRawLines, runId]);
+
+  const pitchActiveIdx = pitchVisible.findIndex(
+    (v, i) => v.length > 0 && v.length < pitchRawLines[i].length
+  );
+
   // Auto-scroll the stream as new characters appear.
   useEffect(() => {
     const el = streamRef.current;
     if (!el) return;
     el.scrollTop = el.scrollHeight;
-  }, [lines, greeting, finished]);
+  }, [lines, greeting, finished, pitchVisible]);
 
   // Esc returns to home — useful for demos.
   useEffect(() => {
@@ -437,80 +490,151 @@ export default function FactoryPage() {
                             "1px dashed rgba(0, 255, 65, 0.22)",
                         }}
                       >
-                        <div
-                          className="text-[10px] uppercase"
-                          style={{
-                            color: "rgba(255, 176, 0, 0.75)",
-                            letterSpacing: "0.22em",
-                          }}
-                        >
-                          {t.pitchHeader}
-                        </div>
-                        <div
-                          className="mt-2 text-[13px] sm:text-[14px] leading-relaxed"
-                          style={{ color: "#d9ffe0" }}
-                        >
-                          {t.pitchOneLiner}
-                        </div>
+                        {(() => {
+                          const caret = (
+                            <span
+                              className="inline-block align-[-2px] ml-[2px]"
+                              style={{
+                                width: "0.55em",
+                                height: "1em",
+                                background: "#00ff41",
+                                boxShadow:
+                                  "0 0 8px rgba(0, 255, 65, 0.8)",
+                                animation:
+                                  "factoryBlink 0.9s steps(1) infinite",
+                              }}
+                            />
+                          );
+                          const SPEC_OFFSET = 3;
+                          const specCount = t.spec.length;
+                          const pricingHeaderIdx = SPEC_OFFSET + specCount;
+                          const pricingIdx = pricingHeaderIdx + 1;
+                          const ctaIdx = pricingIdx + 1;
+                          return (
+                            <>
+                              {pitchVisible[0] && (
+                                <div
+                                  className="text-[10px] uppercase"
+                                  style={{
+                                    color: "rgba(255, 176, 0, 0.75)",
+                                    letterSpacing: "0.22em",
+                                  }}
+                                >
+                                  {pitchVisible[0]}
+                                  {pitchActiveIdx === 0 && caret}
+                                </div>
+                              )}
 
-                        <div
-                          className="mt-4 text-[12px]"
-                          style={{
-                            color: "rgba(0, 255, 65, 0.85)",
-                            textShadow: "0 0 6px rgba(0, 255, 65, 0.35)",
-                          }}
-                        >
-                          $ boris.spec
-                        </div>
-                        <div
-                          className="mt-1 text-[12px] leading-[1.75]"
-                          style={{ color: "rgba(217, 255, 224, 0.88)" }}
-                        >
-                          {t.spec.map(([k, v]) => (
-                            <div
-                              key={k}
-                              className="flex flex-wrap gap-x-3"
-                            >
-                              <span
-                                style={{
-                                  color: "rgba(0, 255, 65, 0.6)",
-                                  minWidth: "8ch",
-                                  display: "inline-block",
-                                }}
-                              >
-                                {k}
-                              </span>
-                              <span className="flex-1">{v}</span>
-                            </div>
-                          ))}
-                        </div>
+                              {pitchVisible[1] && (
+                                <div
+                                  className="mt-2 text-[13px] sm:text-[14px] leading-relaxed"
+                                  style={{ color: "#d9ffe0" }}
+                                >
+                                  {pitchVisible[1]}
+                                  {pitchActiveIdx === 1 && caret}
+                                </div>
+                              )}
 
-                        <div
-                          className="mt-4 text-[12px]"
-                          style={{
-                            color: "rgba(0, 255, 65, 0.85)",
-                            textShadow: "0 0 6px rgba(0, 255, 65, 0.35)",
-                          }}
-                        >
-                          $ pricing
-                        </div>
-                        <div
-                          className="mt-1 text-[13px]"
-                          style={{ color: "#ffd88a" }}
-                        >
-                          {t.pricing}
-                        </div>
+                              {pitchVisible[2] && (
+                                <div
+                                  className="mt-4 text-[12px]"
+                                  style={{
+                                    color: "rgba(0, 255, 65, 0.85)",
+                                    textShadow:
+                                      "0 0 6px rgba(0, 255, 65, 0.35)",
+                                  }}
+                                >
+                                  {pitchVisible[2]}
+                                  {pitchActiveIdx === 2 && caret}
+                                </div>
+                              )}
 
-                        <Link
-                          href="/products/boris"
-                          className="mt-4 inline-flex items-center gap-2 text-[11px] uppercase tracking-[0.22em] transition-colors"
-                          style={{
-                            color: "#ffb000",
-                            textShadow: "0 0 6px rgba(255, 176, 0, 0.5)",
-                          }}
-                        >
-                          <span>{t.fullSpec}</span>
-                        </Link>
+                              {(() => {
+                                const anyRow = t.spec.some(
+                                  (_, idx) =>
+                                    !!pitchVisible[SPEC_OFFSET + idx]
+                                );
+                                if (!anyRow) return null;
+                                return (
+                                  <div
+                                    className="mt-1 text-[12px] leading-[1.75]"
+                                    style={{
+                                      color: "rgba(217, 255, 224, 0.88)",
+                                    }}
+                                  >
+                                    {t.spec.map(([k], idx) => {
+                                      const i = SPEC_OFFSET + idx;
+                                      const v = pitchVisible[i];
+                                      if (!v) return null;
+                                      return (
+                                        <div
+                                          key={k}
+                                          className="flex flex-wrap gap-x-3"
+                                        >
+                                          <span
+                                            style={{
+                                              color: "rgba(0, 255, 65, 0.6)",
+                                              minWidth: "8ch",
+                                              display: "inline-block",
+                                            }}
+                                          >
+                                            {k}
+                                          </span>
+                                          <span className="flex-1">
+                                            {v}
+                                            {pitchActiveIdx === i && caret}
+                                          </span>
+                                        </div>
+                                      );
+                                    })}
+                                  </div>
+                                );
+                              })()}
+
+                              {pitchVisible[pricingHeaderIdx] && (
+                                <div
+                                  className="mt-4 text-[12px]"
+                                  style={{
+                                    color: "rgba(0, 255, 65, 0.85)",
+                                    textShadow:
+                                      "0 0 6px rgba(0, 255, 65, 0.35)",
+                                  }}
+                                >
+                                  {pitchVisible[pricingHeaderIdx]}
+                                  {pitchActiveIdx === pricingHeaderIdx &&
+                                    caret}
+                                </div>
+                              )}
+
+                              {pitchVisible[pricingIdx] && (
+                                <div
+                                  className="mt-1 text-[13px]"
+                                  style={{ color: "#ffd88a" }}
+                                >
+                                  {pitchVisible[pricingIdx]}
+                                  {pitchActiveIdx === pricingIdx && caret}
+                                </div>
+                              )}
+
+                              {pitchVisible[ctaIdx] && (
+                                <Link
+                                  href="/products/boris"
+                                  className="mt-4 inline-flex items-center gap-2 text-[11px] uppercase tracking-[0.22em] transition-colors"
+                                  style={{
+                                    color: "#ffb000",
+                                    textShadow:
+                                      "0 0 6px rgba(255, 176, 0, 0.5)",
+                                  }}
+                                >
+                                  <span>
+                                    {pitchVisible[ctaIdx]}
+                                    {pitchActiveIdx === ctaIdx && caret}
+                                  </span>
+                                </Link>
+                              )}
+                            </>
+                          );
+                        })()}
                       </div>
 
                       <div

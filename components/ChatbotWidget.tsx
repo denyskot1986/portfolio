@@ -59,7 +59,7 @@ function renderWithLinks(content: string): React.ReactNode {
 const WELCOME_MESSAGE: ChatMessage = {
   role: "assistant",
   content:
-    "╔══════════════════╗\n║   SKYNET v3.0    ║\n║   consultant.on  ║\n║   • link stable  ║\n╚══════════════════╝",
+    "╔══════════════════╗\n║  FINEKOT v3.0    ║\n║  collective.on   ║\n║  • link stable   ║\n╚══════════════════╝",
 };
 
 const SESSION_KEY = "finekot_chat_session";

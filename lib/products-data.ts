@@ -442,12 +442,12 @@ export const productsData: ProductData[] = [
     available: true,
   },
   {
-    id: "skynet-intake",
-    name: "SKYNET Intake",
+    id: "orban",
+    name: "Orban",
     tagline: "AI Task Assistant",
     category: "Bots",
     description: "A Telegram bot that turns raw ideas (text/voice) into structured tasks with AI routing.",
-    longDescription: "SKYNET Intake turns raw ideas — voice messages, texts — into structured, prioritized tasks. AI prioritization and routing across agents. Recommended for use with SKYNET 3.0 and above.",
+    longDescription: "Orban turns raw ideas — voice messages, texts — into structured, prioritized tasks. He parses intent, scores priority, and routes every task to the right agent in the Finekot collective.",
     features: [
       { title: "Voice Input", desc: "Send a voice message — it transcribes and structures automatically." },
       { title: "AI Structuring & Task Routing", desc: "AI parses input and routes tasks to the right agent automatically." },
@@ -656,10 +656,10 @@ const translations: Record<string, Record<string, ProductTranslation>> = {
   },
   "ada": {
     RU: {
-      tagline: "Исследовательский терминатор. Perplexity-killer.",
+      tagline: "Исследовательский агент. Perplexity-killer.",
       category: "Агенты",
       description: "Быстрый ответ с источниками за 30 секунд. Или Deep Research — структурированный отчёт на 2500 слов за 8 минут. Построена на собственном Ada-стеке Finekot.",
-      longDescription: "Ada — публичная версия исследовательского терминатора из SKYNET. Работает в двух режимах. FAST: один вопрос, ~30–60 секунд, ответ с 5+ источниками. DEEP: многопроходное расследование по 20+ источникам, возвращает структурированный отчёт за 5–10 минут с противоречиями, уровнями достоверности и трассируемыми фактами. Построена как замена Perplexity для тех кто делает реальную работу — консультантов, аналитиков, основателей, журналистов. Помнит твои ресёрч-треды между сессиями.",
+      longDescription: "Ada — исследовательский агент коллектива Finekot. Работает в двух режимах. FAST: один вопрос, ~30–60 секунд, ответ с 5+ источниками. DEEP: многопроходное расследование по 20+ источникам, возвращает структурированный отчёт за 5–10 минут с противоречиями, уровнями достоверности и трассируемыми фактами. Построена как замена Perplexity для тех кто делает реальную работу — консультантов, аналитиков, основателей, журналистов. Помнит твои ресёрч-треды между сессиями.",
       features: [
         { title: "Отвечает быстро за 30–60 сек", desc: "Прямой ответ на вопрос с 5+ цитированными источниками. Как Perplexity, но с памятью." },
         { title: "Запускает Deep Research за 3–10 мин", desc: "Многошаговое расследование по Exa + Tavily + прямой краулинг. Возвращает отчёт со структурой, секциями, уровнями уверенности и открытыми вопросами." },
@@ -675,7 +675,7 @@ const translations: Record<string, Record<string, ProductTranslation>> = {
       ],
     },
     UA: {
-      tagline: "Дослідницький термінатор. Perplexity-killer.",
+      tagline: "Дослідницький агент. Perplexity-killer.",
       category: "Агенти",
       description: "Швидка відповідь з джерелами за 30 секунд. Або Deep Research — структурований звіт на 2500 слів за 8 хвилин. Побудована на власному Ada-стеку Finekot.",
       longDescription: "Ada — публічна версія дослідницького термінатора зі SKYNET. Працює у двох режимах. FAST: одне питання, ~30–60 секунд, відповідь з 5+ джерелами. DEEP: багатопрохідне розслідування по 20+ джерелах, повертає структурований звіт за 5–10 хвилин із протиріччями, рівнями достовірності та трасованими фактами. Побудована як заміна Perplexity для тих хто робить реальну роботу — консультантів, аналітиків, засновників, журналістів. Пам'ятає твої ресерч-треди між сесіями.",
@@ -774,12 +774,12 @@ const translations: Record<string, Record<string, ProductTranslation>> = {
       ],
     },
   },
-  "skynet-intake": {
+  "orban": {
     RU: {
       tagline: "AI-ассистент задач",
       category: "Боты",
       description: "Telegram-бот, превращающий сырые идеи (текст/голос) в структурированные задачи с AI-маршрутизацией.",
-      longDescription: "SKYNET Intake превращает сырые идеи — голосовые сообщения, тексты — в структурированные, приоритизированные задачи. AI-приоритизация и маршрутизация по агентам. Рекомендуется для использования с SKYNET 3.0 и выше.",
+      longDescription: "Orban превращает сырые идеи — голосовые сообщения, тексты — в структурированные, приоритизированные задачи. Разбирает смысл, оценивает приоритет и направляет каждую задачу нужному агенту коллектива Finekot.",
       features: [
         { title: "Голосовой ввод", desc: "Отправьте голосовое сообщение — бот транскрибирует и структурирует автоматически." },
         { title: "AI-структурирование и маршрутизация", desc: "AI разбирает ввод и направляет задачи нужному агенту автоматически." },
@@ -793,7 +793,7 @@ const translations: Record<string, Record<string, ProductTranslation>> = {
       tagline: "AI-асистент задач",
       category: "Боти",
       description: "Telegram-бот, що перетворює сирі ідеї (текст/голос) на структуровані задачі з AI-маршрутизацією.",
-      longDescription: "SKYNET Intake перетворює сирі ідеї — голосові повідомлення, тексти — на структуровані, пріоритизовані задачі. AI-пріоритизація та маршрутизація по агентах. Рекомендовано для використання з SKYNET 3.0 та вище.",
+      longDescription: "Orban перетворює сирі ідеї — голосові повідомлення, тексти — на структуровані, пріоритизовані задачі. Розбирає зміст, оцінює пріоритет і спрямовує кожну задачу потрібному агенту колективу Finekot.",
       features: [
         { title: "Голосовий ввід", desc: "Надішліть голосове повідомлення — бот транскрибує та структурує автоматично." },
         { title: "AI-структурування та маршрутизація", desc: "AI розбирає ввід і спрямовує задачі потрібному агенту автоматично." },
