@@ -1122,7 +1122,7 @@ export default function ChatbotBar() {
                   <span
                     className="ml-1 inline-block align-[-1px]"
                     style={{
-                      width: "0.55em",
+                      width: "0.22em",
                       height: "1em",
                       background: "#00ff41",
                       boxShadow: "0 0 8px rgba(0, 255, 65, 0.85)",
