@@ -12,6 +12,7 @@ import { motion, AnimatePresence } from "framer-motion";
 import { useRouter, usePathname } from "next/navigation";
 import { useLang } from "@/lib/lang-context";
 import type { Lang } from "@/lib/i18n";
+import { AgentModeOverlay } from "./AgentModeOverlay";
 
 interface ChatMessage {
   role: "user" | "assistant";
@@ -40,6 +41,8 @@ function parseReply(raw: string): ParsedReply {
       actions.push({ type, target });
       return "";
     })
+    // Strip stray "===" lines that leak when the LLM over-adds separators.
+    .replace(/^\s*={3,}\s*$/gm, "")
     .replace(/\n{3,}/g, "\n\n")
     .trim();
   return { visible, actions };
@@ -250,6 +253,8 @@ export default function ChatbotBar() {
   const [loading, setLoading] = useState(false);
   const [logOpen, setLogOpen] = useState(false);
   const [cmdOpen, setCmdOpen] = useState(false);
+  const [agentDriving, setAgentDriving] = useState(false);
+  const tourTimeoutRef = useRef<ReturnType<typeof setTimeout> | null>(null);
   const messagesRef = useRef<HTMLDivElement>(null);
   const inputRef = useRef<HTMLTextAreaElement>(null);
   const logPanelRef = useRef<HTMLDivElement>(null);
@@ -394,11 +399,30 @@ export default function ChatbotBar() {
             ...prev,
             { role: "assistant", content: parsed.visible || "> done." },
           ]);
+          const scrollCount = parsed.actions.filter(
+            (a) => a.type === "scroll"
+          ).length;
+          if (scrollCount >= 3) {
+            setAgentDriving(true);
+            if (tourTimeoutRef.current) clearTimeout(tourTimeoutRef.current);
+            tourTimeoutRef.current = setTimeout(() => {
+              setAgentDriving(false);
+              window.scrollTo({ top: 0, behavior: "smooth" });
+            }, 2200 * scrollCount + 1500);
+          }
           executeActions(parsed.actions);
         } else {
           // Tour streaming — emit each beat as its own message with a pause
           // so the user can read + the scroll flash lands before the next.
+          setAgentDriving(true);
+          // A tour scrolls product cards that only exist on "/". If the user
+          // is on a product page, force-nav home first and delay the beats
+          // so the cards have time to mount before the first [scroll:...].
           let delay = 0;
+          if (pathname !== "/") {
+            router.push("/");
+            delay = 700;
+          }
           const BEAT_GAP_MS = 2400;
           for (const beat of beats) {
             const text = beat.visible || "";
@@ -418,6 +442,11 @@ export default function ChatbotBar() {
             // Pure-action beats (just [nav:/] intro) need less read-time.
             delay += text ? BEAT_GAP_MS : 700;
           }
+          if (tourTimeoutRef.current) clearTimeout(tourTimeoutRef.current);
+          tourTimeoutRef.current = setTimeout(() => {
+            setAgentDriving(false);
+            window.scrollTo({ top: 0, behavior: "smooth" });
+          }, delay + 1500);
         }
       } catch {
         setMessages((prev) => [
@@ -463,8 +492,21 @@ export default function ChatbotBar() {
 
   const hasActivity = messages.length > 1;
 
+  useEffect(
+    () => () => {
+      if (tourTimeoutRef.current) clearTimeout(tourTimeoutRef.current);
+    },
+    []
+  );
+
   return (
     <>
+      <AgentModeOverlay
+        active={agentDriving}
+        theme="blue"
+        intensity="normal"
+        showBadge={false}
+      />
       {/* ───── TOP FRAME HEADER ───── */}
       <div
         ref={topBarRef}
@@ -928,6 +970,46 @@ export default function ChatbotBar() {
             >
               │
             </span>
+            <button
+              type="button"
+              onClick={() => {
+                const tour = QUICK_COMMANDS.find((c) => c.id === "tour");
+                if (tour) void sendMessage(tour.prompt[lang]);
+              }}
+              disabled={loading || agentDriving}
+              className="shrink-0 h-7 px-2.5 flex items-center gap-1.5 transition-all disabled:opacity-40 disabled:cursor-not-allowed"
+              style={{
+                background: "rgba(255, 176, 0, 0.1)",
+                border: "1px solid rgba(255, 176, 0, 0.55)",
+                borderRadius: "3px",
+                color: "#ffb000",
+                letterSpacing: "0.2em",
+                fontSize: "10px",
+                fontWeight: 700,
+                textShadow: "0 0 6px rgba(255, 176, 0, 0.45)",
+                boxShadow: "0 0 10px rgba(255, 176, 0, 0.16)",
+              }}
+              onMouseEnter={(e) => {
+                if (e.currentTarget.disabled) return;
+                e.currentTarget.style.background = "#ffb000";
+                e.currentTarget.style.color = "#040208";
+                e.currentTarget.style.textShadow = "none";
+                e.currentTarget.style.boxShadow =
+                  "0 0 20px rgba(255, 176, 0, 0.55)";
+              }}
+              onMouseLeave={(e) => {
+                e.currentTarget.style.background = "rgba(255, 176, 0, 0.1)";
+                e.currentTarget.style.color = "#ffb000";
+                e.currentTarget.style.textShadow =
+                  "0 0 6px rgba(255, 176, 0, 0.45)";
+                e.currentTarget.style.boxShadow =
+                  "0 0 10px rgba(255, 176, 0, 0.16)";
+              }}
+              aria-label="Run product tour demo"
+            >
+              <span aria-hidden style={{ fontSize: 9 }}>▶</span>
+              <span>DEMO</span>
+            </button>
             <textarea
               ref={inputRef}
               data-chat-input
