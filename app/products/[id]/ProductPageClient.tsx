@@ -155,7 +155,7 @@ export default function ProductPageClient() {
       </section>
 
       {/* LIVE AGENT CHAT — speak with the agent right on their page */}
-      <section className="relative z-10 py-10 px-4 sm:px-6">
+      <section id="agent-chat" className="relative z-10 py-10 px-4 sm:px-6 scroll-mt-20">
         <div className="max-w-3xl mx-auto">
           <motion.div {...fade}>
             <h2 className="text-xl sm:text-2xl md:text-3xl font-black mb-5 text-center tracking-tight">
