@@ -207,16 +207,6 @@ type QuickCommand = {
 
 const QUICK_COMMANDS: QuickCommand[] = [
   {
-    id: "tour",
-    emoji: "🎬",
-    label: { EN: "Presentation mode", RU: "Экскурсия по товарам", UA: "Екскурсія по товарах" },
-    prompt: {
-      EN: "Start presentation mode — walk me through every product one by one",
-      RU: "Включи presentation mode — проведи экскурсию по всем товарам по очереди",
-      UA: "Увімкни presentation mode — проведи екскурсію по всіх товарах по черзі",
-    },
-  },
-  {
     id: "match",
     emoji: "🎯",
     label: { EN: "Match for my task", RU: "Подбор под задачу", UA: "Підбір під задачу" },
@@ -227,13 +217,31 @@ const QUICK_COMMANDS: QuickCommand[] = [
     },
   },
   {
-    id: "prices",
-    emoji: "💰",
-    label: { EN: "Compare prices", RU: "Сравнить цены", UA: "Порівняти ціни" },
+    id: "interview",
+    emoji: "🎤",
+    label: {
+      EN: "Interview an agent",
+      RU: "Собеседование с агентом",
+      UA: "Співбесіда з агентом",
+    },
     prompt: {
-      EN: "Compare prices across all products — shortest overview",
-      RU: "Сравни цены на все продукты — коротким обзором",
-      UA: "Порівняй ціни на всі продукти — коротким оглядом",
+      EN: "Pick one of your agents and let me interview them like a candidate — I'll ask questions, the agent answers in first person",
+      RU: "Выбери одного из своих агентов и дай мне провести с ним собеседование как с кандидатом — я задаю вопросы, агент отвечает от первого лица",
+      UA: "Обери одного зі своїх агентів і дай мені провести з ним співбесіду як з кандидатом — я ставлю питання, агент відповідає від першої особи",
+    },
+  },
+  {
+    id: "roi",
+    emoji: "💹",
+    label: {
+      EN: "Estimate my ROI",
+      RU: "Посчитать мою выгоду",
+      UA: "Порахувати мою вигоду",
+    },
+    prompt: {
+      EN: "Ask me 3 quick questions about my business and estimate the ROI of hiring a Finekot agent vs a human — in dollars and hours saved",
+      RU: "Задай мне 3 коротких вопроса про мой бизнес и прикинь выгоду от найма агента Finekot vs человека — в долларах и сэкономленных часах",
+      UA: "Постав мені 3 короткі питання про мій бізнес і прикинь вигоду від найму агента Finekot vs людини — в доларах і зекономлених годинах",
     },
   },
   {
@@ -916,80 +924,6 @@ export default function ChatbotBar() {
                   </span>
                 </div>
                 <div className="p-2 grid grid-cols-1 sm:grid-cols-2 gap-1.5">
-                  {/* Demo-mode shortcuts — amber, promoted to top of the list */}
-                  <button
-                    type="button"
-                    onClick={() => {
-                      setCmdOpen(false);
-                      const tour = QUICK_COMMANDS.find((c) => c.id === "tour");
-                      if (tour) void sendMessage(tour.prompt[lang]);
-                    }}
-                    className="flex items-center gap-2 px-3 py-2 text-left transition-all"
-                    style={{
-                      background: "rgba(255, 176, 0, 0.05)",
-                      border: "1px solid rgba(255, 176, 0, 0.28)",
-                      borderRadius: "3px",
-                      color: "#ffd88a",
-                      letterSpacing: "0.02em",
-                    }}
-                    onMouseEnter={(e) => {
-                      e.currentTarget.style.background =
-                        "rgba(255, 176, 0, 0.14)";
-                      e.currentTarget.style.borderColor =
-                        "rgba(255, 176, 0, 0.65)";
-                    }}
-                    onMouseLeave={(e) => {
-                      e.currentTarget.style.background =
-                        "rgba(255, 176, 0, 0.05)";
-                      e.currentTarget.style.borderColor =
-                        "rgba(255, 176, 0, 0.28)";
-                    }}
-                  >
-                    <span className="text-base shrink-0" aria-hidden>🛒</span>
-                    <span className="text-xs leading-tight">
-                      {lang === "RU"
-                        ? "Товары"
-                        : lang === "UA"
-                        ? "Товари"
-                        : "Products"}
-                    </span>
-                  </button>
-                  <button
-                    type="button"
-                    onClick={() => {
-                      setCmdOpen(false);
-                      router.push("/factory");
-                    }}
-                    className="flex items-center gap-2 px-3 py-2 text-left transition-all"
-                    style={{
-                      background: "rgba(255, 176, 0, 0.05)",
-                      border: "1px solid rgba(255, 176, 0, 0.28)",
-                      borderRadius: "3px",
-                      color: "#ffd88a",
-                      letterSpacing: "0.02em",
-                    }}
-                    onMouseEnter={(e) => {
-                      e.currentTarget.style.background =
-                        "rgba(255, 176, 0, 0.14)";
-                      e.currentTarget.style.borderColor =
-                        "rgba(255, 176, 0, 0.65)";
-                    }}
-                    onMouseLeave={(e) => {
-                      e.currentTarget.style.background =
-                        "rgba(255, 176, 0, 0.05)";
-                      e.currentTarget.style.borderColor =
-                        "rgba(255, 176, 0, 0.28)";
-                    }}
-                  >
-                    <span className="text-base shrink-0" aria-hidden>🏭</span>
-                    <span className="text-xs leading-tight">
-                      {lang === "RU"
-                        ? "Производство"
-                        : lang === "UA"
-                        ? "Виробництво"
-                        : "Factory"}
-                    </span>
-                  </button>
                   {QUICK_COMMANDS.map((cmd) => (
                     <button
                       key={cmd.id}
@@ -1116,7 +1050,7 @@ export default function ChatbotBar() {
 
           {/* Input */}
           <div
-            className="flex-1 min-w-0 flex items-center gap-1.5 sm:gap-2 px-2 sm:px-3"
+            className="flex-1 min-w-0 flex items-center gap-1.5 sm:gap-2 pl-3 sm:pl-4 pr-2 sm:pr-3 relative"
             style={{
               background: "rgba(0, 255, 65, 0.04)",
               border: "1px solid rgba(0, 255, 65, 0.35)",
@@ -1133,29 +1067,55 @@ export default function ChatbotBar() {
             >
               QUERY
             </span>
-            <textarea
-              ref={inputRef}
-              data-chat-input
-              value={input}
-              onChange={(e) => {
-                setInput(e.target.value);
-                adjustTextarea();
-              }}
-              onKeyDown={handleKeyDown}
-              onFocus={() => setLogOpen(true)}
-              placeholder={PLACEHOLDER_BY_LANG[lang]}
-              rows={1}
-              className="flex-1 py-2 bg-transparent focus:outline-none resize-none leading-relaxed placeholder:text-[rgba(77,122,94,0.7)]"
-              style={{
-                minHeight: 28,
-                maxHeight: 120,
-                color: "rgba(217, 255, 224, 0.95)",
-                caretColor: "#ffb000",
-                // iOS Safari zooms into inputs with font-size < 16px. Keep 16px
-                // here to block the zoom, then shrink visually on desktop.
-                fontSize: "16px",
-              }}
-            />
+            <div className="relative flex-1 min-w-0">
+              {!input && (
+                <div
+                  aria-hidden
+                  className="pointer-events-none absolute inset-y-0 left-0 flex items-center"
+                  style={{
+                    color: "rgba(77, 122, 94, 0.7)",
+                    fontSize: "16px",
+                    letterSpacing: "0.01em",
+                    paddingLeft: 2,
+                  }}
+                >
+                  <span>{PLACEHOLDER_BY_LANG[lang]}</span>
+                  <span
+                    className="ml-1 inline-block align-[-1px]"
+                    style={{
+                      width: "0.55em",
+                      height: "1em",
+                      background: "#00ff41",
+                      boxShadow: "0 0 8px rgba(0, 255, 65, 0.85)",
+                      animation: "blink 1s step-end infinite",
+                    }}
+                  />
+                </div>
+              )}
+              <textarea
+                ref={inputRef}
+                data-chat-input
+                value={input}
+                onChange={(e) => {
+                  setInput(e.target.value);
+                  adjustTextarea();
+                }}
+                onKeyDown={handleKeyDown}
+                onFocus={() => setLogOpen(true)}
+                rows={1}
+                className="w-full py-2 bg-transparent focus:outline-none resize-none leading-relaxed"
+                style={{
+                  minHeight: 28,
+                  maxHeight: 120,
+                  color: "rgba(217, 255, 224, 0.95)",
+                  caretColor: "#00ff41",
+                  paddingLeft: 2,
+                  // iOS Safari zooms into inputs with font-size < 16px. Keep 16px
+                  // here to block the zoom, then shrink visually on desktop.
+                  fontSize: "16px",
+                }}
+              />
+            </div>
           </div>
 
           {/* PROMPT button */}
