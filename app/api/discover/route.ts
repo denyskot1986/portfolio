@@ -10,10 +10,13 @@ import { kvEnabled, kvGetJSON, kvSetJSON } from "@/lib/kv";
 // Ключ — только серверный, никогда не уходит в браузер.
 const OPENROUTER_API_KEY = process.env.OPENROUTER_API_KEY || "";
 
-// Rate limit: один проход сканера на IP раз в N секунд. Ключ живёт
-// всё окно, поэтому он же служит sentinel'ом «сессия активна» — если
-// юзер начал скан, он успеет его закончить (20 вопросов ≈ < 3 мин).
-const RATE_LIMIT_WINDOW_SEC = 60;
+// Rate limit: повторный запуск сканера с одного IP — не чаще раза в минуту
+// (это защита от спама, не от реальных пользователей).
+const RESTART_COOLDOWN_SEC = 60;
+// Время жизни сессии: пока ключ активен — follow-up запросы (next/analyze)
+// проходят без блокировки. Живёт долго и продлевается на каждый запрос
+// (sliding window), чтобы пользователь мог думать над ответами сколько надо.
+const SESSION_TTL_SEC = 60 * 60; // 1 час
 
 // Questioner — fast JSON generation, called up to 20x per scan, so latency
 // dominates UX. Gemini 2.5 Flash is ~3-5× faster than Sonnet for this load.
@@ -62,34 +65,41 @@ async function enforceRateLimit(
   // Если Redis не сконфигурирован (локальная разработка) — пропускаем.
   if (!kvEnabled()) return { ok: true };
 
-  const key = `discover:rl:${ip}`;
+  const key = `discover:session:${ip}`;
   const isStart = action === "next" && historyLength === 0;
   const existing = await kvGetJSON<RateLimitRecord>(key);
+  const now = Date.now();
 
   if (isStart) {
-    if (existing) {
-      const elapsed = Math.floor((Date.now() - existing.startedAt) / 1000);
-      const remaining = Math.max(1, RATE_LIMIT_WINDOW_SEC - elapsed);
-      const mins = Math.ceil(remaining / 60);
+    // Защита от спама новых скан-сессий — раз в минуту. Если уже есть
+    // активная сессия и она начата менее минуты назад → 429. Иначе
+    // перезаписываем и стартуем заново.
+    if (existing && now - existing.startedAt < RESTART_COOLDOWN_SEC * 1000) {
+      const remaining = Math.max(
+        1,
+        RESTART_COOLDOWN_SEC - Math.floor((now - existing.startedAt) / 1000)
+      );
       return {
         ok: false,
         status: 429,
-        error: `Слишком часто. Попробуй ещё раз через ${mins} мин.`,
+        error: `Слишком часто. Попробуй ещё раз через ${remaining} сек.`,
       };
     }
-    await kvSetJSON(key, { startedAt: Date.now() }, RATE_LIMIT_WINDOW_SEC);
+    await kvSetJSON(key, { startedAt: now }, SESSION_TTL_SEC);
     return { ok: true };
   }
 
-  // Продолжение сессии: требуем существующий ключ, иначе сценарий
-  // похож на абьюз (шлют analyze без прохождения сканера).
+  // Follow-up запрос без существующей сессии — восстанавливаем её
+  // молча вместо того, чтобы ломать прохождение. Это убирает 60-сек
+  // «Сессия истекла» — если юзер думает над ответом дольше, он всё
+  // равно может продолжить.
   if (!existing) {
-    return {
-      ok: false,
-      status: 429,
-      error: "Сессия истекла или не начата. Обнови страницу и начни заново.",
-    };
+    await kvSetJSON(key, { startedAt: now }, SESSION_TTL_SEC);
+    return { ok: true };
   }
+
+  // Sliding window — продлеваем TTL на каждый живой запрос.
+  await kvSetJSON(key, existing, SESSION_TTL_SEC);
   return { ok: true };
 }
 

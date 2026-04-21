@@ -1112,25 +1112,41 @@ export default function DiscoverPage() {
     } else {
       fetchNext(newHistory);
     }
-
-    // scroll to top of card on mobile
-    setTimeout(() => {
-      stageRef.current?.scrollIntoView({ behavior: "smooth", block: "start" });
-    }, 100);
   };
+
+  // Scroll to the top of the page whenever a new question lands or the stage
+  // flips — otherwise users land on the bottom of a long option list from the
+  // previous question and don't see the new prompt.
+  useEffect(() => {
+    if (typeof window === "undefined") return;
+    if (stage === "intro") return;
+    window.scrollTo({ top: 0, behavior: "smooth" });
+  }, [currentQuestion?.questionNumber, stage]);
 
   return (
     <div
       style={{
         minHeight: "100vh",
-        background:
-          "radial-gradient(ellipse at 50% 30%, rgba(0, 64, 24, 0.35) 0%, rgba(4, 2, 8, 1) 65%)",
+        background: "var(--bg)",
         color: TERM_GREEN,
         fontFamily: "var(--font-jetbrains-mono), 'JetBrains Mono', monospace",
         paddingTop: "var(--chat-top-h, 0px)",
         paddingBottom: "calc(var(--chat-bar-h, 72px) + 20px)",
+        position: "relative",
       }}
     >
+      {/* soft CRT green wash over the site bg so the terminal vibe stays
+          but the base colour matches the rest of finekot.ai */}
+      <div
+        aria-hidden
+        style={{
+          position: "absolute",
+          inset: 0,
+          pointerEvents: "none",
+          background:
+            "radial-gradient(ellipse at 50% 20%, rgba(0, 255, 65, 0.06) 0%, rgba(0, 64, 24, 0) 60%)",
+        }}
+      />
       <style jsx global>{`
         @keyframes blink {
           0%, 100% { opacity: 1; }
