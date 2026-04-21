@@ -755,41 +755,63 @@ export default function ChatbotBar() {
                   </span>
                   <button
                     onClick={() => setLogOpen(false)}
-                    className="transition-all flex items-center gap-1 px-2 py-0.5 uppercase"
+                    className="transition-all flex items-center gap-1.5 px-2.5 py-1 uppercase"
                     style={{
-                      color: "#ff4d6d",
-                      background: "rgba(255, 77, 109, 0.08)",
-                      border: "1px solid rgba(255, 77, 109, 0.5)",
-                      borderRadius: "2px",
+                      color: "rgba(255, 176, 0, 0.9)",
+                      background: "rgba(255, 176, 0, 0.08)",
+                      border: "1px solid rgba(255, 176, 0, 0.5)",
+                      borderRadius: "3px",
                       letterSpacing: "0.2em",
-                      fontSize: "10px",
-                      fontWeight: 600,
-                      textShadow: "0 0 6px rgba(255, 77, 109, 0.5)",
+                      fontSize: "11px",
+                      fontWeight: 700,
+                      textShadow: "0 0 6px rgba(255, 176, 0, 0.4)",
                     }}
                     onMouseEnter={(e) => {
-                      e.currentTarget.style.background = "#ff4d6d";
-                      e.currentTarget.style.color = "#040208";
+                      e.currentTarget.style.background =
+                        "rgba(255, 176, 0, 0.2)";
+                      e.currentTarget.style.borderColor =
+                        "rgba(255, 176, 0, 0.8)";
                     }}
                     onMouseLeave={(e) => {
                       e.currentTarget.style.background =
-                        "rgba(255, 77, 109, 0.08)";
-                      e.currentTarget.style.color = "#ff4d6d";
+                        "rgba(255, 176, 0, 0.08)";
+                      e.currentTarget.style.borderColor =
+                        "rgba(255, 176, 0, 0.5)";
                     }}
-                    aria-label="Hide log"
+                    aria-label={
+                      lang === "RU"
+                        ? "Свернуть лог"
+                        : lang === "UA"
+                        ? "Згорнути лог"
+                        : "Collapse log"
+                    }
+                    title={
+                      lang === "RU"
+                        ? "Свернуть этот чат"
+                        : lang === "UA"
+                        ? "Згорнути цей чат"
+                        : "Collapse this chat"
+                    }
                   >
                     <svg
-                      width="9"
-                      height="9"
+                      width="11"
+                      height="11"
                       viewBox="0 0 24 24"
                       fill="none"
                       stroke="currentColor"
                       strokeWidth="3"
                       strokeLinecap="round"
+                      strokeLinejoin="round"
                     >
-                      <line x1="18" y1="6" x2="6" y2="18" />
-                      <line x1="6" y1="6" x2="18" y2="18" />
+                      <polyline points="6 9 12 15 18 9" />
                     </svg>
-                    <span>hide</span>
+                    <span>
+                      {lang === "RU"
+                        ? "свернуть"
+                        : lang === "UA"
+                        ? "згорнути"
+                        : "collapse"}
+                    </span>
                   </button>
                 </div>
 
