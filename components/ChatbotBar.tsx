@@ -1109,7 +1109,7 @@ export default function ChatbotBar() {
                     type="button"
                     onClick={() => {
                       setCmdOpen(false);
-                      router.push("/factory");
+                      router.push("/products/factory");
                     }}
                     className="flex items-center gap-2 px-3 py-2 text-left transition-all"
                     style={{
