@@ -598,7 +598,7 @@ export default function GenesisPage() {
             className="absolute inset-0 z-30 flex flex-col items-center justify-center bg-black px-6 text-center"
           >
             <div className="text-xs sm:text-sm opacity-70 mb-6">
-              <span className="opacity-60">SYSTEM &gt;</span> agents 1,247 │ revenue: running │ autonomy: 100%
+              <span className="opacity-60">SYSTEM &gt;</span> AGENT_CONTROL │ revenue: running │ autonomy: 100%
             </div>
             <p className="max-w-[640px] text-sm sm:text-lg leading-relaxed text-[var(--fg)]">
               ты смотришь на сайт, который агенты построили сами,
