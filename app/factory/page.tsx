@@ -16,19 +16,10 @@ function pickHandle(): string {
 
 const BOOT_LINES: string[] = [
   "[00:00] POST /webhook/stripe · payment_intent.succeeded · user_id=8471",
-  "[00:01] $ kubectl apply -f borya-pod.yaml · region=eu-west-3 · gpu=A100",
-  "[00:02] >>> from borya import Agent · checkpoint=borya-v3.7.safetensors",
-  "[00:03] torch.cuda.is_available() → True · vram=80GB · dtype=bf16",
-  "[00:04] Warming vLLM runtime · model=llama-3.3-70b-instruct · ctx=128k",
-  "[00:05] pgvector: streaming 12.4M memory shards · embed_dim=3072",
-  "[00:06] personality.yaml → humor=0.84 sarcasm=0.91 warmth=0.62",
-  "[00:07] TLS 1.3 handshake · session keys rotated · mTLS ✓",
-  "[00:08] tool_registry = [gmail, calendar, notion, shopify, web_search]",
-  "[00:09] RAG warm-up · Redis cache hit_rate=98% · p50=22ms",
-  "[00:10] Voice clone: ElevenLabs v3 · samples=7 · tone=low-raspy",
-  "[00:11] bot.set_webhook(url='/tg/borya_3553') → HTTP 200 ✓",
-  "[00:12] uvicorn: health_check · p95=180ms · cold_start=0 · ready=True",
-  "[00:13] uvicorn listening 0.0.0.0:443 · borya online ✓",
+  "[00:01] $ kubectl apply -f borya-pod.yaml · gpu=A100 · vram=80GB",
+  "[00:02] vLLM runtime · llama-3.3-70b · personality.yaml → humor=0.84",
+  "[00:03] tool_registry=[gmail, calendar, notion, shopify] · voice=ElevenLabs v3 ✓",
+  "[00:04] bot.set_webhook('/tg/borya_3553') → HTTP 200 · borya online ✓",
 ];
 
 const COPY: Record<
