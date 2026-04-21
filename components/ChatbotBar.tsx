@@ -1140,6 +1140,41 @@ export default function ChatbotBar() {
                         : "Factory"}
                     </span>
                   </button>
+                  <button
+                    type="button"
+                    onClick={() => {
+                      setCmdOpen(false);
+                      router.push("/genesis");
+                    }}
+                    className="flex items-center gap-2 px-3 py-2 text-left transition-all"
+                    style={{
+                      background: "rgba(255, 176, 0, 0.05)",
+                      border: "1px solid rgba(255, 176, 0, 0.28)",
+                      borderRadius: "3px",
+                      color: "#ffd88a",
+                      letterSpacing: "0.02em",
+                    }}
+                    onMouseEnter={(e) => {
+                      e.currentTarget.style.background =
+                        "rgba(255, 176, 0, 0.14)";
+                      e.currentTarget.style.borderColor =
+                        "rgba(255, 176, 0, 0.65)";
+                    }}
+                    onMouseLeave={(e) => {
+                      e.currentTarget.style.background =
+                        "rgba(255, 176, 0, 0.05)";
+                      e.currentTarget.style.borderColor =
+                        "rgba(255, 176, 0, 0.28)";
+                    }}
+                  >
+                    <span className="text-xs leading-tight">
+                      {lang === "RU"
+                        ? "Genesis · как родилось"
+                        : lang === "UA"
+                        ? "Genesis · як народилося"
+                        : "Genesis · origin demo"}
+                    </span>
+                  </button>
                   {QUICK_COMMANDS.map((cmd) => (
                     <button
                       key={cmd.id}
