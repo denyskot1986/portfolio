@@ -97,8 +97,8 @@ export default function Home() {
   useEffect(() => {
     const phrases = t.roles;
     const current = phrases[phraseIdx % phrases.length];
-    const typeSpeed = isDeleting ? 30 : 60;
-    const pauseAfterType = 2500;
+    const typeSpeed = isDeleting ? 12 : 25;
+    const pauseAfterType = 7500;
     const pauseAfterDelete = 300;
 
     let timeout: ReturnType<typeof setTimeout>;
