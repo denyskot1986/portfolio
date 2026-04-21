@@ -3,7 +3,7 @@
 import { useEffect, useMemo, useRef, useState, useCallback } from "react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
-import { motion, AnimatePresence, useReducedMotion } from "framer-motion";
+import { motion, useReducedMotion } from "framer-motion";
 import { useLang } from "@/lib/lang-context";
 import type { Lang } from "@/lib/i18n";
 
@@ -28,7 +28,7 @@ const BOOT_LINES: string[] = [
   "[00:10] Voice clone: ElevenLabs v3 · samples=7 · tone=low-raspy",
   "[00:11] bot.set_webhook(url='/tg/borya_3553') → HTTP 200 ✓",
   "[00:12] uvicorn: health_check · p95=180ms · cold_start=0 · ready=True",
-  "[00:13] ⟨READY⟩",
+  "[00:13] uvicorn listening 0.0.0.0:443 · borya online ✓",
 ];
 
 const COPY: Record<
@@ -37,8 +37,6 @@ const COPY: Record<
     header: string;
     subtitle: string;
     backHome: string;
-    ready: string;
-    readyTagline: string;
     meetBoris: string;
     firstMsg: string;
     replay: string;
@@ -51,8 +49,6 @@ const COPY: Record<
     header: "FINEKOT · assembly bay",
     subtitle: "forging your Boris instance",
     backHome: "← back",
-    ready: "READY",
-    readyTagline: "your personal Boris is alive",
     meetBoris: "Meet Boris",
     firstMsg:
       '"Oh, I\'m alive! Hi. What should I call you?"',
@@ -65,8 +61,6 @@ const COPY: Record<
     header: "FINEKOT · сборочный цех",
     subtitle: "собираем вашего Бориса",
     backHome: "← назад",
-    ready: "ГОТОВ",
-    readyTagline: "ваш личный Борис ожил",
     meetBoris: "Встретить Бориса",
     firstMsg:
       "«О, я жив! Привет. Как к тебе обращаться?»",
@@ -79,8 +73,6 @@ const COPY: Record<
     header: "FINEKOT · складальний цех",
     subtitle: "збираємо вашого Бориса",
     backHome: "← назад",
-    ready: "ГОТОВИЙ",
-    readyTagline: "ваш особистий Борис ожив",
     meetBoris: "Зустріти Бориса",
     firstMsg:
       "«О, я живий! Привіт. Як до тебе звертатись?»",
@@ -165,12 +157,41 @@ export default function FactoryPage() {
   const { lines, finished } = useBootSequence(reducedMotion, runId);
   const streamRef = useRef<HTMLDivElement>(null);
 
+  // Typewriter for the first-message greeting — starts once the boot
+  // sequence finishes, mirrors the per-character pacing of the log.
+  const [greeting, setGreeting] = useState("");
+  const [greetingDone, setGreetingDone] = useState(false);
+  useEffect(() => {
+    setGreeting("");
+    setGreetingDone(false);
+    if (!finished) return;
+    if (reducedMotion) {
+      setGreeting(t.firstMsg);
+      setGreetingDone(true);
+      return;
+    }
+    const full = t.firstMsg;
+    const timers: Array<ReturnType<typeof setTimeout>> = [];
+    const startAfter = 350;
+    for (let i = 1; i <= full.length; i++) {
+      timers.push(
+        setTimeout(() => {
+          setGreeting(full.slice(0, i));
+          if (i === full.length) setGreetingDone(true);
+        }, startAfter + i * 36)
+      );
+    }
+    return () => {
+      timers.forEach(clearTimeout);
+    };
+  }, [finished, reducedMotion, t.firstMsg, runId]);
+
   // Auto-scroll the stream as new characters appear.
   useEffect(() => {
     const el = streamRef.current;
     if (!el) return;
     el.scrollTop = el.scrollHeight;
-  }, [lines]);
+  }, [lines, greeting, finished]);
 
   // Esc returns to home — useful for demos.
   useEffect(() => {
@@ -303,111 +324,96 @@ export default function FactoryPage() {
                 );
               })}
 
-              <AnimatePresence>
-                {finished && (
-                  <motion.div
-                    initial={{ opacity: 0, y: 12 }}
-                    animate={{ opacity: 1, y: 0 }}
-                    transition={{ duration: 0.35, ease: "easeOut" }}
-                    className="mt-6 mb-2 px-4 py-5 text-center"
+              {finished && (
+                <div className="mt-5 mb-2">
+                  <div
+                    className="text-[14px] sm:text-[15px] italic leading-relaxed"
                     style={{
-                      border: "1px solid rgba(0, 255, 65, 0.55)",
-                      borderRadius: "4px",
-                      background:
-                        "linear-gradient(180deg, rgba(0, 255, 65, 0.08), rgba(0, 255, 65, 0.02))",
-                      boxShadow: "0 0 28px rgba(0, 255, 65, 0.22)",
+                      color: "#fff1c9",
+                      textShadow: "0 0 6px rgba(255, 220, 130, 0.28)",
                     }}
                   >
+                    {greeting}
+                    {!greetingDone && (
+                      <span
+                        className="inline-block align-[-2px] ml-[2px]"
+                        style={{
+                          width: "0.55em",
+                          height: "1em",
+                          background: "#fff1c9",
+                          boxShadow:
+                            "0 0 8px rgba(255, 220, 130, 0.7)",
+                          animation: "factoryBlink 0.9s steps(1) infinite",
+                        }}
+                      />
+                    )}
+                  </div>
+
+                  {greetingDone && (
                     <motion.div
-                      animate={
-                        reducedMotion
-                          ? undefined
-                          : { opacity: [0.85, 1, 0.85] }
-                      }
-                      transition={{ duration: 1.6, repeat: Infinity }}
-                      className="text-2xl sm:text-3xl tracking-[0.35em]"
-                      style={{
-                        color: "#ffffff",
-                        textShadow:
-                          "0 0 18px rgba(0, 255, 120, 0.9), 0 0 32px rgba(0, 255, 120, 0.4)",
-                      }}
+                      initial={{ opacity: 0, y: 6 }}
+                      animate={{ opacity: 1, y: 0 }}
+                      transition={{ duration: 0.3, ease: "easeOut" }}
                     >
-                      ⟨ {t.ready} ⟩
+                      <div
+                        className="mt-3 text-[11px]"
+                        style={{ color: "rgba(217, 255, 224, 0.6)" }}
+                      >
+                        {t.handlePrefix}:{" "}
+                        <span style={{ color: "#ffb000" }}>
+                          t.me/{handle}
+                        </span>
+                      </div>
+
+                      <div className="mt-4 flex flex-wrap items-center gap-2.5">
+                        <a
+                          href="https://t.me/shop_by_finekot_bot"
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          className="inline-flex items-center gap-2 px-4 h-10 text-[12px] uppercase tracking-[0.2em] transition-all"
+                          style={{
+                            background: "rgba(0, 255, 65, 0.08)",
+                            color: "#00ff41",
+                            border: "1px solid rgba(0, 255, 65, 0.55)",
+                            borderRadius: "4px",
+                            fontWeight: 700,
+                            textShadow: "0 0 6px rgba(0, 255, 65, 0.5)",
+                          }}
+                        >
+                          <span aria-hidden>✦</span>
+                          <span>{t.meetBoris}</span>
+                        </a>
+                        <button
+                          type="button"
+                          onClick={restart}
+                          className="inline-flex items-center gap-2 px-4 h-10 text-[12px] uppercase tracking-[0.2em] transition-all"
+                          style={{
+                            background: "rgba(0, 255, 65, 0.08)",
+                            color: "#00ff41",
+                            border: "1px solid rgba(0, 255, 65, 0.55)",
+                            borderRadius: "4px",
+                            fontWeight: 700,
+                            textShadow: "0 0 6px rgba(0, 255, 65, 0.5)",
+                          }}
+                        >
+                          <span aria-hidden>↻</span>
+                          <span>{t.replay}</span>
+                        </button>
+                      </div>
+
+                      <div
+                        className="mt-4 text-[10px] uppercase"
+                        style={{
+                          color: "rgba(217, 255, 224, 0.4)",
+                          letterSpacing: "0.22em",
+                        }}
+                      >
+                        {t.legend}
+                      </div>
                     </motion.div>
-                    <div
-                      className="mt-2 text-[11px] uppercase"
-                      style={{
-                        color: "rgba(0, 255, 65, 0.75)",
-                        letterSpacing: "0.25em",
-                      }}
-                    >
-                      {t.readyTagline}
-                    </div>
-
-                    <div
-                      className="mt-4 text-[13px] italic"
-                      style={{ color: "#fff1c9" }}
-                    >
-                      {t.firstMsg}
-                    </div>
-
-                    <div
-                      className="mt-1 text-[11px]"
-                      style={{ color: "rgba(217, 255, 224, 0.6)" }}
-                    >
-                      {t.handlePrefix}:{" "}
-                      <span style={{ color: "#ffb000" }}>
-                        t.me/{handle}
-                      </span>
-                    </div>
-
-                    <div className="mt-5 flex flex-wrap items-center justify-center gap-2.5">
-                      <a
-                        href="https://t.me/shop_by_finekot_bot"
-                        target="_blank"
-                        rel="noopener noreferrer"
-                        className="inline-flex items-center gap-2 px-4 h-10 text-[12px] uppercase tracking-[0.2em] transition-all"
-                        style={{
-                          background: "#ffb000",
-                          color: "#040208",
-                          border: "1px solid #ffb000",
-                          borderRadius: "4px",
-                          fontWeight: 700,
-                          boxShadow: "0 0 22px rgba(255, 176, 0, 0.5)",
-                        }}
-                      >
-                        <span aria-hidden>✦</span>
-                        <span>{t.meetBoris}</span>
-                      </a>
-                      <button
-                        type="button"
-                        onClick={restart}
-                        className="inline-flex items-center gap-2 px-4 h-10 text-[12px] uppercase tracking-[0.2em] transition-all"
-                        style={{
-                          background: "rgba(0, 255, 65, 0.08)",
-                          color: "#00ff41",
-                          border: "1px solid rgba(0, 255, 65, 0.55)",
-                          borderRadius: "4px",
-                          fontWeight: 700,
-                        }}
-                      >
-                        <span aria-hidden>↻</span>
-                        <span>{t.replay}</span>
-                      </button>
-                    </div>
-
-                    <div
-                      className="mt-4 text-[10px] uppercase"
-                      style={{
-                        color: "rgba(217, 255, 224, 0.45)",
-                        letterSpacing: "0.22em",
-                      }}
-                    >
-                      {t.legend}
-                    </div>
-                  </motion.div>
-                )}
-              </AnimatePresence>
+                  )}
+                </div>
+              )}
             </div>
           </div>
         </div>
