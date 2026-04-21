@@ -271,20 +271,7 @@ export default function Home() {
             Fine<span className="gradient-text">kot</span> Systems
           </motion.h1>
 
-          {/* Typewriter with terminal prompt */}
-          <div className="flex items-center justify-center h-[48px] mb-8 overflow-hidden">
-            <p className="text-sm sm:text-base md:text-lg font-mono tracking-wide" style={{ color: "rgba(240,224,255,0.45)" }}>
-              <span style={{ color: "var(--accent2)", opacity: 0.65 }}>&gt; </span>
-              {displayText}
-              <span
-                className="cursor-blink ml-0.5"
-                style={{ color: "var(--accent)", opacity: 0.35 }}
-                aria-hidden
-              >
-                ▏
-              </span>
-            </p>
-          </div>
+          <div className="mb-8" />
 
           {/* Lineup inventory — terminal badges */}
           <motion.div
@@ -347,36 +334,34 @@ export default function Home() {
             </Link>
           </motion.div>
 
-          {/* Language switcher */}
-          <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ delay: 0.8 }}
-            className="flex flex-wrap justify-center gap-2 mt-10">
-            {langs.map((l) => (
-              <button key={l} onClick={() => setLang(l)}
-                className={`px-3 py-1.5 rounded-md text-xs font-mono font-bold uppercase tracking-wider border transition-all ${
-                  lang === l
-                    ? "border-[var(--accent)] text-[var(--accent)] bg-[var(--glass-bg)] shadow-[0_0_16px_rgba(244,63,160,0.2)]"
-                    : "border-[var(--glass-border)] text-[var(--muted)] hover:border-[var(--accent)] hover:text-[var(--accent)]"
-                }`}
-              >{l}</button>
-            ))}
-          </motion.div>
+          {/* Typewriter with terminal prompt — moved here, sits between the CTA buttons and the language switcher */}
+          <div className="flex items-center justify-center h-[48px] mt-10 mb-2 overflow-hidden">
+            <p className="text-sm sm:text-base md:text-lg font-mono tracking-wide" style={{ color: "rgba(240,224,255,0.45)" }}>
+              <span style={{ color: "var(--accent2)", opacity: 0.65 }}>&gt; </span>
+              {displayText}
+              <span
+                className="cursor-blink ml-0.5"
+                style={{ color: "var(--accent)", opacity: 0.35 }}
+                aria-hidden
+              >
+                ▏
+              </span>
+            </p>
+          </div>
         </div>
 
-        {/* Scroll indicator */}
-        <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ delay: 1.5 }}
-          className="absolute bottom-8 left-1/2 -translate-x-1/2 flex flex-col items-center gap-2">
-          <motion.p
-            animate={{ opacity: [0.3, 0.7, 0.3] }}
-            transition={{ duration: 2, repeat: Infinity }}
-            className="text-[10px] uppercase tracking-[0.3em] font-mono"
-            style={{ color: "rgba(244,63,160,0.4)" }}
-          >
-            scroll
-          </motion.p>
-          <div className="w-5 h-8 border border-[var(--glass-border)] rounded-sm flex justify-center pt-1.5">
-            <motion.div animate={{ y: [0, 10, 0] }} transition={{ duration: 1.5, repeat: Infinity }}
-              className="w-1 h-1 rounded-none" style={{ background: "var(--accent)" }} />
-          </div>
+        {/* Language switcher — pinned to the bottom of the hero (where the scroll indicator used to sit) */}
+        <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ delay: 0.8 }}
+          className="absolute bottom-8 left-1/2 -translate-x-1/2 flex flex-wrap justify-center gap-2">
+          {langs.map((l) => (
+            <button key={l} onClick={() => setLang(l)}
+              className={`px-3 py-1.5 rounded-md text-xs font-mono font-bold uppercase tracking-wider border transition-all ${
+                lang === l
+                  ? "border-[var(--accent)] text-[var(--accent)] bg-[var(--glass-bg)] shadow-[0_0_16px_rgba(244,63,160,0.2)]"
+                  : "border-[var(--glass-border)] text-[var(--muted)] hover:border-[var(--accent)] hover:text-[var(--accent)]"
+              }`}
+            >{l}</button>
+          ))}
         </motion.div>
       </section>
 

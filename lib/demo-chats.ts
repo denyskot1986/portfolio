@@ -14,7 +14,7 @@ interface DemoConfig {
 const buyLink = (id: string) => `https://t.me/shop_by_finekot_bot?start=buy_${id}`;
 
 const demoChatEN: Record<string, DemoConfig> = {
-  "skynet-intake": {
+  "orban": {
     messages: [
       { from: "bot", text: "Send me a task — text, voice, or photo.\nI'll structure it and route to the right agent." },
       { from: "user", text: "Build a landing page for the new product launch, high priority" },
@@ -22,8 +22,8 @@ const demoChatEN: Record<string, DemoConfig> = {
       { from: "user", text: "Also research competitor pricing for AI tools" },
       { from: "bot", text: "Task structured:\n\n📋 Research competitor pricing — AI tools market\n⚡ Priority: Medium\n🤖 Assigned to: T-4 (Research)\n📁 Project: Strategy\n\nRouted to T-4. You'll get a report in the Dashboard." },
     ],
-    tryLink: buyLink("skynet-intake"),
-    tryLabel: "Get SKYNET Intake →",
+    tryLink: buyLink("orban"),
+    tryLabel: "Meet Orban →",
   },
   "boris": {
     messages: [
@@ -105,7 +105,7 @@ const demoChatEN: Record<string, DemoConfig> = {
 };
 
 const demoChatRU: Record<string, DemoConfig> = {
-  "skynet-intake": {
+  "orban": {
     messages: [
       { from: "bot", text: "Отправьте мне задачу — текст, голос или фото.\nЯ структурирую и направлю нужному агенту." },
       { from: "user", text: "Сделать лендинг для запуска нового продукта, высокий приоритет" },
@@ -113,8 +113,8 @@ const demoChatRU: Record<string, DemoConfig> = {
       { from: "user", text: "Ещё исследуй цены конкурентов на AI-инструменты" },
       { from: "bot", text: "Задача структурирована:\n\n📋 Исследование цен конкурентов — рынок AI\n⚡ Приоритет: Средний\n🤖 Назначено: T-4 (Research)\n📁 Проект: Стратегия\n\nНаправлено T-4. Отчёт появится в Dashboard." },
     ],
-    tryLink: buyLink("skynet-intake"),
-    tryLabel: "Получить SKYNET Intake →",
+    tryLink: buyLink("orban"),
+    tryLabel: "Встретить Orban →",
   },
   "boris": {
     messages: [
@@ -196,7 +196,7 @@ const demoChatRU: Record<string, DemoConfig> = {
 };
 
 const demoChatUA: Record<string, DemoConfig> = {
-  "skynet-intake": {
+  "orban": {
     messages: [
       { from: "bot", text: "Надішліть мені задачу — текст, голос або фото.\nЯ структурую та спрямую потрібному агенту." },
       { from: "user", text: "Зробити лендинг для запуску нового продукту, високий пріоритет" },
@@ -204,8 +204,8 @@ const demoChatUA: Record<string, DemoConfig> = {
       { from: "user", text: "Ще дослідити ціни конкурентів на AI-інструменти" },
       { from: "bot", text: "Задачу структуровано:\n\n📋 Дослідження цін конкурентів — ринок AI\n⚡ Пріоритет: Середній\n🤖 Призначено: T-4 (Research)\n📁 Проєкт: Стратегія\n\nСпрямовано T-4. Звіт з'явиться в Dashboard." },
     ],
-    tryLink: buyLink("skynet-intake"),
-    tryLabel: "Отримати SKYNET Intake →",
+    tryLink: buyLink("orban"),
+    tryLabel: "Зустріти Orban →",
   },
   "boris": {
     messages: [
