@@ -732,12 +732,20 @@ export default function ChatbotBar() {
                   {visibleMessages.map((msg, i) => {
                     const isUsr = msg.role === "user";
                     const isLast = i === visibleMessages.length - 1;
+                    const hasLlmReplies = !!msg.replies?.length;
                     const showReplies =
-                      !isUsr &&
-                      isLast &&
-                      !loading &&
-                      !agentDriving &&
-                      !!msg.replies?.length;
+                      !isUsr && isLast && !loading && !agentDriving;
+                    const fallbackChips: Array<{
+                      label: string;
+                      prompt: string;
+                    }> = QUICK_COMMANDS.slice(0, 4).map((c) => ({
+                      label: c.label[lang],
+                      prompt: c.prompt[lang],
+                    }));
+                    const chips: Array<{ label: string; prompt: string }> =
+                      hasLlmReplies
+                        ? msg.replies!.map((r) => ({ label: r, prompt: r }))
+                        : fallbackChips;
                     return (
                       <motion.div
                         key={i}
@@ -791,11 +799,11 @@ export default function ChatbotBar() {
                             role="group"
                             aria-label="Suggested replies"
                           >
-                            {msg.replies!.map((r, ri) => (
+                            {chips.map((c, ri) => (
                               <button
                                 key={ri}
                                 type="button"
-                                onClick={() => void sendMessage(r)}
+                                onClick={() => void sendMessage(c.prompt)}
                                 disabled={loading || agentDriving}
                                 className="group text-left px-2.5 py-1.5 transition-all disabled:opacity-40 disabled:cursor-not-allowed flex items-center gap-2"
                                 style={{
@@ -828,7 +836,7 @@ export default function ChatbotBar() {
                                 >
                                   {ri + 1} →
                                 </span>
-                                <span className="break-words">{r}</span>
+                                <span className="break-words">{c.label}</span>
                               </button>
                             ))}
                           </div>
