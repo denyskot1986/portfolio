@@ -219,7 +219,7 @@ export default function GenesisPage() {
   // SCENE 7 — финал
   const showFinal = t >= 32000;
   const showFinalCTA = t >= 35000;
-  // граф уезжает влево начиная с SCENE 6
+  // граф уезжает вверх начиная с SCENE 6, в финале становится едва видимым фоном
   const graphCompact = scene >= 6 && !showFinal;
 
   const handleSkip = () => {
@@ -293,13 +293,15 @@ export default function GenesisPage() {
       {/* SCENES 1..7 — graph + cli */}
       {scene >= 1 && (
         <div className="absolute inset-0 z-10">
-          {/* GRAPH — центрируется в верхней половине, в SCENE 6 уезжает влево */}
+          {/* GRAPH — центрируется, в SCENE 6 уезжает ВВЕРХ освобождая центр под финал */}
           <motion.div
             className="absolute inset-x-0 top-0 h-[58vh] sm:h-[62vh] flex items-center justify-center pointer-events-none"
             animate={
-              graphCompact
-                ? { x: "-22%", scale: 0.62, opacity: 0.85 }
-                : { x: "0%", scale: 1, opacity: 1 }
+              showFinal
+                ? { y: "-44%", scale: 0.42, opacity: 0.22 }
+                : graphCompact
+                ? { y: "-34%", scale: 0.55, opacity: 0.85 }
+                : { y: "0%", scale: 1, opacity: 1 }
             }
             transition={{ duration: 0.9, ease: "easeOut" }}
           >
@@ -473,9 +475,11 @@ export default function GenesisPage() {
             </svg>
           </motion.div>
 
-          {/* CLI — закреплено внизу, тёмная подложка чтобы не сливалось с графом */}
-          <div
-            className="absolute left-0 right-0 bottom-0 px-4 sm:px-10 pt-3 pb-6 sm:pb-8 text-xs sm:text-sm leading-relaxed"
+          {/* CLI — закреплено внизу, тёмная подложка. Скрываем в финале — там должно быть чисто. */}
+          <motion.div
+            animate={{ opacity: showFinal ? 0 : 1 }}
+            transition={{ duration: 0.6 }}
+            className="absolute left-0 right-0 bottom-0 px-4 sm:px-10 pt-3 pb-6 sm:pb-8 text-xs sm:text-sm leading-relaxed pointer-events-none"
             style={{
               background:
                 "linear-gradient(to top, rgba(0,0,0,0.95) 0%, rgba(0,0,0,0.85) 60%, rgba(0,0,0,0) 100%)",
@@ -595,7 +599,7 @@ export default function GenesisPage() {
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             transition={{ duration: 0.8 }}
-            className="absolute inset-0 z-30 flex flex-col items-center justify-center bg-black px-6 text-center"
+            className="absolute inset-0 z-20 flex flex-col items-center justify-center px-6 text-center"
           >
             <div className="text-xs sm:text-sm opacity-70 mb-6">
               <span className="opacity-60">SYSTEM &gt;</span> AGENT_CONTROL │ revenue: running │ autonomy: 100%
