@@ -253,6 +253,7 @@ export default function ChatbotBar() {
   const [loading, setLoading] = useState(false);
   const [logOpen, setLogOpen] = useState(false);
   const [cmdOpen, setCmdOpen] = useState(false);
+  const [demoOpen, setDemoOpen] = useState(false);
   const [agentDriving, setAgentDriving] = useState(false);
   const tourTimeoutRef = useRef<ReturnType<typeof setTimeout> | null>(null);
   const messagesRef = useRef<HTMLDivElement>(null);
@@ -261,6 +262,7 @@ export default function ChatbotBar() {
   const barRef = useRef<HTMLDivElement>(null);
   const topBarRef = useRef<HTMLDivElement>(null);
   const cmdMenuRef = useRef<HTMLDivElement>(null);
+  const demoMenuRef = useRef<HTMLDivElement>(null);
   const hydratedRef = useRef(false);
 
   // On first mount, hydrate messages from sessionStorage so the log
@@ -325,6 +327,23 @@ export default function ChatbotBar() {
       document.removeEventListener("touchstart", handler);
     };
   }, [cmdOpen]);
+
+  // Close the demo split-menu on outside click.
+  useEffect(() => {
+    if (!demoOpen) return;
+    const handler = (e: MouseEvent | TouchEvent) => {
+      const target = e.target as Node | null;
+      if (!target) return;
+      if (demoMenuRef.current?.contains(target)) return;
+      setDemoOpen(false);
+    };
+    document.addEventListener("mousedown", handler);
+    document.addEventListener("touchstart", handler, { passive: true });
+    return () => {
+      document.removeEventListener("mousedown", handler);
+      document.removeEventListener("touchstart", handler);
+    };
+  }, [demoOpen]);
 
   const executeActions = useCallback(
     (actions: ParsedReply["actions"]) => {
@@ -970,46 +989,188 @@ export default function ChatbotBar() {
             >
               │
             </span>
-            <button
-              type="button"
-              onClick={() => {
-                const tour = QUICK_COMMANDS.find((c) => c.id === "tour");
-                if (tour) void sendMessage(tour.prompt[lang]);
-              }}
-              disabled={loading || agentDriving}
-              className="shrink-0 h-7 px-2.5 flex items-center gap-1.5 transition-all disabled:opacity-40 disabled:cursor-not-allowed"
-              style={{
-                background: "rgba(255, 176, 0, 0.1)",
-                border: "1px solid rgba(255, 176, 0, 0.55)",
-                borderRadius: "3px",
-                color: "#ffb000",
-                letterSpacing: "0.2em",
-                fontSize: "10px",
-                fontWeight: 700,
-                textShadow: "0 0 6px rgba(255, 176, 0, 0.45)",
-                boxShadow: "0 0 10px rgba(255, 176, 0, 0.16)",
-              }}
-              onMouseEnter={(e) => {
-                if (e.currentTarget.disabled) return;
-                e.currentTarget.style.background = "#ffb000";
-                e.currentTarget.style.color = "#040208";
-                e.currentTarget.style.textShadow = "none";
-                e.currentTarget.style.boxShadow =
-                  "0 0 20px rgba(255, 176, 0, 0.55)";
-              }}
-              onMouseLeave={(e) => {
-                e.currentTarget.style.background = "rgba(255, 176, 0, 0.1)";
-                e.currentTarget.style.color = "#ffb000";
-                e.currentTarget.style.textShadow =
-                  "0 0 6px rgba(255, 176, 0, 0.45)";
-                e.currentTarget.style.boxShadow =
-                  "0 0 10px rgba(255, 176, 0, 0.16)";
-              }}
-              aria-label="Run product tour demo"
-            >
-              <span aria-hidden style={{ fontSize: 9 }}>▶</span>
-              <span>DEMO</span>
-            </button>
+            <div ref={demoMenuRef} className="relative shrink-0">
+              <button
+                type="button"
+                onClick={() => setDemoOpen((v) => !v)}
+                disabled={loading || agentDriving}
+                className="shrink-0 h-7 px-2.5 flex items-center gap-1.5 transition-all disabled:opacity-40 disabled:cursor-not-allowed"
+                style={{
+                  background: demoOpen
+                    ? "#ffb000"
+                    : "rgba(255, 176, 0, 0.1)",
+                  border: "1px solid rgba(255, 176, 0, 0.55)",
+                  borderRadius: "3px",
+                  color: demoOpen ? "#040208" : "#ffb000",
+                  letterSpacing: "0.2em",
+                  fontSize: "10px",
+                  fontWeight: 700,
+                  textShadow: demoOpen
+                    ? "none"
+                    : "0 0 6px rgba(255, 176, 0, 0.45)",
+                  boxShadow: "0 0 10px rgba(255, 176, 0, 0.16)",
+                }}
+                onMouseEnter={(e) => {
+                  if (e.currentTarget.disabled) return;
+                  e.currentTarget.style.background = "#ffb000";
+                  e.currentTarget.style.color = "#040208";
+                  e.currentTarget.style.textShadow = "none";
+                  e.currentTarget.style.boxShadow =
+                    "0 0 20px rgba(255, 176, 0, 0.55)";
+                }}
+                onMouseLeave={(e) => {
+                  if (demoOpen) return;
+                  e.currentTarget.style.background = "rgba(255, 176, 0, 0.1)";
+                  e.currentTarget.style.color = "#ffb000";
+                  e.currentTarget.style.textShadow =
+                    "0 0 6px rgba(255, 176, 0, 0.45)";
+                  e.currentTarget.style.boxShadow =
+                    "0 0 10px rgba(255, 176, 0, 0.16)";
+                }}
+                aria-haspopup="menu"
+                aria-expanded={demoOpen}
+                aria-label="Open demo menu"
+              >
+                <span aria-hidden style={{ fontSize: 9 }}>▶</span>
+                <span>DEMO</span>
+                <motion.svg
+                  width="9"
+                  height="9"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="currentColor"
+                  strokeWidth="3"
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  animate={{ rotate: demoOpen ? 180 : 0 }}
+                  transition={{ duration: 0.18 }}
+                  aria-hidden
+                >
+                  <polyline points="6 15 12 9 18 15" />
+                </motion.svg>
+              </button>
+
+              <AnimatePresence>
+                {demoOpen && (
+                  <motion.div
+                    role="menu"
+                    initial={{ opacity: 0, y: 6 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    exit={{ opacity: 0, y: 6 }}
+                    transition={{ duration: 0.14, ease: "easeOut" }}
+                    className="absolute right-0 bottom-full mb-2 font-mono overflow-hidden z-[600]"
+                    style={{
+                      minWidth: 200,
+                      background: "rgba(4, 2, 8, 0.97)",
+                      backdropFilter: "blur(18px)",
+                      WebkitBackdropFilter: "blur(18px)",
+                      border: "1px solid rgba(255, 176, 0, 0.55)",
+                      borderRadius: "4px",
+                      boxShadow: "0 0 24px rgba(255, 176, 0, 0.22)",
+                    }}
+                  >
+                    <div
+                      className="px-3 py-1.5 text-[10px] uppercase"
+                      style={{
+                        background: "rgba(255, 176, 0, 0.08)",
+                        borderBottom: "1px solid rgba(255, 176, 0, 0.25)",
+                        color: "rgba(255, 176, 0, 0.75)",
+                        letterSpacing: "0.22em",
+                      }}
+                    >
+                      {lang === "RU"
+                        ? "режим демо"
+                        : lang === "UA"
+                        ? "режим демо"
+                        : "demo mode"}
+                    </div>
+                    <div className="p-1.5 flex flex-col gap-1">
+                      <button
+                        type="button"
+                        role="menuitem"
+                        onClick={() => {
+                          setDemoOpen(false);
+                          const tour = QUICK_COMMANDS.find(
+                            (c) => c.id === "tour"
+                          );
+                          if (tour) void sendMessage(tour.prompt[lang]);
+                        }}
+                        className="flex items-center gap-2 px-3 py-2 text-left transition-all"
+                        style={{
+                          background: "rgba(0, 255, 65, 0.04)",
+                          border: "1px solid rgba(0, 255, 65, 0.22)",
+                          borderRadius: "3px",
+                          color: "rgba(217, 255, 224, 0.92)",
+                          letterSpacing: "0.02em",
+                        }}
+                        onMouseEnter={(e) => {
+                          e.currentTarget.style.background =
+                            "rgba(0, 255, 65, 0.12)";
+                          e.currentTarget.style.borderColor =
+                            "rgba(0, 255, 65, 0.55)";
+                        }}
+                        onMouseLeave={(e) => {
+                          e.currentTarget.style.background =
+                            "rgba(0, 255, 65, 0.04)";
+                          e.currentTarget.style.borderColor =
+                            "rgba(0, 255, 65, 0.22)";
+                        }}
+                      >
+                        <span className="text-base shrink-0" aria-hidden>
+                          🛒
+                        </span>
+                        <span className="text-xs leading-tight">
+                          {lang === "RU"
+                            ? "Товары"
+                            : lang === "UA"
+                            ? "Товари"
+                            : "Products"}
+                        </span>
+                      </button>
+                      <button
+                        type="button"
+                        role="menuitem"
+                        onClick={() => {
+                          setDemoOpen(false);
+                          router.push("/factory");
+                        }}
+                        className="flex items-center gap-2 px-3 py-2 text-left transition-all"
+                        style={{
+                          background: "rgba(255, 176, 0, 0.05)",
+                          border: "1px solid rgba(255, 176, 0, 0.28)",
+                          borderRadius: "3px",
+                          color: "#ffd88a",
+                          letterSpacing: "0.02em",
+                        }}
+                        onMouseEnter={(e) => {
+                          e.currentTarget.style.background =
+                            "rgba(255, 176, 0, 0.14)";
+                          e.currentTarget.style.borderColor =
+                            "rgba(255, 176, 0, 0.65)";
+                        }}
+                        onMouseLeave={(e) => {
+                          e.currentTarget.style.background =
+                            "rgba(255, 176, 0, 0.05)";
+                          e.currentTarget.style.borderColor =
+                            "rgba(255, 176, 0, 0.28)";
+                        }}
+                      >
+                        <span className="text-base shrink-0" aria-hidden>
+                          🏭
+                        </span>
+                        <span className="text-xs leading-tight">
+                          {lang === "RU"
+                            ? "Производство"
+                            : lang === "UA"
+                            ? "Виробництво"
+                            : "Factory"}
+                        </span>
+                      </button>
+                    </div>
+                  </motion.div>
+                )}
+              </AnimatePresence>
+            </div>
             <textarea
               ref={inputRef}
               data-chat-input
