@@ -78,9 +78,9 @@ const COUNTER_KEYFRAMES: { at: number; value: number }[] = [
 ];
 
 const PRODUCTS = [
-  { name: "Boris",   price: "$49 / mo",  tag: "AI chief of staff" },
-  { name: "iБоря",   price: "$39 / mo",  tag: "Telegram secretary" },
-  { name: "Studio",  price: "$15–50k",   tag: "Custom agent build" },
+  { name: "Ada",   price: "$49 / mo", tag: "research agent · perplexity-killer" },
+  { name: "Eva",   price: "$99 / mo", tag: "звонит твоим родителям, когда ты не можешь" },
+  { name: "David", price: "$79 / mo", tag: "operations chief для малого бизнеса" },
 ];
 
 // Реплики, которые роботы «выдыхают» над головами
@@ -214,8 +214,8 @@ export default function GenesisPage() {
 
   // SCENE 5 — пробуждение спроса (signal pulse)
   const showAlert = scene === 5;
-  // SCENE 6 — раздвоение экрана и витрина
-  const showStorefront = t >= 25000;
+  // SCENE 6 — раздвоение экрана и витрина (уходит за секунду до финала, чтобы не было наложения)
+  const showStorefront = t >= 25000 && t < 31000;
   // SCENE 7 — финал
   const showFinal = t >= 32000;
   const showFinalCTA = t >= 35000;

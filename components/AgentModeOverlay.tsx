@@ -85,14 +85,14 @@ export function AgentModeOverlay({
     }
   `;
 
-  // Цветное свечение от каждого края внутрь экрана.
-  // Используем радиальные градиенты из-за пределов viewport:
-  // центр чуть снаружи → цвет яркий у края, затухает к центру.
+  // Свечение сосредоточено В УГЛАХ экрана (не по серединам сторон) — чтобы
+  // центр страницы с карточкой товара оставался чистым, а знак «агент ведёт»
+  // считывался только по периферии.
   const edgeGlow = `
-    radial-gradient(ellipse 50% 35% at 50% -10%, ${alpha(cTop, strength)} 0%, transparent 55%),
-    radial-gradient(ellipse 35% 50% at 110% 50%, ${alpha(cRight, strength)} 0%, transparent 55%),
-    radial-gradient(ellipse 50% 35% at 50% 110%, ${alpha(cBottom, strength)} 0%, transparent 55%),
-    radial-gradient(ellipse 35% 50% at -10% 50%, ${alpha(cLeft, strength)} 0%, transparent 55%)
+    radial-gradient(ellipse 28% 20% at -4% -4%, ${alpha(cTop, strength)} 0%, transparent 50%),
+    radial-gradient(ellipse 28% 20% at 104% -4%, ${alpha(cRight, strength)} 0%, transparent 50%),
+    radial-gradient(ellipse 28% 20% at 104% 104%, ${alpha(cBottom, strength)} 0%, transparent 50%),
+    radial-gradient(ellipse 28% 20% at -4% 104%, ${alpha(cLeft, strength)} 0%, transparent 50%)
   `;
 
   return (
@@ -125,12 +125,12 @@ export function AgentModeOverlay({
             }}
           />
 
-          {/* Мягкое акцентное кольцо внутри — фирменный цвет */}
+          {/* Мягкое акцентное кольцо — только в углах, не по всему периметру */}
           <div
             style={{
               position: "absolute",
               inset: 0,
-              boxShadow: `inset 0 0 ${spread}px ${alpha(resolved.accent, strength * 0.6)}`,
+              boxShadow: `inset 0 0 ${spread * 0.5}px ${alpha(resolved.accent, strength * 0.35)}`,
               animation: `agent-mode-pulse-slow ${profile.glowPulseSec * 1.4}s ease-in-out infinite`,
               mixBlendMode: "screen",
             }}
