@@ -94,7 +94,7 @@ export default async function Image() {
           </span>
           <div style={{ display: "flex", gap: 24, marginTop: 8 }}>
             <span style={{ fontSize: 14, color: "rgba(244,114,182,0.4)", fontFamily: "monospace" }}>
-              Agents from $49/mo
+              Agents from $149/mo
             </span>
             <span style={{ fontSize: 14, color: "rgba(244,114,182,0.2)" }}>•</span>
             <span style={{ fontSize: 14, color: "rgba(244,114,182,0.4)", fontFamily: "monospace" }}>

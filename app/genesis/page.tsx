@@ -78,9 +78,9 @@ const COUNTER_KEYFRAMES: { at: number; value: number }[] = [
 ];
 
 const PRODUCTS = [
-  { name: "Ada",   price: "$49 / mo", tag: "research agent · perplexity-killer" },
-  { name: "Eva",   price: "$99 / mo", tag: "звонит твоим родителям, когда ты не можешь" },
-  { name: "David", price: "$79 / mo", tag: "operations chief для малого бизнеса" },
+  { name: "Ada",   price: "$149 / mo", tag: "research agent · perplexity-killer" },
+  { name: "Eva",   price: "$299 / mo", tag: "звонит твоим родителям, когда ты не можешь" },
+  { name: "David", price: "$239 / mo", tag: "operations chief для малого бизнеса" },
 ];
 
 // Реплики, которые роботы «выдыхают» над головами

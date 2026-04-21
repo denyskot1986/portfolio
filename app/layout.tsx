@@ -42,16 +42,16 @@ const jsonLd = {
   "@type": "ProfessionalService",
   name: "Finekot — AI Agents & Systems",
   url: siteUrl,
-  description: "Authored AI agents by subscription (from $49/mo) and production-ready AI systems you can own outright ($499 template, $2500 personal integration). Custom agents from $15k.",
+  description: "Authored AI agents by subscription (from $149/mo) and production-ready AI systems you can own outright ($1499 template, $7499 personal integration). Custom agents from $44999.",
   contactPoint: { "@type": "ContactPoint", url: "https://t.me/shop_by_finekot_bot", contactType: "sales" },
   hasOfferCatalog: {
     "@type": "OfferCatalog",
     name: "Finekot Store",
     itemListElement: [
-      { "@type": "Offer", name: "Boris Subscription", price: "49", priceCurrency: "USD", priceSpecification: { "@type": "UnitPriceSpecification", price: "49", priceCurrency: "USD", unitCode: "MON", referenceQuantity: { "@type": "QuantitativeValue", value: 1, unitCode: "MON" } }, description: "Personal AI chief of staff. Cancel anytime.", itemOffered: { "@type": "Service", name: "Boris — AI agent subscription" } },
-      { "@type": "Offer", name: "System Template", price: "499", priceCurrency: "USD", description: "Full source code + documentation + deployment guide. Deploy it yourself.", itemOffered: { "@type": "Service", name: "AI System Template" } },
-      { "@type": "Offer", name: "System Integration", price: "2500", priceCurrency: "USD", description: "Personal setup into your business in 1 day. 30 days support included.", itemOffered: { "@type": "Service", name: "AI System Integration" } },
-      { "@type": "Offer", name: "Custom Studio", price: "15000", priceCurrency: "USD", description: "Custom authored AI agent built for your business. From $15k. 3–6 weeks delivery.", itemOffered: { "@type": "Service", name: "Custom Agent Studio" } },
+      { "@type": "Offer", name: "Boris Subscription", price: "149", priceCurrency: "USD", priceSpecification: { "@type": "UnitPriceSpecification", price: "149", priceCurrency: "USD", unitCode: "MON", referenceQuantity: { "@type": "QuantitativeValue", value: 1, unitCode: "MON" } }, description: "Personal AI chief of staff. Cancel anytime.", itemOffered: { "@type": "Service", name: "Boris — AI agent subscription" } },
+      { "@type": "Offer", name: "System Template", price: "1499", priceCurrency: "USD", description: "Full source code + documentation + deployment guide. Deploy it yourself.", itemOffered: { "@type": "Service", name: "AI System Template" } },
+      { "@type": "Offer", name: "System Integration", price: "7499", priceCurrency: "USD", description: "Personal setup into your business in 1 day. 30 days support included.", itemOffered: { "@type": "Service", name: "AI System Integration" } },
+      { "@type": "Offer", name: "Custom Studio", price: "44999", priceCurrency: "USD", description: "Custom authored AI agent built for your business. From $44999. 3–6 weeks delivery.", itemOffered: { "@type": "Service", name: "Custom Agent Studio" } },
     ],
   },
 };

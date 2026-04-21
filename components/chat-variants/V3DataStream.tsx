@@ -12,7 +12,7 @@ import { useEffect, useRef } from "react";
 const demo = [
   { role: "sys", text: "stream opened. ready." },
   { role: "usr", text: "расскажи про David" },
-  { role: "sys", text: "David — AI-директор для малого бизнеса. CRM, календарь, мессенджеры через MCP. $79/mo." },
+  { role: "sys", text: "David — AI-директор для малого бизнеса. CRM, календарь, мессенджеры через MCP. $239/mo." },
   { role: "usr", text: "подробнее" },
   { role: "sys", text: "24/7 держит клиентов и задачи. инфо: /products/david" },
 ];

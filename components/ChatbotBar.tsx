@@ -1274,15 +1274,6 @@ export default function ChatbotBar() {
             >
               <polyline points="6 15 12 9 18 15" />
             </motion.svg>
-            {!cmdOpen && hasActivity && (
-              <span
-                className="absolute -top-1 -right-1 w-2 h-2 rounded-full"
-                style={{
-                  background: "#00ff41",
-                  boxShadow: "0 0 8px rgba(0, 255, 65, 0.9)",
-                }}
-              />
-            )}
           </button>
 
           {/* Input */}

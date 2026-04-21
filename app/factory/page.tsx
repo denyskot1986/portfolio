@@ -61,7 +61,7 @@ const COPY: Record<Lang, Copy> = {
       ["uptime", "24/7 · your timezone"],
       ["privacy", "your data stays in your instance"],
     ],
-    pricing: "$49 / month · cancel anytime · no setup fee",
+    pricing: "$149 / month · cancel anytime · no setup fee",
     fullSpec: "full spec & checkout →",
   },
   RU: {
@@ -85,7 +85,7 @@ const COPY: Record<Lang, Copy> = {
       ["uptime", "24/7 · твой часовой пояс"],
       ["privacy", "данные живут в твоём инстансе"],
     ],
-    pricing: "$49 / месяц · отмена в один клик · без setup fee",
+    pricing: "$149 / месяц · отмена в один клик · без setup fee",
     fullSpec: "полная спецификация и оплата →",
   },
   UA: {
@@ -109,7 +109,7 @@ const COPY: Record<Lang, Copy> = {
       ["uptime", "24/7 · твій часовий пояс"],
       ["privacy", "дані живуть у твоєму інстансі"],
     ],
-    pricing: "$49 / місяць · відписка в один клік · без setup fee",
+    pricing: "$149 / місяць · відписка в один клік · без setup fee",
     fullSpec: "повна специфікація та оплата →",
   },
 };

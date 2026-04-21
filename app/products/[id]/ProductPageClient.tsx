@@ -3,7 +3,7 @@
 import { useParams } from "next/navigation";
 import Link from "next/link";
 import { motion } from "framer-motion";
-import { productsData, getTranslatedProduct } from "@/lib/products-data";
+import { getTranslatedProduct, getTranslatedProducts } from "@/lib/products-data";
 import { i18n } from "@/lib/i18n";
 import { useLang } from "@/lib/lang-context";
 import LangSwitcher from "@/components/LangSwitcher";
@@ -415,7 +415,7 @@ export default function ProductPageClient() {
         <div className="max-w-5xl mx-auto">
           <p className="text-center text-xs text-pink-400/30 uppercase tracking-[0.3em] mb-8 font-mono">{tp.otherProducts}</p>
           <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-3">
-            {productsData.filter((p) => p.id !== product.id).map((p) => (
+            {getTranslatedProducts(lang).filter((p) => p.id !== product.id).map((p) => (
               <Link key={p.id} href={`/products/${p.id}`}
                 className="glass rounded-xl p-4 text-center hover:shadow-[0_0_20px_rgba(244,114,182,0.08)] transition-all group">
                 <p className="text-xs font-bold text-pink-100/60 group-hover:text-pink-300 transition-colors mb-1">{p.name}</p>

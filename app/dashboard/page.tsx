@@ -33,10 +33,10 @@ const geoData = [
 ];
 
 const recentSales = [
-  { id: "TXN-8821", product: "Orban · Integration", amount: "$2,500", time: "2m ago", status: "paid" },
-  { id: "TXN-8820", product: "Call Agent · Template", amount: "$499", time: "47m ago", status: "paid" },
-  { id: "TXN-8819", product: "Reels Agent · Integration", amount: "$2,500", time: "2h ago", status: "paid" },
-  { id: "TXN-8818", product: "Shop Bot · Template", amount: "$299", time: "5h ago", status: "paid" },
+  { id: "TXN-8821", product: "Orban · Integration", amount: "$7,499", time: "2m ago", status: "paid" },
+  { id: "TXN-8820", product: "Call Agent · Template", amount: "$1,499", time: "47m ago", status: "paid" },
+  { id: "TXN-8819", product: "Reels Agent · Integration", amount: "$7,499", time: "2h ago", status: "paid" },
+  { id: "TXN-8818", product: "Shop Bot · Template", amount: "$899", time: "5h ago", status: "paid" },
   { id: "TXN-8817", product: "ALPHACH · Template", amount: "$299", time: "8h ago", status: "paid" },
 ];
 
