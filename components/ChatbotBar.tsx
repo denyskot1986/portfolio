@@ -591,7 +591,11 @@ export default function ChatbotBar() {
             className="fixed left-0 right-0 z-[498] pointer-events-none"
             style={{ bottom: "var(--chat-bar-h, 72px)" }}
           >
-            <div className="max-w-5xl mx-auto px-3 sm:px-6 pb-2">
+            {/* Прижимаем лог к ЛЕВОМУ краю: правая половина десктопа
+                остаётся видна (под чатом живая страница, удобно пальцем
+                скроллить справа на мобиле). На узких экранах — fullwidth,
+                поэтому sm:max-w-xl включается только от 640px. */}
+            <div className="max-w-full sm:max-w-xl px-3 sm:pl-4 sm:pr-2 pb-2">
               <div
                 ref={logPanelRef}
                 className="pointer-events-auto relative font-mono overflow-hidden"
@@ -852,7 +856,10 @@ export default function ChatbotBar() {
             className="fixed left-0 right-0 z-[500] pointer-events-none"
             style={{ bottom: "var(--chat-bar-h, 72px)" }}
           >
-            <div className="max-w-6xl mx-auto px-3 sm:px-4 pb-2">
+            {/* Quick-command popup — тоже прижат влево, чтобы ничего не
+                центрировало чатовую обвеску (правая половина экрана остаётся
+                рабочей). */}
+            <div className="max-w-full sm:max-w-xl px-3 sm:pl-4 sm:pr-2 pb-2">
               <div
                 ref={cmdMenuRef}
                 className="pointer-events-auto font-mono overflow-hidden"
