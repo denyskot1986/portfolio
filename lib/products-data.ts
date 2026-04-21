@@ -329,10 +329,10 @@ export const productsData: ProductData[] = [
   {
     id: "ada",
     name: "Ada",
-    tagline: "The research terminator. Perplexity-killer.",
+    tagline: "The research agent. Perplexity-killer.",
     category: "Agents",
     description: "Fast answer with sources in 30 seconds. Or Deep Research — a structured 2,500-word report in 8 minutes. Built on Finekot's own Ada stack.",
-    longDescription: "Ada is the public edition of our research terminator inside SKYNET. She runs two modes. FAST: one question, ~30–60 seconds, answer with 5+ sources. DEEP: a multi-pass investigation across 20+ sources that returns a structured 5–10 minute report, with contradictions flagged and every claim traceable. Built to replace Perplexity for anyone doing real work — consultants, analysts, founders, journalists. Remembers your research threads across sessions so you don't repeat yourself.",
+    longDescription: "Ada is the research agent in the Finekot collective. She runs two modes. FAST: one question, ~30–60 seconds, answer with 5+ sources. DEEP: a multi-pass investigation across 20+ sources that returns a structured 5–10 minute report, with contradictions flagged and every claim traceable. Built to replace Perplexity for anyone doing real work — consultants, analysts, founders, journalists. Remembers your research threads across sessions so you don't repeat yourself.",
     features: [
       { title: "Answers fast in 30–60 sec", desc: "Direct answer to your question with 5+ cited sources. Like Perplexity, but with memory." },
       { title: "Runs Deep Research in 3–10 min", desc: "Multi-step investigation across Exa + Tavily + direct crawl. Returns a structured report with sections, confidence levels, and open questions." },

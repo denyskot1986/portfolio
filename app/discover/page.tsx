@@ -1019,7 +1019,7 @@ export default function DiscoverPage() {
 
 function IntroView({ onStart }: { onStart: () => void }) {
   const lines = [
-    "> boot: Ada agent · research terminator",
+    "> boot: Ada agent · research unit",
     "> loading: holland_codes.dll [ok]",
     "> loading: big_five_ocean.dll [ok]",
     "> ready.",

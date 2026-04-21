@@ -16,7 +16,7 @@ const kpis = [
 ];
 
 const products = [
-  { name: "SKYNET Intake", sales: 18, revenue: "$8,982", pct: 88 },
+  { name: "Orban", sales: 18, revenue: "$8,982", pct: 88 },
   { name: "Reels Agent", sales: 11, revenue: "$3,289", pct: 54 },
   { name: "Call Agent", sales: 9, revenue: "$4,491", pct: 44 },
   { name: "Shop Bot", sales: 6, revenue: "$1,794", pct: 29 },
@@ -33,7 +33,7 @@ const geoData = [
 ];
 
 const recentSales = [
-  { id: "TXN-8821", product: "SKYNET Intake · Integration", amount: "$2,500", time: "2m ago", status: "paid" },
+  { id: "TXN-8821", product: "Orban · Integration", amount: "$2,500", time: "2m ago", status: "paid" },
   { id: "TXN-8820", product: "Call Agent · Template", amount: "$499", time: "47m ago", status: "paid" },
   { id: "TXN-8819", product: "Reels Agent · Integration", amount: "$2,500", time: "2h ago", status: "paid" },
   { id: "TXN-8818", product: "Shop Bot · Template", amount: "$299", time: "5h ago", status: "paid" },
