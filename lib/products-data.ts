@@ -30,6 +30,18 @@ export interface ProductData {
   available: boolean;
   /** Visual agent icon for subscription agents (emoji on card). Optional. */
   avatarEmoji?: string;
+  /** CRT cold-boot lines (4-5 lines). If omitted — generic spawn log is generated from id/name. */
+  bootLines?: string[];
+  /** First-person greeting shown after boot. RU/EN/UA. If missing — falls back to a name-based generic. */
+  firstMessage?: { EN: string; RU: string; UA: string };
+  /** SVG face tuning per agent. */
+  faceConfig?: {
+    eyeStyle?: "round" | "slit";
+    antennaColor?: string;
+    extra?: "scanner" | "cross" | "feather" | "dual-mouth" | "none";
+  };
+  /** Live-terminal cycle that replaces how-it-works. Each entry is one log line. */
+  liveCycle?: string[];
 }
 
 interface ProductTranslation {

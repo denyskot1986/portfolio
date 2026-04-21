@@ -10,10 +10,31 @@ import { getDemoChat } from "@/lib/demo-chats";
 import { i18n } from "@/lib/i18n";
 import { useLang } from "@/lib/lang-context";
 import LangSwitcher from "@/components/LangSwitcher";
+import AgentFace from "@/components/AgentFace";
+import ProductBoot from "@/components/ProductBoot";
+import LiveVitals from "@/components/LiveVitals";
+import LiveTerminal from "@/components/LiveTerminal";
+import type { Lang } from "@/lib/i18n";
 
 function botDeepLink(contact: string, id: string, intent: "buy" | "order"): string {
   const sep = contact.includes("?") ? "&" : "?";
   return `${contact}${sep}start=${intent}_${id}`;
+}
+
+function defaultGreeting(name: string, lang: Lang): string {
+  switch (lang) {
+    case "RU": return `${name} · онлайн. Чем могу помочь?`;
+    case "UA": return `${name} · онлайн. Чим можу допомогти?`;
+    default:   return `${name} · online. How can I help?`;
+  }
+}
+
+function openChannelLabel(name: string, lang: Lang): string {
+  switch (lang) {
+    case "RU": return `открыть канал к ${name}`;
+    case "UA": return `відкрити канал до ${name}`;
+    default:   return `open channel to ${name}`;
+  }
 }
 
 const fade = { initial: { opacity: 0, y: 20 }, whileInView: { opacity: 1, y: 0 }, viewport: { once: true }, transition: { duration: 0.5 } };
@@ -39,8 +60,21 @@ export default function ProductPageClient() {
     );
   }
 
+  const greeting = product.firstMessage?.[lang] ?? defaultGreeting(product.name, lang);
+
   return (
     <main className="min-h-screen bg-[var(--bg)] text-pink-100/80 overflow-x-hidden">
+      {/* COLD BOOT overlay — plays once per session on top of hero */}
+      <ProductBoot
+        slug={product.id}
+        agentName={product.name}
+        greeting={greeting}
+        bootLines={product.bootLines}
+      />
+
+      {/* LIVE VITALS HUD — fixed, top-right */}
+      <LiveVitals slug={product.id} agentName={product.name} />
+
       {/* NAV */}
       <nav
         style={{ top: "var(--chat-top-h, 34px)" }}
@@ -62,10 +96,56 @@ export default function ProductPageClient() {
         <div className="max-w-5xl mx-auto text-center">
           <motion.div {...fade}>
             <p className="text-xs text-pink-400/30 uppercase tracking-[0.4em] mb-3 font-mono">{product.category}</p>
-            <h1 className="text-3xl sm:text-5xl md:text-7xl font-black mb-4 tracking-tight">
-              <span className="gradient-text">{product.name}</span>
-            </h1>
+            <div className="flex items-center justify-center gap-4 sm:gap-6 mb-4">
+              <AgentFace
+                size={72}
+                eyeStyle={product.faceConfig?.eyeStyle ?? "round"}
+                antennaColor={product.faceConfig?.antennaColor}
+                extra={product.faceConfig?.extra ?? "none"}
+                className="hidden sm:block shrink-0"
+              />
+              <h1 className="text-3xl sm:text-5xl md:text-7xl font-black tracking-tight">
+                <span className="gradient-text">{product.name}</span>
+              </h1>
+            </div>
+            <div className="sm:hidden flex justify-center mb-3">
+              <AgentFace
+                size={56}
+                eyeStyle={product.faceConfig?.eyeStyle ?? "round"}
+                antennaColor={product.faceConfig?.antennaColor}
+                extra={product.faceConfig?.extra ?? "none"}
+              />
+            </div>
             <p className="text-base sm:text-xl md:text-2xl text-pink-100/50 font-semibold mb-6">{product.tagline}</p>
+
+            {/* CTA with pulsing online dot */}
+            {product.available && (
+              <div className="flex justify-center mb-6">
+                <a
+                  href={botDeepLink(product.contact, product.id, "order")}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="inline-flex items-center gap-2.5 px-5 py-2.5 rounded-lg text-sm font-mono uppercase tracking-[0.22em] transition-all"
+                  style={{
+                    background: "rgba(0,255,65,0.06)",
+                    border: "1px solid rgba(0,255,65,0.5)",
+                    color: "#00ff41",
+                    textShadow: "0 0 6px rgba(0,255,65,0.5)",
+                    boxShadow: "0 0 18px rgba(0,255,65,0.12)",
+                  }}
+                >
+                  <span
+                    className="inline-block w-2 h-2 rounded-full"
+                    style={{
+                      background: "#00ff41",
+                      boxShadow: "0 0 8px rgba(0,255,65,0.9)",
+                      animation: "productOnlinePulse 1.6s ease-in-out infinite",
+                    }}
+                  />
+                  <span>{openChannelLabel(product.name, lang)}</span>
+                </a>
+              </div>
+            )}
             {(() => {
               const COLLAPSE_CHARS = 180;
               const full = product.longDescription;
@@ -113,59 +193,20 @@ export default function ProductPageClient() {
         </div>
       </section>
 
-      {/* HOW IT WORKS — step cards */}
+      {/* HOW IT WORKS → live terminal */}
       {product.features.length > 0 && (
         <section className="relative z-10 py-12 px-6">
-          <div className="max-w-5xl mx-auto">
+          <div className="max-w-3xl mx-auto">
             <motion.div {...fade}>
-              <h2 className="text-xl sm:text-2xl md:text-3xl font-black mb-8 text-center tracking-tight">
+              <h2 className="text-xl sm:text-2xl md:text-3xl font-black mb-6 text-center tracking-tight">
                 <span className="gradient-text">{tp.howItWorks}</span>
               </h2>
-              <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 sm:gap-3">
-                {product.features.slice(0, 4).map((f, i) => (
-                  <motion.div
-                    key={i}
-                    initial={{ opacity: 0, y: 12 }}
-                    whileInView={{ opacity: 1, y: 0 }}
-                    viewport={{ once: true, margin: "-40px" }}
-                    transition={{ duration: 0.35, delay: i * 0.08 }}
-                    className="relative rounded-lg p-5"
-                    style={{
-                      background: "rgba(0, 255, 65, 0.025)",
-                      border: "1px solid rgba(0, 255, 65, 0.22)",
-                      boxShadow: "inset 0 0 20px rgba(0, 255, 65, 0.04)",
-                    }}
-                  >
-                    <div
-                      className="font-mono text-[10px] mb-3 tracking-[0.3em]"
-                      style={{
-                        color: "#ffb000",
-                        textShadow: "0 0 6px rgba(255, 176, 0, 0.5)",
-                      }}
-                    >
-                      {String(i + 1).padStart(2, "0")}
-                      <span
-                        className="ml-2"
-                        style={{ color: "rgba(0, 255, 65, 0.4)" }}
-                      >
-                        {i < Math.min(product.features.length, 4) - 1 ? "→" : "✓"}
-                      </span>
-                    </div>
-                    <h3
-                      className="text-sm font-bold mb-2 leading-tight"
-                      style={{
-                        color: "#00ff41",
-                        textShadow: "0 0 8px rgba(0, 255, 65, 0.3)",
-                      }}
-                    >
-                      {f.title}
-                    </h3>
-                    <p className="text-xs leading-relaxed text-pink-100/35">
-                      {f.desc}
-                    </p>
-                  </motion.div>
-                ))}
-              </div>
+              <LiveTerminal
+                slug={product.id}
+                agentName={product.name}
+                cycle={product.liveCycle}
+                title={`${product.id}.run.log`}
+              />
             </motion.div>
           </div>
         </section>
@@ -410,6 +451,13 @@ export default function ProductPageClient() {
           <Link href="/" className="text-xs text-pink-100/20 hover:text-pink-100/40 transition-colors font-mono">&larr; {i18n[lang].pages.backHome}</Link>
         </div>
       </footer>
+
+      <style jsx global>{`
+        @keyframes productOnlinePulse {
+          0%, 100% { transform: scale(1); opacity: 1; }
+          50%      { transform: scale(1.35); opacity: 0.55; }
+        }
+      `}</style>
     </main>
   );
 }
