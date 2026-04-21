@@ -332,7 +332,10 @@ export default function InlineAgentChat({
   }, []);
 
   return (
-    <div
+    <motion.div
+      initial={reduced ? false : { clipPath: "inset(0 0 100% 0)", opacity: 0 }}
+      animate={{ clipPath: "inset(0 0 0% 0)", opacity: 1 }}
+      transition={{ duration: 0.55, ease: [0.2, 0.8, 0.2, 1] }}
       className="w-full font-mono"
       style={{
         background: "rgba(2,10,4,0.85)",
@@ -617,6 +620,6 @@ export default function InlineAgentChat({
           50% { opacity: 0.4; }
         }
       `}</style>
-    </div>
+    </motion.div>
   );
 }

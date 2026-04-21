@@ -7,7 +7,6 @@ import { productsData, getTranslatedProduct } from "@/lib/products-data";
 import { i18n } from "@/lib/i18n";
 import { useLang } from "@/lib/lang-context";
 import LangSwitcher from "@/components/LangSwitcher";
-import ProductBoot from "@/components/ProductBoot";
 import LiveVitals from "@/components/LiveVitals";
 import InlineAgentChat from "@/components/InlineAgentChat";
 import type { Lang } from "@/lib/i18n";
@@ -48,14 +47,6 @@ export default function ProductPageClient() {
 
   return (
     <main className="min-h-screen bg-[var(--bg)] text-pink-100/80 overflow-x-hidden">
-      {/* COLD BOOT overlay — plays once per session on top of hero */}
-      <ProductBoot
-        slug={product.id}
-        agentName={product.name}
-        greeting={greeting}
-        bootLines={product.bootLines}
-      />
-
       {/* LIVE VITALS HUD — fixed, top-right */}
       <LiveVitals slug={product.id} agentName={product.name} />
 
