@@ -100,6 +100,7 @@ const UI_COPY: Record<Lang, {
   title: string;
   send: string;
   reset: string;
+  newChat: string;
   placeholderCycle: (name: string) => string;
   resetConfirm: string;
   initChip: string[];
@@ -107,25 +108,28 @@ const UI_COPY: Record<Lang, {
   EN: {
     title: "agent channel",
     send: "SEND",
-    reset: "reset dialogue",
+    reset: "start a new chat",
+    newChat: "new chat",
     placeholderCycle: (n) => `${n} online`,
-    resetConfirm: "clear this chat?",
+    resetConfirm: "start a new chat? current dialogue will be cleared.",
     initChip: ["What do you actually do?", "How much does it cost?", "Show me a typical day"],
   },
   RU: {
     title: "канал агента",
     send: "SEND",
-    reset: "обнулить диалог",
+    reset: "начать новый чат",
+    newChat: "новый чат",
     placeholderCycle: (n) => `${n} online`,
-    resetConfirm: "очистить этот чат?",
+    resetConfirm: "начать новый чат? текущий диалог очистится.",
     initChip: ["Что ты умеешь?", "Сколько стоишь?", "Покажи типичный день"],
   },
   UA: {
     title: "канал агента",
     send: "SEND",
-    reset: "очистити діалог",
+    reset: "почати новий чат",
+    newChat: "новий чат",
     placeholderCycle: (n) => `${n} online`,
-    resetConfirm: "очистити цей чат?",
+    resetConfirm: "почати новий чат? поточний діалог очиститься.",
     initChip: ["Що ти вмієш?", "Скільки коштуєш?", "Покажи типовий день"],
   },
 };
@@ -372,15 +376,27 @@ export default function InlineAgentChat({
         <button
           type="button"
           onClick={reset}
-          className="shrink-0 text-[10px] uppercase transition-colors"
+          className="shrink-0 flex items-center gap-1.5 px-2.5 py-1 rounded uppercase text-[10px] transition-all"
           style={{
-            color: "rgba(255,176,0,0.7)",
+            color: "#ffb000",
+            background: "rgba(255,176,0,0.06)",
+            border: "1px solid rgba(255,176,0,0.45)",
             letterSpacing: "0.2em",
+            textShadow: "0 0 6px rgba(255,176,0,0.5)",
           }}
           title={t.reset}
           aria-label={t.reset}
+          onMouseEnter={(e) => {
+            e.currentTarget.style.background = "rgba(255,176,0,0.18)";
+            e.currentTarget.style.borderColor = "rgba(255,176,0,0.75)";
+          }}
+          onMouseLeave={(e) => {
+            e.currentTarget.style.background = "rgba(255,176,0,0.06)";
+            e.currentTarget.style.borderColor = "rgba(255,176,0,0.45)";
+          }}
         >
-          ↻
+          <span aria-hidden className="text-[14px] leading-none font-bold">+</span>
+          <span className="hidden sm:inline">{t.newChat}</span>
         </button>
       </div>
 
