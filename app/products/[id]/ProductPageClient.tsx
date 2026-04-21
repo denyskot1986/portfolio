@@ -5,8 +5,6 @@ import { useParams } from "next/navigation";
 import Link from "next/link";
 import { motion } from "framer-motion";
 import { productsData, getTranslatedProduct } from "@/lib/products-data";
-import DemoChat from "@/components/DemoChat";
-import { getDemoChat } from "@/lib/demo-chats";
 import { i18n } from "@/lib/i18n";
 import { useLang } from "@/lib/lang-context";
 import LangSwitcher from "@/components/LangSwitcher";
@@ -45,7 +43,6 @@ export default function ProductPageClient() {
   const { lang } = useLang();
   const tp = i18n[lang].pages.product;
   const product = getTranslatedProduct(params.id as string, lang);
-  const demo = product ? getDemoChat(product.id, lang) : undefined;
   const [descExpanded, setDescExpanded] = useState(false);
   const MORE_LABEL = lang === "RU" ? "подробнее" : lang === "UA" ? "детальніше" : "more";
   const LESS_LABEL = lang === "RU" ? "свернуть" : lang === "UA" ? "згорнути" : "less";
@@ -237,57 +234,10 @@ export default function ProductPageClient() {
         </section>
       )}
 
-      {/* INTERACTIVE DEMO / VIDEO — only render if demo chat or YouTube video exists */}
-      {(demo || product.youtubeId) && (
-        <section className="relative z-10 py-12 px-6">
-          <div className="max-w-4xl mx-auto">
-            <motion.div {...fade}>
-              <h2 className="text-xl sm:text-2xl md:text-3xl font-black mb-6 text-center tracking-tight">
-                <span className="gradient-text">{demo ? tp.interactiveDemo : tp.howItWorks}</span>
-              </h2>
-              {demo ? (
-                <DemoChat
-                  productName={product.name}
-                  messages={demo.messages}
-                  tryLink={demo.tryLink}
-                  tryLabel={demo.tryLabel}
-                  lang={lang}
-                />
-              ) : (
-                <div className="glass rounded-xl overflow-hidden aspect-video">
-                  <iframe
-                    src={`https://www.youtube.com/embed/${product.youtubeId}`}
-                    title={`${product.name} — Demo`}
-                    allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-                    allowFullScreen
-                    className="w-full h-full"
-                  />
-                </div>
-              )}
-            </motion.div>
-          </div>
-        </section>
-      )}
-
-      {/* FEATURES */}
-      <section className="relative z-10 py-16 px-6">
-        <div className="max-w-5xl mx-auto">
-          <motion.div {...fade} className="text-center mb-12">
-            <h2 className="text-2xl sm:text-3xl md:text-4xl font-black tracking-tight">
-              <span className="gradient-text">{tp.features}</span>
-            </h2>
-          </motion.div>
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
-            {product.features.map((f, i) => (
-              <motion.div key={i} initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} transition={{ delay: i * 0.08 }}
-                className="glass rounded-xl p-5 sm:p-6 group hover:shadow-[0_0_30px_rgba(244,114,182,0.1)] transition-all">
-                <p className="text-sm font-bold mb-2 text-pink-100/80 group-hover:text-pink-300 transition-colors">{f.title}</p>
-                <p className="text-xs text-pink-100/30 leading-relaxed">{f.desc}</p>
-              </motion.div>
-            ))}
-          </div>
-        </div>
-      </section>
+      {/* Убраны по запросу Командира: «Интерактивное демо» (инлайн-чат
+          сверху его заменяет) и FEATURES grid (дублировал то что агент
+          сам рассказывает в чате + LiveTerminal показывает как он
+          работает). */}
 
       {/* USE CASES */}
       <section className="relative z-10 py-12 px-6">
