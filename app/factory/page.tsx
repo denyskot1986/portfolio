@@ -50,8 +50,7 @@ const COPY: Record<
     subtitle: "forging your Boris instance",
     backHome: "← back",
     meetBoris: "Meet Boris",
-    firstMsg:
-      '"Oh, I\'m alive! Hi. What should I call you?"',
+    firstMsg: "\"Oh, I'm alive! My name is Boris. And you are?\"",
     replay: "Replay assembly",
     legend: "Each Boris is a unique instance — not a copy.",
     caption: "demo · live assembly line",
@@ -62,8 +61,7 @@ const COPY: Record<
     subtitle: "собираем вашего Бориса",
     backHome: "← назад",
     meetBoris: "Встретить Бориса",
-    firstMsg:
-      "«О, я жив! Привет. Как к тебе обращаться?»",
+    firstMsg: "«О, я жив! Меня зовут Борис. А ты кто?»",
     replay: "Повторить сборку",
     legend: "Каждый Борис — уникальный экземпляр, не копия.",
     caption: "демо · сборочная линия",
@@ -74,8 +72,7 @@ const COPY: Record<
     subtitle: "збираємо вашого Бориса",
     backHome: "← назад",
     meetBoris: "Зустріти Бориса",
-    firstMsg:
-      "«О, я живий! Привіт. Як до тебе звертатись?»",
+    firstMsg: "«О, я живий! Мене звати Борис. А ти хто?»",
     replay: "Повторити збірку",
     legend: "Кожен Борис — унікальний екземпляр, не копія.",
     caption: "демо · складальна лінія",
