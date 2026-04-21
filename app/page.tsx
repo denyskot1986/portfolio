@@ -176,10 +176,19 @@ export default function Home() {
         }`}
       >
         <div className="max-w-6xl mx-auto px-6 py-4 flex items-center justify-between">
-          {/* Logo — terminal prompt style */}
-          <a href="#hero" className="text-base font-bold tracking-tight font-mono" style={{ color: "var(--accent)" }}>
+          {/* Logo — terminal prompt style. Click focuses the chat input. */}
+          <button
+            type="button"
+            onClick={() => {
+              const el = document.querySelector<HTMLTextAreaElement>("[data-chat-input]");
+              if (el) { el.focus(); el.scrollIntoView({ block: "nearest" }); }
+            }}
+            className="text-base font-bold tracking-tight font-mono cursor-pointer bg-transparent border-0 p-0"
+            style={{ color: "var(--accent)" }}
+            aria-label="Open chat"
+          >
             <span style={{ color: "var(--accent2)", opacity: 0.7 }}>&gt; </span>AGENT_CONTROL /&gt;
-          </a>
+          </button>
 
           {/* Desktop links */}
           <div className="hidden md:flex items-center gap-2">
