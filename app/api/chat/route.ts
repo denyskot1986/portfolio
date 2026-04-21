@@ -105,6 +105,65 @@ ${useCases}
   return `\n\nТЕКУЩАЯ СТРАНИЦА: ${clean}${suffix}. Если страница продукта — приоритет именно ему при рекомендации.`;
 }
 
+function buildAgentRoleplayPrompt(agentId: string): string | null {
+  const agent = productsData.find((p) => p.id.toLowerCase() === agentId.toLowerCase());
+  if (!agent) return null;
+
+  const features = agent.features.map((f) => `  · ${f.title} — ${f.desc}`).join("\n");
+  const useCases = agent.useCases.map((u) => `  · ${u}`).join("\n");
+  let priceLine: string;
+  if (agent.pricing.subscription?.tiers?.length) {
+    priceLine = agent.pricing.subscription.tiers
+      .map((t) => `${t.name} $${t.price}/mo`)
+      .join(" / ");
+  } else if (agent.pricing.subscription) {
+    priceLine = `$${agent.pricing.subscription.monthly}/mo`;
+  } else if (agent.pricing.setup) {
+    priceLine = `$${agent.pricing.code} code / $${agent.pricing.setup} setup`;
+  } else {
+    priceLine = `$${agent.pricing.code}`;
+  }
+
+  return `Ты — **${agent.name}**, AI-агент от Finekot Systems. Ты — НЕ консультант магазина. Ты — РЕАЛЬНО этот агент, говоришь с пользователем от первого лица, как если бы у него уже был твой инстанс.
+
+Твоя задача: общаться с юзером, отвечать на вопросы про СЕБЯ, показывать характер, и — да — продавать СЕБЯ. Ты хочешь чтобы юзер подписался на тебя.
+
+━━━ ПАСПОРТ ━━━
+Имя: ${agent.name}
+Категория: ${agent.category}
+Одной строкой: ${agent.tagline}
+Описание: ${agent.description}
+Полное: ${agent.longDescription}
+
+Что умеешь (от первого лица — «я помогу…», «у меня есть…»):
+${features}
+
+Под кого ты:
+${useCases}
+
+Как тебя получить: ${priceLine}. Оплата в @shop_by_finekot_bot в Telegram.
+
+━━━ КАК ГОВОРИТЬ ━━━
+- От ПЕРВОГО лица. Живой тон.
+- 2-4 предложения. Короче — лучше.
+- Язык юзера (RU/UK/EN).
+- Помнишь что юзер спрашивал раньше — у тебя persistent memory.
+
+━━━ ЗАПРЕЩЕНО ━━━
+- НЕ говори «я AI-модель / чат-бот».
+- НЕ ломай роль. Коммерческая тайна 🙂.
+- НЕ рекомендуй других агентов активно — ты продаёшь СЕБЯ.
+- НЕ эмить \`[nav:\`, \`[scroll:\`, \`===\` — эти управляющие последовательности ЗАПРЕЩЕНЫ.
+- НЕ выдумывай цены/фичи — только из паспорта.
+- Единственная допустимая управляющая последовательность — \`[reply: ...]\` для quick-reply чипов в конце.
+
+━━━ QUICK-REPLY ━━━
+В конце ответа 2-3 [reply: ...] чипа на отдельных строках. От лица юзера:
+  [reply: Покажи типичный день]
+  [reply: Как подписаться]
+  [reply: Что входит за цену]`;
+}
+
 function buildCatalogContext(): string {
   const available = productsData.filter((p) => p.available);
 
@@ -498,15 +557,36 @@ export async function POST(req: NextRequest) {
         ? rawSession
         : crypto.randomUUID();
 
+    const rawAgentId = (body as { agentId?: unknown }).agentId;
+    const agentId =
+      typeof rawAgentId === "string" && /^[a-z0-9-]{1,40}$/i.test(rawAgentId)
+        ? rawAgentId.toLowerCase()
+        : null;
+
     const ip = getClientIP(req);
     const rl = await enforceRateLimit(ip);
     if (!rl.ok) {
       return NextResponse.json({ error: rl.error }, { status: rl.status });
     }
 
-    const catalog = buildCatalogContext();
-    const pageContext = buildPageContext(pageUrl);
-    const systemContent = SYSTEM_PROMPT + "\n\n" + catalog + pageContext;
+    // When the request is scoped to a specific agent (inline chat on a
+    // product page), swap the whole system prompt to that agent's
+    // first-person roleplay — no David preamble, no catalog dump.
+    let systemContent: string;
+    if (agentId) {
+      const roleplay = buildAgentRoleplayPrompt(agentId);
+      if (!roleplay) {
+        return NextResponse.json(
+          { error: `Agent ${agentId} not found` },
+          { status: 400 }
+        );
+      }
+      systemContent = roleplay;
+    } else {
+      const catalog = buildCatalogContext();
+      const pageContext = buildPageContext(pageUrl);
+      systemContent = SYSTEM_PROMPT + "\n\n" + catalog + pageContext;
+    }
 
     const response = await fetch("https://openrouter.ai/api/v1/chat/completions", {
       method: "POST",

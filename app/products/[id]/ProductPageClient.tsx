@@ -14,6 +14,7 @@ import AgentFace from "@/components/AgentFace";
 import ProductBoot from "@/components/ProductBoot";
 import LiveVitals from "@/components/LiveVitals";
 import LiveTerminal from "@/components/LiveTerminal";
+import InlineAgentChat from "@/components/InlineAgentChat";
 import type { Lang } from "@/lib/i18n";
 
 function botDeepLink(contact: string, id: string, intent: "buy" | "order"): string {
@@ -189,6 +190,30 @@ export default function ProductPageClient() {
                 </p>
               );
             })()}
+          </motion.div>
+        </div>
+      </section>
+
+      {/* LIVE AGENT CHAT — speak with the agent right on their page */}
+      <section className="relative z-10 py-10 px-4 sm:px-6">
+        <div className="max-w-3xl mx-auto">
+          <motion.div {...fade}>
+            <h2 className="text-xl sm:text-2xl md:text-3xl font-black mb-5 text-center tracking-tight">
+              <span className="gradient-text">
+                {lang === "RU"
+                  ? `Поговори с ${product.name}`
+                  : lang === "UA"
+                  ? `Поговори з ${product.name}`
+                  : `Chat with ${product.name}`}
+              </span>
+            </h2>
+            <InlineAgentChat
+              slug={product.id}
+              agentName={product.name}
+              greeting={greeting}
+              lang={lang}
+              faceConfig={product.faceConfig}
+            />
           </motion.div>
         </div>
       </section>
