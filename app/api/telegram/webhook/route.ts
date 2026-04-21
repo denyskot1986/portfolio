@@ -36,7 +36,7 @@ interface Profile {
   };
   bigFiveNotes?: Record<string, string>;
   strengths: { title: string; evidence: string }[];
-  professions: { title: string; match: number; note: string }[];
+  professions?: { title: string; match: number; note: string }[];
   developmentPlan: string[];
   summary: string;
 }
@@ -273,13 +273,15 @@ function buildProfileMessages(p: Profile, firstName: string | undefined): string
     messages.push(chunk);
   }
 
-  // 4. Направления
-  const professionsHeader = `🎯 <b>Рекомендованные направления</b>`;
-  const professionBlocks = p.professions.map(
-    (pr) => `• <b>${pr.match}% — ${escapeHtml(pr.title)}</b>\n  ${escapeHtml(pr.note)}`
-  );
-  for (const chunk of chunkBlocks(professionsHeader, professionBlocks)) {
-    messages.push(chunk);
+  // 4. Направления (v1 legacy — новый профиль /discover v2 их не содержит).
+  if (p.professions && p.professions.length > 0) {
+    const professionsHeader = `🎯 <b>Рекомендованные направления</b>`;
+    const professionBlocks = p.professions.map(
+      (pr) => `• <b>${pr.match}% — ${escapeHtml(pr.title)}</b>\n  ${escapeHtml(pr.note)}`
+    );
+    for (const chunk of chunkBlocks(professionsHeader, professionBlocks)) {
+      messages.push(chunk);
+    }
   }
 
   // 5. План развития

@@ -18,6 +18,56 @@ interface HistoryItem extends Question {
   answer: string | string[];
 }
 
+interface LifeContext {
+  has_business: number;
+  has_aging_parent: number;
+  has_children_5_15: number;
+  has_health_focus: number;
+  has_meeting_overload: number;
+  is_content_creator: number;
+  is_research_heavy: number;
+  has_task_chaos: number;
+}
+
+type AgentId =
+  | "boris"
+  | "eva"
+  | "david"
+  | "patrik"
+  | "taras"
+  | "ada"
+  | "hanna"
+  | "orban";
+
+interface AgentRecommendation {
+  agentId: AgentId;
+  agentName: string;
+  emoji: string;
+  match: number;
+  tier: "Basic" | "Pro" | "OneTime";
+  monthlyCost: number;
+  role: "primary" | "secondary" | "tertiary";
+  whyNow: string;
+  tasksCovered: string[];
+  hoursSavedPerWeek: number;
+  evidenceQuotes: string[];
+}
+
+interface AgentRecommendations {
+  stack: AgentRecommendation[];
+  startingMonthlyCost: number;
+  totalMonthlyCost: number;
+  totalHoursSavedPerWeek: number;
+  fallback: { reason: string; nextStep: string } | null;
+}
+
+interface RoadmapPhase {
+  phase: string;
+  agent: string | null;
+  action: string;
+  successCriterion: string;
+}
+
 interface Profile {
   hollandCode: string;
   hollandDescription: string;
@@ -29,8 +79,10 @@ interface Profile {
     neuroticism: number;
   };
   bigFiveNotes: Record<string, string>;
+  lifeContext: LifeContext;
   strengths: { title: string; evidence: string }[];
-  professions: { title: string; match: number; note: string }[];
+  agentRecommendations: AgentRecommendations;
+  agentStackRoadmap: RoadmapPhase[];
   developmentPlan: string[];
   summary: string;
 }
@@ -469,7 +521,349 @@ function TelegramDelivery({ profile }: { profile: Profile }) {
   );
 }
 
+const ROLE_LABEL: Record<AgentRecommendation["role"], string> = {
+  primary: "PRIMARY",
+  secondary: "SECONDARY",
+  tertiary: "TERTIARY",
+};
+
+function AgentCard({ rec }: { rec: AgentRecommendation }) {
+  const priceLabel =
+    rec.tier === "OneTime"
+      ? `$${rec.monthlyCost} one-time`
+      : `$${rec.monthlyCost}/мес · ${rec.tier}`;
+  return (
+    <a
+      href={`/products/${rec.agentId}`}
+      className="agent-card"
+      style={{
+        display: "flex",
+        gap: 16,
+        border: `1px solid ${TERM_DIM}`,
+        borderLeft: `3px solid ${TERM_AMBER}`,
+        padding: "16px 18px",
+        background: "rgba(0,255,65,0.03)",
+        textDecoration: "none",
+        color: "inherit",
+        borderRadius: 4,
+      }}
+    >
+      <div
+        style={{
+          fontSize: 40,
+          lineHeight: 1,
+          minWidth: 52,
+          textAlign: "center",
+          paddingTop: 2,
+        }}
+        aria-hidden
+      >
+        {rec.emoji}
+      </div>
+      <div style={{ flex: 1, minWidth: 0 }}>
+        <div
+          style={{
+            fontSize: 10,
+            color: TERM_AMBER,
+            letterSpacing: "0.22em",
+            marginBottom: 4,
+            fontWeight: 700,
+          }}
+        >
+          [{ROLE_LABEL[rec.role]}]
+        </div>
+        <div
+          style={{
+            display: "flex",
+            alignItems: "baseline",
+            justifyContent: "space-between",
+            gap: 12,
+            marginBottom: 8,
+          }}
+        >
+          <div
+            style={{
+              fontSize: 20,
+              fontWeight: 700,
+              color: TERM_GREEN,
+              letterSpacing: "0.03em",
+            }}
+          >
+            {rec.agentName}
+          </div>
+          <div
+            style={{
+              fontSize: 16,
+              fontWeight: 700,
+              color: TERM_AMBER,
+              whiteSpace: "nowrap",
+            }}
+          >
+            {rec.match}%
+          </div>
+        </div>
+        <div
+          style={{
+            fontSize: 13,
+            color: TERM_TEXT,
+            lineHeight: 1.55,
+            marginBottom: 12,
+          }}
+        >
+          {rec.whyNow}
+        </div>
+        {rec.tasksCovered.length > 0 && (
+          <div style={{ marginBottom: 10 }}>
+            <div
+              style={{
+                fontSize: 10,
+                color: TERM_DIM,
+                letterSpacing: "0.2em",
+                marginBottom: 6,
+              }}
+            >
+              // ЧТО ЗАБЕРЁТ У ТЕБЯ
+            </div>
+            <ul
+              style={{
+                listStyle: "none",
+                padding: 0,
+                margin: 0,
+                display: "flex",
+                flexDirection: "column",
+                gap: 4,
+              }}
+            >
+              {rec.tasksCovered.map((t, i) => (
+                <li
+                  key={i}
+                  style={{
+                    fontSize: 13,
+                    color: "#d0e0d0",
+                    lineHeight: 1.5,
+                    paddingLeft: 14,
+                    position: "relative",
+                  }}
+                >
+                  <span
+                    style={{
+                      position: "absolute",
+                      left: 0,
+                      color: TERM_GREEN,
+                    }}
+                  >
+                    –
+                  </span>
+                  {t}
+                </li>
+              ))}
+            </ul>
+          </div>
+        )}
+        <div
+          style={{
+            fontSize: 11,
+            color: TERM_DIM,
+            letterSpacing: "0.05em",
+            borderTop: `1px dashed ${TERM_DIM}`,
+            paddingTop: 8,
+            display: "flex",
+            justifyContent: "space-between",
+            gap: 8,
+            flexWrap: "wrap",
+          }}
+        >
+          <span style={{ color: TERM_AMBER }}>{priceLabel}</span>
+          <span>сэкономит ~{rec.hoursSavedPerWeek}ч/нед</span>
+        </div>
+      </div>
+    </a>
+  );
+}
+
+function AgentStackSection({ recs }: { recs: AgentRecommendations }) {
+  if (recs.stack.length === 0 && recs.fallback) {
+    return (
+      <section>
+        <h2 className="section-h">// ТВОЯ СВЯЗКА АГЕНТОВ</h2>
+        <div
+          style={{
+            border: `1px solid ${TERM_AMBER}`,
+            borderLeft: `3px solid ${TERM_AMBER}`,
+            padding: "16px 18px",
+            background: "rgba(255,176,0,0.06)",
+            display: "flex",
+            flexDirection: "column",
+            gap: 12,
+          }}
+        >
+          <div
+            style={{
+              fontSize: 11,
+              color: TERM_AMBER,
+              letterSpacing: "0.2em",
+              fontWeight: 700,
+            }}
+          >
+            // НЕДОСТАТОЧНО СИГНАЛА
+          </div>
+          <div style={{ fontSize: 13, color: "#f0e8d0", lineHeight: 1.6 }}>
+            {recs.fallback.reason}
+          </div>
+          <div style={{ fontSize: 13, color: TERM_TEXT, lineHeight: 1.6 }}>
+            {recs.fallback.nextStep}
+          </div>
+          <a
+            href="/"
+            className="term-submit"
+            style={{
+              textDecoration: "none",
+              textAlign: "center",
+              display: "block",
+            }}
+          >
+            $ НАПИСАТЬ ADA НА ГЛАВНОЙ →
+          </a>
+        </div>
+      </section>
+    );
+  }
+
+  if (recs.stack.length === 0) return null;
+
+  return (
+    <section>
+      <h2 className="section-h">// ТВОЯ СВЯЗКА АГЕНТОВ ({recs.stack.length})</h2>
+      <div
+        style={{
+          display: "grid",
+          gridTemplateColumns: "repeat(3, 1fr)",
+          gap: 10,
+          marginBottom: 16,
+          border: `1px solid ${TERM_DIM}`,
+          padding: "12px 14px",
+          background: "rgba(0,255,65,0.03)",
+          borderRadius: 4,
+        }}
+      >
+        <div>
+          <div style={{ fontSize: 10, color: TERM_DIM, letterSpacing: "0.15em" }}>
+            // СТАРТ
+          </div>
+          <div style={{ fontSize: 18, fontWeight: 700, color: TERM_AMBER }}>
+            ${recs.startingMonthlyCost}/мес
+          </div>
+        </div>
+        <div>
+          <div style={{ fontSize: 10, color: TERM_DIM, letterSpacing: "0.15em" }}>
+            // ВСЯ СВЯЗКА
+          </div>
+          <div style={{ fontSize: 18, fontWeight: 700, color: TERM_GREEN }}>
+            ${recs.totalMonthlyCost}/мес
+          </div>
+        </div>
+        <div>
+          <div style={{ fontSize: 10, color: TERM_DIM, letterSpacing: "0.15em" }}>
+            // ОСВОБОДИТ
+          </div>
+          <div style={{ fontSize: 18, fontWeight: 700, color: TERM_GREEN }}>
+            ~{recs.totalHoursSavedPerWeek}ч/нед
+          </div>
+        </div>
+      </div>
+      <div style={{ display: "flex", flexDirection: "column", gap: 14 }}>
+        {recs.stack.map((rec) => (
+          <AgentCard key={rec.agentId} rec={rec} />
+        ))}
+      </div>
+      <div
+        style={{
+          fontSize: 11,
+          color: TERM_DIM,
+          marginTop: 10,
+          lineHeight: 1.5,
+        }}
+      >
+        // начинай с PRIMARY. Остальные — по плану внедрения ниже.
+      </div>
+    </section>
+  );
+}
+
+function RoadmapSection({ phases }: { phases: RoadmapPhase[] }) {
+  if (phases.length === 0) return null;
+  return (
+    <section>
+      <h2 className="section-h">// ПЛАН ВНЕДРЕНИЯ — 3 МЕСЯЦА</h2>
+      <div style={{ display: "flex", flexDirection: "column", gap: 0 }}>
+        {phases.map((p, i) => (
+          <div
+            key={i}
+            style={{
+              display: "flex",
+              gap: 16,
+              padding: "14px 0",
+              borderBottom:
+                i === phases.length - 1 ? "none" : `1px dashed ${TERM_DIM}`,
+            }}
+          >
+            <div
+              style={{
+                minWidth: 96,
+                fontSize: 11,
+                color: TERM_AMBER,
+                letterSpacing: "0.15em",
+                fontWeight: 700,
+                paddingTop: 2,
+              }}
+            >
+              {p.phase.toUpperCase()}
+            </div>
+            <div style={{ flex: 1 }}>
+              {p.agent && (
+                <div
+                  style={{
+                    fontSize: 13,
+                    color: TERM_GREEN,
+                    fontWeight: 700,
+                    marginBottom: 4,
+                  }}
+                >
+                  → {p.agent}
+                </div>
+              )}
+              <div
+                style={{
+                  fontSize: 13,
+                  color: "#d0e0d0",
+                  lineHeight: 1.55,
+                  marginBottom: 6,
+                }}
+              >
+                {p.action}
+              </div>
+              <div
+                style={{
+                  fontSize: 12,
+                  color: TERM_TEXT,
+                  lineHeight: 1.5,
+                  fontStyle: "italic",
+                }}
+              >
+                ✓ {p.successCriterion}
+              </div>
+            </div>
+          </div>
+        ))}
+      </div>
+    </section>
+  );
+}
+
 function ResultView({ profile, onRestart }: { profile: Profile; onRestart: () => void }) {
+  const recs = profile.agentRecommendations;
+  const hasStack = recs?.stack?.length > 0;
+
   return (
     <div style={{ display: "flex", flexDirection: "column", gap: 36 }}>
       {/* Header */}
@@ -500,6 +894,14 @@ function ResultView({ profile, onRestart }: { profile: Profile; onRestart: () =>
           {profile.hollandDescription}
         </div>
       </div>
+
+      {/* HERO: твоя связка агентов */}
+      {recs && <AgentStackSection recs={recs} />}
+
+      {/* Roadmap */}
+      {hasStack && profile.agentStackRoadmap?.length > 0 && (
+        <RoadmapSection phases={profile.agentStackRoadmap} />
+      )}
 
       {/* Big Five */}
       <section>
@@ -538,48 +940,6 @@ function ResultView({ profile, onRestart }: { profile: Profile; onRestart: () =>
               </div>
               <div style={{ fontSize: 13, color: TERM_TEXT, lineHeight: 1.55 }}>
                 {s.evidence}
-              </div>
-            </div>
-          ))}
-        </div>
-      </section>
-
-      {/* Professions */}
-      <section>
-        <h2 className="section-h">
-          // РЕКОМЕНДОВАННЫЕ НАПРАВЛЕНИЯ ({profile.professions.length})
-        </h2>
-        <div style={{ display: "flex", flexDirection: "column", gap: 8 }}>
-          {profile.professions.map((p, i) => (
-            <div
-              key={i}
-              style={{
-                display: "flex",
-                gap: 12,
-                padding: "10px 12px",
-                border: `1px solid ${TERM_DIM}`,
-                background: "rgba(0,255,65,0.02)",
-                alignItems: "flex-start",
-              }}
-            >
-              <div
-                style={{
-                  fontSize: 11,
-                  color: TERM_AMBER,
-                  fontWeight: 700,
-                  minWidth: 48,
-                  paddingTop: 2,
-                }}
-              >
-                {p.match}%
-              </div>
-              <div style={{ flex: 1 }}>
-                <div style={{ fontSize: 14, color: TERM_GREEN, fontWeight: 600 }}>
-                  {p.title}
-                </div>
-                <div style={{ fontSize: 12, color: TERM_TEXT, marginTop: 2, lineHeight: 1.5 }}>
-                  {p.note}
-                </div>
               </div>
             </div>
           ))}
@@ -876,6 +1236,14 @@ export default function DiscoverPage() {
           color: ${TERM_AMBER} !important;
           text-shadow: 0 0 10px rgba(255, 176, 0, 0.5);
         }
+        .agent-card {
+          transition: all 0.15s;
+        }
+        .agent-card:hover {
+          background: rgba(0, 255, 65, 0.06) !important;
+          border-color: ${TERM_GREEN} !important;
+          box-shadow: 0 0 18px rgba(255, 176, 0, 0.25);
+        }
       `}</style>
 
       {/* CRT scanlines overlay — matches /factory */}
@@ -1022,22 +1390,21 @@ function IntroView({ onStart }: { onStart: () => void }) {
     "> boot: Ada agent · research unit",
     "> loading: holland_codes.dll [ok]",
     "> loading: big_five_ocean.dll [ok]",
+    "> loading: finekot_agent_match.dll [ok]",
     "> ready.",
     "",
-    "DISCOVER — СКАНИРОВАНИЕ ЛИЧНОСТИ",
+    "DISCOVER — ПОДБОР ТВОЕЙ СВЯЗКИ АГЕНТОВ",
     "",
-    "Я — Ada, AI-агент Finekot Systems.",
-    "Я отсканирую твою PERSONALITY и скажу, какой",
-    "из наших агентов сделает тебя эффективнее.",
+    "Я — Ada, AI-агент Finekot Systems. Задам 20 адаптивных",
+    "вопросов. Соберу личностный профиль по валидированным",
+    "моделям (Holland Codes + Big Five) и на их основе подберу",
+    "связку агентов Finekot, которая сделает тебя эффективнее.",
     "",
-    "20 адаптивных вопросов · два валидированных фреймворка:",
-    "Holland Codes (RIASEC) и Big Five (OCEAN).",
-    "",
-    "На выходе получишь:",
+    "На выходе:",
     "  — твой Holland-код и Big Five профиль",
-    "  — 3 ключевые сильные стороны",
-    "  — рекомендацию: какой Finekot-агент усилит именно тебя",
-    "  — как его внедрить в твой рабочий день",
+    "  — 1–3 рекомендованных агента с honest-матчем",
+    "  — какие задачи агенты заберут у тебя (с цитатами из твоих ответов)",
+    "  — 3-месячный план внедрения связки",
     "",
     "Длительность: ~10 минут.",
     "Данные не сохраняются. Всё в памяти браузера.",
@@ -1116,9 +1483,10 @@ function AnalyzingView() {
     "> обработка истории диалога...",
     "> сопоставление с RIASEC...",
     "> сопоставление с OCEAN...",
-    "> синтез сильных сторон...",
-    "> подбор профессиональных ниш...",
-    "> построение плана развития...",
+    "> расчёт life-context сигналов...",
+    "> матчинг агентов Finekot по rubric...",
+    "> проверка честности: ≥65, budget, overlap...",
+    "> построение roadmap внедрения...",
     "> финализация профиля...",
   ];
   const [shown, setShown] = useState(0);

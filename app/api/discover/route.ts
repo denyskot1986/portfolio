@@ -250,7 +250,7 @@ ${formatHistoryForLLM(history)}
         model: ANALYST_MODEL,
         system: ANALYST_SYSTEM_PROMPT,
         userMessage,
-        maxTokens: 4000,
+        maxTokens: 5000,
       });
 
       let parsed;
