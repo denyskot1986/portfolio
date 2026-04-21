@@ -177,11 +177,11 @@ function QuestionView({
         </div>
         <div
           style={{
-            fontSize: 18,
+            fontSize: 14,
             lineHeight: 1.55,
             color: TERM_GREEN,
             fontFamily: "var(--font-jetbrains-mono), monospace",
-            minHeight: 60,
+            minHeight: 48,
           }}
         >
           {typed}
