@@ -174,6 +174,20 @@ export default function InlineAgentChat({
     }
   }, [slug, initialGreeting]);
 
+  // Language / greeting refresh. If the user hasn't actually written anything
+  // yet, the only message is the initial greeting — and we want it in the
+  // current UI language. The LangProvider hydrates AFTER the first render
+  // (EN default → RU from localStorage), which was leaving the greeting
+  // frozen in English. Also re-runs on real lang switcher clicks.
+  useEffect(() => {
+    if (!hydrated.current) return;
+    setMessages((prev) => {
+      const hasUserTurn = prev.some((m) => m.role === "user");
+      if (hasUserTurn) return prev;
+      return [initialGreeting];
+    });
+  }, [initialGreeting]);
+
   // Persist on every message change after hydration.
   useEffect(() => {
     if (!hydrated.current || !sessionId) return;

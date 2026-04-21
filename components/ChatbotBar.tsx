@@ -788,8 +788,18 @@ export default function ChatbotBar() {
                     const isUsr = msg.role === "user";
                     const isLast = i === visibleMessages.length - 1;
                     const hasLlmReplies = !!msg.replies?.length;
+                    // Only fall back to QUICK_COMMANDS chips under the very
+                    // first welcome message — otherwise mid-conversation
+                    // replies without LLM chips would show "Помочь определиться"
+                    // and a click would restart the scan from scratch (loop).
+                    const isWelcome =
+                      i === 0 && msg.content === WELCOME_MESSAGE.content;
                     const showReplies =
-                      !isUsr && isLast && !loading && !agentDriving;
+                      !isUsr &&
+                      isLast &&
+                      !loading &&
+                      !agentDriving &&
+                      (hasLlmReplies || isWelcome);
                     const fallbackChips: Array<{
                       label: string;
                       prompt: string;
