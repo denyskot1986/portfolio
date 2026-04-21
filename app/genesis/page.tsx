@@ -617,8 +617,13 @@ export default function GenesisPage() {
                   transition={{ duration: 0.6 }}
                   className="mt-10 flex flex-col items-center gap-6"
                 >
-                  <div className="text-2xl sm:text-4xl tracking-[0.35em] text-[var(--accent)]">
-                    ОНИ САМИ ПО СЕБЕ
+                  <div className="flex flex-col items-center gap-2">
+                    <div className="text-2xl sm:text-4xl tracking-[0.35em] text-[var(--accent)]">
+                      АГЕНТЫ ВЕДУТ БИЗНЕС
+                    </div>
+                    <div className="text-[10px] sm:text-xs tracking-[0.3em] opacity-60 text-[var(--accent)]">
+                      GENESIS: ПОСМОТРЕТЬ КАК РОДИЛОСЬ
+                    </div>
                   </div>
                   <Link
                     href="/"
