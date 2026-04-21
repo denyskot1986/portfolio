@@ -55,7 +55,7 @@ export default function LiveVitals({ slug, agentName }: LiveVitalsProps) {
   const [tasks, setTasks] = useState(baseline.tasks);
   const [lastSignal, setLastSignal] = useState(4);
   const [rate, setRate] = useState(3);
-  const [collapsed, setCollapsed] = useState(false);
+  const [collapsed, setCollapsed] = useState(true);
 
   useEffect(() => {
     if (reduced) return;
