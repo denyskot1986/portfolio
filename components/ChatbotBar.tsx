@@ -1137,7 +1137,7 @@ export default function ChatbotBar() {
               теперь прячется за "log" button в хедере session-log. */}
           <button
             onClick={() => setCmdOpen((v) => !v)}
-            className="relative shrink-0 h-11 px-4 sm:px-5 flex items-center justify-center gap-2 transition-all font-mono uppercase"
+            className="relative shrink-0 h-11 px-5 sm:px-6 flex items-center justify-center gap-2 font-mono uppercase"
             style={{
               background: cmdOpen
                 ? "#ffb000"
@@ -1145,29 +1145,26 @@ export default function ChatbotBar() {
               border: "1px solid #ffb000",
               color: cmdOpen ? "#040208" : "#ffb000",
               borderRadius: "4px",
-              fontSize: "11px",
+              fontSize: "15px",
               fontWeight: 700,
-              letterSpacing: "0.28em",
+              letterSpacing: "0.24em",
               textShadow: cmdOpen
                 ? "none"
                 : "0 0 8px rgba(255, 176, 0, 0.55)",
               boxShadow: cmdOpen
-                ? "0 0 18px rgba(255, 176, 0, 0.45)"
+                ? "0 -4px 18px rgba(255, 176, 0, 0.5), 0 0 18px rgba(255, 176, 0, 0.3)"
                 : "0 0 16px rgba(255, 176, 0, 0.22), inset 0 0 10px rgba(255, 176, 0, 0.06)",
+              transform: cmdOpen ? "translateY(-25%)" : "translateY(0)",
+              transition:
+                "transform 0.22s cubic-bezier(0.2, 0.8, 0.2, 1), background 0.18s, color 0.18s, box-shadow 0.18s",
             }}
             aria-label={cmdOpen ? "Close commands" : "Open commands"}
+            aria-expanded={cmdOpen}
           >
-            <span
-              aria-hidden
-              className="text-sm font-bold"
-              style={{ letterSpacing: "-0.05em", opacity: cmdOpen ? 0.8 : 1 }}
-            >
-              &gt;_
-            </span>
             <span>CMD</span>
             <motion.svg
-              width="10"
-              height="10"
+              width="12"
+              height="12"
               viewBox="0 0 24 24"
               fill="none"
               stroke="currentColor"
