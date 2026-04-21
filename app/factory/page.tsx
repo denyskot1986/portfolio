@@ -22,20 +22,24 @@ const BOOT_LINES: string[] = [
   "[00:04] bot.set_webhook('/tg/borya_3553') → HTTP 200 · borya online ✓",
 ];
 
-const COPY: Record<
-  Lang,
-  {
-    header: string;
-    subtitle: string;
-    backHome: string;
-    meetBoris: string;
-    firstMsg: string;
-    replay: string;
-    legend: string;
-    caption: string;
-    handlePrefix: string;
-  }
-> = {
+type Copy = {
+  header: string;
+  subtitle: string;
+  backHome: string;
+  meetBoris: string;
+  firstMsg: string;
+  replay: string;
+  legend: string;
+  caption: string;
+  handlePrefix: string;
+  pitchHeader: string;
+  pitchOneLiner: string;
+  spec: Array<[string, string]>;
+  pricing: string;
+  fullSpec: string;
+};
+
+const COPY: Record<Lang, Copy> = {
   EN: {
     header: "FINEKOT · assembly bay",
     subtitle: "forging your Boris instance",
@@ -46,6 +50,19 @@ const COPY: Record<
     legend: "Each Boris is a unique instance — not a copy.",
     caption: "demo · live assembly line",
     handlePrefix: "your handle",
+    pitchHeader: "// who is Boris",
+    pitchOneLiner:
+      "A second brain that lives in your Telegram. Not a plugin, not a chatbot — an AI chief of staff that remembers everything and actually pulls your own tools.",
+    spec: [
+      ["role", "personal AI chief of staff"],
+      ["memory", "persistent · unlimited · yours"],
+      ["tools", "gmail · calendar · notion · shopify · web"],
+      ["channel", "Telegram · voice + text"],
+      ["uptime", "24/7 · your timezone"],
+      ["privacy", "your data stays in your instance"],
+    ],
+    pricing: "$49 / month · cancel anytime · no setup fee",
+    fullSpec: "full spec & checkout →",
   },
   RU: {
     header: "FINEKOT · сборочный цех",
@@ -57,6 +74,19 @@ const COPY: Record<
     legend: "Каждый Борис — уникальный экземпляр, не копия.",
     caption: "демо · сборочная линия",
     handlePrefix: "ваш handle",
+    pitchHeader: "// кто такой Борис",
+    pitchOneLiner:
+      "Второй мозг, живущий у тебя в Telegram. Не плагин, не чат-бот — AI шеф-штаб, который помнит всё и сам дёргает твои рабочие инструменты.",
+    spec: [
+      ["роль", "персональный AI шеф-штаб"],
+      ["память", "persistent · без лимита · твоя"],
+      ["tools", "gmail · calendar · notion · shopify · web"],
+      ["канал", "Telegram · голос + текст"],
+      ["uptime", "24/7 · твой часовой пояс"],
+      ["privacy", "данные живут в твоём инстансе"],
+    ],
+    pricing: "$49 / месяц · отмена в один клик · без setup fee",
+    fullSpec: "полная спецификация и оплата →",
   },
   UA: {
     header: "FINEKOT · складальний цех",
@@ -68,6 +98,19 @@ const COPY: Record<
     legend: "Кожен Борис — унікальний екземпляр, не копія.",
     caption: "демо · складальна лінія",
     handlePrefix: "ваш handle",
+    pitchHeader: "// хто такий Борис",
+    pitchOneLiner:
+      "Другий мозок, що живе у тебе в Telegram. Не плагін, не чат-бот — AI шеф-штаб, який пам'ятає все і сам смикає твої робочі інструменти.",
+    spec: [
+      ["роль", "персональний AI шеф-штаб"],
+      ["пам'ять", "persistent · без ліміту · твоя"],
+      ["tools", "gmail · calendar · notion · shopify · web"],
+      ["канал", "Telegram · голос + текст"],
+      ["uptime", "24/7 · твій часовий пояс"],
+      ["privacy", "дані живуть у твоєму інстансі"],
+    ],
+    pricing: "$49 / місяць · відписка в один клік · без setup fee",
+    fullSpec: "повна специфікація та оплата →",
   },
 };
 
@@ -388,9 +431,92 @@ export default function FactoryPage() {
                       </div>
 
                       <div
-                        className="mt-4 text-[10px] uppercase"
+                        className="mt-6 pt-5"
                         style={{
-                          color: "rgba(217, 255, 224, 0.4)",
+                          borderTop:
+                            "1px dashed rgba(0, 255, 65, 0.22)",
+                        }}
+                      >
+                        <div
+                          className="text-[10px] uppercase"
+                          style={{
+                            color: "rgba(255, 176, 0, 0.75)",
+                            letterSpacing: "0.22em",
+                          }}
+                        >
+                          {t.pitchHeader}
+                        </div>
+                        <div
+                          className="mt-2 text-[13px] sm:text-[14px] leading-relaxed"
+                          style={{ color: "#d9ffe0" }}
+                        >
+                          {t.pitchOneLiner}
+                        </div>
+
+                        <div
+                          className="mt-4 text-[12px]"
+                          style={{
+                            color: "rgba(0, 255, 65, 0.85)",
+                            textShadow: "0 0 6px rgba(0, 255, 65, 0.35)",
+                          }}
+                        >
+                          $ boris.spec
+                        </div>
+                        <div
+                          className="mt-1 text-[12px] leading-[1.75]"
+                          style={{ color: "rgba(217, 255, 224, 0.88)" }}
+                        >
+                          {t.spec.map(([k, v]) => (
+                            <div
+                              key={k}
+                              className="flex flex-wrap gap-x-3"
+                            >
+                              <span
+                                style={{
+                                  color: "rgba(0, 255, 65, 0.6)",
+                                  minWidth: "8ch",
+                                  display: "inline-block",
+                                }}
+                              >
+                                {k}
+                              </span>
+                              <span className="flex-1">{v}</span>
+                            </div>
+                          ))}
+                        </div>
+
+                        <div
+                          className="mt-4 text-[12px]"
+                          style={{
+                            color: "rgba(0, 255, 65, 0.85)",
+                            textShadow: "0 0 6px rgba(0, 255, 65, 0.35)",
+                          }}
+                        >
+                          $ pricing
+                        </div>
+                        <div
+                          className="mt-1 text-[13px]"
+                          style={{ color: "#ffd88a" }}
+                        >
+                          {t.pricing}
+                        </div>
+
+                        <Link
+                          href="/products/boris"
+                          className="mt-4 inline-flex items-center gap-2 text-[11px] uppercase tracking-[0.22em] transition-colors"
+                          style={{
+                            color: "#ffb000",
+                            textShadow: "0 0 6px rgba(255, 176, 0, 0.5)",
+                          }}
+                        >
+                          <span>{t.fullSpec}</span>
+                        </Link>
+                      </div>
+
+                      <div
+                        className="mt-5 text-[10px] uppercase"
+                        style={{
+                          color: "rgba(217, 255, 224, 0.35)",
                           letterSpacing: "0.22em",
                         }}
                       >
