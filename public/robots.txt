@@ -1,5 +1,6 @@
 User-agent: *
 Allow: /
+Disallow: /genesis
 
 # AI Agent Discovery
 # Products API: /api/products
