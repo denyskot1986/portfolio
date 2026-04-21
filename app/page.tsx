@@ -306,24 +306,6 @@ export default function Home() {
 
           <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.8, delay: 0.6 }}
             className="flex flex-col sm:flex-row gap-3 sm:gap-4 justify-center sm:items-stretch">
-            <Link href="/discover" className="btn-terminal">
-              <span className="flex flex-col items-start leading-tight text-left">
-                <span>{t.cta.discoverScan}</span>
-                <span
-                  style={{
-                    fontSize: 10,
-                    fontWeight: 400,
-                    opacity: 0.6,
-                    letterSpacing: "0.02em",
-                    textTransform: "none",
-                    marginTop: 2,
-                    textShadow: "none",
-                  }}
-                >
-                  {t.cta.discoverScanSub}
-                </span>
-              </span>
-            </Link>
             <a href="#projects" className="btn-terminal">
               <span className="flex flex-col items-start leading-tight text-left">
                 <span>{t.cta.viewProducts}</span>

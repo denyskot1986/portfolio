@@ -10,7 +10,7 @@ interface ChatMessage {
 }
 
 // Internal-only link whitelist. Matches the rule in route.ts SYSTEM_PROMPT.
-const LINK_WHITELIST = /^\/(products\/[a-z0-9-]+|discover|reels-agent)\/?$/i;
+const LINK_WHITELIST = /^\/(products\/[a-z0-9-]+|reels-agent)\/?$/i;
 const LINK_REGEX = /\[([^\]\n]+)\]\((\/[^\s)]+)\)/g;
 
 function renderWithLinks(content: string): React.ReactNode {

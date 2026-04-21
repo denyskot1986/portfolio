@@ -5,7 +5,7 @@ export interface T {
   nav: { home: string; products: string; projects: string; contact: string; connect: string };
   heroSubtitle: string;
   roles: string[];
-  cta: { viewProducts: string; viewProductsSub: string; requestIntegration: string; discoverScan: string; discoverScanSub: string };
+  cta: { viewProducts: string; viewProductsSub: string; requestIntegration: string };
   stats: { products: string; startingPrice: string; dayIntegration: string; systemsBuilt: string };
   comparison: { without: string; with: string; rows: { bad: string; good: string }[]; cta: string };
   projectsSection: { label: string; title: string; shown: string; showMore: string; showLess: string };
@@ -63,7 +63,7 @@ const EN: T = {
     "one engineer on the other end",
     "authored agents. from $49/mo.",
   ],
-  cta: { viewProducts: "Ready Products", viewProductsSub: "agents & systems", requestIntegration: "Request Integration", discoverScan: "Take the Scan", discoverScanSub: "helps us understand you and pick the right agent" },
+  cta: { viewProducts: "Ready Products", viewProductsSub: "agents & systems", requestIntegration: "Request Integration" },
   stats: { products: "AI Systems", startingPrice: "Starting From", dayIntegration: "Day to Deploy", systemsBuilt: "Built & Shipped" },
   comparison: {
     without: "Without",
@@ -339,7 +339,7 @@ const RU: T = {
     "AI \u0447\u0438\u0442\u0430\u0435\u0442 \u0434\u043e\u043a\u0443\u043c\u0435\u043d\u0442\u044b. \u041e\u0442\u0432\u0435\u0447\u0430\u0435\u0442 \u043c\u0433\u043d\u043e\u0432\u0435\u043d\u043d\u043e.",
     "\u041c\u0430\u0441\u0448\u0442\u0430\u0431 \u043e\u0442 1 \u0434\u043e 1000 \u0431\u0435\u0437 \u043d\u0430\u0439\u043c\u0430",
   ],
-  cta: { viewProducts: "\u0413\u043e\u0442\u043e\u0432\u044b\u0435 \u043f\u0440\u043e\u0434\u0443\u043a\u0442\u044b", viewProductsSub: "\u0430\u0433\u0435\u043d\u0442\u044b, \u043f\u0440\u043e\u0433\u0440\u0430\u043c\u043c\u044b", requestIntegration: "\u0417\u0430\u043a\u0430\u0437\u0430\u0442\u044c \u0438\u043d\u0442\u0435\u0433\u0440\u0430\u0446\u0438\u044e", discoverScan: "\u041f\u0440\u043e\u0439\u0442\u0438 \u0441\u043a\u0430\u043d\u0438\u0440\u043e\u0432\u0430\u043d\u0438\u0435", discoverScanSub: "\u043f\u043e\u043c\u043e\u0433\u0430\u0435\u0442 \u043f\u043e\u043d\u044f\u0442\u044c \u0432\u0430\u0441 \u0438 \u043a\u0430\u043a\u043e\u0439 \u0430\u0433\u0435\u043d\u0442 \u0432\u0430\u043c \u043d\u0443\u0436\u0435\u043d" },
+  cta: { viewProducts: "\u0413\u043e\u0442\u043e\u0432\u044b\u0435 \u043f\u0440\u043e\u0434\u0443\u043a\u0442\u044b", viewProductsSub: "\u0430\u0433\u0435\u043d\u0442\u044b, \u043f\u0440\u043e\u0433\u0440\u0430\u043c\u043c\u044b", requestIntegration: "\u0417\u0430\u043a\u0430\u0437\u0430\u0442\u044c \u0438\u043d\u0442\u0435\u0433\u0440\u0430\u0446\u0438\u044e" },
   stats: { products: "AI-\u0441\u0438\u0441\u0442\u0435\u043c", startingPrice: "\u0421\u0442\u0430\u0440\u0442\u043e\u0432\u0430\u044f \u0446\u0435\u043d\u0430", dayIntegration: "\u0414\u0435\u043d\u044c \u043d\u0430 \u0437\u0430\u043f\u0443\u0441\u043a", systemsBuilt: "\u0421\u043e\u0437\u0434\u0430\u043d\u043e \u0438 \u0434\u043e\u0441\u0442\u0430\u0432\u043b\u0435\u043d\u043e" },
   comparison: {
     without: "\u0411\u0435\u0437 \u043d\u0430\u0441",
@@ -615,7 +615,7 @@ const UA: T = {
     "AI \u0447\u0438\u0442\u0430\u0454 \u0434\u043e\u043a\u0443\u043c\u0435\u043d\u0442\u0438. \u0412\u0456\u0434\u043f\u043e\u0432\u0456\u0434\u0430\u0454 \u043c\u0438\u0442\u0442\u0454\u0432\u043e.",
     "\u041c\u0430\u0441\u0448\u0442\u0430\u0431 \u0432\u0456\u0434 1 \u0434\u043e 1000 \u0431\u0435\u0437 \u043d\u0430\u0439\u043c\u0443",
   ],
-  cta: { viewProducts: "\u0413\u043e\u0442\u043e\u0432\u0456 \u043f\u0440\u043e\u0434\u0443\u043a\u0442\u0438", viewProductsSub: "\u0430\u0433\u0435\u043d\u0442\u0438, \u043f\u0440\u043e\u0433\u0440\u0430\u043c\u0438", requestIntegration: "\u0417\u0430\u043c\u043e\u0432\u0438\u0442\u0438 \u0456\u043d\u0442\u0435\u0433\u0440\u0430\u0446\u0456\u044e", discoverScan: "\u041f\u0440\u043e\u0439\u0442\u0438 \u0441\u043a\u0430\u043d\u0443\u0432\u0430\u043d\u043d\u044f", discoverScanSub: "\u0434\u043e\u043f\u043e\u043c\u0430\u0433\u0430\u0454 \u0437\u0440\u043e\u0437\u0443\u043c\u0456\u0442\u0438 \u0432\u0430\u0441 \u0456 \u044f\u043a\u0438\u0439 \u0430\u0433\u0435\u043d\u0442 \u0432\u0430\u043c \u043f\u043e\u0442\u0440\u0456\u0431\u0435\u043d" },
+  cta: { viewProducts: "\u0413\u043e\u0442\u043e\u0432\u0456 \u043f\u0440\u043e\u0434\u0443\u043a\u0442\u0438", viewProductsSub: "\u0430\u0433\u0435\u043d\u0442\u0438, \u043f\u0440\u043e\u0433\u0440\u0430\u043c\u0438", requestIntegration: "\u0417\u0430\u043c\u043e\u0432\u0438\u0442\u0438 \u0456\u043d\u0442\u0435\u0433\u0440\u0430\u0446\u0456\u044e" },
   stats: { products: "AI-\u0441\u0438\u0441\u0442\u0435\u043c", startingPrice: "\u0421\u0442\u0430\u0440\u0442\u043e\u0432\u0430 \u0446\u0456\u043d\u0430", dayIntegration: "\u0414\u0435\u043d\u044c \u043d\u0430 \u0437\u0430\u043f\u0443\u0441\u043a", systemsBuilt: "\u0421\u0442\u0432\u043e\u0440\u0435\u043d\u043e \u0442\u0430 \u0434\u043e\u0441\u0442\u0430\u0432\u043b\u0435\u043d\u043e" },
   comparison: {
     without: "\u0411\u0435\u0437 \u043d\u0430\u0441",

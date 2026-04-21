@@ -21,7 +21,7 @@ interface ChatMessage {
 }
 
 // Allowed internal routes for nav actions (mirrors SYSTEM_PROMPT whitelist).
-const NAV_WHITELIST = /^\/(products\/[a-z0-9-]+|discover|reels-agent|genesis)\/?$/i;
+const NAV_WHITELIST = /^\/(products\/[a-z0-9-]+|reels-agent|genesis)\/?$/i;
 
 // Action directive syntax emitted by the LLM:
 //   [nav:/products/david]   → next.router.push
@@ -211,9 +211,9 @@ const QUICK_COMMANDS: QuickCommand[] = [
     emoji: "",
     label: { EN: "Help me decide", RU: "Помочь определиться", UA: "Допоможи визначитися" },
     prompt: {
-      EN: "Help me decide which agent I need. Offer the personality scan and, if I agree, open /discover.",
-      RU: "Помоги мне определиться, какой агент мне нужен. Предложи пройти скан личности, и если я соглашусь — открой /discover.",
-      UA: "Допоможи визначитись, який агент мені потрібен. Запропонуй пройти скан особистості, і якщо я погоджусь — відкрий /discover.",
+      EN: "Help me decide which agent I need. Run the short in-chat scan — ask me 5-7 short questions and then recommend a specific agent from the catalog with its price.",
+      RU: "Помоги мне определиться, какой агент мне нужен. Запусти короткий скан прямо тут в чате — задай 5-7 коротких вопросов и потом порекомендуй конкретного агента из каталога с ценой.",
+      UA: "Допоможи визначитись, який агент мені потрібен. Запусти короткий скан прямо тут у чаті — постав 5-7 коротких питань і потім порекомендуй конкретного агента з каталогу з ціною.",
     },
   },
 ];
