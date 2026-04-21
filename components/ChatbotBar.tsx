@@ -465,23 +465,6 @@ export default function ChatbotBar() {
           data.reply ||
           data.error ||
           "Связь прервана. Напиши в Telegram: @shop_by_finekot_bot";
-
-        // In agent roleplay mode the agent is NOT allowed to drive the site:
-        // no [nav:], no [scroll:], no tour "===" beats. Strip them defensively
-        // in case the model slips — the agent just speaks, period.
-        if (currentAgent) {
-          const parsed = parseReply(raw);
-          setMessages((prev) => [
-            ...prev,
-            {
-              role: "assistant",
-              content: parsed.visible || "> online.",
-              replies: parsed.replies.length ? parsed.replies : undefined,
-            },
-          ]);
-          return;
-        }
-
         const beats = parseBeats(raw);
         if (beats.length === 1) {
           const parsed = beats[0];
@@ -1273,7 +1256,21 @@ export default function ChatbotBar() {
                       animation: "blink 1s step-end infinite",
                     }}
                   />
-                  <span>{placeholder}</span>
+                  <span>
+                    {placeholder}
+                    {currentAgent && (
+                      <span
+                        className="inline-block align-[-2px] ml-[2px]"
+                        style={{
+                          width: "0.5em",
+                          height: "1em",
+                          background: "rgba(0,255,65,0.85)",
+                          boxShadow: "0 0 8px rgba(0,255,65,0.7)",
+                          animation: "blink 1s step-end infinite",
+                        }}
+                      />
+                    )}
+                  </span>
                 </div>
               )}
               <textarea
