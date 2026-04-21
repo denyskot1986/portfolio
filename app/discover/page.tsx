@@ -763,10 +763,12 @@ export default function DiscoverPage() {
     <div
       style={{
         minHeight: "100vh",
-        background: TERM_BG,
+        background:
+          "radial-gradient(ellipse at 50% 30%, rgba(0, 64, 24, 0.35) 0%, rgba(4, 2, 8, 1) 65%)",
         color: TERM_GREEN,
         fontFamily: "var(--font-jetbrains-mono), 'JetBrains Mono', monospace",
-        padding: "24px 16px 60px",
+        paddingTop: "var(--chat-top-h, 0px)",
+        paddingBottom: "calc(var(--chat-bar-h, 72px) + 20px)",
       }}
     >
       <style jsx global>{`
@@ -876,55 +878,104 @@ export default function DiscoverPage() {
         }
       `}</style>
 
-      {/* CRT scanlines overlay */}
+      {/* CRT scanlines overlay — matches /factory */}
       <div
+        aria-hidden
         style={{
           position: "fixed",
           inset: 0,
-          background:
-            "repeating-linear-gradient(0deg, transparent, transparent 2px, rgba(0,0,0,0.15) 2px, rgba(0,0,0,0.15) 4px)",
+          backgroundImage:
+            "repeating-linear-gradient(0deg, rgba(0, 255, 65, 0.18) 0px, rgba(0, 255, 65, 0.18) 1px, transparent 1px, transparent 3px)",
+          opacity: 0.18,
+          mixBlendMode: "overlay",
           pointerEvents: "none",
           zIndex: 100,
         }}
       />
+
+      {/* Top bar — mirrors /factory */}
+      <div
+        style={{
+          position: "relative",
+          zIndex: 1,
+          display: "flex",
+          alignItems: "center",
+          justifyContent: "space-between",
+          padding: "12px 20px",
+          fontSize: 11,
+          textTransform: "uppercase",
+          letterSpacing: "0.22em",
+          borderBottom: "1px solid rgba(0, 255, 65, 0.25)",
+          color: "rgba(0, 255, 65, 0.78)",
+          background: "rgba(4, 2, 8, 0.6)",
+          marginBottom: 24,
+        }}
+      >
+        <div style={{ display: "flex", alignItems: "center", gap: 8 }}>
+          <span
+            style={{
+              display: "inline-block",
+              width: 8,
+              height: 8,
+              borderRadius: "50%",
+              background: "#00ff41",
+              boxShadow: "0 0 10px rgba(0, 255, 65, 0.9)",
+            }}
+          />
+          <span>FINEKOT · personality scan</span>
+        </div>
+        <a
+          href="/"
+          className="term-home-link"
+          style={{
+            color: "rgba(255, 176, 0, 0.9)",
+            textDecoration: "none",
+          }}
+        >
+          ← назад
+        </a>
+      </div>
 
       <div
         ref={stageRef}
         style={{
           maxWidth: 720,
           margin: "0 auto",
+          padding: "0 16px",
           position: "relative",
           zIndex: 1,
         }}
       >
-        {/* Header bar */}
+        {/* Panel — mirrors /factory card */}
         <div
           style={{
-            display: "flex",
-            justifyContent: "space-between",
-            alignItems: "center",
-            paddingBottom: 12,
-            borderBottom: `1px solid ${TERM_DIM}`,
-            marginBottom: 28,
+            background: "rgba(2, 10, 4, 0.82)",
+            border: "1px solid rgba(0, 255, 65, 0.35)",
+            borderRadius: 6,
+            boxShadow:
+              "0 0 32px rgba(0, 255, 65, 0.18), inset 0 0 60px rgba(0, 255, 65, 0.05)",
+            padding: "20px 18px 24px",
           }}
         >
-          <a
-            href="/"
-            className="term-home-link"
+          <div
             style={{
-              fontSize: 11,
-              color: TERM_GREEN,
-              letterSpacing: "0.2em",
-              textDecoration: "none",
+              display: "flex",
+              alignItems: "center",
+              justifyContent: "space-between",
+              paddingBottom: 10,
+              marginBottom: 22,
+              borderBottom: "1px solid rgba(0, 255, 65, 0.25)",
+              fontSize: 10,
+              textTransform: "uppercase",
+              letterSpacing: "0.22em",
+              color: "rgba(0, 255, 65, 0.7)",
             }}
           >
-            <span style={{ opacity: 0.6, marginRight: 6 }}>← cd ..</span>
-            SKYNET://discover
-          </a>
-          <div style={{ fontSize: 11, color: TERM_DIM, letterSpacing: "0.15em" }}>
-            v1.0 · personality.scan
+            <span>scanning your profile</span>
+            <span style={{ color: "rgba(255, 176, 0, 0.7)" }}>
+              demo · personality.scan
+            </span>
           </div>
-        </div>
 
         {/* Stage routing */}
         {stage === "intro" && (
@@ -958,6 +1009,7 @@ export default function DiscoverPage() {
         {stage === "error" && (
           <ErrorView message={errorMsg} onRetry={start} />
         )}
+        </div>
       </div>
     </div>
   );
