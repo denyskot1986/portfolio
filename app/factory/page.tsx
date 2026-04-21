@@ -354,10 +354,8 @@ export default function FactoryPage() {
                       </div>
 
                       <div className="mt-4 flex flex-wrap items-center gap-2.5">
-                        <a
-                          href="https://t.me/shop_by_finekot_bot"
-                          target="_blank"
-                          rel="noopener noreferrer"
+                        <Link
+                          href="/products/boris"
                           className="inline-flex items-center gap-2 px-4 h-10 text-[12px] uppercase tracking-[0.2em] transition-all"
                           style={{
                             background: "rgba(0, 255, 65, 0.08)",
@@ -370,7 +368,7 @@ export default function FactoryPage() {
                         >
                           <span aria-hidden>✦</span>
                           <span>{t.meetBoris}</span>
-                        </a>
+                        </Link>
                         <button
                           type="button"
                           onClick={restart}
