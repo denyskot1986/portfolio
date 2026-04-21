@@ -634,7 +634,26 @@ export default function ChatbotBar() {
                 >
                   <span style={{ color: "#ffb000", opacity: 0.7 }}>└─</span>
                   <span className="uppercase">session log</span>
-                  <span className="flex-1" />
+                  <span className="flex-1 flex items-center justify-center gap-1.5">
+                    <span
+                      className="inline-block w-1.5 h-1.5 rounded-full"
+                      style={{
+                        background: "#00ff41",
+                        boxShadow: "0 0 6px rgba(0, 255, 65, 0.9)",
+                      }}
+                      aria-hidden
+                    />
+                    <span
+                      className="uppercase"
+                      style={{
+                        color: "#ffb000",
+                        textShadow: "0 0 6px rgba(255, 176, 0, 0.45)",
+                        letterSpacing: "0.22em",
+                      }}
+                    >
+                      David agent
+                    </span>
+                  </span>
                   <button
                     onClick={() => setLogOpen(false)}
                     className="transition-all flex items-center gap-1 px-2 py-0.5 uppercase"
