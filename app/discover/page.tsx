@@ -922,7 +922,7 @@ export default function DiscoverPage() {
               boxShadow: "0 0 10px rgba(0, 255, 65, 0.9)",
             }}
           />
-          <span>FINEKOT · personality scan</span>
+          <span>AGENT: ADA · personality scan</span>
         </div>
         <a
           href="/"
@@ -971,7 +971,7 @@ export default function DiscoverPage() {
               color: "rgba(0, 255, 65, 0.7)",
             }}
           >
-            <span>scanning your profile</span>
+            <span>ada agent · live</span>
             <span style={{ color: "rgba(255, 176, 0, 0.7)" }}>
               demo · personality.scan
             </span>
@@ -1019,18 +1019,19 @@ export default function DiscoverPage() {
 
 function IntroView({ onStart }: { onStart: () => void }) {
   const lines = [
-    "> initializing personality scan module...",
+    "> boot: Ada agent · research terminator",
     "> loading: holland_codes.dll [ok]",
     "> loading: big_five_ocean.dll [ok]",
     "> ready.",
     "",
     "DISCOVER — СКАНИРОВАНИЕ ЛИЧНОСТИ",
     "",
-    "Я — SKYNET. Сейчас я задам тебе 20 адаптивных вопросов",
-    "и определю твой профиль по двум валидированным моделям:",
+    "Я — Ada, AI-агент Finekot Systems. Моя специализация —",
+    "исследования и анализ. Сейчас задам тебе 20 адаптивных",
+    "вопросов и соберу профиль по двум валидированным моделям:",
     "Holland Codes (RIASEC) и Big Five (OCEAN).",
     "",
-    "На выходе ты получишь:",
+    "На выходе получишь:",
     "  — твой Holland-код и Big Five профиль",
     "  — 3 ключевые сильные стороны",
     "  — 8-12 рекомендованных профессий и ниш",
