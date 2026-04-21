@@ -216,6 +216,56 @@ const QUICK_COMMANDS: QuickCommand[] = [
       UA: "Допоможи визначитись, який агент мені потрібен. Запусти короткий скан прямо тут у чаті — постав 5-7 коротких питань і потім порекомендуй конкретного агента з каталогу з ціною.",
     },
   },
+  {
+    id: "how-it-works",
+    emoji: "",
+    label: { EN: "How does it all work?", RU: "Как всё работает?", UA: "Як це все працює?" },
+    prompt: {
+      EN: "Explain in 3-4 short lines how Finekot Systems works end-to-end: what an authored agent is, where it lives (Telegram / site / phone), how it's different from a plain chatbot, and how I get one.",
+      RU: "Объясни в 3-4 коротких строках как устроена Finekot Systems: что такое авторский агент, где он живёт (Telegram / сайт / телефон), чем отличается от обычного чат-бота и как его получить.",
+      UA: "Поясни у 3-4 коротких рядках як влаштована Finekot Systems: що таке авторський агент, де він живе (Telegram / сайт / телефон), чим відрізняється від звичайного чат-бота і як його отримати.",
+    },
+  },
+  {
+    id: "site-run-by-agents",
+    emoji: "",
+    label: { EN: "Is this site run by agents?", RU: "Сайтом рулят агенты?", UA: "Сайтом керують агенти?" },
+    prompt: {
+      EN: "Is this whole site actually run by AI agents? Who am I talking to right now, and how is this different from a landing page with a support widget?",
+      RU: "Этот сайт реально ведут AI-агенты? С кем я сейчас разговариваю и чем это отличается от обычного лендинга со встроенным чат-виджетом?",
+      UA: "Цей сайт справді ведуть AI-агенти? З ким я зараз спілкуюсь і чим це відрізняється від звичайного лендінгу з вбудованим чат-віджетом?",
+    },
+  },
+  {
+    id: "why-not-gpt",
+    emoji: "",
+    label: { EN: "Why not just ChatGPT?", RU: "Чем лучше ChatGPT?", UA: "Чим краще ChatGPT?" },
+    prompt: {
+      EN: "Why would I buy an authored agent from Finekot Systems instead of just using ChatGPT or building one myself? Give me the honest 2-3 line answer.",
+      RU: "Зачем покупать авторского агента у Finekot Systems, если есть ChatGPT или можно собрать самому? Дай честный ответ в 2-3 строки.",
+      UA: "Навіщо купувати авторського агента у Finekot Systems, якщо є ChatGPT або можна зібрати самому? Дай чесну відповідь у 2-3 рядки.",
+    },
+  },
+  {
+    id: "how-to-buy",
+    emoji: "",
+    label: { EN: "How do I buy an agent?", RU: "Как купить агента?", UA: "Як купити агента?" },
+    prompt: {
+      EN: "Walk me through buying an agent in 3 steps — payment, delivery, first login. Where exactly does the checkout happen?",
+      RU: "Проведи меня по покупке агента в 3 шага — оплата, доставка, первый логин. Где именно происходит оформление заказа?",
+      UA: "Проведи мене по купівлі агента у 3 кроки — оплата, доставка, перший логін. Де саме відбувається оформлення замовлення?",
+    },
+  },
+  {
+    id: "custom-studio",
+    emoji: "",
+    label: { EN: "Custom agent", RU: "Кастомный агент", UA: "Кастомний агент" },
+    prompt: {
+      EN: "I need an agent that doesn't exist in your catalog — built specifically for my business. Tell me about Custom Studio: price, timeline, what's included.",
+      RU: "Мне нужен агент которого нет в каталоге — собранный под мой бизнес. Расскажи про Custom Studio: цена, сроки, что входит.",
+      UA: "Мені потрібен агент якого немає у каталозі — зібраний під мій бізнес. Розкажи про Custom Studio: ціна, терміни, що входить.",
+    },
+  },
 ];
 
 export default function ChatbotBar() {
