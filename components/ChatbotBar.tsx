@@ -892,7 +892,7 @@ export default function ChatbotBar() {
           boxShadow: "0 -6px 24px rgba(0, 255, 65, 0.12)",
         }}
       >
-        <div className="max-w-6xl mx-auto px-3 sm:px-4 py-2.5 flex items-stretch gap-2 sm:gap-3">
+        <div className="max-w-6xl mx-auto px-2 sm:px-4 py-2.5 flex items-stretch gap-1.5 sm:gap-3">
           {/* Terminal indicator (orange >_) with cmd menu split-button */}
           <div className="shrink-0 flex flex-col">
             <button
@@ -966,7 +966,7 @@ export default function ChatbotBar() {
 
           {/* Input */}
           <div
-            className="flex-1 flex items-center gap-2 px-3"
+            className="flex-1 min-w-0 flex items-center gap-1.5 sm:gap-2 px-2 sm:px-3"
             style={{
               background: "rgba(0, 255, 65, 0.04)",
               border: "1px solid rgba(0, 255, 65, 0.35)",
@@ -1208,7 +1208,7 @@ export default function ChatbotBar() {
           <button
             onClick={send}
             disabled={loading || !input.trim()}
-            className="shrink-0 px-4 sm:px-5 h-11 flex items-center justify-center gap-2 transition-all disabled:opacity-40 disabled:cursor-not-allowed"
+            className="shrink-0 px-2.5 sm:px-5 h-11 flex items-center justify-center gap-2 transition-all disabled:opacity-40 disabled:cursor-not-allowed"
             style={{
               background: loading
                 ? "rgba(0, 255, 65, 0.2)"
@@ -1216,7 +1216,7 @@ export default function ChatbotBar() {
               border: "1px solid #00ff41",
               color: "#00ff41",
               borderRadius: "4px",
-              letterSpacing: "0.2em",
+              letterSpacing: "0.15em",
               fontSize: "11px",
               fontWeight: 600,
               textShadow: "0 0 6px rgba(0, 255, 65, 0.6)",
