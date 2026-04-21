@@ -41,7 +41,7 @@ type Copy = {
 
 const COPY: Record<Lang, Copy> = {
   EN: {
-    header: "FINEKOT · assembly bay",
+    header: "Agent Forge — turnkey agent assembly",
     subtitle: "forging your Boris instance",
     backHome: "← back",
     meetBoris: "Meet Boris",
@@ -65,7 +65,7 @@ const COPY: Record<Lang, Copy> = {
     fullSpec: "full spec & checkout →",
   },
   RU: {
-    header: "FINEKOT · сборочный цех",
+    header: "Агент Forge — сборка агентов под ключ",
     subtitle: "собираем вашего Бориса",
     backHome: "← назад",
     meetBoris: "Встретить Бориса",
@@ -89,7 +89,7 @@ const COPY: Record<Lang, Copy> = {
     fullSpec: "полная спецификация и оплата →",
   },
   UA: {
-    header: "FINEKOT · складальний цех",
+    header: "Агент Forge — складання агентів під ключ",
     subtitle: "збираємо вашого Бориса",
     backHome: "← назад",
     meetBoris: "Зустріти Бориса",

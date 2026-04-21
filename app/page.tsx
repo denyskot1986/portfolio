@@ -339,13 +339,6 @@ export default function Home() {
             <p className="text-sm sm:text-base md:text-lg font-mono tracking-wide" style={{ color: "rgba(240,224,255,0.45)" }}>
               <span style={{ color: "var(--accent2)", opacity: 0.65 }}>&gt; </span>
               {displayText}
-              <span
-                className="cursor-blink ml-0.5"
-                style={{ color: "var(--accent)", opacity: 0.35 }}
-                aria-hidden
-              >
-                ▏
-              </span>
             </p>
           </div>
         </div>
