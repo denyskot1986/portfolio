@@ -718,7 +718,7 @@ export default function ChatbotBar() {
                   }}
                 >
                   <span style={{ color: "#ffb000", opacity: 0.7 }}>└─</span>
-                  <span className="uppercase">session log</span>
+                  <span className="uppercase">Finekot Systems</span>
                   <span className="flex-1 flex items-center justify-center gap-1.5">
                     <span
                       className="inline-block w-1.5 h-1.5 rounded-full"
