@@ -1177,18 +1177,32 @@ export default function ChatbotBar() {
               boxShadow:
                 "0 0 14px rgba(0, 255, 65, 0.22), inset 0 0 8px rgba(0, 255, 65, 0.04)",
             }}
-            onMouseEnter={(e) => {
+            onPointerEnter={(e) => {
               if (e.currentTarget.disabled) return;
+              if (e.pointerType !== "mouse") return;
               e.currentTarget.style.background = "#00ff41";
               e.currentTarget.style.color = "#040208";
+              e.currentTarget.style.textShadow = "none";
               e.currentTarget.style.boxShadow =
                 "0 0 28px rgba(0, 255, 65, 0.55)";
             }}
-            onMouseLeave={(e) => {
+            onPointerLeave={(e) => {
               e.currentTarget.style.background = loading
                 ? "rgba(0, 255, 65, 0.2)"
                 : "rgba(0, 255, 65, 0.08)";
               e.currentTarget.style.color = "#00ff41";
+              e.currentTarget.style.textShadow =
+                "0 0 6px rgba(0, 255, 65, 0.6)";
+              e.currentTarget.style.boxShadow =
+                "0 0 14px rgba(0, 255, 65, 0.22), inset 0 0 8px rgba(0, 255, 65, 0.04)";
+            }}
+            onPointerCancel={(e) => {
+              e.currentTarget.style.background = loading
+                ? "rgba(0, 255, 65, 0.2)"
+                : "rgba(0, 255, 65, 0.08)";
+              e.currentTarget.style.color = "#00ff41";
+              e.currentTarget.style.textShadow =
+                "0 0 6px rgba(0, 255, 65, 0.6)";
               e.currentTarget.style.boxShadow =
                 "0 0 14px rgba(0, 255, 65, 0.22), inset 0 0 8px rgba(0, 255, 65, 0.04)";
             }}
