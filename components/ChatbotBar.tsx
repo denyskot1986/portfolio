@@ -13,7 +13,6 @@ import { useRouter, usePathname } from "next/navigation";
 import { useLang } from "@/lib/lang-context";
 import type { Lang } from "@/lib/i18n";
 import { AgentModeOverlay } from "./AgentModeOverlay";
-import { useAgentChat } from "@/lib/agent-chat-context";
 
 interface ChatMessage {
   role: "user" | "assistant";
@@ -223,18 +222,12 @@ export default function ChatbotBar() {
   const router = useRouter();
   const pathname = usePathname();
   const { lang } = useLang();
-  const {
-    currentAgent,
-    setAgentMessages,
-    select: selectAgent,
-  } = useAgentChat();
   const [messages, setMessages] = useState<ChatMessage[]>([WELCOME_MESSAGE]);
   const [input, setInput] = useState("");
   const [loading, setLoading] = useState(false);
   const [logOpen, setLogOpen] = useState(false);
   const [cmdOpen, setCmdOpen] = useState(false);
   const [agentDriving, setAgentDriving] = useState(false);
-  const [placeholder, setPlaceholder] = useState<string>(PLACEHOLDER_BY_LANG[lang]);
   const tourTimeoutRef = useRef<ReturnType<typeof setTimeout> | null>(null);
   // Все setTimeout, которые шедулятся туром/скроллами. Когда пользователь
   // жмёт «забрать управление» / ESC — мы их все глушим, иначе агент
@@ -262,53 +255,24 @@ export default function ChatbotBar() {
   const cmdMenuRef = useRef<HTMLDivElement>(null);
   const hydratedRef = useRef(false);
 
-  // On first mount, hydrate default-consultant messages from sessionStorage.
-  // This only matters when currentAgent === null (David consultant) —
-  // per-agent history lives in the AgentChatContext + localStorage.
+  // On first mount, hydrate messages from sessionStorage so the log
+  // survives navigation between product pages. Keep the log CLOSED —
+  // user opens it themselves via >_ or by focusing input (commander
+  // explicitly did not want auto-open on refresh).
   useEffect(() => {
     if (hydratedRef.current) return;
     hydratedRef.current = true;
-    if (!currentAgent) {
-      const restored = loadHistory();
-      if (restored && restored.length) setMessages(restored);
+    const restored = loadHistory();
+    if (restored && restored.length) {
+      setMessages(restored);
     }
-  }, [currentAgent]);
+  }, []);
 
-  // Swap the visible chat when the selected agent changes. Default (null) →
-  // David consultant history from sessionStorage. Any agent → its own
-  // messages array from context, prefixed with a "{name} online" greeting
-  // so the user lands on a warm hello, not an empty log.
-  const currentAgentKey = currentAgent?.id ?? null;
-  useEffect(() => {
-    if (!currentAgent) {
-      const restored = loadHistory();
-      setMessages(restored && restored.length ? restored : [WELCOME_MESSAGE]);
-      return;
-    }
-    const greeting: ChatMessage = {
-      role: "assistant",
-      content: `${currentAgent.name} · online`,
-    };
-    setMessages([greeting, ...currentAgent.messages]);
-    setLogOpen(true);
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [currentAgentKey]);
-
-  // Persist on every change. For the default consultant — sessionStorage.
-  // For an agent — push back to its context slot (stripping the greeting
-  // we prepended for display, so we don't double-write it on every reload).
+  // Persist on every change.
   useEffect(() => {
     if (!hydratedRef.current) return;
-    if (!currentAgent) {
-      saveHistory(messages);
-      return;
-    }
-    const greetingContent = `${currentAgent.name} · online`;
-    const stripped = messages.filter(
-      (m) => !(m.role === "assistant" && m.content === greetingContent)
-    );
-    setAgentMessages(currentAgent.id, stripped);
-  }, [messages, currentAgent, setAgentMessages]);
+    saveHistory(messages);
+  }, [messages]);
 
   useEffect(() => {
     const el = messagesRef.current;
@@ -334,50 +298,6 @@ export default function ChatbotBar() {
       document.removeEventListener("touchstart", handler);
     };
   }, [logOpen]);
-
-  // Typewriter placeholder. Default = the i18n "prompt" string. When an
-  // agent is active we cycle through "{name} online" — letters type in,
-  // hold, then erase, loop. Gives the impression the agent is actually
-  // waiting on the other end of the wire.
-  useEffect(() => {
-    const target = currentAgent
-      ? `${currentAgent.name} online`
-      : PLACEHOLDER_BY_LANG[lang];
-    if (!currentAgent) {
-      setPlaceholder(target);
-      return;
-    }
-    let cancelled = false;
-    const timers: ReturnType<typeof setTimeout>[] = [];
-    const run = () => {
-      if (cancelled) return;
-      // type in
-      for (let i = 1; i <= target.length; i++) {
-        timers.push(
-          setTimeout(() => {
-            if (!cancelled) setPlaceholder(target.slice(0, i));
-          }, i * 70)
-        );
-      }
-      // hold
-      const holdAt = target.length * 70 + 2000;
-      // erase
-      for (let i = 1; i <= target.length; i++) {
-        timers.push(
-          setTimeout(() => {
-            if (!cancelled) setPlaceholder(target.slice(0, target.length - i));
-          }, holdAt + i * 40)
-        );
-      }
-      const nextAt = holdAt + target.length * 40 + 600;
-      timers.push(setTimeout(run, nextAt));
-    };
-    run();
-    return () => {
-      cancelled = true;
-      timers.forEach(clearTimeout);
-    };
-  }, [currentAgent, lang]);
 
   // Close the quick-commands menu on outside click.
   useEffect(() => {
@@ -456,8 +376,7 @@ export default function ChatbotBar() {
             messages: historyForApi,
             pageUrl:
               typeof window !== "undefined" ? window.location.pathname : "/",
-            sessionId: currentAgent?.sessionId ?? getSessionId(),
-            agentId: currentAgent?.id ?? null,
+            sessionId: getSessionId(),
           }),
         });
         const data = await res.json();
@@ -541,7 +460,7 @@ export default function ChatbotBar() {
         setLoading(false);
       }
     },
-    [loading, messages, executeActions, currentAgent]
+    [loading, messages, executeActions]
   );
 
   const adjustTextarea = useCallback(() => {
@@ -688,10 +607,6 @@ export default function ChatbotBar() {
           )}
           <button
             onClick={() => {
-              if (currentAgent) {
-                setAgentMessages(currentAgent.id, []);
-                selectAgent(null);
-              }
               setMessages([WELCOME_MESSAGE]);
               setLogOpen(false);
               try {
@@ -771,7 +686,7 @@ export default function ChatbotBar() {
                         letterSpacing: "0.22em",
                       }}
                     >
-                      {currentAgent ? `${currentAgent.name} agent` : "David agent"}
+                      David agent
                     </span>
                   </span>
                   <button
@@ -1256,21 +1171,7 @@ export default function ChatbotBar() {
                       animation: "blink 1s step-end infinite",
                     }}
                   />
-                  <span>
-                    {placeholder}
-                    {currentAgent && (
-                      <span
-                        className="inline-block align-[-2px] ml-[2px]"
-                        style={{
-                          width: "0.5em",
-                          height: "1em",
-                          background: "rgba(0,255,65,0.85)",
-                          boxShadow: "0 0 8px rgba(0,255,65,0.7)",
-                          animation: "blink 1s step-end infinite",
-                        }}
-                      />
-                    )}
-                  </span>
+                  <span>{PLACEHOLDER_BY_LANG[lang]}</span>
                 </div>
               )}
               <textarea

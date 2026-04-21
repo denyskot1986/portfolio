@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { useParams } from "next/navigation";
 import Link from "next/link";
 import { motion } from "framer-motion";
@@ -14,7 +14,6 @@ import AgentFace from "@/components/AgentFace";
 import ProductBoot from "@/components/ProductBoot";
 import LiveVitals from "@/components/LiveVitals";
 import LiveTerminal from "@/components/LiveTerminal";
-import { useAgentChat } from "@/lib/agent-chat-context";
 import type { Lang } from "@/lib/i18n";
 
 function botDeepLink(contact: string, id: string, intent: "buy" | "order"): string {
@@ -46,19 +45,6 @@ export default function ProductPageClient() {
   const tp = i18n[lang].pages.product;
   const product = getTranslatedProduct(params.id as string, lang);
   const demo = product ? getDemoChat(product.id, lang) : undefined;
-  const { activate } = useAgentChat();
-
-  // Knock on the user's dock — this agent just came online. Only fires once
-  // per product-slug per page mount; the context itself dedupes into unread
-  // bumps for already-active agents.
-  useEffect(() => {
-    if (!product) return;
-    activate({
-      id: product.id,
-      name: product.name,
-      faceConfig: product.faceConfig,
-    });
-  }, [activate, product]);
   const [descExpanded, setDescExpanded] = useState(false);
   const MORE_LABEL = lang === "RU" ? "подробнее" : lang === "UA" ? "детальніше" : "more";
   const LESS_LABEL = lang === "RU" ? "свернуть" : lang === "UA" ? "згорнути" : "less";
