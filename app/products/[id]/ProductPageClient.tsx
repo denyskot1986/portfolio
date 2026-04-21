@@ -27,14 +27,6 @@ function defaultGreeting(name: string, lang: Lang): string {
   }
 }
 
-function openChannelLabel(name: string, lang: Lang): string {
-  switch (lang) {
-    case "RU": return `открыть канал к ${name}`;
-    case "UA": return `відкрити канал до ${name}`;
-    default:   return `open channel to ${name}`;
-  }
-}
-
 const fade = { initial: { opacity: 0, y: 20 }, whileInView: { opacity: 1, y: 0 }, viewport: { once: true }, transition: { duration: 0.5 } };
 
 export default function ProductPageClient() {
@@ -115,34 +107,6 @@ export default function ProductPageClient() {
             </div>
             <p className="text-base sm:text-xl md:text-2xl text-pink-100/50 font-semibold mb-6">{product.tagline}</p>
 
-            {/* CTA with pulsing online dot */}
-            {product.available && (
-              <div className="flex justify-center mb-6">
-                <a
-                  href={botDeepLink(product.contact, product.id, "order")}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="inline-flex items-center gap-2.5 px-5 py-2.5 rounded-lg text-sm font-mono uppercase tracking-[0.22em] transition-all"
-                  style={{
-                    background: "rgba(0,255,65,0.06)",
-                    border: "1px solid rgba(0,255,65,0.5)",
-                    color: "#00ff41",
-                    textShadow: "0 0 6px rgba(0,255,65,0.5)",
-                    boxShadow: "0 0 18px rgba(0,255,65,0.12)",
-                  }}
-                >
-                  <span
-                    className="inline-block w-2 h-2 rounded-full"
-                    style={{
-                      background: "#00ff41",
-                      boxShadow: "0 0 8px rgba(0,255,65,0.9)",
-                      animation: "productOnlinePulse 1.6s ease-in-out infinite",
-                    }}
-                  />
-                  <span>{openChannelLabel(product.name, lang)}</span>
-                </a>
-              </div>
-            )}
             {(() => {
               const COLLAPSE_CHARS = 180;
               const full = product.longDescription;
@@ -406,12 +370,6 @@ export default function ProductPageClient() {
         </div>
       </footer>
 
-      <style jsx global>{`
-        @keyframes productOnlinePulse {
-          0%, 100% { transform: scale(1); opacity: 1; }
-          50%      { transform: scale(1.35); opacity: 0.55; }
-        }
-      `}</style>
     </main>
   );
 }
