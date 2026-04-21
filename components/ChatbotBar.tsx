@@ -989,7 +989,11 @@ export default function ChatbotBar() {
             >
               │
             </span>
-            <div ref={demoMenuRef} className="relative shrink-0">
+            <div
+              ref={demoMenuRef}
+              className="shrink-0"
+              style={{ position: "relative" }}
+            >
               <button
                 type="button"
                 onClick={() => setDemoOpen((v) => !v)}
@@ -1058,8 +1062,12 @@ export default function ChatbotBar() {
                     animate={{ opacity: 1, y: 0 }}
                     exit={{ opacity: 0, y: 6 }}
                     transition={{ duration: 0.14, ease: "easeOut" }}
-                    className="absolute right-0 bottom-full mb-2 font-mono overflow-hidden z-[600]"
+                    className="font-mono overflow-hidden"
                     style={{
+                      position: "absolute",
+                      right: 0,
+                      bottom: "calc(100% + 8px)",
+                      zIndex: 600,
                       minWidth: 200,
                       background: "rgba(4, 2, 8, 0.97)",
                       backdropFilter: "blur(18px)",
