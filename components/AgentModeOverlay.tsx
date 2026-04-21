@@ -87,12 +87,15 @@ export function AgentModeOverlay({
 
   // Свечение сосредоточено В УГЛАХ экрана (не по серединам сторон) — чтобы
   // центр страницы с карточкой товара оставался чистым, а знак «агент ведёт»
-  // считывался только по периферии.
+  // считывался только по периферии. Яркость: центр градиента заходит внутрь
+  // viewport (4% / 96%), альфа усилена до 1 и есть второй внутренний slot
+  // до 20% — так углы читаются как «горят», но в центр экрана не ползут.
+  const boosted = Math.min(1, strength * 1.8);
   const edgeGlow = `
-    radial-gradient(ellipse 28% 20% at -4% -4%, ${alpha(cTop, strength)} 0%, transparent 50%),
-    radial-gradient(ellipse 28% 20% at 104% -4%, ${alpha(cRight, strength)} 0%, transparent 50%),
-    radial-gradient(ellipse 28% 20% at 104% 104%, ${alpha(cBottom, strength)} 0%, transparent 50%),
-    radial-gradient(ellipse 28% 20% at -4% 104%, ${alpha(cLeft, strength)} 0%, transparent 50%)
+    radial-gradient(ellipse 38% 28% at 4% 4%, ${alpha(cTop, boosted)} 0%, ${alpha(cTop, boosted * 0.5)} 20%, transparent 55%),
+    radial-gradient(ellipse 38% 28% at 96% 4%, ${alpha(cRight, boosted)} 0%, ${alpha(cRight, boosted * 0.5)} 20%, transparent 55%),
+    radial-gradient(ellipse 38% 28% at 96% 96%, ${alpha(cBottom, boosted)} 0%, ${alpha(cBottom, boosted * 0.5)} 20%, transparent 55%),
+    radial-gradient(ellipse 38% 28% at 4% 96%, ${alpha(cLeft, boosted)} 0%, ${alpha(cLeft, boosted * 0.5)} 20%, transparent 55%)
   `;
 
   return (
@@ -125,12 +128,14 @@ export function AgentModeOverlay({
             }}
           />
 
-          {/* Мягкое акцентное кольцо — только в углах, не по всему периметру */}
+          {/* Мягкое акцентное кольцо — подсвечивает периметр, акцент держится
+              в углах за счёт radial-слоя выше. Возвращён почти полный
+              strength (0.8×), чтобы "takeover" было заметно издалека. */}
           <div
             style={{
               position: "absolute",
               inset: 0,
-              boxShadow: `inset 0 0 ${spread * 0.5}px ${alpha(resolved.accent, strength * 0.35)}`,
+              boxShadow: `inset 0 0 ${spread * 0.9}px ${alpha(resolved.accent, strength * 0.8)}`,
               animation: `agent-mode-pulse-slow ${profile.glowPulseSec * 1.4}s ease-in-out infinite`,
               mixBlendMode: "screen",
             }}
