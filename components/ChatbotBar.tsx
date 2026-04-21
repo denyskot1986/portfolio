@@ -17,6 +17,7 @@ import { AgentModeOverlay } from "./AgentModeOverlay";
 interface ChatMessage {
   role: "user" | "assistant";
   content: string;
+  replies?: string[];
 }
 
 // Allowed internal routes for nav actions (mirrors SYSTEM_PROMPT whitelist).
@@ -27,13 +28,21 @@ const NAV_WHITELIST = /^\/(products\/[a-z0-9-]+|discover|reels-agent)\/?$/i;
 //   [scroll:product-david]  → document.getElementById(...).scrollIntoView
 const ACTION_REGEX = /\[(nav|scroll):([^\]\s]+)\]/gi;
 
+// Suggested-reply directive: `[reply: short phrase]` — rendered as clickable
+// quick-reply chips below the assistant message; on click we send that phrase
+// as a new user turn. Must come after the above action regex because [reply:]
+// can contain spaces and punctuation.
+const REPLY_REGEX = /\[reply:\s*([^\]\n]+)\]/gi;
+
 type ParsedReply = {
   visible: string;
   actions: Array<{ type: "nav" | "scroll"; target: string }>;
+  replies: string[];
 };
 
 function parseReply(raw: string): ParsedReply {
   const actions: ParsedReply["actions"] = [];
+  const replies: string[] = [];
   const visible = raw
     .replace(ACTION_REGEX, (_, kind: string, target: string) => {
       const type = kind.toLowerCase() as "nav" | "scroll";
@@ -41,11 +50,16 @@ function parseReply(raw: string): ParsedReply {
       actions.push({ type, target });
       return "";
     })
+    .replace(REPLY_REGEX, (_, phrase: string) => {
+      const clean = phrase.trim();
+      if (clean && replies.length < 4) replies.push(clean);
+      return "";
+    })
     // Strip stray "===" lines that leak when the LLM over-adds separators.
     .replace(/^\s*={3,}\s*$/gm, "")
     .replace(/\n{3,}/g, "\n\n")
     .trim();
-  return { visible, actions };
+  return { visible, actions, replies };
 }
 
 // Tour mode: LLM separates product beats with "===" on its own line.
@@ -397,7 +411,11 @@ export default function ChatbotBar() {
           const parsed = beats[0];
           setMessages((prev) => [
             ...prev,
-            { role: "assistant", content: parsed.visible || "> done." },
+            {
+              role: "assistant",
+              content: parsed.visible || "> done.",
+              replies: parsed.replies.length ? parsed.replies : undefined,
+            },
           ]);
           const scrollCount = parsed.actions.filter(
             (a) => a.type === "scroll"
@@ -431,7 +449,11 @@ export default function ChatbotBar() {
               if (text) {
                 setMessages((prev) => [
                   ...prev,
-                  { role: "assistant", content: text },
+                  {
+                    role: "assistant",
+                    content: text,
+                    replies: beat.replies.length ? beat.replies : undefined,
+                  },
                 ]);
               }
               // Scroll/nav fires right after the message lands.
@@ -701,51 +723,108 @@ export default function ChatbotBar() {
                 >
                   {visibleMessages.map((msg, i) => {
                     const isUsr = msg.role === "user";
+                    const isLast = i === visibleMessages.length - 1;
+                    const showReplies =
+                      !isUsr &&
+                      isLast &&
+                      !loading &&
+                      !agentDriving &&
+                      !!msg.replies?.length;
                     return (
                       <motion.div
                         key={i}
                         initial={{ opacity: 0, x: -4 }}
                         animate={{ opacity: 1, x: 0 }}
                         transition={{ duration: 0.18 }}
-                        className="flex gap-2"
+                        className="flex flex-col gap-1.5"
                       >
-                        <span
-                          className="shrink-0 pt-0.5"
-                          style={{ color: "rgba(0, 255, 65, 0.5)" }}
-                        >
-                          ├─
-                        </span>
-                        <span
-                          className="shrink-0 text-[10px] pt-[3px]"
-                          style={{
-                            color: isUsr ? "#ffb000" : "#00ff41",
-                            letterSpacing: "0.12em",
-                            textShadow: `0 0 6px ${
-                              isUsr
-                                ? "rgba(255, 176, 0, 0.5)"
-                                : "rgba(0, 255, 65, 0.5)"
-                            }`,
-                            width: 26,
-                          }}
-                        >
-                          {isUsr ? "USR" : "SYS"}
-                        </span>
-                        <span
-                          className="shrink-0 pt-0.5"
-                          style={{ color: "rgba(0, 255, 65, 0.4)" }}
-                        >
-                          │
-                        </span>
-                        <span
-                          className="flex-1 whitespace-pre-wrap break-words"
-                          style={{
-                            color: isUsr
-                              ? "rgba(255, 200, 120, 0.95)"
-                              : "rgba(217, 255, 224, 0.88)",
-                          }}
-                        >
-                          {isUsr ? msg.content : renderAssistantText(msg.content)}
-                        </span>
+                        <div className="flex gap-2">
+                          <span
+                            className="shrink-0 pt-0.5"
+                            style={{ color: "rgba(0, 255, 65, 0.5)" }}
+                          >
+                            ├─
+                          </span>
+                          <span
+                            className="shrink-0 text-[10px] pt-[3px]"
+                            style={{
+                              color: isUsr ? "#ffb000" : "#00ff41",
+                              letterSpacing: "0.12em",
+                              textShadow: `0 0 6px ${
+                                isUsr
+                                  ? "rgba(255, 176, 0, 0.5)"
+                                  : "rgba(0, 255, 65, 0.5)"
+                              }`,
+                              width: 26,
+                            }}
+                          >
+                            {isUsr ? "USR" : "SYS"}
+                          </span>
+                          <span
+                            className="shrink-0 pt-0.5"
+                            style={{ color: "rgba(0, 255, 65, 0.4)" }}
+                          >
+                            │
+                          </span>
+                          <span
+                            className="flex-1 whitespace-pre-wrap break-words"
+                            style={{
+                              color: isUsr
+                                ? "rgba(255, 200, 120, 0.95)"
+                                : "rgba(217, 255, 224, 0.88)",
+                            }}
+                          >
+                            {isUsr ? msg.content : renderAssistantText(msg.content)}
+                          </span>
+                        </div>
+                        {showReplies && (
+                          <div
+                            className="flex flex-col gap-1 pl-[60px] mt-1"
+                            role="group"
+                            aria-label="Suggested replies"
+                          >
+                            {msg.replies!.map((r, ri) => (
+                              <button
+                                key={ri}
+                                type="button"
+                                onClick={() => void sendMessage(r)}
+                                disabled={loading || agentDriving}
+                                className="group text-left px-2.5 py-1.5 transition-all disabled:opacity-40 disabled:cursor-not-allowed flex items-center gap-2"
+                                style={{
+                                  background: "rgba(255, 176, 0, 0.05)",
+                                  border: "1px solid rgba(255, 176, 0, 0.35)",
+                                  borderRadius: 3,
+                                  color: "#ffd88a",
+                                  fontSize: 11.5,
+                                  lineHeight: 1.3,
+                                  letterSpacing: "0.01em",
+                                }}
+                                onMouseEnter={(e) => {
+                                  if (e.currentTarget.disabled) return;
+                                  e.currentTarget.style.background =
+                                    "rgba(255, 176, 0, 0.14)";
+                                  e.currentTarget.style.borderColor =
+                                    "rgba(255, 176, 0, 0.7)";
+                                }}
+                                onMouseLeave={(e) => {
+                                  e.currentTarget.style.background =
+                                    "rgba(255, 176, 0, 0.05)";
+                                  e.currentTarget.style.borderColor =
+                                    "rgba(255, 176, 0, 0.35)";
+                                }}
+                              >
+                                <span
+                                  className="shrink-0 font-bold"
+                                  style={{ color: "#ffb000", opacity: 0.8 }}
+                                  aria-hidden
+                                >
+                                  {ri + 1} →
+                                </span>
+                                <span className="break-words">{r}</span>
+                              </button>
+                            ))}
+                          </div>
+                        )}
                       </motion.div>
                     );
                   })}
