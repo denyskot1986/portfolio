@@ -13,10 +13,13 @@ const OPENROUTER_API_KEY = process.env.OPENROUTER_API_KEY || "";
 // Rate limit: один проход сканера на IP раз в N секунд. Ключ живёт
 // всё окно, поэтому он же служит sentinel'ом «сессия активна» — если
 // юзер начал скан, он успеет его закончить (20 вопросов ≈ < 3 мин).
-const RATE_LIMIT_WINDOW_SEC = 600;
+const RATE_LIMIT_WINDOW_SEC = 60;
 
+// Questioner — fast JSON generation, called up to 20x per scan, so latency
+// dominates UX. Gemini 2.5 Flash is ~3-5× faster than Sonnet for this load.
+// Analyst runs once at the end, quality matters, keep a stronger model.
 const QUESTIONER_MODEL =
-  process.env.DISCOVER_QUESTIONER_MODEL || "anthropic/claude-sonnet-4.5";
+  process.env.DISCOVER_QUESTIONER_MODEL || "google/gemini-2.5-flash";
 const ANALYST_MODEL =
   process.env.DISCOVER_ANALYST_MODEL || "anthropic/claude-opus-4.5";
 
@@ -205,7 +208,7 @@ ${formatHistoryForLLM(history)}
         model: QUESTIONER_MODEL,
         system: QUESTIONER_SYSTEM_PROMPT,
         userMessage,
-        maxTokens: 1000,
+        maxTokens: 600,
       });
 
       let parsed;
