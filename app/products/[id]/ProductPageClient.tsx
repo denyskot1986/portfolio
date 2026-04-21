@@ -11,7 +11,6 @@ import LangSwitcher from "@/components/LangSwitcher";
 import AgentFace from "@/components/AgentFace";
 import ProductBoot from "@/components/ProductBoot";
 import LiveVitals from "@/components/LiveVitals";
-import LiveTerminal from "@/components/LiveTerminal";
 import InlineAgentChat from "@/components/InlineAgentChat";
 import type { Lang } from "@/lib/i18n";
 
@@ -215,29 +214,9 @@ export default function ProductPageClient() {
         </div>
       </section>
 
-      {/* HOW IT WORKS → live terminal */}
-      {product.features.length > 0 && (
-        <section className="relative z-10 py-12 px-6">
-          <div className="max-w-3xl mx-auto">
-            <motion.div {...fade}>
-              <h2 className="text-xl sm:text-2xl md:text-3xl font-black mb-6 text-center tracking-tight">
-                <span className="gradient-text">{tp.howItWorks}</span>
-              </h2>
-              <LiveTerminal
-                slug={product.id}
-                agentName={product.name}
-                cycle={product.liveCycle}
-                title={`${product.id}.run.log`}
-              />
-            </motion.div>
-          </div>
-        </section>
-      )}
-
-      {/* Убраны по запросу Командира: «Интерактивное демо» (инлайн-чат
-          сверху его заменяет) и FEATURES grid (дублировал то что агент
-          сам рассказывает в чате + LiveTerminal показывает как он
-          работает). */}
+      {/* Убраны по запросу Командира: «Как это работает» (LiveTerminal),
+          «Интерактивное демо» и FEATURES grid — инлайн-чат с агентом
+          заменяет это всё, юзер реально общается, а не смотрит демо-лог. */}
 
       {/* USE CASES */}
       <section className="relative z-10 py-12 px-6">
