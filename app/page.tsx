@@ -260,10 +260,10 @@ export default function Home() {
       {/* ─── HERO ─── */}
       <section id="hero" className="relative z-10 min-h-[85vh] flex items-center justify-center overflow-hidden pt-16">
         <div className="relative z-10 text-center px-6 max-w-4xl">
-          {/* Manifest epigraph — subtle amber motto above the terminal header */}
+          {/* Manifest epigraph — subtle amber motto */}
           <motion.div
             initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ duration: 1.2, delay: 0.1 }}
-            className="mb-5 font-mono text-[10px] sm:text-xs tracking-[0.35em] uppercase flex items-center justify-center gap-3"
+            className="mt-12 sm:mt-16 mb-10 sm:mb-12 font-mono text-[10px] sm:text-xs tracking-[0.35em] uppercase flex items-center justify-center gap-3"
             style={{
               color: "var(--accent2)",
               textShadow: "0 0 8px rgba(255, 176, 0, 0.35)",
@@ -278,21 +278,6 @@ export default function Home() {
             </span>
             <span aria-hidden className="opacity-40">
               ━━
-            </span>
-          </motion.div>
-
-          {/* Terminal system header */}
-          <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.6 }}
-            className="flex items-center justify-center gap-4 mb-8 font-mono text-xs"
-            style={{ color: "var(--muted)" }}
-          >
-            <span style={{ color: "var(--accent2)" }}>FINEKOT.AI</span>
-            <span>v3.0.0</span>
-            <span>—</span>
-            <span style={{ color: "var(--accent)" }}>{t.heroSubtitle}</span>
-            <span className="flex items-center gap-1.5">
-              <span className="inline-block w-2 h-2 rounded-full" style={{ background: "var(--cyan)", boxShadow: "0 0 6px var(--cyan)" }} />
-              <span style={{ color: "var(--cyan)" }}>ONLINE</span>
             </span>
           </motion.div>
 
