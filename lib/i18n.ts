@@ -5,6 +5,7 @@ export interface T {
   nav: { home: string; products: string; projects: string; contact: string; connect: string };
   heroSubtitle: string;
   heroSlogan: string;
+  heroManifest: string;
   roles: string[];
   cta: { viewProducts: string; viewProductsSub: string; requestIntegration: string };
   stats: { products: string; startingPrice: string; dayIntegration: string; systemsBuilt: string };
@@ -54,6 +55,7 @@ const EN: T = {
   nav: { home: "Home", products: "Products", projects: "Projects", contact: "Contact", connect: "Connect" },
   heroSubtitle: "AI staff",
   heroSlogan: "AI symbiotics & engineering",
+  heroManifest: "We are building the agentic internet",
   roles: [
     "authored agents. not a ChatGPT wrapper.",
     "one architect. ten agents.",
@@ -326,6 +328,7 @@ const RU: T = {
   nav: { home: "\u0413\u043b\u0430\u0432\u043d\u0430\u044f", products: "\u0410\u0433\u0435\u043d\u0442\u044b", projects: "\u041f\u0440\u043e\u0435\u043a\u0442\u044b", contact: "\u041a\u043e\u043d\u0442\u0430\u043a\u0442", connect: "\u0421\u0432\u044f\u0437\u0430\u0442\u044c\u0441\u044f" },
   heroSubtitle: "AI-персонал",
   heroSlogan: "AI-симбиотика и инженерия",
+  heroManifest: "Мы строим агентный интернет",
   roles: [
     "AI-агенты. Не обёртка над ChatGPT.",
     "Один инженер. Коллектив из десяти агентов.",
@@ -598,6 +601,7 @@ const UA: T = {
   nav: { home: "\u0413\u043e\u043b\u043e\u0432\u043d\u0430", products: "\u0410\u0433\u0435\u043d\u0442\u0438", projects: "\u041f\u0440\u043e\u0454\u043a\u0442\u0438", contact: "\u041a\u043e\u043d\u0442\u0430\u043a\u0442", connect: "\u0417\u0432'\u044f\u0437\u0430\u0442\u0438\u0441\u044f" },
   heroSubtitle: "AI-персонал",
   heroSlogan: "AI-симбіотика та інженерія",
+  heroManifest: "Ми будуємо агентний інтернет",
   roles: [
     "AI-агенти. Не обгортка ChatGPT.",
     "Один інженер. Колектив із десяти агентів.",
