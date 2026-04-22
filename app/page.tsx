@@ -272,7 +272,7 @@ export default function Home() {
             <span style={{ color: "var(--accent)" }}>{t.heroSubtitle}</span>
             <span className="flex items-center gap-1.5">
               <span className="inline-block w-2 h-2 rounded-full" style={{ background: "var(--cyan)", boxShadow: "0 0 6px var(--cyan)" }} />
-              <span style={{ color: "var(--cyan)" }}>LIVE</span>
+              <span style={{ color: "var(--cyan)" }}>ONLINE</span>
             </span>
           </motion.div>
 
@@ -280,6 +280,14 @@ export default function Home() {
             className="text-3xl sm:text-5xl md:text-7xl font-bold mb-2 tracking-tight">
             Fine<span className="gradient-text">kot</span> Systems
           </motion.h1>
+
+          <motion.p
+            initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.6, delay: 0.35 }}
+            className="font-mono text-sm sm:text-base tracking-wide mb-2"
+            style={{ color: "var(--muted)" }}
+          >
+            {t.heroSlogan}
+          </motion.p>
 
           <div className="mb-8" />
 
