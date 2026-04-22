@@ -192,8 +192,7 @@ export default function Home() {
 
           {/* Brand typewriter — rotates the hero roles so the nav reads as a live agent prompt */}
           <p
-            className="flex-1 min-w-0 truncate text-xs sm:text-sm font-mono tracking-wide"
-            style={{ color: "rgba(240,224,255,0.45)" }}
+            className="flex-1 min-w-0 truncate text-xs sm:text-sm font-mono tracking-wide nav-typewriter"
             aria-live="polite"
           >
             <span style={{ color: "var(--accent2)", opacity: 0.6 }}>&gt; </span>
@@ -289,24 +288,11 @@ export default function Home() {
             {t.heroSlogan}
           </motion.p>
 
-          {/* David-led site tour CTA — dispatches a chat message that hands control to David */}
+          {/* David-led site tour CTA — compact terminal-prompt style */}
           <motion.div
             initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.6, delay: 0.55 }}
-            className="mt-5 mb-8 flex items-center justify-center gap-3 sm:gap-5"
+            className="mt-4 mb-8 flex justify-center"
           >
-            <motion.span
-              aria-hidden
-              className="font-mono text-xl sm:text-2xl"
-              style={{
-                color: "var(--accent2)",
-                textShadow: "0 0 8px rgba(255, 176, 0, 0.55)",
-              }}
-              animate={{ opacity: [0.25, 1, 0.25], x: [0, 6, 0] }}
-              transition={{ duration: 1.8, repeat: Infinity, ease: "easeInOut" }}
-            >
-              →
-            </motion.span>
-
             <button
               type="button"
               onClick={() => {
@@ -320,35 +306,37 @@ export default function Home() {
                   new CustomEvent("fk:chat:send", { detail: { message: msg } })
                 );
               }}
-              className="font-mono text-sm sm:text-base tracking-[0.15em] uppercase px-6 py-3 rounded-md transition-all hover:brightness-125"
+              className="group relative font-mono text-xs sm:text-sm inline-flex items-center gap-1.5 px-3 py-1 transition-colors"
               style={{
-                border: "1.5px solid var(--accent2)",
                 color: "var(--accent2)",
-                background: "rgba(255, 176, 0, 0.06)",
-                textShadow: "0 0 6px rgba(255, 176, 0, 0.35)",
-                boxShadow:
-                  "0 0 16px rgba(255, 176, 0, 0.18), inset 0 0 10px rgba(255, 176, 0, 0.06)",
               }}
             >
-              {lang === "RU"
-                ? "что у вас тут?"
-                : lang === "UA"
-                ? "що у вас тут?"
-                : "what do you have here?"}
+              <span className="opacity-60 group-hover:opacity-100 transition-opacity">
+                &gt;
+              </span>
+              <span
+                className="border-b border-dashed transition-colors"
+                style={{
+                  borderColor: "rgba(255, 176, 0, 0.35)",
+                }}
+              >
+                {lang === "RU"
+                  ? "что у вас тут?"
+                  : lang === "UA"
+                  ? "що у вас тут?"
+                  : "what do you have here?"}
+              </span>
+              <motion.span
+                aria-hidden
+                className="inline-block w-[0.55em] h-[1em] align-[-2px]"
+                style={{
+                  background: "var(--accent2)",
+                  boxShadow: "0 0 6px rgba(255, 176, 0, 0.7)",
+                }}
+                animate={{ opacity: [1, 0, 1] }}
+                transition={{ duration: 1, repeat: Infinity, ease: "easeInOut" }}
+              />
             </button>
-
-            <motion.span
-              aria-hidden
-              className="font-mono text-xl sm:text-2xl"
-              style={{
-                color: "var(--accent2)",
-                textShadow: "0 0 8px rgba(255, 176, 0, 0.55)",
-              }}
-              animate={{ opacity: [0.25, 1, 0.25], x: [0, -6, 0] }}
-              transition={{ duration: 1.8, repeat: Infinity, ease: "easeInOut" }}
-            >
-              ←
-            </motion.span>
           </motion.div>
 
           {/* Lineup inventory — terminal badges */}
