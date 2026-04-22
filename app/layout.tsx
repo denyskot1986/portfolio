@@ -6,7 +6,9 @@ import ChatbotBarSwitch from "@/components/ChatbotBarSwitch";
 import ThemeToggle from "@/components/ThemeToggle";
 import "./globals.css";
 
-const themeInitScript = `(function(){try{var t=localStorage.getItem('finekot-theme');if(t==='light')document.documentElement.setAttribute('data-theme','light');}catch(e){}})();`;
+// Pre-paint theme init: read saved theme (or migrate legacy dark/light) and
+// apply data-theme before first render, so color swatches don't flash.
+const themeInitScript = `(function(){try{var t=localStorage.getItem('finekot-theme');if(t==='dark')t='matrix';else if(t==='light')t='paper';var ok=['matrix','telegram','violet','amber','pink','paper'];if(ok.indexOf(t)>=0)document.documentElement.setAttribute('data-theme',t);}catch(e){}})();`;
 
 const jetbrainsMono = JetBrains_Mono({
   variable: "--font-jetbrains-mono",
