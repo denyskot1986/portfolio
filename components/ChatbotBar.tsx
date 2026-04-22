@@ -621,6 +621,7 @@ export default function ChatbotBar() {
       {/* ───── TOP FRAME HEADER ───── */}
       <div
         ref={topBarRef}
+        data-chrome="top"
         className="fixed top-0 left-0 right-0 z-[499] font-mono"
         style={{
           height: "var(--chat-top-h, 34px)",
@@ -1191,6 +1192,41 @@ export default function ChatbotBar() {
                         : "Genesis · origin demo"}
                     </span>
                   </button>
+                  <button
+                    type="button"
+                    onClick={() => {
+                      setCmdOpen(false);
+                      router.push("/habitat");
+                    }}
+                    className="flex items-center gap-2 px-3 py-2 text-left transition-all"
+                    style={{
+                      background: "rgba(255, 176, 0, 0.05)",
+                      border: "1px solid rgba(255, 176, 0, 0.28)",
+                      borderRadius: "3px",
+                      color: "#ffd88a",
+                      letterSpacing: "0.02em",
+                    }}
+                    onMouseEnter={(e) => {
+                      e.currentTarget.style.background =
+                        "rgba(255, 176, 0, 0.14)";
+                      e.currentTarget.style.borderColor =
+                        "rgba(255, 176, 0, 0.65)";
+                    }}
+                    onMouseLeave={(e) => {
+                      e.currentTarget.style.background =
+                        "rgba(255, 176, 0, 0.05)";
+                      e.currentTarget.style.borderColor =
+                        "rgba(255, 176, 0, 0.28)";
+                    }}
+                  >
+                    <span className="text-xs leading-tight">
+                      {lang === "RU"
+                        ? "Habitat · где живут агенты"
+                        : lang === "UA"
+                        ? "Habitat · де живуть агенти"
+                        : "Habitat · where agents live"}
+                    </span>
+                  </button>
                   {QUICK_COMMANDS.map((cmd) => (
                     <button
                       key={cmd.id}
@@ -1236,6 +1272,7 @@ export default function ChatbotBar() {
       {/* ───── BOTTOM INPUT BAR ───── */}
       <div
         ref={barRef}
+        data-chrome="bottom"
         className="fixed bottom-0 left-0 right-0 z-[499] font-mono"
         style={{
           background: "rgba(4, 2, 8, 0.97)",
@@ -1294,6 +1331,7 @@ export default function ChatbotBar() {
 
           {/* Input */}
           <div
+            data-chat-input-wrap
             className="flex-1 min-w-0 flex items-center gap-1.5 sm:gap-2 pl-3 sm:pl-4 pr-2 sm:pr-3 relative"
             style={{
               background: "rgba(0, 255, 65, 0.04)",

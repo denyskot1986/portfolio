@@ -439,3 +439,331 @@ input.term-input::placeholder {
 [class*="shadow-[0_0_20px_rgba(244,114,182"] {
   box-shadow: 0 0 32px rgba(0, 255, 65, 0.25) !important;
 }
+
+/* ═══════════════════════════════════════════════════════
+   VARIANT 2 — PAPER TERMINAL (light theme)
+   Same DNA (monospace chrome, monochrome discipline,
+   ASCII-framing), different medium: CRT phosphor glass
+   → cream print-out. Metaphor: архивная распечатка,
+   bell-labs чертёж, научный препринт.
+   ═══════════════════════════════════════════════════════ */
+
+html[data-theme="light"] {
+  /* Gruvbox Light (Pavel Pertsev) — amber-CRT flipped to aged paper */
+  --bg: #fbf1c7;                 /* bg0 — warm cream */
+  --bg2: #ebdbb2;                /* bg1 — tan ladder */
+  --fg: #3c3836;                 /* fg0 — warm near-black */
+  --accent: #79740e;             /* gruvbox green — olive phosphor on paper */
+  --accent2: #b57614;            /* gruvbox yellow — ochre */
+  --cyan: #79740e;
+  --muted: #7c6f64;              /* warm grey-brown */
+  --border: #d5c4a1;             /* bg2 ladder */
+  --border-accent: rgba(121, 116, 14, 0.3);
+  --border-accent-hover: rgba(121, 116, 14, 0.6);
+  --glass-bg: rgba(121, 116, 14, 0.045);
+  --glass-hover: rgba(121, 116, 14, 0.08);
+  --glass-border: rgba(121, 116, 14, 0.25);
+  --glass-border-hover: rgba(121, 116, 14, 0.55);
+  color-scheme: light;
+}
+
+/* Scanlines → faint paper grain. Softer cadence, multiply for ink feel. */
+html[data-theme="light"] body::after {
+  background: repeating-linear-gradient(
+    0deg,
+    transparent,
+    transparent 3px,
+    rgba(60, 56, 54, 0.022) 3px,
+    rgba(60, 56, 54, 0.022) 4px
+  );
+  mix-blend-mode: multiply;
+}
+
+/* No flicker on paper — replace vignette with a soft cream edge. */
+html[data-theme="light"] body::before {
+  background: radial-gradient(ellipse at center, transparent 62%, rgba(120, 100, 40, 0.07) 100%);
+  animation: none;
+}
+
+html[data-theme="light"] ::selection {
+  background: rgba(121, 116, 14, 0.22);
+  color: #fbf1c7;
+}
+
+/* Headline gradient — forest → amber, ink only, no bloom */
+html[data-theme="light"] .gradient-text {
+  background: linear-gradient(135deg, #79740e, #af3a03, #b57614);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  text-shadow: none;
+}
+
+/* Glass: paper-card shadow on hover (graphite, not neon) */
+html[data-theme="light"] .glass {
+  background: #f9f5d7;
+  border-color: rgba(121, 116, 14, 0.18);
+  box-shadow: 0 1px 0 rgba(60, 56, 54, 0.04);
+}
+html[data-theme="light"] .glass:hover {
+  background: #ffffff;
+  border-color: rgba(121, 116, 14, 0.45);
+  box-shadow: 0 2px 10px rgba(60, 56, 54, 0.08), 0 0 0 1px rgba(121, 116, 14, 0.08);
+}
+
+html[data-theme="light"] .terminal-card-header {
+  background: rgba(121, 116, 14, 0.04);
+}
+
+html[data-theme="light"] .term-dot-r { background: #9d0006; box-shadow: none; }
+html[data-theme="light"] .term-dot-y { background: var(--accent2); box-shadow: none; }
+html[data-theme="light"] .term-dot-g { background: var(--accent); box-shadow: none; }
+
+html[data-theme="light"] .btn-terminal {
+  text-shadow: none;
+  box-shadow: inset 0 0 0 1px rgba(121, 116, 14, 0.08);
+}
+html[data-theme="light"] .btn-terminal:hover {
+  background: var(--accent);
+  color: #fbf1c7;
+  box-shadow: 0 2px 8px rgba(121, 116, 14, 0.28);
+}
+
+html[data-theme="light"] .btn-terminal-ghost {
+  color: var(--muted);
+  border-color: rgba(121, 116, 14, 0.22);
+}
+html[data-theme="light"] .btn-terminal-ghost:hover {
+  border-color: rgba(121, 116, 14, 0.6);
+  color: var(--accent);
+  background: rgba(121, 116, 14, 0.04);
+}
+
+html[data-theme="light"] .btn-buy {
+  background: rgba(121, 116, 14, 0.06);
+  box-shadow: none;
+  border-color: rgba(121, 116, 14, 0.3);
+}
+html[data-theme="light"] .btn-buy:hover {
+  background: var(--accent);
+  color: #fbf1c7;
+  border-color: var(--accent);
+  box-shadow: 0 2px 8px rgba(121, 116, 14, 0.28);
+}
+
+/* Blobs — kill the bloom, keep a soft tint */
+html[data-theme="light"] .blob {
+  opacity: 0.04;
+  filter: blur(160px);
+}
+html[data-theme="light"] .blob-2 { opacity: 0.035; }
+
+/* Dot grid — graphite, not phosphor */
+html[data-theme="light"] .dot-grid {
+  background-image:
+    linear-gradient(rgba(121, 116, 14, 0.08) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(121, 116, 14, 0.08) 1px, transparent 1px);
+}
+
+html[data-theme="light"] ::-webkit-scrollbar-track { background: var(--bg); }
+html[data-theme="light"] ::-webkit-scrollbar-thumb { background: rgba(121, 116, 14, 0.28); }
+html[data-theme="light"] ::-webkit-scrollbar-thumb:hover { background: var(--accent); }
+
+html[data-theme="light"] pre.diagram {
+  color: rgba(121, 116, 14, 0.82);
+  text-shadow: none;
+}
+
+html[data-theme="light"] .term-tag-live {
+  text-shadow: none;
+  background: rgba(121, 116, 14, 0.08);
+}
+html[data-theme="light"] .term-tag-id,
+html[data-theme="light"] .term-tag-cat {
+  background: rgba(181, 118, 20, 0.06);
+  border-color: rgba(181, 118, 20, 0.3);
+}
+
+html[data-theme="light"] input.term-input {
+  background: #f9f5d7;
+  border-color: rgba(121, 116, 14, 0.25);
+}
+html[data-theme="light"] input.term-input:focus {
+  border-color: rgba(121, 116, 14, 0.6);
+  box-shadow: 0 0 0 2px rgba(121, 116, 14, 0.12);
+}
+
+/* Chat-input spinning borders — forest/amber instead of neon */
+html[data-theme="light"] .chat-input-border {
+  background: conic-gradient(
+    from var(--border-angle),
+    transparent 35%,
+    rgba(121, 116, 14, 0.55) 48%,
+    rgba(181, 118, 20, 0.55) 52%,
+    transparent 65%
+  );
+}
+html[data-theme="light"] .chat-input-glow {
+  background: conic-gradient(
+    from var(--border-angle),
+    transparent 35%,
+    rgba(121, 116, 14, 0.22) 48%,
+    rgba(181, 118, 20, 0.22) 52%,
+    transparent 65%
+  );
+}
+
+/* ── pink-* re-skin for light theme (cream paper ink) ── */
+html[data-theme="light"] [class*="text-pink-100"] { color: #3c3836 !important; }
+html[data-theme="light"] [class*="text-pink-100\\/80"],
+html[data-theme="light"] [class*="text-pink-100/80"] { color: rgba(60, 56, 54, 0.85) !important; }
+html[data-theme="light"] [class*="text-pink-100\\/70"],
+html[data-theme="light"] [class*="text-pink-100/70"] { color: rgba(60, 56, 54, 0.75) !important; }
+html[data-theme="light"] [class*="text-pink-100\\/60"],
+html[data-theme="light"] [class*="text-pink-100/60"] { color: rgba(60, 56, 54, 0.65) !important; }
+html[data-theme="light"] [class*="text-pink-100\\/50"],
+html[data-theme="light"] [class*="text-pink-100/50"] { color: rgba(60, 56, 54, 0.55) !important; }
+html[data-theme="light"] [class*="text-pink-100\\/40"],
+html[data-theme="light"] [class*="text-pink-100/40"] { color: rgba(60, 56, 54, 0.45) !important; }
+html[data-theme="light"] [class*="text-pink-100\\/30"],
+html[data-theme="light"] [class*="text-pink-100/30"] { color: rgba(60, 56, 54, 0.35) !important; }
+html[data-theme="light"] [class*="text-pink-100\\/20"],
+html[data-theme="light"] [class*="text-pink-100/20"] { color: rgba(60, 56, 54, 0.25) !important; }
+
+html[data-theme="light"] [class*="text-pink-300"],
+html[data-theme="light"] [class*="text-pink-400"],
+html[data-theme="light"] [class*="text-pink-500"] { color: var(--accent) !important; }
+
+html[data-theme="light"] [class*="border-pink-400"] { border-color: rgba(121, 116, 14, 0.25) !important; }
+html[data-theme="light"] [class*="border-pink-500"] { border-color: rgba(121, 116, 14, 0.35) !important; }
+
+html[data-theme="light"] [class*="bg-pink-400"] { background-color: rgba(121, 116, 14, 0.08) !important; }
+html[data-theme="light"] [class*="bg-pink-500"] { background-color: rgba(121, 116, 14, 0.1) !important; }
+html[data-theme="light"] [class*="bg-pink-600"] { background-color: rgba(121, 116, 14, 0.14) !important; }
+html[data-theme="light"] [class*="bg-purple-600"] { background-color: rgba(181, 118, 20, 0.14) !important; }
+
+html[data-theme="light"] .bg-gradient-to-r.from-pink-600,
+html[data-theme="light"] [class*="from-pink-600"][class*="to-purple-600"] {
+  background: linear-gradient(90deg, var(--accent), var(--accent2)) !important;
+  color: #fbf1c7 !important;
+  text-shadow: none !important;
+}
+
+html[data-theme="light"] [class*="shadow-\\[0_0_30px_rgba\\(244\\,114\\,182"],
+html[data-theme="light"] [class*="shadow-[0_0_30px_rgba(244,114,182"],
+html[data-theme="light"] [class*="shadow-[0_0_40px_rgba(244,114,182"],
+html[data-theme="light"] [class*="shadow-[0_0_20px_rgba(244,114,182"] {
+  box-shadow: 0 2px 10px rgba(121, 116, 14, 0.18) !important;
+}
+
+/* ── Nav typewriter: muted ink in both themes ── */
+.nav-typewriter { color: rgba(240, 224, 255, 0.45); }
+html[data-theme="light"] .nav-typewriter { color: rgba(60, 56, 54, 0.55); }
+
+/* Product-card inline lilac text (rgba(240,224,255,*)) → warm ink in light */
+html[data-theme="light"] [style*="rgba(240,224,255,0.8)"],
+html[data-theme="light"] [style*="rgba(240, 224, 255, 0.8)"] { color: rgba(60, 56, 54, 0.92) !important; }
+html[data-theme="light"] [style*="rgba(240,224,255,0.3)"],
+html[data-theme="light"] [style*="rgba(240, 224, 255, 0.3)"] { color: rgba(60, 56, 54, 0.6) !important; }
+
+/* ═══════════════════════════════════════════════════════
+   LIGHT THEME — CHAT-CHROME RE-SKIN
+   ChatbotBar uses hardcoded inline hex (#00ff41, rgba(4,2,8,.97),
+   rgba(0,255,65,*), rgba(217,255,224,*)). Can't refactor all of
+   it fast, so we override the visible surface via attribute
+   selectors + !important (inline styles have no !important, so
+   CSS !important wins).
+   ═══════════════════════════════════════════════════════ */
+
+html[data-theme="light"] [data-chrome="top"],
+html[data-theme="light"] [data-chrome="bottom"] {
+  background: rgba(244, 241, 232, 0.96) !important;
+  border-color: rgba(121, 116, 14, 0.4) !important;
+}
+html[data-theme="light"] [data-chrome="top"] {
+  box-shadow: 0 1px 0 rgba(60, 56, 54, 0.05), 0 2px 8px rgba(60, 56, 54, 0.04) !important;
+}
+html[data-theme="light"] [data-chrome="bottom"] {
+  box-shadow: 0 -1px 0 rgba(60, 56, 54, 0.05), 0 -4px 14px rgba(60, 56, 54, 0.05) !important;
+}
+
+/* Top bar text row (the "// finekot.shop :: consultant :: 0x3F" strip) */
+html[data-theme="light"] [data-chrome="top"] > div { color: var(--accent) !important; }
+
+/* traffic-light dots — keep colors, kill neon glow */
+html[data-theme="light"] [data-chrome] .rounded-full[style*="box-shadow"],
+html[data-theme="light"] [data-chrome] span[class*="w-1.5 h-1.5"],
+html[data-theme="light"] [data-chrome] span[class*="w-2 h-2"] {
+  box-shadow: none !important;
+}
+
+/* Chat input wrapper — cream card with forest border, no inset glow */
+html[data-theme="light"] [data-chat-input-wrap] {
+  background: rgba(121, 116, 14, 0.04) !important;
+  border-color: rgba(121, 116, 14, 0.35) !important;
+  box-shadow: inset 0 0 0 transparent !important;
+}
+
+/* Textarea: ink on paper */
+html[data-theme="light"] textarea[data-chat-input] {
+  color: var(--fg) !important;
+  caret-color: var(--accent) !important;
+}
+
+/* Placeholder row (cursor block + text) — forest ink, muted */
+html[data-theme="light"] [data-chat-input-wrap] [aria-hidden] {
+  color: rgba(121, 116, 14, 0.55) !important;
+}
+html[data-theme="light"] [data-chat-input-wrap] [aria-hidden] span:first-child {
+  background: rgba(121, 116, 14, 0.75) !important;
+  box-shadow: none !important;
+}
+
+/* CMD button — keep amber, but pin to ink on cream, no glow */
+html[data-theme="light"] [data-chrome="bottom"] button[aria-label*="ommand"] {
+  text-shadow: none !important;
+  box-shadow: 0 1px 4px rgba(181, 118, 20, 0.15), inset 0 0 0 1px rgba(181, 118, 20, 0.1) !important;
+}
+
+/* PROMPT / SEND button glow strip */
+html[data-theme="light"] [data-chrome="bottom"] button[disabled],
+html[data-theme="light"] [data-chrome="bottom"] form button {
+  box-shadow: none !important;
+  text-shadow: none !important;
+}
+
+/* QUERY label glow off */
+html[data-theme="light"] [data-chat-input-wrap] span[class*="tracking-\\[0\\.2em\\]"] {
+  text-shadow: none !important;
+}
+
+/* Log toggle button border on top bar */
+html[data-theme="light"] [data-chrome="top"] button {
+  border-color: rgba(121, 116, 14, 0.35) !important;
+}
+
+/* Theme-toggle button chrome */
+.theme-toggle {
+  position: fixed;
+  right: 14px;
+  bottom: calc(var(--chat-bar-h, 72px) + 14px);
+  z-index: 50;
+  font-family: inherit;
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: 0.08em;
+  padding: 7px 11px;
+  border-radius: 4px;
+  border: 1px solid var(--glass-border);
+  background: var(--glass-bg);
+  color: var(--accent);
+  cursor: pointer;
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+  transition: background 0.15s, border-color 0.15s, transform 0.15s;
+}
+.theme-toggle:hover {
+  border-color: var(--glass-border-hover);
+  background: var(--glass-hover);
+  transform: translateY(-1px);
+}

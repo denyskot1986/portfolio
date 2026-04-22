@@ -2,8 +2,11 @@ import type { Metadata } from "next";
 import { JetBrains_Mono } from "next/font/google";
 import { Analytics } from "@vercel/analytics/next";
 import { LangProvider } from "@/lib/lang-context";
-import ChatbotBar from "@/components/ChatbotBar";
+import ChatbotBarSwitch from "@/components/ChatbotBarSwitch";
+import ThemeToggle from "@/components/ThemeToggle";
 import "./globals.css";
+
+const themeInitScript = `(function(){try{var t=localStorage.getItem('finekot-theme');if(t==='light')document.documentElement.setAttribute('data-theme','light');}catch(e){}})();`;
 
 const jetbrainsMono = JetBrains_Mono({
   variable: "--font-jetbrains-mono",
@@ -60,6 +63,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
   return (
     <html lang="en" className="dark">
       <head>
+        <script dangerouslySetInnerHTML={{ __html: themeInitScript }} />
         <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }} />
         <link rel="alternate" type="application/json" href="/api/products" title="AI Products API" />
       </head>
@@ -72,7 +76,8 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
       >
         <LangProvider>
           {children}
-          <ChatbotBar />
+          <ChatbotBarSwitch />
+          <ThemeToggle />
         </LangProvider>
         <Analytics />
       </body>
