@@ -399,9 +399,14 @@ export default function Home() {
             animate={{ opacity: 1, scale: 1 }}
             exit={{ opacity: 0, scale: 0.95 }}
             transition={{ delay: i * 0.04, duration: 0.3 }}
-            className="rounded-lg overflow-hidden group transition-all scroll-mt-24"
-            style={{ border: "1px solid var(--glass-border)" }}
+            whileHover={{ y: -3 }}
+            className="product-card-clickable rounded-lg overflow-hidden group transition-[border-color,box-shadow] duration-200 scroll-mt-24 relative cursor-pointer border border-[color:var(--glass-border)] hover:border-[color:var(--accent)] hover:shadow-[0_0_28px_rgba(244,63,160,0.22)]"
           >
+            <Link
+              href={`/products/${p.id}`}
+              aria-label={`${p.name} — ${p.tagline}`}
+              className="absolute inset-0 z-10 rounded-lg focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[color:var(--accent)]"
+            />
             {/* Terminal window header */}
             <div className="terminal-card-header group-hover:border-b-[var(--glass-border-hover)]">
               <span className="term-dot term-dot-r" />
@@ -462,9 +467,9 @@ export default function Home() {
                     </p>
                   )}
                 </div>
-                <Link href={`/products/${p.id}`} className="btn-buy">
+                <span aria-hidden="true" className="btn-buy pointer-events-none group-hover:!bg-[var(--accent)] group-hover:!text-[var(--bg)] group-hover:!border-[color:var(--accent)]">
                   ./details →
-                </Link>
+                </span>
               </div>
             </div>
           </motion.div>
