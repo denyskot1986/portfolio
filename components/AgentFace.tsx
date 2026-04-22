@@ -14,7 +14,7 @@ interface AgentFaceProps {
 
 export default function AgentFace({
   size = 96,
-  color = "#00ff41",
+  color = "var(--accent)",
   antennaColor,
   eyeStyle = "round",
   extra = "none",

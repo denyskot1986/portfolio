@@ -94,23 +94,23 @@ function FabPill({ onClick, lang }: { onClick: () => void; lang: Lang }) {
         background: "rgba(4, 2, 8, 0.92)",
         backdropFilter: "blur(14px)",
         WebkitBackdropFilter: "blur(14px)",
-        border: "1px solid rgba(0, 255, 65, 0.45)",
+        border: "1px solid rgba(var(--accent-rgb), 0.45)",
         borderRadius: "999px",
-        color: "#00ff41",
+        color: "var(--accent)",
         fontSize: 12,
         letterSpacing: "0.16em",
         textTransform: "uppercase",
-        textShadow: "0 0 6px rgba(0, 255, 65, 0.55)",
+        textShadow: "0 0 6px rgba(var(--accent-rgb), 0.55)",
         boxShadow:
-          "0 6px 24px rgba(0, 255, 65, 0.18), inset 0 0 10px rgba(0, 255, 65, 0.08)",
+          "0 6px 24px rgba(var(--accent-rgb), 0.18), inset 0 0 10px rgba(var(--accent-rgb), 0.08)",
       }}
       aria-label={label}
     >
       <span
         className="inline-flex items-center justify-center w-6 h-6 rounded-full"
         style={{
-          background: "rgba(0, 255, 65, 0.15)",
-          border: "1px solid rgba(0, 255, 65, 0.55)",
+          background: "rgba(var(--accent-rgb), 0.15)",
+          border: "1px solid rgba(var(--accent-rgb), 0.55)",
           fontSize: 13,
         }}
         aria-hidden
@@ -120,7 +120,7 @@ function FabPill({ onClick, lang }: { onClick: () => void; lang: Lang }) {
       <span>{label}</span>
       <span
         className="inline-block w-1.5 h-1.5 rounded-full ml-1"
-        style={{ background: "#00ff41", boxShadow: "0 0 6px rgba(0, 255, 65, 0.9)" }}
+        style={{ background: "var(--accent)", boxShadow: "0 0 6px rgba(var(--accent-rgb), 0.9)" }}
         aria-hidden
       />
     </motion.button>
@@ -152,8 +152,8 @@ function HandoffCard({ onClick, lang }: { onClick: () => void; lang: Lang }) {
         background: "rgba(4, 2, 8, 0.94)",
         backdropFilter: "blur(16px)",
         WebkitBackdropFilter: "blur(16px)",
-        borderTop: "1px solid rgba(0, 255, 65, 0.28)",
-        boxShadow: "0 -6px 24px rgba(0, 255, 65, 0.08)",
+        borderTop: "1px solid rgba(var(--accent-rgb), 0.28)",
+        boxShadow: "0 -6px 24px rgba(var(--accent-rgb), 0.08)",
       }}
     >
       <button
@@ -163,11 +163,11 @@ function HandoffCard({ onClick, lang }: { onClick: () => void; lang: Lang }) {
         <span
           className="shrink-0 inline-flex items-center justify-center w-8 h-8 rounded-full"
           style={{
-            background: "rgba(0, 255, 65, 0.08)",
-            border: "1px solid rgba(0, 255, 65, 0.45)",
-            color: "#00ff41",
+            background: "rgba(var(--accent-rgb), 0.08)",
+            border: "1px solid rgba(var(--accent-rgb), 0.45)",
+            color: "var(--accent)",
             fontSize: 14,
-            textShadow: "0 0 6px rgba(0, 255, 65, 0.55)",
+            textShadow: "0 0 6px rgba(var(--accent-rgb), 0.55)",
           }}
           aria-hidden
         >
@@ -177,7 +177,7 @@ function HandoffCard({ onClick, lang }: { onClick: () => void; lang: Lang }) {
           <span
             className="block text-[11px] uppercase"
             style={{
-              color: "rgba(0, 255, 65, 0.6)",
+              color: "rgba(var(--accent-rgb), 0.6)",
               letterSpacing: "0.22em",
             }}
           >
@@ -186,8 +186,8 @@ function HandoffCard({ onClick, lang }: { onClick: () => void; lang: Lang }) {
           <span
             className="block text-[13px] mt-0.5 truncate"
             style={{
-              color: "#ffb000",
-              textShadow: "0 0 6px rgba(255, 176, 0, 0.35)",
+              color: "var(--accent2)",
+              textShadow: "0 0 6px rgba(var(--accent2-rgb), 0.35)",
               letterSpacing: "0.04em",
             }}
           >
@@ -197,10 +197,10 @@ function HandoffCard({ onClick, lang }: { onClick: () => void; lang: Lang }) {
         <span
           className="shrink-0 text-[10px] uppercase px-2.5 py-1 rounded transition-colors"
           style={{
-            border: "1px solid rgba(255, 176, 0, 0.55)",
-            color: "#ffb000",
+            border: "1px solid rgba(var(--accent2-rgb), 0.55)",
+            color: "var(--accent2)",
             letterSpacing: "0.2em",
-            textShadow: "0 0 6px rgba(255, 176, 0, 0.35)",
+            textShadow: "0 0 6px rgba(var(--accent2-rgb), 0.35)",
           }}
         >
           {lang === "RU" ? "открыть" : lang === "UA" ? "відкрити" : "open"}
@@ -224,14 +224,14 @@ function CollapseButton({ onClick, lang }: { onClick: () => void; lang: Lang }) 
         style={{
           top: 6,
           background: "rgba(4, 2, 8, 0.97)",
-          border: "1px solid rgba(255, 176, 0, 0.55)",
-          color: "#ffb000",
+          border: "1px solid rgba(var(--accent2-rgb), 0.55)",
+          color: "var(--accent2)",
           borderRadius: 3,
           fontSize: 10,
           letterSpacing: "0.2em",
           textTransform: "uppercase",
-          textShadow: "0 0 6px rgba(255, 176, 0, 0.4)",
-          boxShadow: "0 0 12px rgba(255, 176, 0, 0.25)",
+          textShadow: "0 0 6px rgba(var(--accent2-rgb), 0.4)",
+          boxShadow: "0 0 12px rgba(var(--accent2-rgb), 0.25)",
         }}
         aria-label={lang === "RU" ? "Свернуть" : lang === "UA" ? "Згорнути" : "Collapse"}
       >

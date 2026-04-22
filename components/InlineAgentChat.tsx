@@ -339,10 +339,10 @@ export default function InlineAgentChat({
       className="w-full font-mono"
       style={{
         background: "rgba(2,10,4,0.85)",
-        border: "1px solid rgba(0,255,65,0.35)",
+        border: "1px solid rgba(var(--accent-rgb), 0.35)",
         borderRadius: 8,
         boxShadow:
-          "0 0 28px rgba(0,255,65,0.14), inset 0 0 56px rgba(0,255,65,0.04)",
+          "0 0 28px rgba(var(--accent-rgb), 0.14), inset 0 0 56px rgba(var(--accent-rgb), 0.04)",
         overflow: "hidden",
       }}
     >
@@ -350,8 +350,8 @@ export default function InlineAgentChat({
       <div
         className="flex items-center gap-3 px-3 sm:px-4 py-2.5"
         style={{
-          borderBottom: "1px solid rgba(0,255,65,0.25)",
-          background: "rgba(0,255,65,0.04)",
+          borderBottom: "1px solid rgba(var(--accent-rgb), 0.25)",
+          background: "rgba(var(--accent-rgb), 0.04)",
         }}
       >
         <div className="flex items-center gap-1.5 shrink-0">
@@ -371,19 +371,19 @@ export default function InlineAgentChat({
           <div
             className="uppercase text-[11px] leading-tight truncate"
             style={{
-              color: "#00ff41",
+              color: "var(--accent)",
               letterSpacing: "0.22em",
-              textShadow: "0 0 6px rgba(0,255,65,0.5)",
+              textShadow: "0 0 6px rgba(var(--accent-rgb), 0.5)",
             }}
           >
             {agentName} · {t.title}
           </div>
-          <div className="flex items-center gap-1.5 text-[9px] uppercase" style={{ color: "rgba(0,255,65,0.55)", letterSpacing: "0.22em" }}>
+          <div className="flex items-center gap-1.5 text-[9px] uppercase" style={{ color: "rgba(var(--accent-rgb), 0.55)", letterSpacing: "0.22em" }}>
             <span
               className="inline-block w-1.5 h-1.5 rounded-full"
               style={{
-                background: "#00ff41",
-                boxShadow: "0 0 6px rgba(0,255,65,0.9)",
+                background: "var(--accent)",
+                boxShadow: "0 0 6px rgba(var(--accent-rgb), 0.9)",
                 animation: reduced ? undefined : "inlineChatPulse 1.8s ease-in-out infinite",
               }}
             />
@@ -395,29 +395,29 @@ export default function InlineAgentChat({
           onClick={handleResetClick}
           className="shrink-0 flex items-center gap-1.5 px-2.5 py-1 rounded uppercase text-[10px] transition-all"
           style={{
-            color: confirmReset ? "#ff4d6d" : "#ffb000",
+            color: confirmReset ? "#ff4d6d" : "var(--accent2)",
             background: confirmReset
               ? "rgba(255,77,109,0.08)"
-              : "rgba(255,176,0,0.06)",
+              : "rgba(var(--accent2-rgb), 0.06)",
             border: `1px solid ${
-              confirmReset ? "rgba(255,77,109,0.6)" : "rgba(255,176,0,0.45)"
+              confirmReset ? "rgba(255,77,109,0.6)" : "rgba(var(--accent2-rgb), 0.45)"
             }`,
             letterSpacing: "0.2em",
             textShadow: confirmReset
               ? "0 0 6px rgba(255,77,109,0.5)"
-              : "0 0 6px rgba(255,176,0,0.5)",
+              : "0 0 6px rgba(var(--accent2-rgb), 0.5)",
           }}
           title={confirmReset ? t.confirm : t.newChat}
           aria-label={confirmReset ? t.confirm : t.newChat}
           onMouseEnter={(e) => {
             if (confirmReset) return;
-            e.currentTarget.style.background = "rgba(255,176,0,0.18)";
-            e.currentTarget.style.borderColor = "rgba(255,176,0,0.75)";
+            e.currentTarget.style.background = "rgba(var(--accent2-rgb), 0.18)";
+            e.currentTarget.style.borderColor = "rgba(var(--accent2-rgb), 0.75)";
           }}
           onMouseLeave={(e) => {
             if (confirmReset) return;
-            e.currentTarget.style.background = "rgba(255,176,0,0.06)";
-            e.currentTarget.style.borderColor = "rgba(255,176,0,0.45)";
+            e.currentTarget.style.background = "rgba(var(--accent2-rgb), 0.06)";
+            e.currentTarget.style.borderColor = "rgba(var(--accent2-rgb), 0.45)";
           }}
         >
           <span aria-hidden className="text-[14px] leading-none font-bold">
@@ -454,9 +454,9 @@ export default function InlineAgentChat({
                   className="shrink-0 text-[10px] pt-0.5"
                   style={{
                     width: 36,
-                    color: isUser ? "#ffb000" : "#00ff41",
+                    color: isUser ? "var(--accent2)" : "var(--accent)",
                     letterSpacing: "0.12em",
-                    textShadow: `0 0 6px ${isUser ? "rgba(255,176,0,0.5)" : "rgba(0,255,65,0.5)"}`,
+                    textShadow: `0 0 6px ${isUser ? "rgba(var(--accent2-rgb), 0.5)" : "rgba(var(--accent-rgb), 0.5)"}`,
                   }}
                 >
                   {isUser ? "USR" : agentName.slice(0, 3).toUpperCase()}
@@ -480,21 +480,21 @@ export default function InlineAgentChat({
                       disabled={loading}
                       className="group text-left px-2.5 py-1.5 transition-all disabled:opacity-40 disabled:cursor-not-allowed flex items-center gap-2 text-[12px]"
                       style={{
-                        background: "rgba(255,176,0,0.06)",
-                        border: "1px solid rgba(255,176,0,0.35)",
+                        background: "rgba(var(--accent2-rgb), 0.06)",
+                        border: "1px solid rgba(var(--accent2-rgb), 0.35)",
                         borderRadius: 3,
                         color: "#ffd88a",
                       }}
                       onMouseEnter={(e) => {
-                        e.currentTarget.style.background = "rgba(255,176,0,0.14)";
-                        e.currentTarget.style.borderColor = "rgba(255,176,0,0.7)";
+                        e.currentTarget.style.background = "rgba(var(--accent2-rgb), 0.14)";
+                        e.currentTarget.style.borderColor = "rgba(var(--accent2-rgb), 0.7)";
                       }}
                       onMouseLeave={(e) => {
-                        e.currentTarget.style.background = "rgba(255,176,0,0.06)";
-                        e.currentTarget.style.borderColor = "rgba(255,176,0,0.35)";
+                        e.currentTarget.style.background = "rgba(var(--accent2-rgb), 0.06)";
+                        e.currentTarget.style.borderColor = "rgba(var(--accent2-rgb), 0.35)";
                       }}
                     >
-                      <span className="shrink-0 font-bold" style={{ color: "#ffb000" }} aria-hidden>
+                      <span className="shrink-0 font-bold" style={{ color: "var(--accent2)" }} aria-hidden>
                         {ri + 1} →
                       </span>
                       <span className="break-words">{r}</span>
@@ -511,7 +511,7 @@ export default function InlineAgentChat({
               className="shrink-0 text-[10px] pt-0.5"
               style={{
                 width: 36,
-                color: "#00ff41",
+                color: "var(--accent)",
                 letterSpacing: "0.12em",
               }}
             >
@@ -519,7 +519,7 @@ export default function InlineAgentChat({
             </span>
             <motion.span
               className="text-[12px]"
-              style={{ color: "#00ff41", textShadow: "0 0 6px rgba(0,255,65,0.5)" }}
+              style={{ color: "var(--accent)", textShadow: "0 0 6px rgba(var(--accent-rgb), 0.5)" }}
               animate={reduced ? undefined : { opacity: [0.3, 1, 0.3] }}
               transition={{ duration: 1.1, repeat: Infinity }}
             >
@@ -533,21 +533,21 @@ export default function InlineAgentChat({
       <div
         className="flex items-end gap-2 px-3 sm:px-4 py-2.5"
         style={{
-          borderTop: "1px solid rgba(0,255,65,0.25)",
-          background: "rgba(0,255,65,0.03)",
+          borderTop: "1px solid rgba(var(--accent-rgb), 0.25)",
+          background: "rgba(var(--accent-rgb), 0.03)",
         }}
       >
         <div
           className="flex-1 min-w-0 flex items-center gap-2 px-3 py-1"
           style={{
-            background: "rgba(0,255,65,0.04)",
-            border: "1px solid rgba(0,255,65,0.35)",
+            background: "rgba(var(--accent-rgb), 0.04)",
+            border: "1px solid rgba(var(--accent-rgb), 0.35)",
             borderRadius: 4,
           }}
         >
           <span
             className="shrink-0 text-[10px] hidden sm:inline"
-            style={{ color: "#ffb000", letterSpacing: "0.2em", textShadow: "0 0 6px rgba(255,176,0,0.5)" }}
+            style={{ color: "var(--accent2)", letterSpacing: "0.2em", textShadow: "0 0 6px rgba(var(--accent2-rgb), 0.5)" }}
           >
             QUERY
           </span>
@@ -566,8 +566,8 @@ export default function InlineAgentChat({
                   style={{
                     width: "0.22em",
                     height: "1em",
-                    background: "rgba(0,255,65,0.8)",
-                    boxShadow: "0 0 8px rgba(0,255,65,0.68)",
+                    background: "rgba(var(--accent-rgb), 0.8)",
+                    boxShadow: "0 0 8px rgba(var(--accent-rgb), 0.68)",
                     animation: "blink 1s step-end infinite",
                   }}
                 />
@@ -588,7 +588,7 @@ export default function InlineAgentChat({
                 minHeight: 26,
                 maxHeight: 140,
                 color: "rgba(217,255,224,0.95)",
-                caretColor: "#00ff41",
+                caretColor: "var(--accent)",
                 fontSize: 15,
               }}
             />
@@ -600,14 +600,14 @@ export default function InlineAgentChat({
           disabled={loading || !input.trim()}
           className="shrink-0 h-10 px-4 font-mono uppercase text-[11px] transition-all disabled:opacity-40 disabled:cursor-not-allowed"
           style={{
-            background: "rgba(0,255,65,0.08)",
-            border: "1px solid #00ff41",
-            color: "#00ff41",
+            background: "rgba(var(--accent-rgb), 0.08)",
+            border: "1px solid var(--accent)",
+            color: "var(--accent)",
             borderRadius: 4,
             letterSpacing: "0.22em",
             fontWeight: 700,
-            textShadow: "0 0 6px rgba(0,255,65,0.5)",
-            boxShadow: "0 0 14px rgba(0,255,65,0.2)",
+            textShadow: "0 0 6px rgba(var(--accent-rgb), 0.5)",
+            boxShadow: "0 0 14px rgba(var(--accent-rgb), 0.2)",
           }}
         >
           {t.send}

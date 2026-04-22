@@ -437,10 +437,21 @@ export default function Home() {
               <div className="flex items-start gap-3 mb-2">
                 {p.avatarEmoji && (
                   <div
-                    className="shrink-0 w-12 h-12 rounded-lg flex items-center justify-center text-2xl"
-                    style={{ background: "rgba(244,63,160,0.08)", border: "1px solid var(--glass-border)", boxShadow: "0 0 20px rgba(244,63,160,0.15)" }}
+                    className="shrink-0 w-12 h-12 rounded-lg flex items-center justify-center font-mono font-bold select-none"
+                    style={{
+                      background: "rgba(var(--accent-rgb), 0.06)",
+                      border: "1px solid rgba(var(--accent-rgb), 0.3)",
+                      boxShadow: "0 0 18px rgba(var(--accent-rgb), 0.12), inset 0 0 10px rgba(var(--accent-rgb), 0.04)",
+                      color: "var(--accent)",
+                      fontSize: "14px",
+                      letterSpacing: "0.02em",
+                      textShadow: "0 0 6px rgba(var(--accent-rgb), 0.45)",
+                    }}
+                    aria-hidden
                   >
-                    {p.avatarEmoji}
+                    <span style={{ color: "var(--accent2)", opacity: 0.75 }}>&lt;</span>
+                    <span style={{ margin: "0 1px" }}>{p.name.charAt(0).toUpperCase()}</span>
+                    <span style={{ color: "var(--accent2)", opacity: 0.75 }}>/&gt;</span>
                   </div>
                 )}
                 <div className="min-w-0">

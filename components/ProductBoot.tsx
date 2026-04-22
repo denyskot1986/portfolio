@@ -134,7 +134,7 @@ export default function ProductBoot({ slug, agentName, greeting, bootLines }: Pr
           className="absolute inset-0 pointer-events-none opacity-[0.18] mix-blend-overlay"
           style={{
             backgroundImage:
-              "repeating-linear-gradient(0deg, rgba(0,255,65,0.18) 0px, rgba(0,255,65,0.18) 1px, transparent 1px, transparent 3px)",
+              "repeating-linear-gradient(0deg, rgba(var(--accent-rgb), 0.18) 0px, rgba(var(--accent-rgb), 0.18) 1px, transparent 1px, transparent 3px)",
           }}
         />
 
@@ -142,26 +142,26 @@ export default function ProductBoot({ slug, agentName, greeting, bootLines }: Pr
           className="relative w-full max-w-2xl"
           style={{
             background: "rgba(2,10,4,0.88)",
-            border: "1px solid rgba(0,255,65,0.35)",
+            border: "1px solid rgba(var(--accent-rgb), 0.35)",
             borderRadius: 6,
-            boxShadow: "0 0 32px rgba(0,255,65,0.18), inset 0 0 60px rgba(0,255,65,0.05)",
+            boxShadow: "0 0 32px rgba(var(--accent-rgb), 0.18), inset 0 0 60px rgba(var(--accent-rgb), 0.05)",
           }}
         >
           <div
             className="flex items-center justify-between px-3 py-1.5 text-[10px] uppercase"
             style={{
-              borderBottom: "1px solid rgba(0,255,65,0.25)",
-              color: "rgba(0,255,65,0.7)",
+              borderBottom: "1px solid rgba(var(--accent-rgb), 0.25)",
+              color: "rgba(var(--accent-rgb), 0.7)",
               letterSpacing: "0.22em",
             }}
           >
             <span>spawning {agentName.toLowerCase()} instance</span>
-            <span style={{ color: "rgba(255,176,0,0.7)" }}>cold boot</span>
+            <span style={{ color: "rgba(var(--accent2-rgb), 0.7)" }}>cold boot</span>
           </div>
 
           <div
             className="px-4 sm:px-5 py-4 text-[12.5px] sm:text-[13.5px] leading-[1.65] max-h-[65vh] overflow-y-auto"
-            style={{ color: "#9cffb1", textShadow: "0 0 6px rgba(0,255,65,0.35)" }}
+            style={{ color: "#9cffb1", textShadow: "0 0 6px rgba(var(--accent-rgb), 0.35)" }}
           >
             {typed.map((line, idx) => {
               const isActive = !line.done && line.visible.length > 0 && idx === typed.findIndex((l) => !l.done);
@@ -186,7 +186,7 @@ export default function ProductBoot({ slug, agentName, greeting, bootLines }: Pr
             type="button"
             onClick={() => setRunId((n) => n + 1)}
             className="absolute top-2 right-3 text-[10px] uppercase tracking-[0.2em]"
-            style={{ color: "rgba(0,255,65,0.5)" }}
+            style={{ color: "rgba(var(--accent-rgb), 0.5)" }}
             aria-label="replay boot"
           >
             ↻ replay
@@ -208,8 +208,8 @@ function BlinkCaret({ light }: { light?: boolean }) {
       style={{
         width: "0.55em",
         height: "1em",
-        background: light ? "#fff1c9" : "#00ff41",
-        boxShadow: light ? "0 0 8px rgba(255,220,130,0.7)" : "0 0 8px rgba(0,255,65,0.8)",
+        background: light ? "#fff1c9" : "var(--accent)",
+        boxShadow: light ? "0 0 8px rgba(255,220,130,0.7)" : "0 0 8px rgba(var(--accent-rgb), 0.8)",
         animation: "productBootBlink 0.9s steps(1) infinite",
       }}
     />

@@ -29,16 +29,16 @@ function renderWithLinks(content: string): React.ReactNode {
           href={href}
           className="underline decoration-dotted underline-offset-2 transition-colors"
           style={{
-            color: "#ffb000",
-            textShadow: "0 0 6px rgba(255, 176, 0, 0.45)",
+            color: "var(--accent2)",
+            textShadow: "0 0 6px rgba(var(--accent2-rgb), 0.45)",
           }}
           onMouseEnter={(e) => {
             e.currentTarget.style.color = "#ffd36b";
-            e.currentTarget.style.textShadow = "0 0 10px rgba(255, 176, 0, 0.8)";
+            e.currentTarget.style.textShadow = "0 0 10px rgba(var(--accent2-rgb), 0.8)";
           }}
           onMouseLeave={(e) => {
-            e.currentTarget.style.color = "#ffb000";
-            e.currentTarget.style.textShadow = "0 0 6px rgba(255, 176, 0, 0.45)";
+            e.currentTarget.style.color = "var(--accent2)";
+            e.currentTarget.style.textShadow = "0 0 6px rgba(var(--accent2-rgb), 0.45)";
           }}
         >
           {label}
@@ -99,7 +99,7 @@ function MatrixRain() {
     const draw = () => {
       ctx.fillStyle = "rgba(4, 2, 8, 0.12)";
       ctx.fillRect(0, 0, canvas.width, canvas.height);
-      ctx.fillStyle = "rgba(0, 255, 65, 0.4)";
+      ctx.fillStyle = "rgba(var(--accent-rgb), 0.4)";
       ctx.font = "11px 'JetBrains Mono', monospace";
       for (let i = 0; i < drops.length; i++) {
         const ch = String.fromCharCode(0x30a0 + ((Math.random() * 96) | 0));
@@ -333,9 +333,9 @@ export default function ChatbotWidget() {
               background: "rgba(4, 2, 8, 0.97)",
               backdropFilter: "blur(24px)",
               WebkitBackdropFilter: "blur(24px)",
-              border: "1px solid rgba(0, 255, 65, 0.28)",
+              border: "1px solid rgba(var(--accent-rgb), 0.28)",
               borderRadius: "4px",
-              boxShadow: "0 0 32px rgba(0, 255, 65, 0.18), inset 0 0 24px rgba(0, 255, 65, 0.03)",
+              boxShadow: "0 0 32px rgba(var(--accent-rgb), 0.18), inset 0 0 24px rgba(var(--accent-rgb), 0.03)",
               display: "flex",
               flexDirection: "column",
             }}
@@ -346,26 +346,26 @@ export default function ChatbotWidget() {
             <div
               className="relative px-3 py-2 flex items-center gap-2 text-[10px]"
               style={{
-                background: "rgba(0, 255, 65, 0.06)",
-                borderBottom: "1px solid rgba(0, 255, 65, 0.2)",
-                color: "#00ff41",
+                background: "rgba(var(--accent-rgb), 0.06)",
+                borderBottom: "1px solid rgba(var(--accent-rgb), 0.2)",
+                color: "var(--accent)",
                 letterSpacing: "0.12em",
               }}
             >
-              <span style={{ color: "#ffb000", opacity: 0.7 }}>//</span>
+              <span style={{ color: "var(--accent2)", opacity: 0.7 }}>//</span>
               <span>finekot.shop</span>
               <span style={{ opacity: 0.4 }}>::</span>
               <span>stream</span>
               <span style={{ opacity: 0.4 }}>::</span>
-              <span style={{ color: "#ffb000" }}>0x3F</span>
+              <span style={{ color: "var(--accent2)" }}>0x3F</span>
               <span className="flex-1" />
-              <RobotFace size={14} color="#00ff41" />
+              <RobotFace size={14} color="var(--accent)" />
               <button
                 onClick={() => setMessages([WELCOME_MESSAGE])}
                 className="transition-colors ml-1 uppercase"
-                style={{ color: "rgba(0, 255, 65, 0.4)", letterSpacing: "0.15em" }}
-                onMouseEnter={(e) => (e.currentTarget.style.color = "#00ff41")}
-                onMouseLeave={(e) => (e.currentTarget.style.color = "rgba(0, 255, 65, 0.4)")}
+                style={{ color: "rgba(var(--accent-rgb), 0.4)", letterSpacing: "0.15em" }}
+                onMouseEnter={(e) => (e.currentTarget.style.color = "var(--accent)")}
+                onMouseLeave={(e) => (e.currentTarget.style.color = "rgba(var(--accent-rgb), 0.4)")}
                 aria-label="Clear"
               >
                 clr
@@ -373,9 +373,9 @@ export default function ChatbotWidget() {
               <button
                 onClick={handleClose}
                 className="transition-colors"
-                style={{ color: "rgba(0, 255, 65, 0.45)" }}
-                onMouseEnter={(e) => (e.currentTarget.style.color = "#00ff41")}
-                onMouseLeave={(e) => (e.currentTarget.style.color = "rgba(0, 255, 65, 0.45)")}
+                style={{ color: "rgba(var(--accent-rgb), 0.45)" }}
+                onMouseEnter={(e) => (e.currentTarget.style.color = "var(--accent)")}
+                onMouseLeave={(e) => (e.currentTarget.style.color = "rgba(var(--accent-rgb), 0.45)")}
                 aria-label="Close"
               >
                 <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round">
@@ -403,16 +403,16 @@ export default function ChatbotWidget() {
                   >
                     <span
                       className="shrink-0 pt-0.5"
-                      style={{ color: "rgba(0, 255, 65, 0.5)" }}
+                      style={{ color: "rgba(var(--accent-rgb), 0.5)" }}
                     >
                       ├─
                     </span>
                     <span
                       className="shrink-0 text-[10px] pt-[3px]"
                       style={{
-                        color: isUsr ? "#ffb000" : "#00ff41",
+                        color: isUsr ? "var(--accent2)" : "var(--accent)",
                         letterSpacing: "0.12em",
-                        textShadow: `0 0 6px ${isUsr ? "rgba(255, 176, 0, 0.5)" : "rgba(0, 255, 65, 0.5)"}`,
+                        textShadow: `0 0 6px ${isUsr ? "rgba(var(--accent2-rgb), 0.5)" : "rgba(var(--accent-rgb), 0.5)"}`,
                         width: 26,
                       }}
                     >
@@ -420,7 +420,7 @@ export default function ChatbotWidget() {
                     </span>
                     <span
                       className="shrink-0 pt-0.5"
-                      style={{ color: "rgba(0, 255, 65, 0.4)" }}
+                      style={{ color: "rgba(var(--accent-rgb), 0.4)" }}
                     >
                       │
                     </span>
@@ -438,22 +438,22 @@ export default function ChatbotWidget() {
 
               {loading && (
                 <div className="flex gap-2">
-                  <span className="shrink-0 pt-0.5" style={{ color: "rgba(0, 255, 65, 0.5)" }}>├─</span>
+                  <span className="shrink-0 pt-0.5" style={{ color: "rgba(var(--accent-rgb), 0.5)" }}>├─</span>
                   <span
                     className="shrink-0 text-[10px] pt-[3px]"
                     style={{
-                      color: "#00ff41",
+                      color: "var(--accent)",
                       letterSpacing: "0.12em",
-                      textShadow: "0 0 6px rgba(0, 255, 65, 0.5)",
+                      textShadow: "0 0 6px rgba(var(--accent-rgb), 0.5)",
                       width: 26,
                     }}
                   >
                     SYS
                   </span>
-                  <span className="shrink-0 pt-0.5" style={{ color: "rgba(0, 255, 65, 0.4)" }}>│</span>
+                  <span className="shrink-0 pt-0.5" style={{ color: "rgba(var(--accent-rgb), 0.4)" }}>│</span>
                   <motion.span
                     className="text-[11px]"
-                    style={{ color: "#00ff41", textShadow: "0 0 6px rgba(0, 255, 65, 0.5)" }}
+                    style={{ color: "var(--accent)", textShadow: "0 0 6px rgba(var(--accent-rgb), 0.5)" }}
                     animate={{ opacity: [0.3, 1, 0.3] }}
                     transition={{ duration: 1.2, repeat: Infinity }}
                   >
@@ -467,22 +467,22 @@ export default function ChatbotWidget() {
             <div
               className="relative px-3 py-2 flex items-start gap-2"
               style={{
-                borderTop: "1px solid rgba(0, 255, 65, 0.22)",
-                background: "rgba(0, 255, 65, 0.04)",
+                borderTop: "1px solid rgba(var(--accent-rgb), 0.22)",
+                background: "rgba(var(--accent-rgb), 0.04)",
               }}
             >
-              <span className="shrink-0 pt-2 text-xs" style={{ color: "rgba(0, 255, 65, 0.6)" }}>└─</span>
+              <span className="shrink-0 pt-2 text-xs" style={{ color: "rgba(var(--accent-rgb), 0.6)" }}>└─</span>
               <span
                 className="shrink-0 pt-2 text-[10px]"
                 style={{
-                  color: "#ffb000",
+                  color: "var(--accent2)",
                   letterSpacing: "0.15em",
-                  textShadow: "0 0 6px rgba(255, 176, 0, 0.5)",
+                  textShadow: "0 0 6px rgba(var(--accent2-rgb), 0.5)",
                 }}
               >
                 QUERY
               </span>
-              <span className="shrink-0 pt-2 text-xs" style={{ color: "rgba(0, 255, 65, 0.4)" }}>│</span>
+              <span className="shrink-0 pt-2 text-xs" style={{ color: "rgba(var(--accent-rgb), 0.4)" }}>│</span>
               <textarea
                 ref={inputRef}
                 value={input}
@@ -495,7 +495,7 @@ export default function ChatbotWidget() {
                   minHeight: 64,
                   maxHeight: 140,
                   color: "rgba(217, 255, 224, 0.92)",
-                  caretColor: "#ffb000",
+                  caretColor: "var(--accent2)",
                 }}
               />
               <button
@@ -503,31 +503,31 @@ export default function ChatbotWidget() {
                 disabled={loading || !input.trim()}
                 className="shrink-0 w-7 h-7 flex items-center justify-center transition-all disabled:opacity-30"
                 style={{
-                  background: "rgba(0, 255, 65, 0.1)",
-                  border: "1px solid #00ff41",
-                  color: "#00ff41",
+                  background: "rgba(var(--accent-rgb), 0.1)",
+                  border: "1px solid var(--accent)",
+                  color: "var(--accent)",
                   borderRadius: "3px",
-                  textShadow: "0 0 6px rgba(0, 255, 65, 0.6)",
-                  boxShadow: "0 0 10px rgba(0, 255, 65, 0.2)",
+                  textShadow: "0 0 6px rgba(var(--accent-rgb), 0.6)",
+                  boxShadow: "0 0 10px rgba(var(--accent-rgb), 0.2)",
                 }}
                 onMouseEnter={(e) => {
                   if (!e.currentTarget.disabled) {
-                    e.currentTarget.style.background = "#00ff41";
+                    e.currentTarget.style.background = "var(--accent)";
                     e.currentTarget.style.color = "#040208";
-                    e.currentTarget.style.boxShadow = "0 0 24px rgba(0, 255, 65, 0.55)";
+                    e.currentTarget.style.boxShadow = "0 0 24px rgba(var(--accent-rgb), 0.55)";
                   }
                 }}
                 onMouseLeave={(e) => {
-                  e.currentTarget.style.background = "rgba(0, 255, 65, 0.1)";
-                  e.currentTarget.style.color = "#00ff41";
-                  e.currentTarget.style.boxShadow = "0 0 10px rgba(0, 255, 65, 0.2)";
+                  e.currentTarget.style.background = "rgba(var(--accent-rgb), 0.1)";
+                  e.currentTarget.style.color = "var(--accent)";
+                  e.currentTarget.style.boxShadow = "0 0 10px rgba(var(--accent-rgb), 0.2)";
                 }}
                 aria-label="Send"
               >
                 {loading ? (
                   <motion.div
                     className="w-3 h-3 rounded-full"
-                    style={{ border: "1px solid rgba(0, 255, 65, 0.3)", borderTopColor: "#00ff41" }}
+                    style={{ border: "1px solid rgba(var(--accent-rgb), 0.3)", borderTopColor: "var(--accent)" }}
                     animate={{ rotate: 360 }}
                     transition={{ duration: 0.8, repeat: Infinity, ease: "linear" }}
                   />
@@ -547,14 +547,14 @@ export default function ChatbotWidget() {
         onClick={handleToggle}
         className="relative w-12 h-12 flex items-center justify-center font-mono"
         style={{
-          background: "rgba(255, 176, 0, 0.08)",
-          border: "1px solid #ffb000",
-          color: "#ffb000",
+          background: "rgba(var(--accent2-rgb), 0.08)",
+          border: "1px solid var(--accent2)",
+          color: "var(--accent2)",
           borderRadius: "4px",
-          textShadow: "0 0 8px rgba(255, 176, 0, 0.7)",
-          boxShadow: "0 0 24px rgba(255, 176, 0, 0.3), inset 0 0 12px rgba(255, 176, 0, 0.05)",
+          textShadow: "0 0 8px rgba(var(--accent2-rgb), 0.7)",
+          boxShadow: "0 0 24px rgba(var(--accent2-rgb), 0.3), inset 0 0 12px rgba(var(--accent2-rgb), 0.05)",
         }}
-        whileHover={{ scale: 1.05, boxShadow: "0 0 36px rgba(255, 176, 0, 0.55), inset 0 0 12px rgba(255, 176, 0, 0.08)" }}
+        whileHover={{ scale: 1.05, boxShadow: "0 0 36px rgba(var(--accent2-rgb), 0.55), inset 0 0 12px rgba(var(--accent2-rgb), 0.08)" }}
         whileTap={{ scale: 0.95 }}
         aria-label="Open shop consultant"
       >
@@ -586,7 +586,7 @@ export default function ChatbotWidget() {
         {!open && (
           <motion.div
             className="absolute inset-0"
-            style={{ border: "1px solid rgba(255, 176, 0, 0.5)", borderRadius: "4px" }}
+            style={{ border: "1px solid rgba(var(--accent2-rgb), 0.5)", borderRadius: "4px" }}
             animate={{ scale: [1, 1.3], opacity: [0.5, 0] }}
             transition={{ duration: 2.2, repeat: Infinity, ease: "easeOut" }}
           />
@@ -595,9 +595,9 @@ export default function ChatbotWidget() {
           <motion.div
             className="absolute inset-0 pointer-events-none"
             style={{
-              border: "1px solid #ffb000",
+              border: "1px solid var(--accent2)",
               borderRadius: "4px",
-              boxShadow: "0 0 14px rgba(255, 176, 0, 0.5), inset 0 0 6px rgba(255, 176, 0, 0.15)",
+              boxShadow: "0 0 14px rgba(var(--accent2-rgb), 0.5), inset 0 0 6px rgba(var(--accent2-rgb), 0.15)",
             }}
             animate={{ opacity: [0.85, 0.25, 0.85] }}
             transition={{ duration: 2.2, repeat: Infinity, ease: "easeOut" }}

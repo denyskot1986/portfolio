@@ -101,18 +101,18 @@ function renderAssistantText(content: string): React.ReactNode {
         rel="noopener noreferrer"
         className="underline decoration-dotted underline-offset-2 transition-colors"
         style={{
-          color: "#ffb000",
-          textShadow: "0 0 6px rgba(255, 176, 0, 0.5)",
+          color: "var(--accent2)",
+          textShadow: "0 0 6px rgba(var(--accent2-rgb), 0.5)",
         }}
         onMouseEnter={(e) => {
           e.currentTarget.style.color = "#ffd36b";
           e.currentTarget.style.textShadow =
-            "0 0 10px rgba(255, 176, 0, 0.85)";
+            "0 0 10px rgba(var(--accent2-rgb), 0.85)";
         }}
         onMouseLeave={(e) => {
-          e.currentTarget.style.color = "#ffb000";
+          e.currentTarget.style.color = "var(--accent2)";
           e.currentTarget.style.textShadow =
-            "0 0 6px rgba(255, 176, 0, 0.5)";
+            "0 0 6px rgba(var(--accent2-rgb), 0.5)";
         }}
       >
         {full}
@@ -187,8 +187,8 @@ function saveHistory(messages: ChatMessage[]) {
   }
 }
 
-const FRAME_BORDER = "rgba(0, 255, 65, 0.4)";
-const FRAME_GLOW = "0 0 24px rgba(0, 255, 65, 0.18)";
+const FRAME_BORDER = "rgba(var(--accent-rgb), 0.4)";
+const FRAME_GLOW = "0 0 24px rgba(var(--accent-rgb), 0.18)";
 
 const PLACEHOLDER_BY_LANG: Record<Lang, string> = {
   EN: "David online",
@@ -629,12 +629,12 @@ export default function ChatbotBar() {
           backdropFilter: "blur(18px)",
           WebkitBackdropFilter: "blur(18px)",
           borderBottom: `1px solid ${FRAME_BORDER}`,
-          boxShadow: "0 2px 18px rgba(0, 255, 65, 0.12)",
+          boxShadow: "0 2px 18px rgba(var(--accent-rgb), 0.12)",
         }}
       >
         <div
           className="h-full px-3 sm:px-4 flex items-center gap-2 text-[10px]"
-          style={{ color: "#00ff41", letterSpacing: "0.12em" }}
+          style={{ color: "var(--accent)", letterSpacing: "0.12em" }}
         >
           {/* Terminal "traffic lights" */}
           <div className="flex items-center gap-1.5 mr-1">
@@ -651,28 +651,28 @@ export default function ChatbotBar() {
               style={{ background: "#28c840", boxShadow: "0 0 6px rgba(40, 200, 64, 0.6)" }}
             />
           </div>
-          <span style={{ color: "#ffb000", opacity: 0.7 }}>//</span>
+          <span style={{ color: "var(--accent2)", opacity: 0.7 }}>//</span>
           <span>finekot.shop</span>
           <span style={{ opacity: 0.4 }}>::</span>
           <span>consultant</span>
           <span style={{ opacity: 0.4 }}>::</span>
-          <span style={{ color: "#ffb000" }}>0x3F</span>
+          <span style={{ color: "var(--accent2)" }}>0x3F</span>
           <span className="flex-1" />
           {hasActivity && (
             <button
               onClick={() => setLogOpen((v) => !v)}
               className="transition-colors uppercase px-2 py-0.5 hidden sm:inline-flex items-center gap-1"
               style={{
-                color: logOpen ? "#00ff41" : "rgba(0, 255, 65, 0.55)",
+                color: logOpen ? "var(--accent)" : "rgba(var(--accent-rgb), 0.55)",
                 letterSpacing: "0.2em",
-                border: "1px solid rgba(0, 255, 65, 0.3)",
+                border: "1px solid rgba(var(--accent-rgb), 0.3)",
                 borderRadius: "2px",
               }}
-              onMouseEnter={(e) => (e.currentTarget.style.color = "#00ff41")}
+              onMouseEnter={(e) => (e.currentTarget.style.color = "var(--accent)")}
               onMouseLeave={(e) =>
                 (e.currentTarget.style.color = logOpen
-                  ? "#00ff41"
-                  : "rgba(0, 255, 65, 0.55)")
+                  ? "var(--accent)"
+                  : "rgba(var(--accent-rgb), 0.55)")
               }
               aria-label={logOpen ? "Hide log" : "Show log"}
             >
@@ -680,8 +680,8 @@ export default function ChatbotBar() {
               <span
                 className="w-1.5 h-1.5 rounded-full"
                 style={{
-                  background: "#00ff41",
-                  boxShadow: "0 0 6px rgba(0, 255, 65, 0.8)",
+                  background: "var(--accent)",
+                  boxShadow: "0 0 6px rgba(var(--accent-rgb), 0.8)",
                 }}
               />
             </button>
@@ -696,12 +696,12 @@ export default function ChatbotBar() {
             }}
             className="transition-colors uppercase"
             style={{
-              color: "rgba(0, 255, 65, 0.45)",
+              color: "rgba(var(--accent-rgb), 0.45)",
               letterSpacing: "0.2em",
             }}
-            onMouseEnter={(e) => (e.currentTarget.style.color = "#00ff41")}
+            onMouseEnter={(e) => (e.currentTarget.style.color = "var(--accent)")}
             onMouseLeave={(e) =>
-              (e.currentTarget.style.color = "rgba(0, 255, 65, 0.45)")
+              (e.currentTarget.style.color = "rgba(var(--accent-rgb), 0.45)")
             }
             aria-label="Clear log"
           >
@@ -742,28 +742,28 @@ export default function ChatbotBar() {
                 <div
                   className="px-3 py-1.5 flex items-center gap-2 text-[10px]"
                   style={{
-                    background: "rgba(0, 255, 65, 0.06)",
-                    borderBottom: "1px solid rgba(0, 255, 65, 0.2)",
-                    color: "rgba(0, 255, 65, 0.7)",
+                    background: "rgba(var(--accent-rgb), 0.06)",
+                    borderBottom: "1px solid rgba(var(--accent-rgb), 0.2)",
+                    color: "rgba(var(--accent-rgb), 0.7)",
                     letterSpacing: "0.15em",
                   }}
                 >
-                  <span style={{ color: "#ffb000", opacity: 0.7 }}>└─</span>
+                  <span style={{ color: "var(--accent2)", opacity: 0.7 }}>└─</span>
                   <span className="uppercase">Finekot Systems</span>
                   <span className="flex-1 flex items-center justify-center gap-1.5">
                     <span
                       className="inline-block w-1.5 h-1.5 rounded-full"
                       style={{
-                        background: "#00ff41",
-                        boxShadow: "0 0 6px rgba(0, 255, 65, 0.9)",
+                        background: "var(--accent)",
+                        boxShadow: "0 0 6px rgba(var(--accent-rgb), 0.9)",
                       }}
                       aria-hidden
                     />
                     <span
                       className="uppercase"
                       style={{
-                        color: "#ffb000",
-                        textShadow: "0 0 6px rgba(255, 176, 0, 0.45)",
+                        color: "var(--accent2)",
+                        textShadow: "0 0 6px rgba(var(--accent2-rgb), 0.45)",
                         letterSpacing: "0.22em",
                       }}
                     >
@@ -774,26 +774,26 @@ export default function ChatbotBar() {
                     onClick={() => setLogOpen(false)}
                     className="transition-all flex items-center gap-1.5 px-2.5 py-1 uppercase"
                     style={{
-                      color: "rgba(255, 176, 0, 0.9)",
-                      background: "rgba(255, 176, 0, 0.08)",
-                      border: "1px solid rgba(255, 176, 0, 0.5)",
+                      color: "rgba(var(--accent2-rgb), 0.9)",
+                      background: "rgba(var(--accent2-rgb), 0.08)",
+                      border: "1px solid rgba(var(--accent2-rgb), 0.5)",
                       borderRadius: "3px",
                       letterSpacing: "0.2em",
                       fontSize: "11px",
                       fontWeight: 700,
-                      textShadow: "0 0 6px rgba(255, 176, 0, 0.4)",
+                      textShadow: "0 0 6px rgba(var(--accent2-rgb), 0.4)",
                     }}
                     onMouseEnter={(e) => {
                       e.currentTarget.style.background =
-                        "rgba(255, 176, 0, 0.2)";
+                        "rgba(var(--accent2-rgb), 0.2)";
                       e.currentTarget.style.borderColor =
-                        "rgba(255, 176, 0, 0.8)";
+                        "rgba(var(--accent2-rgb), 0.8)";
                     }}
                     onMouseLeave={(e) => {
                       e.currentTarget.style.background =
-                        "rgba(255, 176, 0, 0.08)";
+                        "rgba(var(--accent2-rgb), 0.08)";
                       e.currentTarget.style.borderColor =
-                        "rgba(255, 176, 0, 0.5)";
+                        "rgba(var(--accent2-rgb), 0.5)";
                     }}
                     aria-label={
                       lang === "RU"
@@ -902,19 +902,19 @@ export default function ChatbotBar() {
                         <div className="flex gap-2">
                           <span
                             className="shrink-0 pt-0.5"
-                            style={{ color: "rgba(0, 255, 65, 0.5)" }}
+                            style={{ color: "rgba(var(--accent-rgb), 0.5)" }}
                           >
                             ├─
                           </span>
                           <span
                             className="shrink-0 text-[10px] pt-[3px]"
                             style={{
-                              color: isUsr ? "#ffb000" : "#00ff41",
+                              color: isUsr ? "var(--accent2)" : "var(--accent)",
                               letterSpacing: "0.12em",
                               textShadow: `0 0 6px ${
                                 isUsr
-                                  ? "rgba(255, 176, 0, 0.5)"
-                                  : "rgba(0, 255, 65, 0.5)"
+                                  ? "rgba(var(--accent2-rgb), 0.5)"
+                                  : "rgba(var(--accent-rgb), 0.5)"
                               }`,
                               width: 26,
                             }}
@@ -923,7 +923,7 @@ export default function ChatbotBar() {
                           </span>
                           <span
                             className="shrink-0 pt-0.5"
-                            style={{ color: "rgba(0, 255, 65, 0.4)" }}
+                            style={{ color: "rgba(var(--accent-rgb), 0.4)" }}
                           >
                             │
                           </span>
@@ -952,8 +952,8 @@ export default function ChatbotBar() {
                                 disabled={loading || agentDriving}
                                 className="group text-left px-2.5 py-1.5 transition-all disabled:opacity-40 disabled:cursor-not-allowed flex items-center gap-2"
                                 style={{
-                                  background: "rgba(255, 176, 0, 0.05)",
-                                  border: "1px solid rgba(255, 176, 0, 0.35)",
+                                  background: "rgba(var(--accent2-rgb), 0.05)",
+                                  border: "1px solid rgba(var(--accent2-rgb), 0.35)",
                                   borderRadius: 3,
                                   color: "#ffd88a",
                                   fontSize: 11.5,
@@ -963,20 +963,20 @@ export default function ChatbotBar() {
                                 onMouseEnter={(e) => {
                                   if (e.currentTarget.disabled) return;
                                   e.currentTarget.style.background =
-                                    "rgba(255, 176, 0, 0.14)";
+                                    "rgba(var(--accent2-rgb), 0.14)";
                                   e.currentTarget.style.borderColor =
-                                    "rgba(255, 176, 0, 0.7)";
+                                    "rgba(var(--accent2-rgb), 0.7)";
                                 }}
                                 onMouseLeave={(e) => {
                                   e.currentTarget.style.background =
-                                    "rgba(255, 176, 0, 0.05)";
+                                    "rgba(var(--accent2-rgb), 0.05)";
                                   e.currentTarget.style.borderColor =
-                                    "rgba(255, 176, 0, 0.35)";
+                                    "rgba(var(--accent2-rgb), 0.35)";
                                 }}
                               >
                                 <span
                                   className="shrink-0 font-bold"
-                                  style={{ color: "#ffb000", opacity: 0.8 }}
+                                  style={{ color: "var(--accent2)", opacity: 0.8 }}
                                   aria-hidden
                                 >
                                   {ri + 1} →
@@ -993,16 +993,16 @@ export default function ChatbotBar() {
                     <div className="flex gap-2">
                       <span
                         className="shrink-0 pt-0.5"
-                        style={{ color: "rgba(0, 255, 65, 0.5)" }}
+                        style={{ color: "rgba(var(--accent-rgb), 0.5)" }}
                       >
                         ├─
                       </span>
                       <span
                         className="shrink-0 text-[10px] pt-[3px]"
                         style={{
-                          color: "#00ff41",
+                          color: "var(--accent)",
                           letterSpacing: "0.12em",
-                          textShadow: "0 0 6px rgba(0, 255, 65, 0.5)",
+                          textShadow: "0 0 6px rgba(var(--accent-rgb), 0.5)",
                           width: 26,
                         }}
                       >
@@ -1010,15 +1010,15 @@ export default function ChatbotBar() {
                       </span>
                       <span
                         className="shrink-0 pt-0.5"
-                        style={{ color: "rgba(0, 255, 65, 0.4)" }}
+                        style={{ color: "rgba(var(--accent-rgb), 0.4)" }}
                       >
                         │
                       </span>
                       <motion.span
                         className="text-[11px]"
                         style={{
-                          color: "#00ff41",
-                          textShadow: "0 0 6px rgba(0, 255, 65, 0.5)",
+                          color: "var(--accent)",
+                          textShadow: "0 0 6px rgba(var(--accent-rgb), 0.5)",
                         }}
                         animate={{ opacity: [0.3, 1, 0.3] }}
                         transition={{ duration: 1.2, repeat: Infinity }}
@@ -1064,13 +1064,13 @@ export default function ChatbotBar() {
                 <div
                   className="px-3 py-1.5 flex items-center gap-2 text-[10px]"
                   style={{
-                    background: "rgba(0, 255, 65, 0.06)",
-                    borderBottom: "1px solid rgba(0, 255, 65, 0.2)",
-                    color: "rgba(0, 255, 65, 0.7)",
+                    background: "rgba(var(--accent-rgb), 0.06)",
+                    borderBottom: "1px solid rgba(var(--accent-rgb), 0.2)",
+                    color: "rgba(var(--accent-rgb), 0.7)",
                     letterSpacing: "0.2em",
                   }}
                 >
-                  <span style={{ color: "#ffb000", opacity: 0.7 }}>⌘</span>
+                  <span style={{ color: "var(--accent2)", opacity: 0.7 }}>⌘</span>
                   <span className="uppercase">
                     {lang === "RU"
                       ? "быстрые команды"
@@ -1095,23 +1095,23 @@ export default function ChatbotBar() {
                     }}
                     className="flex items-center gap-2 px-3 py-2 text-left transition-all"
                     style={{
-                      background: "rgba(255, 176, 0, 0.05)",
-                      border: "1px solid rgba(255, 176, 0, 0.28)",
+                      background: "rgba(var(--accent2-rgb), 0.05)",
+                      border: "1px solid rgba(var(--accent2-rgb), 0.28)",
                       borderRadius: "3px",
                       color: "#ffd88a",
                       letterSpacing: "0.02em",
                     }}
                     onMouseEnter={(e) => {
                       e.currentTarget.style.background =
-                        "rgba(255, 176, 0, 0.14)";
+                        "rgba(var(--accent2-rgb), 0.14)";
                       e.currentTarget.style.borderColor =
-                        "rgba(255, 176, 0, 0.65)";
+                        "rgba(var(--accent2-rgb), 0.65)";
                     }}
                     onMouseLeave={(e) => {
                       e.currentTarget.style.background =
-                        "rgba(255, 176, 0, 0.05)";
+                        "rgba(var(--accent2-rgb), 0.05)";
                       e.currentTarget.style.borderColor =
-                        "rgba(255, 176, 0, 0.28)";
+                        "rgba(var(--accent2-rgb), 0.28)";
                     }}
                   >
                     <span className="text-xs leading-tight">
@@ -1130,23 +1130,23 @@ export default function ChatbotBar() {
                     }}
                     className="flex items-center gap-2 px-3 py-2 text-left transition-all"
                     style={{
-                      background: "rgba(255, 176, 0, 0.05)",
-                      border: "1px solid rgba(255, 176, 0, 0.28)",
+                      background: "rgba(var(--accent2-rgb), 0.05)",
+                      border: "1px solid rgba(var(--accent2-rgb), 0.28)",
                       borderRadius: "3px",
                       color: "#ffd88a",
                       letterSpacing: "0.02em",
                     }}
                     onMouseEnter={(e) => {
                       e.currentTarget.style.background =
-                        "rgba(255, 176, 0, 0.14)";
+                        "rgba(var(--accent2-rgb), 0.14)";
                       e.currentTarget.style.borderColor =
-                        "rgba(255, 176, 0, 0.65)";
+                        "rgba(var(--accent2-rgb), 0.65)";
                     }}
                     onMouseLeave={(e) => {
                       e.currentTarget.style.background =
-                        "rgba(255, 176, 0, 0.05)";
+                        "rgba(var(--accent2-rgb), 0.05)";
                       e.currentTarget.style.borderColor =
-                        "rgba(255, 176, 0, 0.28)";
+                        "rgba(var(--accent2-rgb), 0.28)";
                     }}
                   >
                     <span className="text-xs leading-tight">
@@ -1165,23 +1165,23 @@ export default function ChatbotBar() {
                     }}
                     className="flex items-center gap-2 px-3 py-2 text-left transition-all"
                     style={{
-                      background: "rgba(255, 176, 0, 0.05)",
-                      border: "1px solid rgba(255, 176, 0, 0.28)",
+                      background: "rgba(var(--accent2-rgb), 0.05)",
+                      border: "1px solid rgba(var(--accent2-rgb), 0.28)",
                       borderRadius: "3px",
                       color: "#ffd88a",
                       letterSpacing: "0.02em",
                     }}
                     onMouseEnter={(e) => {
                       e.currentTarget.style.background =
-                        "rgba(255, 176, 0, 0.14)";
+                        "rgba(var(--accent2-rgb), 0.14)";
                       e.currentTarget.style.borderColor =
-                        "rgba(255, 176, 0, 0.65)";
+                        "rgba(var(--accent2-rgb), 0.65)";
                     }}
                     onMouseLeave={(e) => {
                       e.currentTarget.style.background =
-                        "rgba(255, 176, 0, 0.05)";
+                        "rgba(var(--accent2-rgb), 0.05)";
                       e.currentTarget.style.borderColor =
-                        "rgba(255, 176, 0, 0.28)";
+                        "rgba(var(--accent2-rgb), 0.28)";
                     }}
                   >
                     <span className="text-xs leading-tight">
@@ -1200,23 +1200,23 @@ export default function ChatbotBar() {
                     }}
                     className="flex items-center gap-2 px-3 py-2 text-left transition-all"
                     style={{
-                      background: "rgba(255, 176, 0, 0.05)",
-                      border: "1px solid rgba(255, 176, 0, 0.28)",
+                      background: "rgba(var(--accent2-rgb), 0.05)",
+                      border: "1px solid rgba(var(--accent2-rgb), 0.28)",
                       borderRadius: "3px",
                       color: "#ffd88a",
                       letterSpacing: "0.02em",
                     }}
                     onMouseEnter={(e) => {
                       e.currentTarget.style.background =
-                        "rgba(255, 176, 0, 0.14)";
+                        "rgba(var(--accent2-rgb), 0.14)";
                       e.currentTarget.style.borderColor =
-                        "rgba(255, 176, 0, 0.65)";
+                        "rgba(var(--accent2-rgb), 0.65)";
                     }}
                     onMouseLeave={(e) => {
                       e.currentTarget.style.background =
-                        "rgba(255, 176, 0, 0.05)";
+                        "rgba(var(--accent2-rgb), 0.05)";
                       e.currentTarget.style.borderColor =
-                        "rgba(255, 176, 0, 0.28)";
+                        "rgba(var(--accent2-rgb), 0.28)";
                     }}
                   >
                     <span className="text-xs leading-tight">
@@ -1236,22 +1236,22 @@ export default function ChatbotBar() {
                       }}
                       className="flex items-center gap-2 px-3 py-2 text-left transition-all group"
                       style={{
-                        background: "rgba(0, 255, 65, 0.03)",
-                        border: "1px solid rgba(0, 255, 65, 0.18)",
+                        background: "rgba(var(--accent-rgb), 0.03)",
+                        border: "1px solid rgba(var(--accent-rgb), 0.18)",
                         borderRadius: "3px",
                         color: "rgba(217, 255, 224, 0.88)",
                       }}
                       onMouseEnter={(e) => {
                         e.currentTarget.style.background =
-                          "rgba(0, 255, 65, 0.1)";
+                          "rgba(var(--accent-rgb), 0.1)";
                         e.currentTarget.style.borderColor =
-                          "rgba(0, 255, 65, 0.5)";
+                          "rgba(var(--accent-rgb), 0.5)";
                       }}
                       onMouseLeave={(e) => {
                         e.currentTarget.style.background =
-                          "rgba(0, 255, 65, 0.03)";
+                          "rgba(var(--accent-rgb), 0.03)";
                         e.currentTarget.style.borderColor =
-                          "rgba(0, 255, 65, 0.18)";
+                          "rgba(var(--accent-rgb), 0.18)";
                       }}
                     >
                       <span
@@ -1279,7 +1279,7 @@ export default function ChatbotBar() {
           backdropFilter: "blur(18px)",
           WebkitBackdropFilter: "blur(18px)",
           borderTop: `1px solid ${FRAME_BORDER}`,
-          boxShadow: "0 -6px 24px rgba(0, 255, 65, 0.12)",
+          boxShadow: "0 -6px 24px rgba(var(--accent-rgb), 0.12)",
         }}
       >
         <div className="max-w-6xl mx-auto px-2 sm:px-4 py-2.5 flex items-stretch gap-1.5 sm:gap-3">
@@ -1291,20 +1291,20 @@ export default function ChatbotBar() {
             className="relative shrink-0 h-11 px-5 sm:px-6 flex items-center justify-center gap-2 font-mono uppercase"
             style={{
               background: cmdOpen
-                ? "#ffb000"
-                : "rgba(255, 176, 0, 0.1)",
-              border: "1px solid #ffb000",
-              color: cmdOpen ? "#040208" : "#ffb000",
+                ? "var(--accent2)"
+                : "rgba(var(--accent2-rgb), 0.1)",
+              border: "1px solid var(--accent2)",
+              color: cmdOpen ? "#040208" : "var(--accent2)",
               borderRadius: "4px",
               fontSize: "15px",
               fontWeight: 700,
               letterSpacing: "0.24em",
               textShadow: cmdOpen
                 ? "none"
-                : "0 0 8px rgba(255, 176, 0, 0.55)",
+                : "0 0 8px rgba(var(--accent2-rgb), 0.55)",
               boxShadow: cmdOpen
-                ? "0 -4px 18px rgba(255, 176, 0, 0.5), 0 0 18px rgba(255, 176, 0, 0.3)"
-                : "0 0 16px rgba(255, 176, 0, 0.22), inset 0 0 10px rgba(255, 176, 0, 0.06)",
+                ? "0 -4px 18px rgba(var(--accent2-rgb), 0.5), 0 0 18px rgba(var(--accent2-rgb), 0.3)"
+                : "0 0 16px rgba(var(--accent2-rgb), 0.22), inset 0 0 10px rgba(var(--accent2-rgb), 0.06)",
               transform: cmdOpen ? "translateY(-25%)" : "translateY(0)",
               transition:
                 "transform 0.22s cubic-bezier(0.2, 0.8, 0.2, 1), background 0.18s, color 0.18s, box-shadow 0.18s",
@@ -1334,17 +1334,17 @@ export default function ChatbotBar() {
             data-chat-input-wrap
             className="flex-1 min-w-0 flex items-center gap-1.5 sm:gap-2 pl-3 sm:pl-4 pr-2 sm:pr-3 relative"
             style={{
-              background: "rgba(0, 255, 65, 0.04)",
-              border: "1px solid rgba(0, 255, 65, 0.35)",
+              background: "rgba(var(--accent-rgb), 0.04)",
+              border: "1px solid rgba(var(--accent-rgb), 0.35)",
               borderRadius: "4px",
-              boxShadow: "inset 0 0 14px rgba(0, 255, 65, 0.06)",
+              boxShadow: "inset 0 0 14px rgba(var(--accent-rgb), 0.06)",
             }}
           >
             <span
               className="shrink-0 hidden sm:inline text-[10px] tracking-[0.2em]"
               style={{
-                color: "#ffb000",
-                textShadow: "0 0 6px rgba(255, 176, 0, 0.5)",
+                color: "var(--accent2)",
+                textShadow: "0 0 6px rgba(var(--accent2-rgb), 0.5)",
               }}
             >
               QUERY
@@ -1366,8 +1366,8 @@ export default function ChatbotBar() {
                     style={{
                       width: "0.22em",
                       height: "1em",
-                      background: "rgba(0, 255, 65, 0.8)",
-                      boxShadow: "0 0 8px rgba(0, 255, 65, 0.68)",
+                      background: "rgba(var(--accent-rgb), 0.8)",
+                      boxShadow: "0 0 8px rgba(var(--accent-rgb), 0.68)",
                       animation: "blink 1s step-end infinite",
                     }}
                   />
@@ -1390,7 +1390,7 @@ export default function ChatbotBar() {
                   minHeight: 28,
                   maxHeight: 120,
                   color: "rgba(217, 255, 224, 0.95)",
-                  caretColor: "#00ff41",
+                  caretColor: "var(--accent)",
                   paddingLeft: 2,
                   // iOS Safari zooms into inputs with font-size < 16px. Keep 16px
                   // here to block the zoom, then shrink visually on desktop.
@@ -1407,46 +1407,46 @@ export default function ChatbotBar() {
             className="shrink-0 px-2.5 sm:px-5 h-11 flex items-center justify-center gap-2 transition-all disabled:opacity-40 disabled:cursor-not-allowed"
             style={{
               background: loading
-                ? "rgba(0, 255, 65, 0.2)"
-                : "rgba(0, 255, 65, 0.08)",
-              border: "1px solid #00ff41",
-              color: "#00ff41",
+                ? "rgba(var(--accent-rgb), 0.2)"
+                : "rgba(var(--accent-rgb), 0.08)",
+              border: "1px solid var(--accent)",
+              color: "var(--accent)",
               borderRadius: "4px",
               letterSpacing: "0.15em",
               fontSize: "11px",
               fontWeight: 600,
-              textShadow: "0 0 6px rgba(0, 255, 65, 0.6)",
+              textShadow: "0 0 6px rgba(var(--accent-rgb), 0.6)",
               boxShadow:
-                "0 0 14px rgba(0, 255, 65, 0.22), inset 0 0 8px rgba(0, 255, 65, 0.04)",
+                "0 0 14px rgba(var(--accent-rgb), 0.22), inset 0 0 8px rgba(var(--accent-rgb), 0.04)",
             }}
             onPointerEnter={(e) => {
               if (e.currentTarget.disabled) return;
               if (e.pointerType !== "mouse") return;
-              e.currentTarget.style.background = "#00ff41";
+              e.currentTarget.style.background = "var(--accent)";
               e.currentTarget.style.color = "#040208";
               e.currentTarget.style.textShadow = "none";
               e.currentTarget.style.boxShadow =
-                "0 0 28px rgba(0, 255, 65, 0.55)";
+                "0 0 28px rgba(var(--accent-rgb), 0.55)";
             }}
             onPointerLeave={(e) => {
               e.currentTarget.style.background = loading
-                ? "rgba(0, 255, 65, 0.2)"
-                : "rgba(0, 255, 65, 0.08)";
-              e.currentTarget.style.color = "#00ff41";
+                ? "rgba(var(--accent-rgb), 0.2)"
+                : "rgba(var(--accent-rgb), 0.08)";
+              e.currentTarget.style.color = "var(--accent)";
               e.currentTarget.style.textShadow =
-                "0 0 6px rgba(0, 255, 65, 0.6)";
+                "0 0 6px rgba(var(--accent-rgb), 0.6)";
               e.currentTarget.style.boxShadow =
-                "0 0 14px rgba(0, 255, 65, 0.22), inset 0 0 8px rgba(0, 255, 65, 0.04)";
+                "0 0 14px rgba(var(--accent-rgb), 0.22), inset 0 0 8px rgba(var(--accent-rgb), 0.04)";
             }}
             onPointerCancel={(e) => {
               e.currentTarget.style.background = loading
-                ? "rgba(0, 255, 65, 0.2)"
-                : "rgba(0, 255, 65, 0.08)";
-              e.currentTarget.style.color = "#00ff41";
+                ? "rgba(var(--accent-rgb), 0.2)"
+                : "rgba(var(--accent-rgb), 0.08)";
+              e.currentTarget.style.color = "var(--accent)";
               e.currentTarget.style.textShadow =
-                "0 0 6px rgba(0, 255, 65, 0.6)";
+                "0 0 6px rgba(var(--accent-rgb), 0.6)";
               e.currentTarget.style.boxShadow =
-                "0 0 14px rgba(0, 255, 65, 0.22), inset 0 0 8px rgba(0, 255, 65, 0.04)";
+                "0 0 14px rgba(var(--accent-rgb), 0.22), inset 0 0 8px rgba(var(--accent-rgb), 0.04)";
             }}
             aria-label="Send prompt"
           >
@@ -1454,8 +1454,8 @@ export default function ChatbotBar() {
               <motion.div
                 className="w-3.5 h-3.5 rounded-full"
                 style={{
-                  border: "1px solid rgba(0, 255, 65, 0.3)",
-                  borderTopColor: "#00ff41",
+                  border: "1px solid rgba(var(--accent-rgb), 0.3)",
+                  borderTopColor: "var(--accent)",
                 }}
                 animate={{ rotate: 360 }}
                 transition={{ duration: 0.8, repeat: Infinity, ease: "linear" }}

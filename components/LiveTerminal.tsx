@@ -116,34 +116,34 @@ export default function LiveTerminal({ slug, agentName, cycle, title }: LiveTerm
       className="w-full"
       style={{
         background: "rgba(2,10,4,0.82)",
-        border: "1px solid rgba(0,255,65,0.32)",
+        border: "1px solid rgba(var(--accent-rgb), 0.32)",
         borderRadius: 8,
-        boxShadow: "0 0 22px rgba(0,255,65,0.10), inset 0 0 40px rgba(0,255,65,0.04)",
+        boxShadow: "0 0 22px rgba(var(--accent-rgb), 0.10), inset 0 0 40px rgba(var(--accent-rgb), 0.04)",
       }}
     >
       {/* header: mac dots + filename + live tag + replay */}
       <div
         className="flex items-center justify-between px-3 py-2 text-[10px] uppercase tracking-[0.22em]"
-        style={{ borderBottom: "1px solid rgba(0,255,65,0.25)", color: "rgba(0,255,65,0.7)" }}
+        style={{ borderBottom: "1px solid rgba(var(--accent-rgb), 0.25)", color: "rgba(var(--accent-rgb), 0.7)" }}
       >
         <div className="flex items-center gap-2">
           <span className="inline-block w-2 h-2 rounded-full" style={{ background: "#ff5f57" }} />
           <span className="inline-block w-2 h-2 rounded-full" style={{ background: "#febc2e" }} />
           <span className="inline-block w-2 h-2 rounded-full" style={{ background: "#28c840" }} />
-          <span className="ml-2" style={{ color: "rgba(0,255,65,0.55)" }}>
+          <span className="ml-2" style={{ color: "rgba(var(--accent-rgb), 0.55)" }}>
             {title ?? `${slug}.run.log`}
           </span>
         </div>
         <div className="flex items-center gap-3">
-          <span className="flex items-center gap-1" style={{ color: "#ffb000" }}>
-            <span className="inline-block w-1.5 h-1.5 rounded-full" style={{ background: "#ffb000", boxShadow: "0 0 6px rgba(255,176,0,0.7)" }} />
+          <span className="flex items-center gap-1" style={{ color: "var(--accent2)" }}>
+            <span className="inline-block w-1.5 h-1.5 rounded-full" style={{ background: "var(--accent2)", boxShadow: "0 0 6px rgba(var(--accent2-rgb), 0.7)" }} />
             live
           </span>
           <button
             type="button"
             onClick={() => setRunId((n) => n + 1)}
             className="text-[10px] uppercase tracking-[0.22em] transition-colors"
-            style={{ color: "rgba(0,255,65,0.55)" }}
+            style={{ color: "rgba(var(--accent-rgb), 0.55)" }}
           >
             ↻ replay
           </button>
@@ -153,7 +153,7 @@ export default function LiveTerminal({ slug, agentName, cycle, title }: LiveTerm
       <div
         ref={streamRef}
         className="px-4 sm:px-5 py-4 text-[12.5px] sm:text-[13.5px] leading-[1.65] max-h-[320px] overflow-y-auto font-mono"
-        style={{ color: "#9cffb1", textShadow: "0 0 6px rgba(0,255,65,0.32)" }}
+        style={{ color: "#9cffb1", textShadow: "0 0 6px rgba(var(--accent-rgb), 0.32)" }}
       >
         {typed.map((v, idx) => {
           if (!v) return null;
@@ -168,8 +168,8 @@ export default function LiveTerminal({ slug, agentName, cycle, title }: LiveTerm
                   style={{
                     width: "0.55em",
                     height: "1em",
-                    background: "#00ff41",
-                    boxShadow: "0 0 8px rgba(0,255,65,0.8)",
+                    background: "var(--accent)",
+                    boxShadow: "0 0 8px rgba(var(--accent-rgb), 0.8)",
                     animation: "liveTerminalBlink 0.9s steps(1) infinite",
                   }}
                 />
@@ -178,7 +178,7 @@ export default function LiveTerminal({ slug, agentName, cycle, title }: LiveTerm
           );
         })}
         {done && (
-          <div className="mt-3 text-[10px] uppercase tracking-[0.22em]" style={{ color: "rgba(0,255,65,0.45)" }}>
+          <div className="mt-3 text-[10px] uppercase tracking-[0.22em]" style={{ color: "rgba(var(--accent-rgb), 0.45)" }}>
             cycle complete · press replay to run again
           </div>
         )}

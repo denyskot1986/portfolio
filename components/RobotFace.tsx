@@ -19,7 +19,7 @@ interface RobotFaceProps {
 
 export default function RobotFace({
   size = 14,
-  color = "#00ff41",
+  color = "var(--accent)",
   glow = true,
   className,
 }: RobotFaceProps) {

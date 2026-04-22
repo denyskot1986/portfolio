@@ -32,9 +32,9 @@ export default function LiveVitals({ slug, agentName }: LiveVitalsProps) {
         className="flex items-center gap-1.5 px-2 py-1 rounded text-[10px] uppercase tracking-[0.2em]"
         style={{
           background: "rgba(2,10,4,0.82)",
-          border: "1px solid rgba(0,255,65,0.35)",
-          color: "rgba(0,255,65,0.85)",
-          textShadow: "0 0 6px rgba(0,255,65,0.4)",
+          border: "1px solid rgba(var(--accent-rgb), 0.35)",
+          color: "rgba(var(--accent-rgb), 0.85)",
+          textShadow: "0 0 6px rgba(var(--accent-rgb), 0.4)",
         }}
         aria-label={`jump to ${slug} chat`}
         title={`open chat with ${agentName}`}
@@ -42,8 +42,8 @@ export default function LiveVitals({ slug, agentName }: LiveVitalsProps) {
         <span
           className="inline-block w-1.5 h-1.5 rounded-full"
           style={{
-            background: "#00ff41",
-            boxShadow: "0 0 6px rgba(0,255,65,0.8)",
+            background: "var(--accent)",
+            boxShadow: "0 0 6px rgba(var(--accent-rgb), 0.8)",
             animation: reduced ? undefined : "liveVitalsPulse 2s ease-in-out infinite",
           }}
         />
