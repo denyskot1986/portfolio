@@ -332,16 +332,6 @@ export default function Home() {
                   ? "що у вас тут?"
                   : "what do you have here?"}
               </span>
-              <motion.span
-                aria-hidden
-                className="inline-block w-[0.55em] h-[1em] align-[-2px]"
-                style={{
-                  background: "var(--accent2)",
-                  boxShadow: "0 0 6px rgba(255, 176, 0, 0.7)",
-                }}
-                animate={{ opacity: [1, 0, 1] }}
-                transition={{ duration: 1, repeat: Infinity, ease: "easeInOut" }}
-              />
             </button>
           </motion.div>
 
