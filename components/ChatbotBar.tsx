@@ -371,10 +371,10 @@ export default function ChatbotBar() {
   const executeActions = useCallback(
     (actions: ParsedReply["actions"]) => {
       if (actions.length === 0) return;
-      // Tour mode: many scrolls in one reply → slower pacing so the user
-      // can actually read each card. 3+ actions → 2.2s between beats.
+      // Tour mode: many scrolls in one reply → paced so the user can read each
+      // card. 3+ actions → ~1.1s between beats (2× faster than before).
       const isTour = actions.filter((a) => a.type === "scroll").length >= 3;
-      const stepMs = isTour ? 2200 : 550;
+      const stepMs = isTour ? 1100 : 275;
       let delay = 0;
       for (const act of actions) {
         schedule(() => {
@@ -397,7 +397,7 @@ export default function ChatbotBar() {
           }
         }, delay);
         // nav needs less pause than a read-a-card pause.
-        delay += act.type === "nav" ? 600 : stepMs;
+        delay += act.type === "nav" ? 300 : stepMs;
       }
     },
     [router, pathname, schedule]
@@ -457,11 +457,11 @@ export default function ChatbotBar() {
             if (tourTimeoutRef.current) clearTimeout(tourTimeoutRef.current);
             let duration: number;
             if (scrollCount >= 3) {
-              duration = 2200 * scrollCount + 1500; // tour
+              duration = 1100 * scrollCount + 750; // tour · 2× faster
             } else if (scrollCount > 0) {
-              duration = 1200 * scrollCount + 900; // 1-2 скролла
+              duration = 600 * scrollCount + 450; // 1-2 скролла · 2× faster
             } else {
-              duration = 1600; // одна nav-переброска: хватает чтобы юзер заметил
+              duration = 800; // одна nav-переброска · 2× faster
             }
             tourTimeoutRef.current = setTimeout(() => {
               setAgentDriving(false);
@@ -481,9 +481,9 @@ export default function ChatbotBar() {
           let delay = 0;
           if (pathname !== "/") {
             router.push("/");
-            delay = 700;
+            delay = 350;
           }
-          const BEAT_GAP_MS = 2400;
+          const BEAT_GAP_MS = 1200;
           for (const beat of beats) {
             const text = beat.visible || "";
             const beatActions = beat.actions;
@@ -500,11 +500,11 @@ export default function ChatbotBar() {
               }
               // Scroll/nav fires right after the message lands.
               if (beatActions.length) {
-                schedule(() => executeActions(beatActions), 120);
+                schedule(() => executeActions(beatActions), 60);
               }
             }, delay);
             // Pure-action beats (just [nav:/] intro) need less read-time.
-            delay += text ? BEAT_GAP_MS : 700;
+            delay += text ? BEAT_GAP_MS : 350;
           }
           if (tourTimeoutRef.current) clearTimeout(tourTimeoutRef.current);
           tourTimeoutRef.current = setTimeout(() => {
