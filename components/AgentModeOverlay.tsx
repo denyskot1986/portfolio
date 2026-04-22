@@ -178,16 +178,17 @@ function AgentStatusBadge({
 }) {
   return (
     <motion.div
-      initial={{ y: 20, opacity: 0 }}
+      initial={{ y: -20, opacity: 0 }}
       animate={{ y: 0, opacity: 1 }}
-      exit={{ y: 20, opacity: 0 }}
+      exit={{ y: -20, opacity: 0 }}
       transition={{ duration: 0.3, ease: "easeOut" }}
       style={{
         position: "absolute",
-        right: 20,
-        // Поднимаем бейдж над фиксированным ChatBar-ом, чтобы кнопка
-        // «Забрать управление» не перекрывалась полем ввода.
-        bottom: "calc(var(--chat-bar-h, 72px) + 20px)",
+        right: 12,
+        // Ставим бейдж СВЕРХУ (под верхней рамкой ChatBar), а не снизу —
+        // иначе на мобильной раскладке бейдж закрывает текст развернутого
+        // чат-лога и «Забрать управление» нечем нажать.
+        top: "calc(var(--chat-top-h, 34px) + 12px)",
         pointerEvents: "auto",
         display: "flex",
         alignItems: "center",

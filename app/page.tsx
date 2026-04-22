@@ -289,7 +289,50 @@ export default function Home() {
             {t.heroSlogan}
           </motion.p>
 
-          <div className="mb-8" />
+          {/* David-led site tour CTA — dispatches a chat message that hands control to David */}
+          <motion.div
+            initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.6, delay: 0.55 }}
+            className="mt-5 mb-8 flex justify-center"
+          >
+            <button
+              type="button"
+              onClick={() => {
+                const msg =
+                  lang === "RU"
+                    ? "Что у вас тут? Проведи экскурсию по сайту, расскажи про товары. Скажи, что с каждым агентом можно пообщаться лично."
+                    : lang === "UA"
+                    ? "Що у вас тут? Проведи екскурсію сайтом, розкажи про товари. Скажи, що з кожним агентом можна поспілкуватись особисто."
+                    : "What do you have here? Give me a tour of the site, walk through the products, and mention that I can chat with each agent personally.";
+                window.dispatchEvent(
+                  new CustomEvent("fk:chat:send", { detail: { message: msg } })
+                );
+              }}
+              className="group relative font-mono text-sm sm:text-base tracking-[0.15em] uppercase px-6 py-3 rounded-md transition-all"
+              style={{
+                border: "1.5px solid var(--accent2)",
+                color: "var(--accent2)",
+                background: "rgba(255, 176, 0, 0.06)",
+                textShadow: "0 0 6px rgba(255, 176, 0, 0.35)",
+                boxShadow:
+                  "0 0 16px rgba(255, 176, 0, 0.18), inset 0 0 10px rgba(255, 176, 0, 0.06)",
+              }}
+            >
+              <span className="opacity-70 mr-2">▸</span>
+              {lang === "RU"
+                ? "что у вас тут?"
+                : lang === "UA"
+                ? "що у вас тут?"
+                : "what do you have here?"}
+              <span
+                className="inline-block w-1.5 h-1.5 rounded-full ml-3 align-middle"
+                style={{
+                  background: "var(--accent2)",
+                  boxShadow: "0 0 6px var(--accent2)",
+                }}
+                aria-hidden
+              />
+            </button>
+          </motion.div>
 
           {/* Lineup inventory — terminal badges */}
           <motion.div

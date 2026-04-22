@@ -191,9 +191,9 @@ const FRAME_BORDER = "rgba(0, 255, 65, 0.4)";
 const FRAME_GLOW = "0 0 24px rgba(0, 255, 65, 0.18)";
 
 const PLACEHOLDER_BY_LANG: Record<Lang, string> = {
-  EN: "prompt",
-  RU: "prompt",
-  UA: "prompt",
+  EN: "David online",
+  RU: "David online",
+  UA: "David online",
 };
 
 // Quick-command presets surfaced from the "cmd" menu next to the >_ button.
@@ -565,6 +565,22 @@ export default function ChatbotBar() {
     window.addEventListener("keydown", onKey);
     return () => window.removeEventListener("keydown", onKey);
   }, [agentDriving, loading, handleTakeOver]);
+
+  // External trigger: any component can open the chat and send a message by
+  // dispatching `window.dispatchEvent(new CustomEvent("fk:chat:send", { detail: { message: "..." }}))`.
+  // Used by hero-page CTA "что у вас тут?" to hand control to David for a tour.
+  useEffect(() => {
+    const handler = (e: Event) => {
+      const ce = e as CustomEvent<{ message?: string }>;
+      const msg = ce.detail?.message?.trim();
+      if (!msg) return;
+      setLogOpen(true);
+      void sendMessage(msg);
+    };
+    window.addEventListener("fk:chat:send", handler as EventListener);
+    return () =>
+      window.removeEventListener("fk:chat:send", handler as EventListener);
+  }, [sendMessage]);
 
   const handleKeyDown = useCallback(
     (e: React.KeyboardEvent) => {
