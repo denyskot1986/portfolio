@@ -292,8 +292,21 @@ export default function Home() {
           {/* David-led site tour CTA — dispatches a chat message that hands control to David */}
           <motion.div
             initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.6, delay: 0.55 }}
-            className="mt-5 mb-8 flex justify-center"
+            className="mt-5 mb-8 flex items-center justify-center gap-3 sm:gap-5"
           >
+            <motion.span
+              aria-hidden
+              className="font-mono text-xl sm:text-2xl"
+              style={{
+                color: "var(--accent2)",
+                textShadow: "0 0 8px rgba(255, 176, 0, 0.55)",
+              }}
+              animate={{ opacity: [0.25, 1, 0.25], x: [0, 6, 0] }}
+              transition={{ duration: 1.8, repeat: Infinity, ease: "easeInOut" }}
+            >
+              →
+            </motion.span>
+
             <button
               type="button"
               onClick={() => {
@@ -307,7 +320,7 @@ export default function Home() {
                   new CustomEvent("fk:chat:send", { detail: { message: msg } })
                 );
               }}
-              className="group relative font-mono text-sm sm:text-base tracking-[0.15em] uppercase px-6 py-3 rounded-md transition-all"
+              className="font-mono text-sm sm:text-base tracking-[0.15em] uppercase px-6 py-3 rounded-md transition-all hover:brightness-125"
               style={{
                 border: "1.5px solid var(--accent2)",
                 color: "var(--accent2)",
@@ -317,21 +330,25 @@ export default function Home() {
                   "0 0 16px rgba(255, 176, 0, 0.18), inset 0 0 10px rgba(255, 176, 0, 0.06)",
               }}
             >
-              <span className="opacity-70 mr-2">▸</span>
               {lang === "RU"
                 ? "что у вас тут?"
                 : lang === "UA"
                 ? "що у вас тут?"
                 : "what do you have here?"}
-              <span
-                className="inline-block w-1.5 h-1.5 rounded-full ml-3 align-middle"
-                style={{
-                  background: "var(--accent2)",
-                  boxShadow: "0 0 6px var(--accent2)",
-                }}
-                aria-hidden
-              />
             </button>
+
+            <motion.span
+              aria-hidden
+              className="font-mono text-xl sm:text-2xl"
+              style={{
+                color: "var(--accent2)",
+                textShadow: "0 0 8px rgba(255, 176, 0, 0.55)",
+              }}
+              animate={{ opacity: [0.25, 1, 0.25], x: [0, -6, 0] }}
+              transition={{ duration: 1.8, repeat: Infinity, ease: "easeInOut" }}
+            >
+              ←
+            </motion.span>
           </motion.div>
 
           {/* Lineup inventory — terminal badges */}
