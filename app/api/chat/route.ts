@@ -1,7 +1,6 @@
 import { NextRequest, NextResponse } from "next/server";
 import { productsData } from "../../../lib/products-data";
-import { kvEnabled, kvIncrWithExpire } from "../../../lib/kv";
-import { createClient } from "redis";
+import { kvEnabled, kvIncrWithExpire, kvLogPush } from "../../../lib/kv";
 import crypto from "crypto";
 
 export const runtime = "nodejs";
@@ -401,23 +400,15 @@ async function logConversation(entry: {
   model: string;
 }): Promise<void> {
   if (!kvEnabled()) return;
-  const url = process.env.REDIS_URL;
-  if (!url) return;
-  let client: ReturnType<typeof createClient> | null = null;
   try {
-    client = createClient({ url, socket: { connectTimeout: 3000 } });
-    client.on("error", () => {});
-    await client.connect();
-    const payload = JSON.stringify(entry);
-    await client.lPush(CHAT_LOG_KEY, payload);
-    await client.lTrim(CHAT_LOG_KEY, 0, CHAT_LOG_MAX - 1);
-    await client.expire(CHAT_LOG_KEY, CHAT_LOG_TTL_SEC);
+    await kvLogPush(
+      CHAT_LOG_KEY,
+      JSON.stringify(entry),
+      CHAT_LOG_MAX,
+      CHAT_LOG_TTL_SEC
+    );
   } catch (e) {
     console.error("chat log error:", e);
-  } finally {
-    if (client && client.isOpen) {
-      await client.quit().catch(() => {});
-    }
   }
 }
 
@@ -508,21 +499,15 @@ export async function POST(req: NextRequest) {
       },
       body: JSON.stringify({
         model: CHAT_MODEL,
-        // System prompt отправляем как структурированный content-блок
-        // с cache_control: ephemeral. OpenRouter пробрасывает маркер
-        // в Anthropic (explicit кэш 5мин) и Gemini (implicit кэш).
-        // System prompt у нас ~2к токенов — выше порога обеих моделей.
+        // Важно: system prompt идёт простой строкой. Структурированный
+        // content-блок с cache_control ломает Gemini 2.5 Flash на длинных
+        // tour-ответах (запрос зависает 60+ сек без первого байта).
+        // Для Gemini кэш и так implicit — OpenRouter автоматически
+        // переиспользует общий префикс >1024 токенов между запросами,
+        // дополнительного маркера не нужно. Если переключимся на Anthropic —
+        // добавим cache_control обратно.
         messages: [
-          {
-            role: "system",
-            content: [
-              {
-                type: "text",
-                text: systemContent,
-                cache_control: { type: "ephemeral" },
-              },
-            ],
-          },
+          { role: "system", content: systemContent },
           ...messages,
         ],
         max_tokens: MAX_REPLY_TOKENS,
@@ -561,6 +546,12 @@ export async function POST(req: NextRequest) {
         const emit = (obj: unknown) => {
           controller.enqueue(encoder.encode(JSON.stringify(obj) + "\n"));
         };
+
+        // Сразу пробиваем headers + тело через Vercel/Cloudflare edge.
+        // Без этого первый байт улетает только когда OpenRouter начнёт
+        // слать дельты — на холодном старте Gemini это бывает 2-4 сек,
+        // и клиент/прокси решают что «связь прервана».
+        emit({ t: "ping" });
 
         try {
           while (true) {
