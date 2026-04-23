@@ -3,7 +3,6 @@ import { JetBrains_Mono } from "next/font/google";
 import { Analytics } from "@vercel/analytics/next";
 import { LangProvider } from "@/lib/lang-context";
 import ChatbotBarSwitch from "@/components/ChatbotBarSwitch";
-import ThemeToggle from "@/components/ThemeToggle";
 import "./globals.css";
 
 // Pre-paint theme init: read saved theme (or migrate legacy dark/light) and
@@ -79,7 +78,6 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
         <LangProvider>
           {children}
           <ChatbotBarSwitch />
-          <ThemeToggle />
         </LangProvider>
         <Analytics />
       </body>

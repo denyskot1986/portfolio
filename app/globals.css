@@ -32,6 +32,10 @@
   /* Chat frame metrics (ChatbotBar.tsx wraps the page as a terminal window) */
   --chat-top-h: 34px;
   --chat-bar-h: 72px;
+  /* Background used by chat chrome (top bar / bottom bar / log panel /
+     CMD popup). Per-theme override below so paper-mode goes cream. */
+  --chrome-bg: rgba(4, 2, 8, 0.97);
+  --chrome-bg-soft: rgba(4, 2, 8, 0.55);
 }
 
 /* iOS Safari zooms in when an input font-size is under 16px.
@@ -525,6 +529,8 @@ html[data-theme="paper"] {
   --glass-hover: rgba(121, 116, 14, 0.08);
   --glass-border: rgba(121, 116, 14, 0.25);
   --glass-border-hover: rgba(121, 116, 14, 0.55);
+  --chrome-bg: rgba(251, 241, 199, 0.94);
+  --chrome-bg-soft: rgba(251, 241, 199, 0.65);
   color-scheme: light;
 }
 

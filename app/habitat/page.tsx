@@ -31,6 +31,7 @@ type Copy = {
   title: string;
   subtitle: string;
   back: string;
+  agents: string;
   replay: string;
   scenes: Record<SceneId, { home: string; agent: string; line: string }>;
   finale: { headline: string; tagline: string };
@@ -40,8 +41,9 @@ const COPY: Record<Lang, Copy> = {
   EN: {
     title: "HABITAT",
     subtitle: "where Finekot agents live",
-    back: "← /",
-    replay: "replay ↺",
+    back: "← home",
+    agents: "meet the agents →",
+    replay: "↺ replay",
     scenes: {
       telegram: {
         home: "TELEGRAM · personal chat",
@@ -72,8 +74,9 @@ const COPY: Record<Lang, Copy> = {
   RU: {
     title: "HABITAT",
     subtitle: "где живут агенты Finekot",
-    back: "← /",
-    replay: "replay ↺",
+    back: "← главная",
+    agents: "к агентам →",
+    replay: "↺ replay",
     scenes: {
       telegram: {
         home: "TELEGRAM · личный чат",
@@ -104,8 +107,9 @@ const COPY: Record<Lang, Copy> = {
   UA: {
     title: "HABITAT",
     subtitle: "де живуть агенти Finekot",
-    back: "← /",
-    replay: "replay ↺",
+    back: "← головна",
+    agents: "до агентів →",
+    replay: "↺ replay",
     scenes: {
       telegram: {
         home: "TELEGRAM · особистий чат",
@@ -505,27 +509,91 @@ export default function HabitatPage() {
     >
       <CRTBackground />
 
-      {/* HUD */}
-      <div className="absolute top-4 left-4 z-30 text-[10px] sm:text-xs opacity-70 tracking-widest">
-        {c.title} · {String(sec).padStart(2, "0")}s / 16s
-      </div>
-      <div className="absolute top-4 right-4 z-30 flex gap-4 text-[10px] sm:text-xs">
+      {/* HUD — top bar with prominent nav buttons + animation counter.
+          Lives just below the global chat top chrome (z-499) so it's not
+          clipped; raised z to 500 to sit above the chrome on accidental
+          overlap. */}
+      <div
+        className="absolute left-3 right-3 sm:left-4 sm:right-4 z-[500] flex items-center gap-2 sm:gap-3"
+        style={{ top: "calc(var(--chat-top-h, 34px) + 10px)" }}
+      >
         <Link
           href="/"
-          className="opacity-70 hover:opacity-100 hover:text-[#ffb000] transition tracking-widest"
+          className="font-mono uppercase transition-all px-3 py-1.5 text-[10px] sm:text-[11px] tracking-[0.18em] flex items-center gap-1.5"
+          style={{
+            color: "#00ff41",
+            background: "rgba(0, 255, 65, 0.08)",
+            border: "1px solid rgba(0, 255, 65, 0.5)",
+            borderRadius: 4,
+            textShadow: "0 0 8px rgba(0, 255, 65, 0.6)",
+            boxShadow: "0 0 12px rgba(0, 255, 65, 0.18)",
+          }}
+          onMouseEnter={(e) => {
+            e.currentTarget.style.background = "rgba(0, 255, 65, 0.18)";
+            e.currentTarget.style.borderColor = "rgba(0, 255, 65, 0.85)";
+          }}
+          onMouseLeave={(e) => {
+            e.currentTarget.style.background = "rgba(0, 255, 65, 0.08)";
+            e.currentTarget.style.borderColor = "rgba(0, 255, 65, 0.5)";
+          }}
         >
           {c.back}
         </Link>
+
+        <span className="hidden sm:inline-block flex-1 text-center text-[10px] sm:text-xs opacity-60 tracking-widest font-mono">
+          {c.title} · {String(sec).padStart(2, "0")}s / 16s
+        </span>
+
         <button
           onClick={replay}
-          className="opacity-70 hover:opacity-100 hover:text-[#ffb000] transition tracking-widest"
+          className="font-mono uppercase transition-all px-2.5 py-1.5 text-[10px] sm:text-[11px] tracking-[0.18em] hidden sm:inline-flex items-center gap-1"
+          style={{
+            color: "rgba(255, 255, 255, 0.55)",
+            background: "transparent",
+            border: "1px solid rgba(255, 255, 255, 0.18)",
+            borderRadius: 4,
+          }}
+          onMouseEnter={(e) => {
+            e.currentTarget.style.color = "#ffb000";
+            e.currentTarget.style.borderColor = "rgba(255, 176, 0, 0.6)";
+          }}
+          onMouseLeave={(e) => {
+            e.currentTarget.style.color = "rgba(255, 255, 255, 0.55)";
+            e.currentTarget.style.borderColor = "rgba(255, 255, 255, 0.18)";
+          }}
         >
           {c.replay}
         </button>
+
+        <Link
+          href="/#product-boris"
+          className="font-mono uppercase transition-all px-3 py-1.5 text-[10px] sm:text-[11px] tracking-[0.18em] flex items-center gap-1.5"
+          style={{
+            color: "#ffb000",
+            background: "rgba(255, 176, 0, 0.1)",
+            border: "1px solid rgba(255, 176, 0, 0.55)",
+            borderRadius: 4,
+            textShadow: "0 0 8px rgba(255, 176, 0, 0.6)",
+            boxShadow: "0 0 14px rgba(255, 176, 0, 0.22)",
+          }}
+          onMouseEnter={(e) => {
+            e.currentTarget.style.background = "rgba(255, 176, 0, 0.22)";
+            e.currentTarget.style.borderColor = "rgba(255, 176, 0, 0.9)";
+          }}
+          onMouseLeave={(e) => {
+            e.currentTarget.style.background = "rgba(255, 176, 0, 0.1)";
+            e.currentTarget.style.borderColor = "rgba(255, 176, 0, 0.55)";
+          }}
+        >
+          {c.agents}
+        </Link>
       </div>
 
-      {/* Title strip */}
-      <div className="absolute top-12 sm:top-14 left-0 right-0 z-20 text-center px-4">
+      {/* Title strip — sits below the HUD button row */}
+      <div
+        className="absolute left-0 right-0 z-20 text-center px-4"
+        style={{ top: "calc(var(--chat-top-h, 34px) + 56px)" }}
+      >
         <div
           className="text-[10px] sm:text-[11px] tracking-[0.4em] uppercase"
           style={{ color: "#ffb000", textShadow: "0 0 8px rgba(255,176,0,0.4)" }}

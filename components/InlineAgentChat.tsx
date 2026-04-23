@@ -338,7 +338,7 @@ export default function InlineAgentChat({
       transition={{ duration: 0.55, ease: [0.2, 0.8, 0.2, 1] }}
       className="w-full font-mono"
       style={{
-        background: "rgba(2,10,4,0.85)",
+        background: "var(--chrome-bg)",
         border: "1px solid rgba(var(--accent-rgb), 0.35)",
         borderRadius: 8,
         boxShadow:

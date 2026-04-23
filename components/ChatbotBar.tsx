@@ -295,6 +295,7 @@ export default function ChatbotBar() {
   const [cmdOpen, setCmdOpen] = useState(false);
   const [agentDriving, setAgentDriving] = useState(false);
   const [activeTheme, setActiveTheme] = useState<CmdThemeId>("matrix");
+  const [chatFullscreen, setChatFullscreen] = useState(false);
   const tourTimeoutRef = useRef<ReturnType<typeof setTimeout> | null>(null);
   // Все setTimeout, которые шедулятся туром/скроллами. Когда пользователь
   // жмёт «забрать управление» / ESC — мы их все глушим, иначе агент
@@ -356,6 +357,20 @@ export default function ChatbotBar() {
     try { localStorage.setItem(THEME_STORAGE_KEY, id); } catch {}
     setActiveTheme(id);
   }, []);
+
+  // Fullscreen chat: Esc exits fullscreen first; if not in fullscreen, the
+  // existing agent-takeover handler catches Esc instead.
+  useEffect(() => {
+    if (!chatFullscreen) return;
+    const onKey = (e: KeyboardEvent) => {
+      if (e.key === "Escape") {
+        e.preventDefault();
+        setChatFullscreen(false);
+      }
+    };
+    window.addEventListener("keydown", onKey);
+    return () => window.removeEventListener("keydown", onKey);
+  }, [chatFullscreen]);
 
   // Persist on every change.
   useEffect(() => {
@@ -664,7 +679,7 @@ export default function ChatbotBar() {
         className="fixed top-0 left-0 right-0 z-[499] font-mono"
         style={{
           height: "var(--chat-top-h, 34px)",
-          background: "rgba(4, 2, 8, 0.97)",
+          background: "var(--chrome-bg)",
           backdropFilter: "blur(18px)",
           WebkitBackdropFilter: "blur(18px)",
           borderBottom: `1px solid ${FRAME_BORDER}`,
@@ -758,23 +773,35 @@ export default function ChatbotBar() {
             exit={{ opacity: 0, y: 20 }}
             transition={{ duration: 0.22, ease: "easeOut" }}
             className="fixed left-0 right-0 z-[498] pointer-events-none"
-            style={{ bottom: "var(--chat-bar-h, 72px)" }}
+            style={{
+              bottom: "var(--chat-bar-h, 72px)",
+              top: chatFullscreen
+                ? "calc(var(--chat-top-h, 34px) + 8px)"
+                : undefined,
+            }}
           >
-            {/* Прижимаем лог к ЛЕВОМУ краю: правая половина десктопа
-                остаётся видна (под чатом живая страница, удобно пальцем
-                скроллить справа на мобиле). На узких экранах — fullwidth,
-                поэтому sm:max-w-xl включается только от 640px. */}
-            <div className="max-w-full sm:max-w-xl px-3 sm:pl-4 sm:pr-2 pb-2">
+            {/* Прижимаем лог к ЛЕВОМУ краю в обычном режиме (правая половина
+                под чатом остаётся живой). В fullscreen — растягиваем на всю
+                ширину и убираем sm:max-w-xl. */}
+            <div
+              className={
+                chatFullscreen
+                  ? "max-w-full h-full px-3 sm:px-4 pb-2"
+                  : "max-w-full sm:max-w-xl px-3 sm:pl-4 sm:pr-2 pb-2"
+              }
+              style={chatFullscreen ? { height: "100%" } : undefined}
+            >
               <div
                 ref={logPanelRef}
-                className="pointer-events-auto relative font-mono overflow-hidden"
+                className="pointer-events-auto relative font-mono overflow-hidden flex flex-col"
                 style={{
-                  background: "rgba(4, 2, 8, 0.97)",
+                  background: "var(--chrome-bg)",
                   backdropFilter: "blur(20px)",
                   WebkitBackdropFilter: "blur(20px)",
                   border: `1px solid ${FRAME_BORDER}`,
                   borderRadius: "6px",
                   boxShadow: FRAME_GLOW,
+                  height: chatFullscreen ? "100%" : undefined,
                 }}
               >
                 {/* slim log header strip */}
@@ -810,7 +837,82 @@ export default function ChatbotBar() {
                     </span>
                   </span>
                   <button
-                    onClick={() => setLogOpen(false)}
+                    onClick={() => setChatFullscreen((v) => !v)}
+                    className="transition-all flex items-center justify-center w-7 h-7 mr-1"
+                    style={{
+                      color: "rgba(var(--accent-rgb), 0.85)",
+                      background: "rgba(var(--accent-rgb), 0.06)",
+                      border: "1px solid rgba(var(--accent-rgb), 0.4)",
+                      borderRadius: "3px",
+                    }}
+                    onMouseEnter={(e) => {
+                      e.currentTarget.style.background =
+                        "rgba(var(--accent-rgb), 0.18)";
+                      e.currentTarget.style.borderColor =
+                        "rgba(var(--accent-rgb), 0.75)";
+                    }}
+                    onMouseLeave={(e) => {
+                      e.currentTarget.style.background =
+                        "rgba(var(--accent-rgb), 0.06)";
+                      e.currentTarget.style.borderColor =
+                        "rgba(var(--accent-rgb), 0.4)";
+                    }}
+                    aria-label={
+                      chatFullscreen
+                        ? lang === "RU"
+                          ? "Уменьшить чат"
+                          : lang === "UA"
+                          ? "Зменшити чат"
+                          : "Restore chat"
+                        : lang === "RU"
+                        ? "Развернуть чат"
+                        : lang === "UA"
+                        ? "Розгорнути чат"
+                        : "Expand chat"
+                    }
+                    title={
+                      chatFullscreen
+                        ? lang === "RU"
+                          ? "Уменьшить (Esc)"
+                          : "Restore (Esc)"
+                        : lang === "RU"
+                        ? "Развернуть на весь экран"
+                        : "Expand to fullscreen"
+                    }
+                  >
+                    {chatFullscreen ? (
+                      <svg
+                        width="13"
+                        height="13"
+                        viewBox="0 0 24 24"
+                        fill="none"
+                        stroke="currentColor"
+                        strokeWidth="2.5"
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
+                      >
+                        <path d="M4 14h6v6M20 10h-6V4M14 10l7-7M3 21l7-7" />
+                      </svg>
+                    ) : (
+                      <svg
+                        width="13"
+                        height="13"
+                        viewBox="0 0 24 24"
+                        fill="none"
+                        stroke="currentColor"
+                        strokeWidth="2.5"
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
+                      >
+                        <path d="M15 3h6v6M9 21H3v-6M21 3l-7 7M3 21l7-7" />
+                      </svg>
+                    )}
+                  </button>
+                  <button
+                    onClick={() => {
+                      setLogOpen(false);
+                      setChatFullscreen(false);
+                    }}
                     className="transition-all flex items-center gap-1.5 px-2.5 py-1 uppercase"
                     style={{
                       color: "rgba(var(--accent2-rgb), 0.9)",
@@ -874,7 +976,10 @@ export default function ChatbotBar() {
                 <div
                   ref={messagesRef}
                   className="relative px-3 py-3 space-y-1.5 text-xs leading-relaxed overflow-y-auto overscroll-contain"
-                  style={{ maxHeight: "min(45vh, 320px)" }}
+                  style={{
+                    maxHeight: chatFullscreen ? "none" : "min(45vh, 320px)",
+                    flex: chatFullscreen ? 1 : undefined,
+                  }}
                 >
                   {visibleMessages.map((msg, i) => {
                     const isUsr = msg.role === "user";
@@ -1092,7 +1197,7 @@ export default function ChatbotBar() {
                 ref={cmdMenuRef}
                 className="pointer-events-auto font-mono overflow-hidden"
                 style={{
-                  background: "rgba(4, 2, 8, 0.97)",
+                  background: "var(--chrome-bg)",
                   backdropFilter: "blur(18px)",
                   WebkitBackdropFilter: "blur(18px)",
                   border: `1px solid ${FRAME_BORDER}`,
@@ -1374,7 +1479,7 @@ export default function ChatbotBar() {
         data-chrome="bottom"
         className="fixed bottom-0 left-0 right-0 z-[499] font-mono"
         style={{
-          background: "rgba(4, 2, 8, 0.97)",
+          background: "var(--chrome-bg)",
           backdropFilter: "blur(18px)",
           WebkitBackdropFilter: "blur(18px)",
           borderTop: `1px solid ${FRAME_BORDER}`,
@@ -1503,20 +1608,21 @@ export default function ChatbotBar() {
           <button
             onClick={send}
             disabled={loading || !input.trim()}
-            className="shrink-0 px-2.5 sm:px-5 h-11 flex items-center justify-center gap-2 transition-all disabled:opacity-40 disabled:cursor-not-allowed"
+            className="shrink-0 px-2.5 sm:px-5 h-11 flex items-center justify-center gap-2 transition-all disabled:opacity-70 disabled:cursor-not-allowed"
             style={{
               background: loading
-                ? "rgba(var(--accent-rgb), 0.2)"
-                : "rgba(var(--accent-rgb), 0.08)",
+                ? "rgba(var(--accent-rgb), 0.28)"
+                : "rgba(var(--accent-rgb), 0.16)",
               border: "1px solid var(--accent)",
               color: "var(--accent)",
               borderRadius: "4px",
-              letterSpacing: "0.15em",
-              fontSize: "11px",
-              fontWeight: 600,
-              textShadow: "0 0 6px rgba(var(--accent-rgb), 0.6)",
+              letterSpacing: "0.18em",
+              fontSize: "12px",
+              fontWeight: 700,
+              textShadow:
+                "0 0 10px rgba(var(--accent-rgb), 0.95), 0 0 4px rgba(var(--accent-rgb), 0.8)",
               boxShadow:
-                "0 0 14px rgba(var(--accent-rgb), 0.22), inset 0 0 8px rgba(var(--accent-rgb), 0.04)",
+                "0 0 18px rgba(var(--accent-rgb), 0.35), inset 0 0 10px rgba(var(--accent-rgb), 0.08)",
             }}
             onPointerEnter={(e) => {
               if (e.currentTarget.disabled) return;
@@ -1525,27 +1631,27 @@ export default function ChatbotBar() {
               e.currentTarget.style.color = "#040208";
               e.currentTarget.style.textShadow = "none";
               e.currentTarget.style.boxShadow =
-                "0 0 28px rgba(var(--accent-rgb), 0.55)";
+                "0 0 32px rgba(var(--accent-rgb), 0.7)";
             }}
             onPointerLeave={(e) => {
               e.currentTarget.style.background = loading
-                ? "rgba(var(--accent-rgb), 0.2)"
-                : "rgba(var(--accent-rgb), 0.08)";
+                ? "rgba(var(--accent-rgb), 0.28)"
+                : "rgba(var(--accent-rgb), 0.16)";
               e.currentTarget.style.color = "var(--accent)";
               e.currentTarget.style.textShadow =
-                "0 0 6px rgba(var(--accent-rgb), 0.6)";
+                "0 0 10px rgba(var(--accent-rgb), 0.95), 0 0 4px rgba(var(--accent-rgb), 0.8)";
               e.currentTarget.style.boxShadow =
-                "0 0 14px rgba(var(--accent-rgb), 0.22), inset 0 0 8px rgba(var(--accent-rgb), 0.04)";
+                "0 0 18px rgba(var(--accent-rgb), 0.35), inset 0 0 10px rgba(var(--accent-rgb), 0.08)";
             }}
             onPointerCancel={(e) => {
               e.currentTarget.style.background = loading
-                ? "rgba(var(--accent-rgb), 0.2)"
-                : "rgba(var(--accent-rgb), 0.08)";
+                ? "rgba(var(--accent-rgb), 0.28)"
+                : "rgba(var(--accent-rgb), 0.16)";
               e.currentTarget.style.color = "var(--accent)";
               e.currentTarget.style.textShadow =
-                "0 0 6px rgba(var(--accent-rgb), 0.6)";
+                "0 0 10px rgba(var(--accent-rgb), 0.95), 0 0 4px rgba(var(--accent-rgb), 0.8)";
               e.currentTarget.style.boxShadow =
-                "0 0 14px rgba(var(--accent-rgb), 0.22), inset 0 0 8px rgba(var(--accent-rgb), 0.04)";
+                "0 0 18px rgba(var(--accent-rgb), 0.35), inset 0 0 10px rgba(var(--accent-rgb), 0.08)";
             }}
             aria-label="Send prompt"
           >
