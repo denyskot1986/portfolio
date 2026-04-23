@@ -63,6 +63,24 @@ function parseReply(raw: string): ParsedReply {
   return { visible, actions, replies };
 }
 
+// Live-streaming preview: чистим directive-тэги и обрезанный хвост частичной
+// директивы, чтобы юзер не видел `[nav:/produc` пока токен не догенерился.
+const PARTIAL_DIRECTIVE_TAIL = /\[(?:nav|scroll|reply)[^\]]*$/i;
+function previewVisible(raw: string): string {
+  let s = raw
+    .replace(ACTION_REGEX, "")
+    .replace(REPLY_REGEX, "")
+    .replace(/^\s*={3,}\s*$/gm, "");
+  s = s.replace(PARTIAL_DIRECTIVE_TAIL, "");
+  // Висячий одинокий '[' в самом конце — тоже прячем.
+  s = s.replace(/\[\s*$/, "");
+  return s.replace(/\n{3,}/g, "\n\n");
+}
+
+// Тур-ответ с beat-сепараторами рендерим одним куском после done — live preview
+// там невозможен, т.к. действия scroll/nav привязаны к beat-порядку.
+const HAS_BEATS = /\n\s*={3,}/;
+
 // Tour mode: LLM separates product beats with "===" on its own line.
 // We split, parse each as a ParsedReply, drop empty ones.
 const BEAT_SEPARATOR = /\n\s*={3,}\s*\n/;
@@ -308,6 +326,9 @@ export default function ChatbotBar() {
     if (next) playSfx("blip"); // confirmation that sound is now on
   }, [sfxOn]);
   const tourTimeoutRef = useRef<ReturnType<typeof setTimeout> | null>(null);
+  // Текущий in-flight AbortController чат-запроса. ESC / take-over
+  // должны прерывать fetch, иначе ассистент продолжит писать в фон.
+  const abortRef = useRef<AbortController | null>(null);
   // Все setTimeout, которые шедулятся туром/скроллами. Когда пользователь
   // жмёт «забрать управление» / ESC — мы их все глушим, иначе агент
   // продолжит скроллить страницу уже после отмены.
@@ -498,10 +519,27 @@ export default function ChatbotBar() {
       const historyForApi = messages
         .filter((m) => m !== WELCOME_MESSAGE)
         .concat(userMsg);
-      setMessages((prev) => [...prev, userMsg]);
+      // Плейсхолдер ассистента — в него льём дельты. Юзер видит текст
+      // как он печатается, а не пустой loader 5-15 секунд.
+      setMessages((prev) => [
+        ...prev,
+        userMsg,
+        { role: "assistant", content: "" },
+      ]);
       setInput("");
       setLoading(true);
       if (inputRef.current) inputRef.current.style.height = "auto";
+
+      const ac = new AbortController();
+      let firstByte = false;
+      // Первый байт должен прилететь быстро (сервер сразу эмитит ping).
+      // Если 15с тишины — прокси/функция зависли, не ждём.
+      const firstByteTimer = setTimeout(() => {
+        if (!firstByte) ac.abort();
+      }, 15000);
+      // Общий потолок — согласован с serverless maxDuration=60с + запас.
+      const totalTimer = setTimeout(() => ac.abort(), 65000);
+      abortRef.current = ac;
 
       try {
         const res = await fetch("/api/chat", {
@@ -513,11 +551,12 @@ export default function ChatbotBar() {
               typeof window !== "undefined" ? window.location.pathname : "/",
             sessionId: getSessionId(),
           }),
+          signal: ac.signal,
         });
 
-        // Для tour-режима с beats нельзя рендерить на лету: `===` разделители
-        // и `[nav:/scroll:]` действия должны применяться к ПОЛНОМУ тексту.
-        // Поэтому аккумулируем весь NDJSON-поток и обрабатываем как раньше.
+        // Для tour-режима (beats с ===) нельзя показывать превью на лету:
+        // разделители и nav/scroll привязаны к порядку beat'ов. Для обычных
+        // ответов — стримим токены в placeholder как только приходят.
         let raw = "";
         if (res.ok && res.body) {
           const reader = res.body.getReader();
@@ -527,8 +566,13 @@ export default function ChatbotBar() {
           while (true) {
             const { value, done } = await reader.read();
             if (done) break;
+            if (!firstByte) {
+              firstByte = true;
+              clearTimeout(firstByteTimer);
+            }
             buf += decoder.decode(value, { stream: true });
             let nl: number;
+            let hasDelta = false;
             while ((nl = buf.indexOf("\n")) !== -1) {
               const line = buf.slice(0, nl).trim();
               buf = buf.slice(nl + 1);
@@ -537,12 +581,25 @@ export default function ChatbotBar() {
                 const evt = JSON.parse(line) as { t: string; v?: string };
                 if (evt.t === "delta" && typeof evt.v === "string") {
                   raw += evt.v;
+                  hasDelta = true;
                 } else if (evt.t === "error") {
                   streamErr = evt.v || "Сбой связи.";
                 }
+                // t:"ping" / t:"done" — ничего не делаем.
               } catch {
                 /* skip */
               }
+            }
+            if (hasDelta && !HAS_BEATS.test(raw)) {
+              const preview = previewVisible(raw);
+              setMessages((prev) => {
+                const copy = [...prev];
+                copy[copy.length - 1] = {
+                  role: "assistant",
+                  content: preview,
+                };
+                return copy;
+              });
             }
           }
           if (streamErr && !raw) raw = streamErr;
@@ -558,14 +615,16 @@ export default function ChatbotBar() {
         const beats = parseBeats(raw);
         if (beats.length === 1) {
           const parsed = beats[0];
-          setMessages((prev) => [
-            ...prev,
-            {
+          // Заменяем placeholder финальным распарсенным ответом.
+          setMessages((prev) => {
+            const copy = [...prev];
+            copy[copy.length - 1] = {
               role: "assistant",
               content: parsed.visible || "> done.",
               replies: parsed.replies.length ? parsed.replies : undefined,
-            },
-          ]);
+            };
+            return copy;
+          });
           const scrollCount = parsed.actions.filter(
             (a) => a.type === "scroll"
           ).length;
@@ -596,6 +655,8 @@ export default function ChatbotBar() {
         } else {
           // Tour streaming — emit each beat as its own message with a pause
           // so the user can read + the scroll flash lands before the next.
+          // Убираем пустой placeholder — beat'ы приедут новыми сообщениями.
+          setMessages((prev) => prev.slice(0, -1));
           playSfx("beep");
           setAgentDriving(true);
           // A tour scrolls product cards that only exist on "/". If the user
@@ -635,19 +696,40 @@ export default function ChatbotBar() {
             window.scrollTo({ top: 0, behavior: "smooth" });
           }, delay + 1500);
         }
-      } catch {
-        setMessages((prev) => [
-          ...prev,
-          {
-            role: "assistant",
-            content: "Ошибка соединения. Напиши в Telegram: @shop_by_finekot_bot",
-          },
-        ]);
+      } catch (e: unknown) {
+        const aborted =
+          ac.signal.aborted ||
+          (e instanceof DOMException && e.name === "AbortError");
+        // Заменяем placeholder ошибкой, а не добавляем новое сообщение,
+        // иначе юзер видит и пустой placeholder и ошибку подряд.
+        setMessages((prev) => {
+          const copy = [...prev];
+          const idx = copy.length - 1;
+          if (idx >= 0 && copy[idx].role === "assistant") {
+            copy[idx] = {
+              role: "assistant",
+              content: aborted
+                ? "Время ожидания истекло. Попробуй ещё раз или напиши в Telegram: @shop_by_finekot_bot"
+                : "Ошибка соединения. Напиши в Telegram: @shop_by_finekot_bot",
+            };
+            return copy;
+          }
+          return [
+            ...copy,
+            {
+              role: "assistant",
+              content: "Ошибка соединения. Напиши в Telegram: @shop_by_finekot_bot",
+            },
+          ];
+        });
       } finally {
+        clearTimeout(firstByteTimer);
+        clearTimeout(totalTimer);
+        if (abortRef.current === ac) abortRef.current = null;
         setLoading(false);
       }
     },
-    [loading, messages, executeActions]
+    [loading, messages, executeActions, pathname, router, schedule]
   );
 
   const adjustTextarea = useCallback(() => {
@@ -670,6 +752,10 @@ export default function ChatbotBar() {
     if (tourTimeoutRef.current) {
       clearTimeout(tourTimeoutRef.current);
       tourTimeoutRef.current = null;
+    }
+    if (abortRef.current) {
+      abortRef.current.abort();
+      abortRef.current = null;
     }
     clearAllScheduled();
     setAgentDriving(false);

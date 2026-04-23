@@ -72,3 +72,18 @@ export async function kvIncrWithExpire(
   }
   return count;
 }
+
+// Пушим запись в голову LIST, подрезаем хвост, продлеваем TTL.
+// Используется для ротируемых логов (чат, аудит и т.п.). Переиспользует
+// тот же кэшированный клиент — без TCP/TLS handshake на каждый вызов.
+export async function kvLogPush(
+  key: string,
+  payload: string,
+  maxLen: number,
+  ttlSeconds: number
+): Promise<void> {
+  const client = await getClient();
+  await client.lPush(key, payload);
+  await client.lTrim(key, 0, maxLen - 1);
+  await client.expire(key, ttlSeconds);
+}

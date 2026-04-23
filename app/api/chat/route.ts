@@ -4,7 +4,7 @@ import { kvEnabled, kvIncrWithExpire, kvLogPush } from "../../../lib/kv";
 import crypto from "crypto";
 
 export const runtime = "nodejs";
-export const maxDuration = 30;
+export const maxDuration = 60;
 
 const OPENROUTER_API_KEY = process.env.OPENROUTER_API_KEY || "";
 
@@ -489,79 +489,100 @@ export async function POST(req: NextRequest) {
       systemContent = SYSTEM_PROMPT + "\n\n" + catalog + pageContext;
     }
 
-    const response = await fetch("https://openrouter.ai/api/v1/chat/completions", {
-      method: "POST",
-      headers: {
-        Authorization: `Bearer ${OPENROUTER_API_KEY}`,
-        "Content-Type": "application/json",
-        "HTTP-Referer": "https://finekot.ai",
-        "X-Title": "Finekot Consultant",
-      },
-      body: JSON.stringify({
-        model: CHAT_MODEL,
-        // Важно: system prompt идёт простой строкой. Структурированный
-        // content-блок с cache_control ломает Gemini 2.5 Flash на длинных
-        // tour-ответах (запрос зависает 60+ сек без первого байта).
-        // Для Gemini кэш и так implicit — OpenRouter автоматически
-        // переиспользует общий префикс >1024 токенов между запросами,
-        // дополнительного маркера не нужно. Если переключимся на Anthropic —
-        // добавим cache_control обратно.
-        messages: [
-          { role: "system", content: systemContent },
-          ...messages,
-        ],
-        max_tokens: MAX_REPLY_TOKENS,
-        temperature: 0.7,
-        stream: true,
-        // Отключаем thinking для всех моделей, которые его поддерживают
-        // (Gemini 2.5 *, Claude extended thinking, GPT-5 reasoning и т.д.).
-        // Для чистого sales-chat reasoning не нужен, убирает 2-5 сек latency.
-        reasoning: { max_tokens: 0 },
-      }),
-    });
-
-    if (!response.ok || !response.body) {
-      const err = await response.text().catch(() => "");
-      console.error("OpenRouter error:", response.status, err);
-      return NextResponse.json(
-        { error: "Сервис консультанта временно недоступен. Попробуй позже или напиши в Telegram: @shop_by_finekot_bot" },
-        { status: 502 }
-      );
-    }
-
     const ipHash = hashIP(ip);
     const userMessage = last.content;
 
-    // Стримим OpenRouter SSE → наш NDJSON (по строке JSON на кусок).
-    // Клиент читает построчно и апдейтит UI на каждой дельте.
-    const upstream = response.body;
+    // Upstream fetch переехал ВНУТРЬ ReadableStream.start() — поэтому первый
+    // байт (ping) уходит клиенту в ~50мс независимо от того, сколько
+    // OpenRouter/Gemini думает перед первой дельтой. Это убирает
+    // «связь прервана» от прокси/браузера на холодном старте.
+    const upstreamCtrl = new AbortController();
+    // Бюджет на весь upstream — согласован с maxDuration=60с, оставляем
+    // запас на cleanup и запись лога.
+    const upstreamTimer = setTimeout(() => upstreamCtrl.abort(), 50_000);
+
     const stream = new ReadableStream<Uint8Array>({
       async start(controller) {
         const encoder = new TextEncoder();
         const decoder = new TextDecoder();
-        const reader = upstream.getReader();
-        let buffer = "";
-        let accumulated = "";
 
+        let closed = false;
         const emit = (obj: unknown) => {
-          controller.enqueue(encoder.encode(JSON.stringify(obj) + "\n"));
+          if (closed) return;
+          try {
+            controller.enqueue(encoder.encode(JSON.stringify(obj) + "\n"));
+          } catch {
+            closed = true;
+          }
         };
 
-        // Сразу пробиваем headers + тело через Vercel/Cloudflare edge.
-        // Без этого первый байт улетает только когда OpenRouter начнёт
-        // слать дельты — на холодном старте Gemini это бывает 2-4 сек,
-        // и клиент/прокси решают что «связь прервана».
+        // Первый байт — до upstream fetch. Vercel/Cloudflare flush'ат его
+        // сразу, клиент снимает свой firstByteTimer.
         emit({ t: "ping" });
 
+        // Heartbeat каждые 5с, если давно не было дельт. Держит edge/прокси
+        // от idle-close во время внутренней задержки модели.
+        let lastEmitTs = Date.now();
+        const heartbeat = setInterval(() => {
+          if (closed) return;
+          if (Date.now() - lastEmitTs > 4_500) {
+            emit({ t: "ping" });
+            lastEmitTs = Date.now();
+          }
+        }, 5_000);
+
+        let accumulated = "";
+
         try {
+          const response = await fetch("https://openrouter.ai/api/v1/chat/completions", {
+            method: "POST",
+            headers: {
+              Authorization: `Bearer ${OPENROUTER_API_KEY}`,
+              "Content-Type": "application/json",
+              "HTTP-Referer": "https://finekot.ai",
+              "X-Title": "Finekot Consultant",
+            },
+            body: JSON.stringify({
+              model: CHAT_MODEL,
+              // Важно: system prompt простой строкой. Структурированный
+              // content-блок с cache_control ломает Gemini 2.5 Flash на
+              // длинных tour-ответах (зависает 60+ сек без первого байта).
+              // Для Gemini кэш implicit — OpenRouter переиспользует общий
+              // префикс >1024 токенов между запросами автоматически.
+              messages: [
+                { role: "system", content: systemContent },
+                ...messages,
+              ],
+              max_tokens: MAX_REPLY_TOKENS,
+              temperature: 0.7,
+              stream: true,
+              // Thinking off — для sales-chat reasoning не нужен, это
+              // минус 2-5 сек latency на Gemini 2.5 / Claude / GPT-5.
+              reasoning: { max_tokens: 0 },
+            }),
+            signal: upstreamCtrl.signal,
+          });
+
+          if (!response.ok || !response.body) {
+            const errText = await response.text().catch(() => "");
+            console.error("OpenRouter error:", response.status, errText);
+            emit({
+              t: "error",
+              v: "Сервис консультанта перегружен. Попробуй ещё раз или напиши @shop_by_finekot_bot в Telegram.",
+            });
+            return;
+          }
+
+          const reader = response.body.getReader();
+          let buffer = "";
+
           while (true) {
             const { value, done } = await reader.read();
             if (done) break;
             buffer += decoder.decode(value, { stream: true });
 
-            // OpenRouter шлёт события, разделённые \n\n. Каждое событие —
-            // одна или несколько строк `data: {...}`. Между ними могут быть
-            // keep-alive комментарии `: OPENROUTER PROCESSING`.
+            // OpenRouter: события разделены \n\n, внутри строки `data: {...}`
+            // и keep-alive комментарии `: OPENROUTER PROCESSING`.
             let sepIdx: number;
             while ((sepIdx = buffer.indexOf("\n\n")) !== -1) {
               const event = buffer.slice(0, sepIdx);
@@ -578,6 +599,7 @@ export async function POST(req: NextRequest) {
                   if (typeof delta === "string" && delta.length > 0) {
                     accumulated += delta;
                     emit({ t: "delta", v: delta });
+                    lastEmitTs = Date.now();
                   }
                 } catch {
                   // битая строка — игнор
@@ -588,7 +610,7 @@ export async function POST(req: NextRequest) {
 
           if (!accumulated) {
             accumulated =
-              "Не смог собрать ответ. Денис в Telegram всё объяснит лично: @shop_by_finekot_bot";
+              "Не смог собрать ответ. Напиши @shop_by_finekot_bot в Telegram.";
             emit({ t: "delta", v: accumulated });
           }
 
@@ -605,14 +627,42 @@ export async function POST(req: NextRequest) {
             model: CHAT_MODEL,
           }).catch(() => {});
         } catch (e) {
-          console.error("chat stream error:", e);
-          emit({
-            t: "error",
-            v: "Сбой связи. Попробуй ещё раз или напиши @shop_by_finekot_bot.",
-          });
+          const aborted =
+            upstreamCtrl.signal.aborted ||
+            (e instanceof DOMException && e.name === "AbortError");
+          if (aborted && !accumulated) {
+            // Upstream не успел начать слать — либо timeout, либо клиент отвалился.
+            console.error("chat upstream aborted before first delta");
+            emit({
+              t: "error",
+              v: "Модель не успела ответить. Попробуй ещё раз или напиши @shop_by_finekot_bot.",
+            });
+          } else if (aborted) {
+            // Частичный ответ уже ушёл — просто закрываем, клиент покажет что есть.
+            emit({ t: "done", sessionId });
+          } else {
+            console.error("chat stream error:", e);
+            emit({
+              t: "error",
+              v: "Сбой связи. Попробуй ещё раз или напиши @shop_by_finekot_bot.",
+            });
+          }
         } finally {
-          controller.close();
+          clearInterval(heartbeat);
+          clearTimeout(upstreamTimer);
+          closed = true;
+          try {
+            controller.close();
+          } catch {
+            // уже закрыт — игнор
+          }
         }
+      },
+      cancel() {
+        // Клиент отвалился (ESC / закрыл вкладку) — обрываем upstream,
+        // чтобы не жечь Gemini-токены впустую.
+        upstreamCtrl.abort();
+        clearTimeout(upstreamTimer);
       },
     });
 

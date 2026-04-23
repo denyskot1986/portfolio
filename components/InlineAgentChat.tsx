@@ -252,6 +252,13 @@ export default function InlineAgentChat({
       setLoading(true);
       if (inputRef.current) inputRef.current.style.height = "auto";
 
+      const ac = new AbortController();
+      let firstByte = false;
+      const firstByteTimer = setTimeout(() => {
+        if (!firstByte) ac.abort();
+      }, 15000);
+      const totalTimer = setTimeout(() => ac.abort(), 65000);
+
       try {
         const res = await fetch("/api/chat", {
           method: "POST",
@@ -262,6 +269,7 @@ export default function InlineAgentChat({
             sessionId,
             pageUrl: typeof window !== "undefined" ? window.location.pathname : "/",
           }),
+          signal: ac.signal,
         });
 
         if (!res.ok || !res.body) {
@@ -299,6 +307,10 @@ export default function InlineAgentChat({
         while (true) {
           const { value, done } = await reader.read();
           if (done) break;
+          if (!firstByte) {
+            firstByte = true;
+            clearTimeout(firstByteTimer);
+          }
           buf += decoder.decode(value, { stream: true });
           let nl: number;
           while ((nl = buf.indexOf("\n")) !== -1) {
@@ -313,6 +325,7 @@ export default function InlineAgentChat({
               } else if (evt.t === "error") {
                 streamErr = evt.v || "Сбой связи.";
               }
+              // t:"ping" / t:"done" — игнорируем.
             } catch {
               // битая строка — пропуск
             }
@@ -336,16 +349,23 @@ export default function InlineAgentChat({
             });
           }
         }
-      } catch {
+      } catch (e: unknown) {
+        const aborted =
+          ac.signal.aborted ||
+          (e instanceof DOMException && e.name === "AbortError");
         setMessages((prev) => {
           const copy = [...prev];
           copy[copy.length - 1] = {
             role: "assistant",
-            content: "Сбой связи. Попробуй ещё раз или напиши @shop_by_finekot_bot.",
+            content: aborted
+              ? "Время ожидания истекло. Попробуй ещё раз или напиши @shop_by_finekot_bot."
+              : "Сбой связи. Попробуй ещё раз или напиши @shop_by_finekot_bot.",
           };
           return copy;
         });
       } finally {
+        clearTimeout(firstByteTimer);
+        clearTimeout(totalTimer);
         setLoading(false);
       }
     },

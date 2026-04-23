@@ -81,6 +81,13 @@ export default function ProductChat({ productName, productTagline, productId, la
       setLoading(true);
       if (inputRef.current) inputRef.current.style.height = "auto";
 
+      const ac = new AbortController();
+      let firstByte = false;
+      const firstByteTimer = setTimeout(() => {
+        if (!firstByte) ac.abort();
+      }, 15000);
+      const totalTimer = setTimeout(() => ac.abort(), 65000);
+
       try {
         const res = await fetch("/api/chat", {
           method: "POST",
@@ -90,6 +97,7 @@ export default function ProductChat({ productName, productTagline, productId, la
             pageUrl: `/products/${productId}`,
             mode: "sales",
           }),
+          signal: ac.signal,
         });
 
         if (!res.ok || !res.body) {
@@ -114,6 +122,10 @@ export default function ProductChat({ productName, productTagline, productId, la
         while (true) {
           const { value, done } = await reader.read();
           if (done) break;
+          if (!firstByte) {
+            firstByte = true;
+            clearTimeout(firstByteTimer);
+          }
           buf += decoder.decode(value, { stream: true });
           let nl: number;
           while ((nl = buf.indexOf("\n")) !== -1) {
@@ -132,6 +144,7 @@ export default function ProductChat({ productName, productTagline, productId, la
               } else if (evt.t === "error") {
                 streamErr = evt.v || "Connection error.";
               }
+              // t:"ping" / t:"done" — ignore.
             } catch {
               // skip
             }
@@ -154,16 +167,23 @@ export default function ProductChat({ productName, productTagline, productId, la
             return copy;
           });
         }
-      } catch {
+      } catch (e: unknown) {
+        const aborted =
+          ac.signal.aborted ||
+          (e instanceof DOMException && e.name === "AbortError");
         setMessages((prev) => {
           const copy = [...prev];
           copy[copy.length - 1] = {
             role: "assistant",
-            content: "Connection error. Try Telegram: @shop_by_finekot_bot",
+            content: aborted
+              ? "Request timed out. Try again or message Telegram: @shop_by_finekot_bot"
+              : "Connection error. Try Telegram: @shop_by_finekot_bot",
           };
           return copy;
         });
       } finally {
+        clearTimeout(firstByteTimer);
+        clearTimeout(totalTimer);
         setLoading(false);
       }
     },
