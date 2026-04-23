@@ -242,26 +242,6 @@ function SiteScene({ active, c }: { active: boolean; c: Copy["scenes"]["site"] }
             </div>
           ))}
         </motion.div>
-        {/* fake cursor */}
-        <motion.div
-          className="absolute"
-          initial={{ left: "20%", top: "20%", opacity: 0 }}
-          animate={{
-            left: ["20%", "55%", "70%"],
-            top: ["20%", "62%", "62%"],
-            opacity: [0, 1, 1],
-          }}
-          transition={{ delay: 0.6, duration: 2.2, ease: "easeInOut" }}
-        >
-          <svg width="16" height="20" viewBox="0 0 16 20" style={{ filter: "drop-shadow(0 0 4px rgba(0,255,65,0.7))" }}>
-            <path
-              d="M0 0 L0 14 L4 11 L7 18 L10 17 L7 10 L12 10 Z"
-              fill="#00ff41"
-              stroke="#040208"
-              strokeWidth="0.8"
-            />
-          </svg>
-        </motion.div>
         <div
           className="absolute bottom-0 left-0 right-0 px-3 py-1.5 text-[9px]"
           style={{
