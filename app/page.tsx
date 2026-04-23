@@ -510,24 +510,14 @@ export default function Home() {
       <footer className="relative z-10 py-8 font-mono" style={{ borderTop: "1px solid var(--glass-border)" }}>
         <div className="max-w-5xl mx-auto px-6 flex flex-col items-center gap-4">
           <p className="text-[10px] uppercase tracking-wider" style={{ color: "rgba(106,85,128,0.5)" }}>
-            {(() => {
-              const parts = t.footer.split("Denys Kot");
-              return (
-                <>
-                  {parts[0]}
-                  <a
-                    href="https://t.me/finekot"
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="transition-colors hover:text-[var(--accent)]"
-                    style={{ color: "var(--accent)" }}
-                  >
-                    Denys Kot
-                  </a>
-                  {parts[1] ?? ""}
-                </>
-              );
-            })()}
+            © {new Date().getFullYear()} Finekot ·{" "}
+            <Link
+              href="/about"
+              className="transition-colors hover:text-[var(--accent)]"
+              style={{ color: "var(--accent)" }}
+            >
+              {lang === "RU" ? "О нас" : lang === "UA" ? "Про нас" : "About Us"}
+            </Link>
           </p>
         </div>
       </footer>

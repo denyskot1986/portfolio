@@ -170,15 +170,6 @@ const SECTIONS: { id: string; title: string; body: React.ReactNode }[] = [
               @shop_by_finekot_bot
             </a>
           </li>
-          <li>
-            <span className="opacity-60">сайт &gt;</span>{" "}
-            <Link
-              href="/"
-              className="text-[var(--accent)] hover:text-[var(--accent2)] underline underline-offset-4"
-            >
-              finekot.ai
-            </Link>
-          </li>
         </ul>
       </>
     ),
