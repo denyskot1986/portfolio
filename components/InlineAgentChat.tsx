@@ -420,14 +420,10 @@ export default function InlineAgentChat({
       className="w-full font-mono"
       style={{
         background: "var(--chrome-bg)",
-        // Inner-чат внутри карточки: рамка ЯВНО ярче внешнего ChatbotBar-а
-        // (у него alpha 0.4 / glow 0.18). Здесь 2px @ 0.75 + двойной glow,
-        // чтобы визуально читалось как «экран внутри экрана» — юзер видит
-        // сайт, внутри него карточку, внутри карточки — отдельный чат.
-        border: "2px solid rgba(var(--accent-rgb), 0.75)",
+        border: "1px solid rgba(var(--accent-rgb), 0.35)",
         borderRadius: 8,
         boxShadow:
-          "0 0 36px rgba(var(--accent-rgb), 0.38), 0 0 10px rgba(var(--accent-rgb), 0.28), inset 0 0 56px rgba(var(--accent-rgb), 0.06)",
+          "0 0 28px rgba(var(--accent-rgb), 0.14), inset 0 0 56px rgba(var(--accent-rgb), 0.04)",
         overflow: "hidden",
       }}
     >
@@ -435,8 +431,8 @@ export default function InlineAgentChat({
       <div
         className="flex items-center gap-3 px-3 sm:px-4 py-2.5"
         style={{
-          borderBottom: "1px solid rgba(var(--accent-rgb), 0.55)",
-          background: "rgba(var(--accent-rgb), 0.07)",
+          borderBottom: "1px solid rgba(var(--accent-rgb), 0.25)",
+          background: "rgba(var(--accent-rgb), 0.04)",
         }}
       >
         <div className="flex items-center gap-1.5 shrink-0">

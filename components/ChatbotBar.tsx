@@ -206,8 +206,9 @@ function saveHistory(messages: ChatMessage[]) {
   }
 }
 
-const FRAME_BORDER = "rgba(var(--accent-rgb), 0.4)";
-const FRAME_GLOW = "0 0 24px rgba(var(--accent-rgb), 0.18)";
+const FRAME_BORDER = "rgba(var(--accent-rgb), 0.75)";
+const FRAME_GLOW =
+  "0 0 36px rgba(var(--accent-rgb), 0.38), 0 0 10px rgba(var(--accent-rgb), 0.28), inset 0 0 56px rgba(var(--accent-rgb), 0.06)";
 
 const PLACEHOLDER_BY_LANG: Record<Lang, string> = {
   EN: "David online",
