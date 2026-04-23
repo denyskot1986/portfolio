@@ -533,8 +533,8 @@ export async function POST(req: NextRequest) {
 
         let accumulated = "";
 
-        try {
-          const response = await fetch("https://openrouter.ai/api/v1/chat/completions", {
+        const openUpstream = async (attemptCtrl: AbortController) => {
+          return fetch("https://openrouter.ai/api/v1/chat/completions", {
             method: "POST",
             headers: {
               Authorization: `Bearer ${OPENROUTER_API_KEY}`,
@@ -560,20 +560,72 @@ export async function POST(req: NextRequest) {
               // минус 2-5 сек latency на Gemini 2.5 / Claude / GPT-5.
               reasoning: { max_tokens: 0 },
             }),
-            signal: upstreamCtrl.signal,
+            signal: attemptCtrl.signal,
           });
+        };
 
-          if (!response.ok || !response.body) {
-            const errText = await response.text().catch(() => "");
-            console.error("OpenRouter error:", response.status, errText);
-            emit({
-              t: "error",
-              v: "Сервис консультанта перегружен. Попробуй ещё раз или напиши @shop_by_finekot_bot в Telegram.",
-            });
-            return;
+        // Две попытки: если OpenRouter не дал первый байт за 10с или вернул
+        // 5xx — abort и повторяем запрос. Второй раз провайдер обычно уже
+        // прогрет, отвечает за 3-5с. Это скрывает одиночные холодные старты
+        // от клиента и не бьётся в Vercel maxDuration.
+        let reader: ReadableStreamDefaultReader<Uint8Array> | null = null;
+        let lastErrText = "";
+        for (let attempt = 1; attempt <= 2; attempt++) {
+          const attemptCtrl = new AbortController();
+          // Сливаем upstream-отмену в попытку, чтобы общий 50-сек потолок
+          // всё ещё убивал всё.
+          const onUpstreamAbort = () => attemptCtrl.abort();
+          upstreamCtrl.signal.addEventListener("abort", onUpstreamAbort, { once: true });
+          const firstByteTimer = setTimeout(() => attemptCtrl.abort(), 10_000);
+          try {
+            const response = await openUpstream(attemptCtrl);
+            if (!response.ok || !response.body) {
+              lastErrText = await response.text().catch(() => "");
+              console.error(
+                `OpenRouter attempt ${attempt} bad status:`,
+                response.status,
+                lastErrText
+              );
+              clearTimeout(firstByteTimer);
+              upstreamCtrl.signal.removeEventListener("abort", onUpstreamAbort);
+              if (attempt === 2 || upstreamCtrl.signal.aborted) {
+                emit({
+                  t: "error",
+                  v: "Сервис консультанта перегружен. Попробуй ещё раз или напиши @shop_by_finekot_bot в Telegram.",
+                });
+                return;
+              }
+              continue; // retry
+            }
+            reader = response.body.getReader();
+            clearTimeout(firstByteTimer);
+            upstreamCtrl.signal.removeEventListener("abort", onUpstreamAbort);
+            break;
+          } catch (e) {
+            clearTimeout(firstByteTimer);
+            upstreamCtrl.signal.removeEventListener("abort", onUpstreamAbort);
+            const aborted =
+              attemptCtrl.signal.aborted ||
+              (e instanceof DOMException && e.name === "AbortError");
+            console.error(
+              `OpenRouter attempt ${attempt} ${aborted ? "timed out" : "threw"}:`,
+              e
+            );
+            // Если общий upstream бюджет исчерпан — не ретраим, выходим.
+            if (upstreamCtrl.signal.aborted || attempt === 2) break;
+            // иначе — следующая попытка
           }
+        }
 
-          const reader = response.body.getReader();
+        if (!reader) {
+          emit({
+            t: "error",
+            v: "Сервис консультанта перегружен. Попробуй ещё раз или напиши @shop_by_finekot_bot в Telegram.",
+          });
+          return;
+        }
+
+        try {
           let buffer = "";
 
           while (true) {
