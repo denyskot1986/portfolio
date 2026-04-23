@@ -2,7 +2,6 @@
 
 import { motion, AnimatePresence } from "framer-motion";
 import Link from "next/link";
-import { useMemo } from "react";
 import { CRTBackground } from "../genesis/_shared/CRTBackground";
 import { useAnimationClock } from "../genesis/_shared/useClock";
 import { useLang } from "@/lib/lang-context";
@@ -145,27 +144,6 @@ function activeScene(t: number): SceneId | "finale" | null {
     if (t >= s.start && t < s.end) return s.id;
   }
   return null;
-}
-
-/* ────────────── PARTICLE TRAIL — agent-soul jumping between homes ────────── */
-
-const HOME_POSITIONS: Record<SceneId, { x: number; y: number }> = {
-  telegram: { x: 30, y: 30 },
-  site:     { x: 70, y: 30 },
-  voice:    { x: 30, y: 72 },
-  daemon:   { x: 70, y: 72 },
-};
-
-function soulPosition(t: number): { x: number; y: number; pulse: number } {
-  if (t >= T_FINALE) return { x: 50, y: 50, pulse: 1 };
-  const cur = activeScene(t);
-  if (!cur || cur === "finale") return { x: 50, y: 50, pulse: 0 };
-  const scene = SCENES.find((s) => s.id === cur)!;
-  const p = HOME_POSITIONS[scene.id];
-  // small breathing pulse on the soul
-  const local = (t - scene.start) / (scene.end - scene.start);
-  const pulse = 0.6 + 0.4 * Math.sin(local * Math.PI);
-  return { x: p.x, y: p.y, pulse };
 }
 
 /* ────────────── SCENE COMPONENTS ────────────── */
@@ -496,7 +474,6 @@ export default function HabitatPage() {
 
   const cur = activeScene(t);
   const isFinale = cur === "finale";
-  const soul = useMemo(() => soulPosition(t), [t]);
   const sec = Math.min(16, Math.floor(t / 1000));
 
   return (
@@ -615,41 +592,6 @@ export default function HabitatPage() {
           <SiteScene     active={cur === "site"     || isFinale} c={c.scenes.site} />
           <VoiceScene    active={cur === "voice"    || isFinale} c={c.scenes.voice} />
           <DaemonScene   active={cur === "daemon"   || isFinale} c={c.scenes.daemon} />
-
-          {/* SOUL — pulsing dot the agent travels with */}
-          {!isFinale && (
-            <motion.div
-              className="absolute pointer-events-none"
-              animate={{
-                left: `${soul.x}%`,
-                top: `${soul.y}%`,
-              }}
-              transition={{ duration: 0.7, ease: "easeInOut" }}
-              style={{ transform: "translate(-50%, -50%)" }}
-            >
-              <motion.div
-                className="rounded-full"
-                animate={{ scale: [1, 1.4, 1], opacity: [0.9, 0.5, 0.9] }}
-                transition={{ duration: 1.2, repeat: Infinity }}
-                style={{
-                  width: 14,
-                  height: 14,
-                  background: "#ffb000",
-                  boxShadow: "0 0 28px #ffb000, 0 0 12px #ff8800",
-                  opacity: soul.pulse,
-                }}
-              />
-              <div
-                className="absolute top-1/2 left-1/2 rounded-full pointer-events-none"
-                style={{
-                  width: 60,
-                  height: 60,
-                  transform: "translate(-50%, -50%)",
-                  background: "radial-gradient(circle, rgba(255,176,0,0.35) 0%, transparent 70%)",
-                }}
-              />
-            </motion.div>
-          )}
 
           {/* FINALE — center wordmark over the lit grid */}
           <AnimatePresence>
