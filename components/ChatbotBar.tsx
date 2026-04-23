@@ -943,7 +943,7 @@ export default function ChatbotBar() {
               className={
                 chatFullscreen
                   ? "max-w-full h-full px-3 sm:px-4 pb-2"
-                  : "max-w-full sm:max-w-xl px-3 sm:pl-4 sm:pr-2 pb-2"
+                  : "max-w-full sm:max-w-xl px-3 sm:pl-4 sm:pr-2 pb-0"
               }
               style={chatFullscreen ? { height: "100%" } : undefined}
             >
@@ -955,7 +955,11 @@ export default function ChatbotBar() {
                   backdropFilter: "blur(20px)",
                   WebkitBackdropFilter: "blur(20px)",
                   border: `1px solid ${FRAME_BORDER}`,
-                  borderRadius: "6px",
+                  // В full-screen рамка полная. В обычном режиме нижняя граница
+                  // отсутствует — bottom bar становится её продолжением и
+                  // визуально всё читается как одно окно.
+                  borderBottomWidth: chatFullscreen ? undefined : 0,
+                  borderRadius: chatFullscreen ? "6px" : "6px 6px 0 0",
                   boxShadow: FRAME_GLOW,
                   height: chatFullscreen ? "100%" : undefined,
                 }}
@@ -1692,20 +1696,45 @@ export default function ChatbotBar() {
         )}
       </AnimatePresence>
 
-      {/* ───── BOTTOM INPUT BAR ───── */}
+      {/* ───── BOTTOM INPUT BAR ─────
+          При logOpen (и НЕ fullscreen) outer становится прозрачным, а inner
+          подтягивается к ширине log-panel и дорисовывает к нему недостающую
+          нижнюю половину рамки + скругление. Юзер видит одно окно:
+          сверху сообщения, снизу input — без разрыва. */}
+      {(() => {
+        const merged = logOpen && !chatFullscreen;
+        return (
       <div
         ref={barRef}
         data-chrome="bottom"
         className="fixed bottom-0 left-0 right-0 z-[499] font-mono"
         style={{
-          background: "var(--chrome-bg)",
-          backdropFilter: "blur(18px)",
-          WebkitBackdropFilter: "blur(18px)",
-          borderTop: `1px solid ${FRAME_BORDER}`,
-          boxShadow: "0 -6px 24px rgba(var(--accent-rgb), 0.12)",
+          background: merged ? "transparent" : "var(--chrome-bg)",
+          backdropFilter: merged ? "none" : "blur(18px)",
+          WebkitBackdropFilter: merged ? "none" : "blur(18px)",
+          borderTop: merged ? "none" : `1px solid ${FRAME_BORDER}`,
+          boxShadow: merged ? "none" : "0 -6px 24px rgba(var(--accent-rgb), 0.12)",
         }}
       >
-        <div className="max-w-6xl mx-auto px-2 sm:px-4 py-2.5 flex items-stretch gap-1.5 sm:gap-3">
+        <div
+          className={
+            merged
+              ? "max-w-full sm:max-w-xl mx-3 sm:ml-4 sm:mr-2 flex items-stretch gap-1.5 sm:gap-3"
+              : "max-w-6xl mx-auto px-2 sm:px-4 py-2.5 flex items-stretch gap-1.5 sm:gap-3"
+          }
+          style={
+            merged
+              ? {
+                  background: "var(--chrome-bg)",
+                  border: `1px solid ${FRAME_BORDER}`,
+                  borderTopWidth: 0,
+                  borderRadius: "0 0 6px 6px",
+                  boxShadow: FRAME_GLOW,
+                  padding: "10px 12px",
+                }
+              : undefined
+          }
+        >
           {/* Combined CMD button — also flashes the green activity dot that
               used to live on the removed >_ log toggle. Log опен/тугл
               теперь прячется за "log" button в хедере session-log. */}
@@ -1909,6 +1938,8 @@ export default function ChatbotBar() {
           </button>
         </div>
       </div>
+        );
+      })()}
     </>
   );
 }
