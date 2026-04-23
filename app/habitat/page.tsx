@@ -2,6 +2,7 @@
 
 import { motion, AnimatePresence } from "framer-motion";
 import Link from "next/link";
+import { useEffect, useState } from "react";
 import { CRTBackground } from "../genesis/_shared/CRTBackground";
 import { useAnimationClock } from "../genesis/_shared/useClock";
 import { useLang } from "@/lib/lang-context";
@@ -32,8 +33,11 @@ type Copy = {
   back: string;
   agents: string;
   replay: string;
-  scenes: Record<SceneId, { home: string; agent: string; line: string }>;
-  finale: { headline: string; tagline: string };
+  exploreHint: string;
+  scenes: Record<
+    SceneId,
+    { home: string; agent: string; line: string; intro: string }
+  >;
 };
 
 const COPY: Record<Lang, Copy> = {
@@ -43,31 +47,36 @@ const COPY: Record<Lang, Copy> = {
     back: "← home",
     agents: "meet the agents →",
     replay: "↺ replay",
+    exploreHint: "▸ tap any window to read about that home",
     scenes: {
       telegram: {
         home: "TELEGRAM · personal chat",
         agent: "Boris",
         line: "\"Brother — contract signed ✓\"",
+        intro:
+          "Boris lives in your private Telegram, on the same line where your friends and family already write. Not a chatbot widget on some site you forget — a contact in the app you check anyway.",
       },
       site: {
         home: "WEBSITE · live nav",
         agent: "David",
         line: "scrolling cart → checkout for you",
+        intro:
+          "David greets visitors of finekot.shop and walks them through products himself — scrolls, opens, fills the cart. The site is not a static landing — it's a stage David performs on.",
       },
       voice: {
         home: "VOICE · phone call",
         agent: "Ada",
         line: "\"Booked Thursday, 15:00 CET.\"",
+        intro:
+          "Ada answers the phone in a real voice, takes the booking, and pushes it to your calendar — while you're driving, sleeping, on stage. No \"please leave a message after the beep.\"",
       },
       daemon: {
         home: "BACKGROUND · daemon",
         agent: "Skynet",
         line: "queue: 12 · uptime 99.97%",
+        intro:
+          "While you sleep — agents work. Triage inbox, log decisions to Notion, sync invoices in Stripe. A 24/7 daemon you don't see, but find the work already done in the morning.",
       },
-    },
-    finale: {
-      headline: "one agent · many homes",
-      tagline: "Finekot agents don't sit in OpenAI's cloud. They live in YOUR channels.",
     },
   },
   RU: {
@@ -76,31 +85,36 @@ const COPY: Record<Lang, Copy> = {
     back: "← главная",
     agents: "к агентам →",
     replay: "↺ replay",
+    exploreHint: "▸ ткни на любое окно — прочитаешь про этот дом",
     scenes: {
       telegram: {
         home: "TELEGRAM · личный чат",
         agent: "Борис",
         line: "«Брат — договор подписали ✓»",
+        intro:
+          "Борис живёт в твоём личном Telegram, на той же дистанции что друзья и семья. Не виджет на сайте, который ты забываешь, — контакт в мессенджере, который ты и так открываешь сто раз в день.",
       },
       site: {
         home: "САЙТ · ведёт навигацию",
         agent: "Давид",
         line: "скроллит корзину → оформляет заказ",
+        intro:
+          "Давид встречает гостей finekot.shop и сам проводит экскурсию по товарам — скроллит, открывает, наполняет корзину. Сайт здесь не лендинг, а сцена, на которой работает Давид.",
       },
       voice: {
         home: "ГОЛОС · звонок",
         agent: "Ada",
         line: "«Забронировала четверг, 15:00 CET.»",
+        intro:
+          "Ada берёт трубку живым голосом, принимает запись и кладёт её в твой календарь — пока ты за рулём, на сцене или спишь. Никакого «оставьте сообщение после сигнала».",
       },
       daemon: {
         home: "ФОН · daemon",
         agent: "Skynet",
         line: "очередь: 12 · аптайм 99.97%",
+        intro:
+          "Пока ты спишь — агенты работают. Разбирают инбокс, фиксируют решения в Notion, сводят счета в Stripe. 24/7 daemon, которого ты не видишь, но утром находишь работу уже сделанной.",
       },
-    },
-    finale: {
-      headline: "один агент · много домов",
-      tagline: "Агенты Finekot не сидят в облаке OpenAI. Они живут в ТВОИХ каналах.",
     },
   },
   UA: {
@@ -109,31 +123,36 @@ const COPY: Record<Lang, Copy> = {
     back: "← головна",
     agents: "до агентів →",
     replay: "↺ replay",
+    exploreHint: "▸ тицьни на будь-яке вікно — прочитаєш про цей дім",
     scenes: {
       telegram: {
         home: "TELEGRAM · особистий чат",
         agent: "Борис",
         line: "«Брате — договір підписали ✓»",
+        intro:
+          "Борис живе у твоєму особистому Telegram, на тій же дистанції, що друзі й родина. Не віджет на сайті, який ти забуваєш, — контакт у месенджері, який ти й так відкриваєш сто разів на день.",
       },
       site: {
         home: "САЙТ · веде навігацію",
         agent: "Давід",
         line: "гортає кошик → оформлює замовлення",
+        intro:
+          "Давід зустрічає гостей finekot.shop і сам водить екскурсію по товарах — гортає, відкриває, наповнює кошик. Сайт тут не лендінг, а сцена, на якій працює Давід.",
       },
       voice: {
         home: "ГОЛОС · дзвінок",
         agent: "Ada",
         line: "«Забронювала четвер, 15:00 CET.»",
+        intro:
+          "Ada бере слухавку живим голосом, приймає запис і кладе його у твій календар — поки ти за кермом, на сцені або спиш. Жодного «залиште повідомлення після сигналу».",
       },
       daemon: {
         home: "ФОН · daemon",
         agent: "Skynet",
         line: "черга: 12 · аптайм 99.97%",
+        intro:
+          "Поки ти спиш — агенти працюють. Розбирають інбокс, фіксують рішення в Notion, зводять рахунки у Stripe. 24/7 daemon, якого ти не бачиш, але вранці знаходиш роботу вже зробленою.",
       },
-    },
-    finale: {
-      headline: "один агент · багато домів",
-      tagline: "Агенти Finekot не сидять у хмарі OpenAI. Вони живуть у ТВОЇХ каналах.",
     },
   },
 };
@@ -148,7 +167,14 @@ function activeScene(t: number): SceneId | "finale" | null {
 
 /* ────────────── SCENE COMPONENTS ────────────── */
 
-function TelegramScene({ active, c }: { active: boolean; c: Copy["scenes"]["telegram"] }) {
+type SceneInteractProps = { onClick?: () => void; selected?: boolean };
+
+function TelegramScene({
+  active,
+  c,
+  onClick,
+  selected,
+}: { active: boolean; c: Copy["scenes"]["telegram"] } & SceneInteractProps) {
   return (
     <SceneFrame
       active={active}
@@ -156,6 +182,8 @@ function TelegramScene({ active, c }: { active: boolean; c: Copy["scenes"]["tele
       title="t.me/borya"
       chrome="tg"
       label={c.home}
+      onClick={onClick}
+      selected={selected}
     >
       <div className="flex flex-col gap-2 p-3 sm:p-4">
         <div className="flex items-center gap-2.5">
@@ -200,7 +228,12 @@ function TelegramScene({ active, c }: { active: boolean; c: Copy["scenes"]["tele
   );
 }
 
-function SiteScene({ active, c }: { active: boolean; c: Copy["scenes"]["site"] }) {
+function SiteScene({
+  active,
+  c,
+  onClick,
+  selected,
+}: { active: boolean; c: Copy["scenes"]["site"] } & SceneInteractProps) {
   return (
     <SceneFrame
       active={active}
@@ -208,6 +241,8 @@ function SiteScene({ active, c }: { active: boolean; c: Copy["scenes"]["site"] }
       title="finekot.shop"
       chrome="browser"
       label={c.home}
+      onClick={onClick}
+      selected={selected}
     >
       <div className="relative h-full overflow-hidden">
         {/* fake page rows the agent "scrolls" past */}
@@ -258,7 +293,12 @@ function SiteScene({ active, c }: { active: boolean; c: Copy["scenes"]["site"] }
   );
 }
 
-function VoiceScene({ active, c }: { active: boolean; c: Copy["scenes"]["voice"] }) {
+function VoiceScene({
+  active,
+  c,
+  onClick,
+  selected,
+}: { active: boolean; c: Copy["scenes"]["voice"] } & SceneInteractProps) {
   const bars = 22;
   return (
     <SceneFrame
@@ -267,6 +307,8 @@ function VoiceScene({ active, c }: { active: boolean; c: Copy["scenes"]["voice"]
       title="incoming · Ada"
       chrome="phone"
       label={c.home}
+      onClick={onClick}
+      selected={selected}
     >
       <div className="relative h-full flex flex-col items-center justify-center gap-3 p-4">
         <motion.div
@@ -327,7 +369,12 @@ function VoiceScene({ active, c }: { active: boolean; c: Copy["scenes"]["voice"]
   );
 }
 
-function DaemonScene({ active, c }: { active: boolean; c: Copy["scenes"]["daemon"] }) {
+function DaemonScene({
+  active,
+  c,
+  onClick,
+  selected,
+}: { active: boolean; c: Copy["scenes"]["daemon"] } & SceneInteractProps) {
   const lines = [
     "[00:00] cron · ada.process_inbox()",
     "[00:01] tool=gmail · 4 unread → triage",
@@ -342,6 +389,8 @@ function DaemonScene({ active, c }: { active: boolean; c: Copy["scenes"]["daemon
       title="systemd · ada.service"
       chrome="server"
       label={c.home}
+      onClick={onClick}
+      selected={selected}
     >
       <div className="relative h-full flex flex-col p-3 gap-2">
         <div className="flex items-center gap-2 text-[10px]" style={{ color: "#c9a3f0", letterSpacing: "0.1em" }}>
@@ -381,6 +430,8 @@ function SceneFrame({
   chrome,
   label,
   children,
+  onClick,
+  selected,
 }: {
   active: boolean;
   tint: string;
@@ -388,20 +439,29 @@ function SceneFrame({
   chrome: "tg" | "browser" | "phone" | "server";
   label: string;
   children: React.ReactNode;
+  onClick?: () => void;
+  selected?: boolean;
 }) {
+  const lit = active || selected;
   return (
     <motion.div
+      onClick={onClick}
+      role={onClick ? "button" : undefined}
+      tabIndex={onClick ? 0 : undefined}
       className="relative w-full h-full overflow-hidden font-mono"
       style={{
         background: "rgba(8, 6, 14, 0.92)",
-        border: `1px solid ${active ? tint : `${tint}55`}`,
+        border: `1px solid ${selected ? tint : lit ? tint : `${tint}55`}`,
         borderRadius: 8,
-        boxShadow: active
+        boxShadow: selected
+          ? `0 0 44px ${tint}88, inset 0 0 32px ${tint}18`
+          : lit
           ? `0 0 32px ${tint}55, inset 0 0 24px ${tint}10`
           : `0 0 6px ${tint}22`,
         transition: "border-color 0.4s, box-shadow 0.4s",
+        cursor: onClick ? "pointer" : undefined,
       }}
-      animate={{ scale: active ? 1 : 0.97, opacity: active ? 1 : 0.55 }}
+      animate={{ scale: lit ? 1 : 0.97, opacity: lit ? 1 : 0.55 }}
       transition={{ duration: 0.4 }}
     >
       {/* window chrome */}
@@ -455,6 +515,26 @@ export default function HabitatPage() {
   const cur = activeScene(t);
   const isFinale = cur === "finale";
   const sec = Math.min(16, Math.floor(t / 1000));
+
+  // After the timed beat ends, the user explores by clicking. `selected`
+  // is the scene the user picked (only meaningful in finale phase).
+  // Reset on replay so a new run starts clean.
+  const [selected, setSelected] = useState<SceneId | null>(null);
+  useEffect(() => {
+    if (!isFinale) setSelected(null);
+  }, [isFinale]);
+
+  // What the bottom info card describes:
+  // - during the timed run → the scene currently playing
+  // - in finale, before pick → no card (just hint)
+  // - in finale, after pick → the picked scene
+  let focused: SceneId | null = null;
+  if (isFinale) {
+    focused = selected;
+  } else if (cur) {
+    // TS narrows cur to SceneId here — the "finale" branch is taken above.
+    focused = cur as SceneId;
+  }
 
   return (
     <main
@@ -568,69 +648,83 @@ export default function HabitatPage() {
             height: "min(540px, 70vh)",
           }}
         >
-          <TelegramScene active={cur === "telegram" || isFinale} c={c.scenes.telegram} />
-          <SiteScene     active={cur === "site"     || isFinale} c={c.scenes.site} />
-          <VoiceScene    active={cur === "voice"    || isFinale} c={c.scenes.voice} />
-          <DaemonScene   active={cur === "daemon"   || isFinale} c={c.scenes.daemon} />
-
-          {/* FINALE — center wordmark over the lit grid */}
-          <AnimatePresence>
-            {isFinale && (
-              <motion.div
-                key="finale"
-                initial={{ opacity: 0, scale: 0.85 }}
-                animate={{ opacity: 1, scale: 1 }}
-                transition={{ duration: 0.7, ease: "easeOut" }}
-                className="absolute inset-0 flex flex-col items-center justify-center pointer-events-none z-20"
-              >
-                <div
-                  className="px-5 sm:px-8 py-3 sm:py-4 text-center backdrop-blur-md"
-                  style={{
-                    background: "rgba(4, 2, 8, 0.78)",
-                    border: "1px solid rgba(255,176,0,0.6)",
-                    borderRadius: 8,
-                    boxShadow: "0 0 48px rgba(255,176,0,0.35)",
-                  }}
-                >
-                  <div
-                    className="text-[18px] sm:text-[24px] font-bold uppercase tracking-[0.18em]"
-                    style={{
-                      color: "#ffb000",
-                      textShadow: "0 0 18px rgba(255,176,0,0.6)",
-                    }}
-                  >
-                    {c.finale.headline}
-                  </div>
-                  <div
-                    className="mt-2 text-[10.5px] sm:text-[12px] max-w-[480px]"
-                    style={{ color: "rgba(217,255,224,0.85)", lineHeight: 1.5 }}
-                  >
-                    {c.finale.tagline}
-                  </div>
-                </div>
-              </motion.div>
-            )}
-          </AnimatePresence>
+          <TelegramScene
+            active={cur === "telegram" || isFinale}
+            c={c.scenes.telegram}
+            onClick={isFinale ? () => setSelected("telegram") : undefined}
+            selected={selected === "telegram"}
+          />
+          <SiteScene
+            active={cur === "site" || isFinale}
+            c={c.scenes.site}
+            onClick={isFinale ? () => setSelected("site") : undefined}
+            selected={selected === "site"}
+          />
+          <VoiceScene
+            active={cur === "voice" || isFinale}
+            c={c.scenes.voice}
+            onClick={isFinale ? () => setSelected("voice") : undefined}
+            selected={selected === "voice"}
+          />
+          <DaemonScene
+            active={cur === "daemon" || isFinale}
+            c={c.scenes.daemon}
+            onClick={isFinale ? () => setSelected("daemon") : undefined}
+            selected={selected === "daemon"}
+          />
         </div>
       </div>
 
-      {/* BOTTOM caption — current home */}
-      <div className="absolute bottom-6 left-0 right-0 z-30 text-center px-4">
+      {/* BOTTOM info — during anim shows the playing scene; in finale shows
+          either the user's picked scene or a "tap any window" hint. */}
+      <div className="absolute bottom-4 sm:bottom-6 left-0 right-0 z-30 px-4 flex justify-center">
         <AnimatePresence mode="wait">
-          {cur && cur !== "finale" && (
+          {focused ? (
             <motion.div
-              key={cur}
+              key={`info-${focused}`}
+              initial={{ opacity: 0, y: 8 }}
+              animate={{ opacity: 1, y: 0 }}
+              exit={{ opacity: 0, y: -4 }}
+              transition={{ duration: 0.3 }}
+              className="px-4 sm:px-5 py-2.5 sm:py-3 backdrop-blur-md"
+              style={{
+                maxWidth: 620,
+                background: "rgba(4, 2, 8, 0.78)",
+                border: "1px solid rgba(255,176,0,0.45)",
+                borderRadius: 8,
+                boxShadow: "0 0 24px rgba(255,176,0,0.18)",
+              }}
+            >
+              <div
+                className="text-[10px] sm:text-[11px] tracking-[0.2em] uppercase mb-1"
+                style={{ color: "#ffb000", textShadow: "0 0 6px rgba(255,176,0,0.4)" }}
+              >
+                ▸ {c.scenes[focused].home}
+                <span style={{ opacity: 0.6 }}> · {c.scenes[focused].agent}</span>
+              </div>
+              <div
+                className="text-[12px] sm:text-[13px]"
+                style={{ color: "rgba(217,255,224,0.92)", lineHeight: 1.55 }}
+              >
+                {c.scenes[focused].intro}
+              </div>
+            </motion.div>
+          ) : isFinale ? (
+            <motion.div
+              key="hint"
               initial={{ opacity: 0, y: 6 }}
               animate={{ opacity: 1, y: 0 }}
               exit={{ opacity: 0, y: -4 }}
               transition={{ duration: 0.3 }}
-              className="text-[10.5px] sm:text-[12px] tracking-[0.2em]"
-              style={{ color: "#ffb000" }}
+              className="text-[11px] sm:text-[12px] tracking-[0.2em] uppercase"
+              style={{
+                color: "rgba(255,176,0,0.85)",
+                textShadow: "0 0 8px rgba(255,176,0,0.35)",
+              }}
             >
-              ▸ {c.scenes[cur].home}{" "}
-              <span style={{ opacity: 0.6 }}>· {c.scenes[cur].agent}</span>
+              {c.exploreHint}
             </motion.div>
-          )}
+          ) : null}
         </AnimatePresence>
       </div>
     </main>
