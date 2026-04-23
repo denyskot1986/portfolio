@@ -511,7 +511,7 @@ function SceneFrame({
 export default function HabitatPage() {
   const { lang } = useLang();
   const c = COPY[lang];
-  const { t, replay } = useAnimationClock(TOTAL_MS);
+  const { t, replay, skip } = useAnimationClock(TOTAL_MS);
 
   const cur = activeScene(t);
   const isFinale = cur === "finale";
@@ -546,6 +546,47 @@ export default function HabitatPage() {
       }}
     >
       <CRTBackground />
+
+      {/* Skip overlay — клик в любом месте во время анимации прыгает
+          сразу в финал. В финале overlay НЕ рендерится, чтобы клики
+          по сценам (выбор дома) проходили нормально. z-ниже HUD (500)
+          и ниже финальных сцен — только ловит клики по пустой зоне
+          во время беата. */}
+      {!isFinale && (
+        <button
+          type="button"
+          onClick={() => {
+            playSfx("tap");
+            skip();
+          }}
+          aria-label={
+            lang === "RU"
+              ? "Пропустить анимацию"
+              : lang === "UA"
+              ? "Пропустити анімацію"
+              : "Skip animation"
+          }
+          className="absolute inset-0 z-[300] cursor-pointer focus:outline-none"
+          style={{ background: "transparent" }}
+        >
+          <span
+            className="absolute bottom-6 left-1/2 -translate-x-1/2 text-[10px] uppercase tracking-[0.25em] px-3 py-1.5 pointer-events-none"
+            style={{
+              color: "rgba(0, 255, 65, 0.7)",
+              background: "rgba(0, 0, 0, 0.35)",
+              border: "1px solid rgba(0, 255, 65, 0.35)",
+              borderRadius: 4,
+              textShadow: "0 0 6px rgba(0, 255, 65, 0.5)",
+            }}
+          >
+            {lang === "RU"
+              ? "▸ клик — сразу к финалу"
+              : lang === "UA"
+              ? "▸ клік — одразу до фіналу"
+              : "▸ click to skip"}
+          </span>
+        </button>
+      )}
 
       {/* HUD — top bar with prominent nav buttons + animation counter.
           Lives just below the global chat top chrome (z-499) so it's not

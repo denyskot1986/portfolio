@@ -45,5 +45,15 @@ export function useAnimationClock(totalMs: number) {
   }, [key, reduced, totalMs]);
 
   const replay = () => setKey((k) => k + 1);
-  return { t, replay, reduced };
+  // Скип анимации к концу: отменяем rAF и выставляем t = totalMs.
+  // Нужно когда юзер уже видел сцены и не хочет ждать повторно, или
+  // просто лень смотреть 16 секунд таймлайна.
+  const skip = () => {
+    if (rafRef.current) {
+      cancelAnimationFrame(rafRef.current);
+      rafRef.current = null;
+    }
+    setT(totalMs);
+  };
+  return { t, replay, skip, reduced };
 }
