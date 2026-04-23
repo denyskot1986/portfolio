@@ -438,6 +438,28 @@ export default function ChatbotBar() {
   }, [logOpen]);
 
   // Close the quick-commands menu on outside click.
+  // Координация с AgentDock: когда Dock открывается — CMD сам закрывается,
+  // и обратно. И тот и другой шлют `fk:popover:open` с { source } когда
+  // раскрываются. Слушаем всё, что НЕ наше.
+  useEffect(() => {
+    if (!cmdOpen) return;
+    const handler = (e: Event) => {
+      const ce = e as CustomEvent<{ source?: string }>;
+      if (ce.detail?.source && ce.detail.source !== "cmd") setCmdOpen(false);
+    };
+    window.addEventListener("fk:popover:open", handler as EventListener);
+    return () =>
+      window.removeEventListener("fk:popover:open", handler as EventListener);
+  }, [cmdOpen]);
+
+  // Широковещательное событие при открытии CMD, чтобы Dock услышал и закрылся.
+  useEffect(() => {
+    if (!cmdOpen) return;
+    window.dispatchEvent(
+      new CustomEvent("fk:popover:open", { detail: { source: "cmd" } })
+    );
+  }, [cmdOpen]);
+
   useEffect(() => {
     if (!cmdOpen) return;
     const handler = (e: MouseEvent | TouchEvent) => {
@@ -792,6 +814,15 @@ export default function ChatbotBar() {
     return () =>
       window.removeEventListener("fk:chat:send", handler as EventListener);
   }, [sendMessage]);
+
+  // `fk:chat:open` — просто развернуть лог без сообщения. Нужно для «David
+  // host» тайла в AgentDock: юзер хочет поговорить с хостом сайта, dock
+  // диспатчит событие, мы разворачиваем чат.
+  useEffect(() => {
+    const handler = () => setLogOpen(true);
+    window.addEventListener("fk:chat:open", handler);
+    return () => window.removeEventListener("fk:chat:open", handler);
+  }, []);
 
   const handleKeyDown = useCallback(
     (e: React.KeyboardEvent) => {
@@ -1347,13 +1378,14 @@ export default function ChatbotBar() {
             animate={{ opacity: 1, y: 0 }}
             exit={{ opacity: 0, y: 16 }}
             transition={{ duration: 0.18, ease: "easeOut" }}
-            className="fixed left-0 right-0 z-[500] pointer-events-none"
+            className="fixed left-0 z-[500] pointer-events-none"
             style={{ bottom: "var(--chat-bar-h, 72px)" }}
           >
-            {/* Quick-command popup — тоже прижат влево, чтобы ничего не
-                центрировало чатовую обвеску (правая половина экрана остаётся
-                рабочей). */}
-            <div className="max-w-full sm:max-w-xl px-3 sm:pl-4 sm:pr-2 pb-2">
+            {/* Quick-command popup — жёстко прижат к ЛЕВОМУ краю (над CMD-
+                кнопкой), ширина меньше log-panel, своё оранжевое обрамление
+                (var(--accent2)) чтобы однозначно отличалось от AgentDock
+                (синий) и log-panel (зелёный). */}
+            <div className="max-w-[min(22rem,calc(100vw-24px))] pl-3 sm:pl-4 pb-2">
               <div
                 ref={cmdMenuRef}
                 className="pointer-events-auto font-mono overflow-hidden"
@@ -1361,9 +1393,10 @@ export default function ChatbotBar() {
                   background: "var(--chrome-bg)",
                   backdropFilter: "blur(18px)",
                   WebkitBackdropFilter: "blur(18px)",
-                  border: `1px solid ${FRAME_BORDER}`,
+                  border: "1px solid rgba(var(--accent2-rgb), 0.75)",
                   borderRadius: "6px",
-                  boxShadow: FRAME_GLOW,
+                  boxShadow:
+                    "0 0 36px rgba(var(--accent2-rgb), 0.38), 0 0 10px rgba(var(--accent2-rgb), 0.28), inset 0 0 56px rgba(var(--accent2-rgb), 0.06)",
                 }}
               >
                 <div
@@ -1853,9 +1886,14 @@ export default function ChatbotBar() {
             </div>
           </div>
 
-          {/* SEND — Telegram-style paper-plane. Enter тоже работает,
-              но для тапа/мобильного нужна явная кнопка. Gaснет когда
-              инпут пустой или идёт fetch. */}
+          {/* AGENT DOCK — слева от SEND. Триггер открывает поповер
+              с аватарками агентов. Синяя обводка — чтобы однозначно
+              отличать от зелёного чата и оранжевого CMD. */}
+          <AgentDock asInlineButton />
+
+          {/* SEND — терминальный стиль в тон CMD/AgentDock: квадрат
+              h-11, uppercase моноспейс, glow в акцент. Гаснет когда
+              инпут пустой или идёт fetch. Enter тоже работает. */}
           {(() => {
             const hasText = input.trim().length > 0;
             const active = hasText && !loading;
@@ -1865,58 +1903,68 @@ export default function ChatbotBar() {
                 onClick={send}
                 disabled={!active}
                 aria-label={lang === "RU" ? "Отправить" : lang === "UA" ? "Надіслати" : "Send"}
-                className="shrink-0 flex items-center justify-center rounded-full transition-all duration-150 disabled:cursor-not-allowed enabled:hover:brightness-125 enabled:active:scale-95"
+                className="shrink-0 px-3 sm:px-4 h-11 flex items-center justify-center gap-1.5 font-mono transition-all disabled:cursor-not-allowed"
                 style={{
-                  width: 40,
-                  height: 40,
                   background: active
                     ? "rgba(var(--accent-rgb), 0.18)"
                     : "rgba(var(--accent-rgb), 0.04)",
-                  border: `1px solid rgba(var(--accent-rgb), ${active ? 0.6 : 0.2})`,
+                  border: `1px solid rgba(var(--accent-rgb), ${active ? 0.7 : 0.2})`,
+                  borderRadius: 4,
                   color: active ? "var(--accent)" : "rgba(var(--accent-rgb), 0.35)",
+                  letterSpacing: "0.22em",
+                  fontSize: "11px",
+                  fontWeight: 700,
+                  textShadow: active
+                    ? "0 0 10px rgba(var(--accent-rgb), 0.95), 0 0 4px rgba(var(--accent-rgb), 0.8)"
+                    : "none",
                   boxShadow: active
-                    ? "0 0 14px rgba(var(--accent-rgb), 0.4), inset 0 0 10px rgba(var(--accent-rgb), 0.08)"
+                    ? "0 0 18px rgba(var(--accent-rgb), 0.35), inset 0 0 10px rgba(var(--accent-rgb), 0.08)"
                     : "none",
                 }}
+                onPointerEnter={(e) => {
+                  if (e.currentTarget.disabled) return;
+                  if (e.pointerType !== "mouse") return;
+                  e.currentTarget.style.background = "var(--accent)";
+                  e.currentTarget.style.color = "#040208";
+                  e.currentTarget.style.textShadow = "none";
+                  e.currentTarget.style.boxShadow =
+                    "0 0 32px rgba(var(--accent-rgb), 0.7)";
+                }}
+                onPointerLeave={(e) => {
+                  if (!active) return;
+                  e.currentTarget.style.background =
+                    "rgba(var(--accent-rgb), 0.18)";
+                  e.currentTarget.style.color = "var(--accent)";
+                  e.currentTarget.style.textShadow =
+                    "0 0 10px rgba(var(--accent-rgb), 0.95), 0 0 4px rgba(var(--accent-rgb), 0.8)";
+                  e.currentTarget.style.boxShadow =
+                    "0 0 18px rgba(var(--accent-rgb), 0.35), inset 0 0 10px rgba(var(--accent-rgb), 0.08)";
+                }}
               >
-                <svg
-                  width="18"
-                  height="18"
-                  viewBox="0 0 24 24"
-                  fill="none"
-                  aria-hidden
-                  style={{ transform: "translateX(1px)" }}
-                >
-                  <path
-                    d="M3.4 11.3 20.5 3.6a.7.7 0 0 1 .9.9L13.7 21.6a.7.7 0 0 1-1.3 0l-2.9-7.1-7.1-2.9a.7.7 0 0 1 0-1.3Z"
-                    fill="currentColor"
+                {loading ? (
+                  <motion.div
+                    className="w-3.5 h-3.5 rounded-full"
+                    style={{
+                      border: "1px solid rgba(var(--accent-rgb), 0.3)",
+                      borderTopColor: "var(--accent)",
+                    }}
+                    animate={{ rotate: 360 }}
+                    transition={{ duration: 0.8, repeat: Infinity, ease: "linear" }}
                   />
-                </svg>
+                ) : (
+                  <>
+                    <span>SEND</span>
+                    <span
+                      aria-hidden
+                      style={{ fontSize: 14, lineHeight: 1, letterSpacing: 0 }}
+                    >
+                      →
+                    </span>
+                  </>
+                )}
               </button>
             );
           })()}
-
-          {/* AGENT DOCK — поповер с аватарками агентов: тёмные = ещё
-              не посещал, подсвеченные = «разблокированы», оранжевый
-              badge — unread. */}
-          <AgentDock asInlineButton />
-          {loading && (
-            <div
-              aria-hidden
-              className="shrink-0 flex items-center justify-center"
-              style={{ width: 44, height: 44 }}
-            >
-              <motion.div
-                className="w-3.5 h-3.5 rounded-full"
-                style={{
-                  border: "1px solid rgba(var(--accent-rgb), 0.3)",
-                  borderTopColor: "var(--accent)",
-                }}
-                animate={{ rotate: 360 }}
-                transition={{ duration: 0.8, repeat: Infinity, ease: "linear" }}
-              />
-            </div>
-          )}
         </div>
       </div>
         );

@@ -10,8 +10,14 @@ import {
   readUnread,
   readVisited,
   subscribeProgression,
-  totalUnread,
 } from "@/lib/agent-progression";
+
+// Dock-accent — мягкий синий, hardcoded. Не завязываем на theme-palette
+// чтобы dock был однозначно «своим» цветом независимо от выбранной темы
+// и визуально контрастировал с зелёным чата и оранжевым CMD.
+const BLUE_RGB = "82, 183, 255";
+const BLUE = `rgb(${BLUE_RGB})`;
+const BLUE_SOFT = `rgba(${BLUE_RGB}, 0.75)`;
 
 // Только подписочные агенты — они те, с кем можно «поговорить лично»;
 // system template/Custom Studio в доке не показываем.
@@ -177,6 +183,26 @@ export default function AgentDock({ asInlineButton = false }: AgentDockProps) {
     };
   }, [open]);
 
+  // Координация с CMD и другими поповерами — если кто-то открылся,
+  // закрываемся сами.
+  useEffect(() => {
+    const handler = (e: Event) => {
+      const ce = e as CustomEvent<{ source?: string }>;
+      if (ce.detail?.source && ce.detail.source !== "dock") setOpen(false);
+    };
+    window.addEventListener("fk:popover:open", handler as EventListener);
+    return () =>
+      window.removeEventListener("fk:popover:open", handler as EventListener);
+  }, []);
+
+  // При открытии шлём широковещательное событие — CMD услышит и закроется.
+  useEffect(() => {
+    if (!open) return;
+    window.dispatchEvent(
+      new CustomEvent("fk:popover:open", { detail: { source: "dock" } })
+    );
+  }, [open]);
+
   const totalUnreadCount = useMemo(
     () => Object.values(unread).reduce((a, b) => a + b, 0),
     [unread]
@@ -200,21 +226,19 @@ export default function AgentDock({ asInlineButton = false }: AgentDockProps) {
         onClick={() => setOpen((v) => !v)}
         className={triggerClasses}
         style={{
-          background: open
-            ? "var(--accent)"
-            : "rgba(var(--accent-rgb), 0.12)",
-          border: "1px solid var(--accent)",
-          color: open ? "#040208" : "var(--accent)",
+          background: open ? BLUE : `rgba(${BLUE_RGB}, 0.12)`,
+          border: `1px solid ${BLUE}`,
+          color: open ? "#040208" : BLUE,
           borderRadius: 4,
           letterSpacing: "0.22em",
           fontSize: "11px",
           fontWeight: 700,
           textShadow: open
             ? "none"
-            : "0 0 10px rgba(var(--accent-rgb), 0.95), 0 0 4px rgba(var(--accent-rgb), 0.8)",
+            : `0 0 10px rgba(${BLUE_RGB}, 0.95), 0 0 4px rgba(${BLUE_RGB}, 0.8)`,
           boxShadow: open
-            ? "0 0 24px rgba(var(--accent-rgb), 0.55)"
-            : "0 0 18px rgba(var(--accent-rgb), 0.35), inset 0 0 10px rgba(var(--accent-rgb), 0.08)",
+            ? `0 0 24px rgba(${BLUE_RGB}, 0.55)`
+            : `0 0 18px rgba(${BLUE_RGB}, 0.35), inset 0 0 10px rgba(${BLUE_RGB}, 0.08)`,
           fontFamily: "inherit",
         }}
         aria-label={`Agents (${unlockedCount}/${DOCK_AGENTS.length} unlocked${
@@ -248,6 +272,7 @@ export default function AgentDock({ asInlineButton = false }: AgentDockProps) {
           </span>
         )}
       </button>
+      {/* eslint workaround: всплывающий поповер — ниже */}
 
       <AnimatePresence>
         {open && (
@@ -265,25 +290,24 @@ export default function AgentDock({ asInlineButton = false }: AgentDockProps) {
               background: "var(--chrome-bg)",
               backdropFilter: "blur(20px)",
               WebkitBackdropFilter: "blur(20px)",
-              border: "1px solid rgba(var(--accent-rgb), 0.75)",
+              border: `1px solid ${BLUE_SOFT}`,
               borderRadius: 8,
-              boxShadow:
-                "0 0 36px rgba(var(--accent-rgb), 0.38), 0 0 10px rgba(var(--accent-rgb), 0.28), inset 0 0 56px rgba(var(--accent-rgb), 0.06)",
+              boxShadow: `0 0 36px rgba(${BLUE_RGB}, 0.38), 0 0 10px rgba(${BLUE_RGB}, 0.28), inset 0 0 56px rgba(${BLUE_RGB}, 0.06)`,
               overflow: "hidden",
             }}
           >
             <div
               className="flex items-center justify-between px-3 py-2 text-[10px] uppercase"
               style={{
-                borderBottom: "1px solid rgba(var(--accent-rgb), 0.35)",
-                background: "rgba(var(--accent-rgb), 0.06)",
+                borderBottom: `1px solid rgba(${BLUE_RGB}, 0.35)`,
+                background: `rgba(${BLUE_RGB}, 0.06)`,
                 letterSpacing: "0.22em",
-                color: "var(--accent)",
-                textShadow: "0 0 6px rgba(var(--accent-rgb), 0.55)",
+                color: BLUE,
+                textShadow: `0 0 6px rgba(${BLUE_RGB}, 0.55)`,
               }}
             >
               <span>// agent dock</span>
-              <span style={{ color: "rgba(var(--accent-rgb), 0.7)" }}>
+              <span style={{ color: `rgba(${BLUE_RGB}, 0.7)` }}>
                 {unlockedCount}/{DOCK_AGENTS.length} unlocked
               </span>
             </div>
@@ -298,14 +322,59 @@ export default function AgentDock({ asInlineButton = false }: AgentDockProps) {
                   onPick={() => handlePick(agent.id)}
                 />
               ))}
+              {/* 8-й слот — кнопка «открыть чат с David» (host сайта).
+                  Визуально в стиле тайла, но в DOCK accent-color (синем),
+                  с иконкой chat-bubble. Клик диспатчит fk:chat:open,
+                  ChatbotBar слушает и setLogOpen(true). */}
+              <button
+                type="button"
+                onClick={() => {
+                  setOpen(false);
+                  if (typeof window !== "undefined") {
+                    window.dispatchEvent(new CustomEvent("fk:chat:open"));
+                  }
+                }}
+                className="relative group flex flex-col items-center gap-2 p-2 rounded-md focus:outline-none"
+                aria-label="Open chat with David (site host)"
+              >
+                <div
+                  className="relative flex items-center justify-center font-mono font-bold"
+                  style={{
+                    width: 64,
+                    height: 64,
+                    borderRadius: 10,
+                    background: `rgba(${BLUE_RGB}, 0.12)`,
+                    border: `1px solid ${BLUE_SOFT}`,
+                    boxShadow: `0 0 18px rgba(${BLUE_RGB}, 0.35), inset 0 0 20px rgba(${BLUE_RGB}, 0.06)`,
+                    color: BLUE,
+                    textShadow: `0 0 10px rgba(${BLUE_RGB}, 0.8)`,
+                    transition: "transform 0.22s ease",
+                  }}
+                >
+                  {/* Chat-bubble glyph в ASCII-стиле, чтобы не выбиваться
+                      из терминала */}
+                  <span style={{ fontSize: 22, letterSpacing: "-0.05em" }}>
+                    ▸_
+                  </span>
+                </div>
+                <span
+                  className="text-[10px] uppercase tracking-widest"
+                  style={{
+                    color: BLUE,
+                    textShadow: `0 0 6px rgba(${BLUE_RGB}, 0.5)`,
+                  }}
+                >
+                  DAVID · host
+                </span>
+              </button>
             </div>
 
             <div
               className="px-3 py-1.5 text-[9px] uppercase tracking-widest"
               style={{
-                borderTop: "1px solid rgba(var(--accent-rgb), 0.2)",
-                background: "rgba(var(--accent-rgb), 0.04)",
-                color: "rgba(var(--accent-rgb), 0.55)",
+                borderTop: `1px solid rgba(${BLUE_RGB}, 0.2)`,
+                background: `rgba(${BLUE_RGB}, 0.04)`,
+                color: `rgba(${BLUE_RGB}, 0.55)`,
                 letterSpacing: "0.2em",
               }}
             >
