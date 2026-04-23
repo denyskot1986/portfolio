@@ -254,6 +254,167 @@ export default function ProductPageClient() {
                   </div>
                 </div>
 
+                {/* Pricing — теперь inline в терминал-блоке */}
+                <div className="pt-3" style={{ borderTop: "1px dashed rgba(0,255,65,0.18)" }}>
+                  <p
+                    className="text-[10px] uppercase mb-3"
+                    style={{ color: "#ffb000", letterSpacing: "0.22em", textShadow: "0 0 6px rgba(255,176,0,0.4)" }}
+                  >
+                    $ pricing
+                  </p>
+                  {(() => {
+                    const monthLabel = lang === "RU" ? "мес" : lang === "UA" ? "міс" : "mo";
+                    const contactLabel = lang === "RU" ? "Написать @finekot →" : lang === "UA" ? "Написати @finekot →" : "Contact @finekot →";
+                    const subscribeLabel = lang === "RU" ? "Подписаться →" : lang === "UA" ? "Підписатись →" : "Subscribe →";
+                    const buyLabel = lang === "RU" ? "Купить →" : lang === "UA" ? "Купити →" : "Buy Now →";
+
+                    type Tier = {
+                      key: string;
+                      label?: string;
+                      price: number;
+                      period?: string;
+                      desc?: string;
+                      features: string[];
+                      featured: boolean;
+                      cta: string;
+                      href: string;
+                    };
+
+                    const buyHref = product.available
+                      ? botDeepLink(product.contact, product.id, "buy")
+                      : "https://t.me/finekot";
+                    const cta = (label: string) => (product.available ? label : contactLabel);
+
+                    let tiers: Tier[] = [];
+                    if (product.pricing.subscription) {
+                      const sub = product.pricing.subscription;
+                      const raw = sub.tiers ?? [{ name: "Standard", price: sub.monthly, features: [] as string[] }];
+                      tiers = raw.map((t, i) => ({
+                        key: t.name,
+                        label: t.name,
+                        price: t.price,
+                        period: monthLabel,
+                        features: t.features,
+                        featured: raw.length >= 3 ? i === 1 : i === raw.length - 1,
+                        cta: cta(subscribeLabel),
+                        href: buyHref,
+                      }));
+                    } else if (product.pricing.setup) {
+                      tiers = [
+                        {
+                          key: "code",
+                          label: tp.sourceCode,
+                          price: product.pricing.code,
+                          desc: tp.getCodeDesc,
+                          features: [tp.includes.code, tp.includes.docs, tp.includes.autoInstall, tp.includes.updates],
+                          featured: false,
+                          cta: cta(buyLabel),
+                          href: buyHref,
+                        },
+                        {
+                          key: "setup",
+                          label: `${tp.sourceCode} + Setup`,
+                          price: product.pricing.setup,
+                          desc: tp.setupDesc,
+                          features: [tp.includes.everything, tp.includes.setup, tp.includes.infra, tp.includes.support],
+                          featured: true,
+                          cta: cta(buyLabel),
+                          href: buyHref,
+                        },
+                      ];
+                    } else {
+                      tiers = [
+                        {
+                          key: "code",
+                          label: tp.sourceCode,
+                          price: product.pricing.code,
+                          desc: tp.fullSystem,
+                          features: [tp.includes.code, tp.includes.docs, tp.includes.autoInstall, tp.includes.updates],
+                          featured: true,
+                          cta: cta(buyLabel),
+                          href: buyHref,
+                        },
+                      ];
+                    }
+
+                    const gridCols =
+                      tiers.length >= 3 ? "sm:grid-cols-3" : tiers.length === 2 ? "sm:grid-cols-2" : "";
+                    return (
+                      <div className={`grid grid-cols-1 ${gridCols} gap-3`}>
+                        {tiers.map((t) => (
+                          <div
+                            key={t.key}
+                            className="rounded-md p-3 sm:p-4 flex flex-col"
+                            style={{
+                              border: `1px solid ${t.featured ? "rgba(0,255,65,0.45)" : "rgba(0,255,65,0.22)"}`,
+                              background: t.featured ? "rgba(0,255,65,0.05)" : "rgba(2,10,4,0.4)",
+                              boxShadow: t.featured ? "0 0 14px rgba(0,255,65,0.08)" : undefined,
+                            }}
+                          >
+                            {t.featured && (
+                              <p
+                                className="text-[9px] uppercase mb-1.5"
+                                style={{ color: "#ffb000", letterSpacing: "0.2em", textShadow: "0 0 6px rgba(255,176,0,0.35)" }}
+                              >
+                                ★ {tp.recommended}
+                              </p>
+                            )}
+                            {t.label && (
+                              <p
+                                className="text-[10px] uppercase mb-1"
+                                style={{ color: "rgba(0,255,65,0.55)", letterSpacing: "0.18em" }}
+                              >
+                                {t.label}
+                              </p>
+                            )}
+                            <p className="font-mono mb-1 leading-none">
+                              <span
+                                className="text-2xl sm:text-3xl font-black"
+                                style={{ color: "#00ff41", textShadow: "0 0 10px rgba(0,255,65,0.4)" }}
+                              >
+                                ${t.price}
+                              </span>
+                              {t.period && t.price > 0 && (
+                                <span className="text-xs font-normal" style={{ color: "rgba(0,255,65,0.45)" }}>/{t.period}</span>
+                              )}
+                            </p>
+                            {t.desc && (
+                              <p className="text-[11px] mb-2 mt-1" style={{ color: "rgba(217,255,224,0.5)" }}>
+                                {t.desc}
+                              </p>
+                            )}
+                            {t.features.length > 0 && (
+                              <ul className="space-y-1 text-[12px] mt-2 mb-3" style={{ color: "rgba(217,255,224,0.7)" }}>
+                                {t.features.map((f, i) => (
+                                  <li key={i} className="flex gap-2">
+                                    <span style={{ color: "rgba(0,255,65,0.55)" }}>→</span>
+                                    <span>{f}</span>
+                                  </li>
+                                ))}
+                              </ul>
+                            )}
+                            <a
+                              href={t.href}
+                              target="_blank"
+                              rel="noopener noreferrer"
+                              className="mt-auto block text-center text-[11px] py-2 rounded transition-all uppercase font-mono hover:bg-[rgba(0,255,65,0.14)] hover:border-[rgba(0,255,65,0.7)]"
+                              style={{
+                                border: `1px solid ${t.featured ? "rgba(0,255,65,0.55)" : "rgba(0,255,65,0.35)"}`,
+                                color: "#00ff41",
+                                background: t.featured ? "rgba(0,255,65,0.1)" : "rgba(0,255,65,0.03)",
+                                textShadow: "0 0 6px rgba(0,255,65,0.35)",
+                                letterSpacing: "0.18em",
+                              }}
+                            >
+                              {t.cta}
+                            </a>
+                          </div>
+                        ))}
+                      </div>
+                    );
+                  })()}
+                </div>
+
                 {/* Дисклеймер — защита know-how */}
                 <p
                   className="pt-1 text-[10px] italic"
@@ -267,155 +428,6 @@ export default function ProductPageClient() {
                 </p>
               </div>
             </div>
-          </motion.div>
-        </div>
-      </section>
-
-      {/* PRICING */}
-      <section className="relative z-10 py-20 px-6">
-        <div className="max-w-4xl mx-auto">
-          <motion.div {...fade}>
-            <p className="text-center text-pink-400/30 text-xs font-mono uppercase tracking-[0.3em] mb-8">{tp.pricing}</p>
-            {product.pricing.subscription ? (
-              (() => {
-                const sub = product.pricing.subscription!;
-                const tiers = sub.tiers ?? [
-                  { name: "Standard", price: sub.monthly, features: [] },
-                ];
-                const monthLabel = lang === "RU" ? "мес" : lang === "UA" ? "міс" : "mo";
-                const ctaLabel = lang === "RU" ? "Подписаться →" : lang === "UA" ? "Підписатись →" : "Subscribe →";
-                return (
-                  <div>
-                    <div className={`grid grid-cols-1 ${tiers.length >= 3 ? "md:grid-cols-3" : tiers.length === 2 ? "md:grid-cols-2" : ""} gap-4`}>
-                      {tiers.map((tier, idx) => {
-                        const isFeatured = idx === 1; // middle tier highlighted when 3 tiers
-                        return (
-                          <div
-                            key={tier.name}
-                            className={`glass rounded-xl p-6 sm:p-8 text-center ${isFeatured ? "border-pink-400/20 shadow-[0_0_40px_rgba(244,114,182,0.08)]" : ""}`}
-                          >
-                            {isFeatured && (
-                              <div className="flex justify-center mb-3">
-                                <span className="text-[10px] px-3 py-1 rounded-full bg-pink-500/15 text-pink-300/60 border border-pink-500/20 font-mono uppercase tracking-wider">
-                                  {tp.recommended}
-                                </span>
-                              </div>
-                            )}
-                            <p className="text-[10px] text-pink-400/30 uppercase tracking-wider font-mono mb-3">{tier.name}</p>
-                            <p className="text-3xl sm:text-4xl font-black gradient-text font-mono mb-1">
-                              ${tier.price}
-                              {tier.price > 0 && <span className="text-base text-pink-100/40 font-normal">/{monthLabel}</span>}
-                            </p>
-                            <div className="mt-5 mb-6">
-                              <ul className="space-y-2 text-sm text-pink-100/40 text-left">
-                                {tier.features.map((f, i) => (
-                                  <li key={i} className="flex gap-2"><span className={isFeatured ? "text-pink-400" : "text-pink-400/40"}>→</span> {f}</li>
-                                ))}
-                              </ul>
-                            </div>
-                            {product.available ? (
-                              <a
-                                href={botDeepLink(product.contact, product.id, "buy")}
-                                target="_blank"
-                                rel="noopener noreferrer"
-                                className={`inline-block w-full px-6 py-3 rounded-lg text-sm font-semibold transition-all ${
-                                  isFeatured
-                                    ? "bg-gradient-to-r from-pink-600 to-purple-600 text-white hover:opacity-90 shadow-[0_0_30px_rgba(244,114,182,0.2)]"
-                                    : "border border-pink-400/20 text-pink-100/70 hover:bg-pink-400/10 hover:text-pink-100"
-                                }`}
-                              >
-                                {ctaLabel}
-                              </a>
-                            ) : (
-                              <a href="https://t.me/finekot" target="_blank" rel="noopener noreferrer"
-                                className="inline-block w-full px-6 py-3 rounded-lg border border-pink-400/20 text-sm font-semibold text-pink-100/70 hover:bg-pink-400/10 hover:text-pink-100 transition-all">
-                                Contact @finekot →
-                              </a>
-                            )}
-                          </div>
-                        );
-                      })}
-                    </div>
-                  </div>
-                );
-              })()
-            ) : product.pricing.setup ? (
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                <div className="glass rounded-xl p-6 sm:p-8 text-center">
-                  <p className="text-[10px] text-pink-400/30 uppercase tracking-wider font-mono mb-3">{tp.sourceCode}</p>
-                  <p className="text-3xl sm:text-4xl font-black gradient-text font-mono mb-2">${product.pricing.code}</p>
-                  <p className="text-xs text-pink-100/30 mb-5">{tp.getCodeDesc}</p>
-                  <ul className="space-y-2 text-sm text-pink-100/40 text-left mb-6">
-                    <li className="flex gap-2"><span className="text-pink-400/40">&rarr;</span> {tp.includes.code}</li>
-                    <li className="flex gap-2"><span className="text-pink-400/40">&rarr;</span> {tp.includes.docs}</li>
-                    <li className="flex gap-2"><span className="text-pink-400/40">&rarr;</span> {tp.includes.autoInstall}</li>
-                    <li className="flex gap-2"><span className="text-pink-400/40">&rarr;</span> {tp.includes.updates}</li>
-                  </ul>
-                  <p className="text-[10px] text-pink-100/20 mb-4">{tp.deliveryTemplate}: {product.deliveryTime.template}</p>
-                  {product.available ? (
-                    <a href={botDeepLink(product.contact, product.id, "buy")} target="_blank" rel="noopener noreferrer"
-                      className="inline-block w-full px-6 py-3 rounded-lg border border-pink-400/20 text-sm font-semibold text-pink-100/70 hover:bg-pink-400/10 hover:text-pink-100 transition-all">
-                      Buy Now &rarr;
-                    </a>
-                  ) : (
-                    <a href="https://t.me/finekot" target="_blank" rel="noopener noreferrer"
-                      className="inline-block w-full px-6 py-3 rounded-lg border border-pink-400/20 text-sm font-semibold text-pink-100/70 hover:bg-pink-400/10 hover:text-pink-100 transition-all">
-                      Contact @finekot &rarr;
-                    </a>
-                  )}
-                </div>
-                <div className="glass rounded-xl p-6 sm:p-8 text-center border-pink-400/20 shadow-[0_0_40px_rgba(244,114,182,0.08)]">
-                  <div className="flex justify-center mb-3">
-                    <span className="text-[10px] px-3 py-1 rounded-full bg-pink-500/15 text-pink-300/60 border border-pink-500/20 font-mono uppercase tracking-wider">{tp.recommended}</span>
-                  </div>
-                  <p className="text-3xl sm:text-4xl font-black gradient-text font-mono mb-2">${product.pricing.setup}</p>
-                  <p className="text-xs text-pink-100/30 mb-5">{tp.setupDesc}</p>
-                  <ul className="space-y-2 text-sm text-pink-100/40 text-left mb-6">
-                    <li className="flex gap-2"><span className="text-pink-400">&rarr;</span> {tp.includes.everything}</li>
-                    <li className="flex gap-2"><span className="text-pink-400">&rarr;</span> {tp.includes.setup}</li>
-                    <li className="flex gap-2"><span className="text-pink-400">&rarr;</span> {tp.includes.infra}</li>
-                    <li className="flex gap-2"><span className="text-pink-400">&rarr;</span> {tp.includes.support}</li>
-                  </ul>
-                  <p className="text-[10px] text-pink-100/20 mb-4">{tp.deliveryIntegration}: {product.deliveryTime.integration}</p>
-                  {product.available ? (
-                    <a href={botDeepLink(product.contact, product.id, "buy")} target="_blank" rel="noopener noreferrer"
-                      className="inline-block w-full px-6 py-3 rounded-lg bg-gradient-to-r from-pink-600 to-purple-600 text-white font-semibold hover:opacity-90 transition-opacity shadow-[0_0_30px_rgba(244,114,182,0.2)]">
-                      Buy Now &rarr;
-                    </a>
-                  ) : (
-                    <a href="https://t.me/finekot" target="_blank" rel="noopener noreferrer"
-                      className="inline-block w-full px-6 py-3 rounded-lg bg-gradient-to-r from-pink-600 to-purple-600 text-white font-semibold hover:opacity-90 transition-opacity shadow-[0_0_30px_rgba(244,114,182,0.2)]">
-                      Contact @finekot &rarr;
-                    </a>
-                  )}
-                </div>
-              </div>
-            ) : (
-              <div className="max-w-md mx-auto">
-                <div className="glass rounded-xl p-6 sm:p-8 text-center border-pink-400/20 shadow-[0_0_40px_rgba(244,114,182,0.08)]">
-                  <p className="text-3xl sm:text-4xl font-black gradient-text font-mono mb-2">${product.pricing.code}</p>
-                  <p className="text-xs text-pink-100/30 mb-5">{tp.fullSystem}</p>
-                  <ul className="space-y-2 text-sm text-pink-100/40 text-left mb-6">
-                    <li className="flex gap-2"><span className="text-pink-400">&rarr;</span> {tp.includes.code}</li>
-                    <li className="flex gap-2"><span className="text-pink-400">&rarr;</span> {tp.includes.docs}</li>
-                    <li className="flex gap-2"><span className="text-pink-400">&rarr;</span> {tp.includes.autoInstall}</li>
-                    <li className="flex gap-2"><span className="text-pink-400">&rarr;</span> {tp.includes.updates}</li>
-                  </ul>
-                  <p className="text-[10px] text-pink-100/20 mb-4">{tp.deliveryTemplate}: {product.deliveryTime.template}</p>
-                  {product.available ? (
-                    <a href={botDeepLink(product.contact, product.id, "buy")} target="_blank" rel="noopener noreferrer"
-                      className="inline-block w-full px-6 py-3 rounded-lg bg-gradient-to-r from-pink-600 to-purple-600 text-white font-semibold hover:opacity-90 transition-opacity shadow-[0_0_30px_rgba(244,114,182,0.2)]">
-                      Buy Now &rarr;
-                    </a>
-                  ) : (
-                    <a href="https://t.me/finekot" target="_blank" rel="noopener noreferrer"
-                      className="inline-block w-full px-6 py-3 rounded-lg bg-gradient-to-r from-pink-600 to-purple-600 text-white font-semibold hover:opacity-90 transition-opacity shadow-[0_0_30px_rgba(244,114,182,0.2)]">
-                      Contact @finekot &rarr;
-                    </a>
-                  )}
-                </div>
-              </div>
-            )}
           </motion.div>
         </div>
       </section>
