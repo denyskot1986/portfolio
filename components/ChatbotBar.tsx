@@ -196,6 +196,22 @@ const PLACEHOLDER_BY_LANG: Record<Lang, string> = {
   UA: "David online",
 };
 
+// Theme palette mirrored from <ThemeToggle>. Keeping a local copy so the CMD
+// menu can offer a quick "switch theme" row without importing the toggle's
+// internals; both writers update the same `data-theme` attr + localStorage,
+// and a MutationObserver keeps this menu's "active swatch" in sync with the
+// top-left lamp.
+type CmdThemeId = "matrix" | "telegram" | "violet" | "amber" | "pink" | "paper";
+const CMD_THEMES: { id: CmdThemeId; label: string; color: string; glow: string }[] = [
+  { id: "matrix",   label: "matrix",   color: "#00ff41", glow: "rgba(0, 255, 65, 0.6)" },
+  { id: "telegram", label: "telegram", color: "#229ED9", glow: "rgba(34, 158, 217, 0.6)" },
+  { id: "violet",   label: "violet",   color: "#9d4edd", glow: "rgba(157, 78, 221, 0.6)" },
+  { id: "amber",    label: "amber",    color: "#ffb000", glow: "rgba(255, 176, 0, 0.6)" },
+  { id: "pink",     label: "pink",     color: "#ff0080", glow: "rgba(255, 0, 128, 0.6)" },
+  { id: "paper",    label: "paper",    color: "#fbf1c7", glow: "rgba(181, 118, 20, 0.5)" },
+];
+const THEME_STORAGE_KEY = "finekot-theme";
+
 // Quick-command presets surfaced from the "cmd" menu next to the >_ button.
 // Clicking a preset sends its prompt immediately — no typing.
 type QuickCommand = {
@@ -278,6 +294,7 @@ export default function ChatbotBar() {
   const [logOpen, setLogOpen] = useState(false);
   const [cmdOpen, setCmdOpen] = useState(false);
   const [agentDriving, setAgentDriving] = useState(false);
+  const [activeTheme, setActiveTheme] = useState<CmdThemeId>("matrix");
   const tourTimeoutRef = useRef<ReturnType<typeof setTimeout> | null>(null);
   // Все setTimeout, которые шедулятся туром/скроллами. Когда пользователь
   // жмёт «забрать управление» / ESC — мы их все глушим, иначе агент
@@ -316,6 +333,28 @@ export default function ChatbotBar() {
     if (restored && restored.length) {
       setMessages(restored);
     }
+  }, []);
+
+  // Mirror the global theme into local state so CMD's "active swatch"
+  // updates whether the change came from this menu or the corner lamp.
+  useEffect(() => {
+    const html = document.documentElement;
+    const read = () => {
+      const t = html.getAttribute("data-theme");
+      if (t && CMD_THEMES.some((x) => x.id === t)) {
+        setActiveTheme(t as CmdThemeId);
+      }
+    };
+    read();
+    const obs = new MutationObserver(read);
+    obs.observe(html, { attributes: true, attributeFilter: ["data-theme"] });
+    return () => obs.disconnect();
+  }, []);
+
+  const switchTheme = useCallback((id: CmdThemeId) => {
+    document.documentElement.setAttribute("data-theme", id);
+    try { localStorage.setItem(THEME_STORAGE_KEY, id); } catch {}
+    setActiveTheme(id);
   }, []);
 
   // Persist on every change.
@@ -1262,6 +1301,66 @@ export default function ChatbotBar() {
                       </span>
                     </button>
                   ))}
+                </div>
+                {/* ── theme row — same swatches the corner lamp shows ── */}
+                <div
+                  className="px-3 py-2 flex items-center gap-3"
+                  style={{
+                    borderTop: "1px solid rgba(var(--accent-rgb), 0.18)",
+                    background: "rgba(var(--accent-rgb), 0.03)",
+                  }}
+                >
+                  <span
+                    className="text-[10px] uppercase shrink-0"
+                    style={{
+                      color: "rgba(var(--accent-rgb), 0.7)",
+                      letterSpacing: "0.18em",
+                    }}
+                  >
+                    {lang === "RU"
+                      ? "тема"
+                      : lang === "UA"
+                      ? "тема"
+                      : "theme"}
+                  </span>
+                  <div
+                    className="flex items-center gap-2"
+                    role="radiogroup"
+                    aria-label="Terminal color theme"
+                  >
+                    {CMD_THEMES.map((t) => {
+                      const active = t.id === activeTheme;
+                      return (
+                        <button
+                          key={t.id}
+                          type="button"
+                          role="radio"
+                          aria-checked={active}
+                          aria-label={`${t.label} theme`}
+                          title={t.label}
+                          onClick={() => switchTheme(t.id)}
+                          className="rounded-full cursor-pointer transition-transform"
+                          style={{
+                            width: 14,
+                            height: 14,
+                            border: 0,
+                            padding: 0,
+                            background: t.color,
+                            transform: active ? "scale(1.15)" : "scale(1)",
+                            boxShadow: active
+                              ? `0 0 0 1.5px rgba(4,2,8,0.9), 0 0 0 3px ${t.color}, 0 0 12px ${t.glow}`
+                              : `0 0 0 1px rgba(255,255,255,0.08), 0 0 5px ${t.glow}`,
+                          }}
+                        />
+                      );
+                    })}
+                  </div>
+                  <span
+                    className="ml-auto text-[10px]"
+                    style={{ color: "rgba(var(--accent-rgb), 0.55)", letterSpacing: "0.1em" }}
+                  >
+                    · {activeTheme}
+                  </span>
                 </div>
               </div>
             </div>

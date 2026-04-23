@@ -269,15 +269,9 @@ export default function Home() {
               textShadow: "0 0 8px rgba(255, 176, 0, 0.35)",
             }}
           >
-            <span aria-hidden className="opacity-40">
-              ━━
-            </span>
             <span className="whitespace-nowrap">
               <span className="opacity-50 mr-2">//</span>
               {t.heroManifest}
-            </span>
-            <span aria-hidden className="opacity-40">
-              ━━
             </span>
           </motion.div>
 
