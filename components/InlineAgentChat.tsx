@@ -684,16 +684,39 @@ export default function InlineAgentChat({
           type="button"
           onClick={() => void sendMessage(input)}
           disabled={loading || !input.trim()}
-          className="shrink-0 h-10 px-4 font-mono uppercase text-[11px] transition-all disabled:opacity-40 disabled:cursor-not-allowed"
+          className="shrink-0 h-10 px-4 font-mono uppercase text-[11px] transition-all disabled:opacity-70 disabled:cursor-not-allowed"
           style={{
-            background: "rgba(var(--accent-rgb), 0.08)",
+            background: loading
+              ? "rgba(var(--accent-rgb), 0.28)"
+              : "rgba(var(--accent-rgb), 0.16)",
             border: "1px solid var(--accent)",
             color: "var(--accent)",
             borderRadius: 4,
             letterSpacing: "0.22em",
             fontWeight: 700,
-            textShadow: "0 0 6px rgba(var(--accent-rgb), 0.5)",
-            boxShadow: "0 0 14px rgba(var(--accent-rgb), 0.2)",
+            textShadow:
+              "0 0 10px rgba(var(--accent-rgb), 0.95), 0 0 4px rgba(var(--accent-rgb), 0.8)",
+            boxShadow:
+              "0 0 18px rgba(var(--accent-rgb), 0.35), inset 0 0 10px rgba(var(--accent-rgb), 0.08)",
+          }}
+          onPointerEnter={(e) => {
+            if (e.currentTarget.disabled) return;
+            if (e.pointerType !== "mouse") return;
+            e.currentTarget.style.background = "var(--accent)";
+            e.currentTarget.style.color = "#040208";
+            e.currentTarget.style.textShadow = "none";
+            e.currentTarget.style.boxShadow =
+              "0 0 32px rgba(var(--accent-rgb), 0.7)";
+          }}
+          onPointerLeave={(e) => {
+            e.currentTarget.style.background = loading
+              ? "rgba(var(--accent-rgb), 0.28)"
+              : "rgba(var(--accent-rgb), 0.16)";
+            e.currentTarget.style.color = "var(--accent)";
+            e.currentTarget.style.textShadow =
+              "0 0 10px rgba(var(--accent-rgb), 0.95), 0 0 4px rgba(var(--accent-rgb), 0.8)";
+            e.currentTarget.style.boxShadow =
+              "0 0 18px rgba(var(--accent-rgb), 0.35), inset 0 0 10px rgba(var(--accent-rgb), 0.08)";
           }}
         >
           {t.send}
