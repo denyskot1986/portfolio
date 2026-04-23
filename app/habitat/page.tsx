@@ -7,6 +7,7 @@ import { CRTBackground } from "../genesis/_shared/CRTBackground";
 import { useAnimationClock } from "../genesis/_shared/useClock";
 import { useLang } from "@/lib/lang-context";
 import type { Lang } from "@/lib/i18n";
+import { play as playSfx } from "@/lib/sfx";
 
 /* ═══════════════════════════════════════════════════════════════
    HABITAT — где живут агенты
@@ -651,33 +652,37 @@ export default function HabitatPage() {
           <TelegramScene
             active={cur === "telegram" || isFinale}
             c={c.scenes.telegram}
-            onClick={isFinale ? () => setSelected("telegram") : undefined}
+            onClick={isFinale ? () => { playSfx("tap"); setSelected("telegram"); } : undefined}
             selected={selected === "telegram"}
           />
           <SiteScene
             active={cur === "site" || isFinale}
             c={c.scenes.site}
-            onClick={isFinale ? () => setSelected("site") : undefined}
+            onClick={isFinale ? () => { playSfx("tap"); setSelected("site"); } : undefined}
             selected={selected === "site"}
           />
           <VoiceScene
             active={cur === "voice" || isFinale}
             c={c.scenes.voice}
-            onClick={isFinale ? () => setSelected("voice") : undefined}
+            onClick={isFinale ? () => { playSfx("tap"); setSelected("voice"); } : undefined}
             selected={selected === "voice"}
           />
           <DaemonScene
             active={cur === "daemon" || isFinale}
             c={c.scenes.daemon}
-            onClick={isFinale ? () => setSelected("daemon") : undefined}
+            onClick={isFinale ? () => { playSfx("tap"); setSelected("daemon"); } : undefined}
             selected={selected === "daemon"}
           />
         </div>
       </div>
 
-      {/* BOTTOM info — during anim shows the playing scene; in finale shows
-          either the user's picked scene or a "tap any window" hint. */}
-      <div className="absolute bottom-4 sm:bottom-6 left-0 right-0 z-30 px-4 flex justify-center">
+      {/* INFO CARD — floats ABOVE the grid like a tooltip / function
+          description, well clear of the chat bar at the bottom. Closeable
+          by tapping the × or by clicking another window (focus swaps). */}
+      <div
+        className="absolute left-0 right-0 z-[400] px-4 flex justify-center pointer-events-none"
+        style={{ bottom: "calc(var(--chat-bar-h, 72px) + 18px)" }}
+      >
         <AnimatePresence mode="wait">
           {focused ? (
             <motion.div
@@ -685,26 +690,56 @@ export default function HabitatPage() {
               initial={{ opacity: 0, y: 8 }}
               animate={{ opacity: 1, y: 0 }}
               exit={{ opacity: 0, y: -4 }}
-              transition={{ duration: 0.3 }}
-              className="px-4 sm:px-5 py-2.5 sm:py-3 backdrop-blur-md"
+              transition={{ duration: 0.25 }}
+              className="relative px-4 sm:px-5 py-3 sm:py-3.5 backdrop-blur-lg pointer-events-auto"
               style={{
                 maxWidth: 620,
-                background: "rgba(4, 2, 8, 0.78)",
-                border: "1px solid rgba(255,176,0,0.45)",
-                borderRadius: 8,
-                boxShadow: "0 0 24px rgba(255,176,0,0.18)",
+                background: "rgba(4, 2, 8, 0.92)",
+                border: "1px solid rgba(255,176,0,0.55)",
+                borderRadius: 10,
+                boxShadow:
+                  "0 12px 48px rgba(0,0,0,0.6), 0 0 32px rgba(255,176,0,0.25)",
               }}
             >
+              {/* close button — only useful in finale where the user picked */}
+              {isFinale && (
+                <button
+                  type="button"
+                  onClick={() => setSelected(null)}
+                  aria-label="Close"
+                  className="absolute top-1.5 right-2 w-6 h-6 flex items-center justify-center text-base leading-none"
+                  style={{
+                    color: "rgba(255,176,0,0.7)",
+                    background: "transparent",
+                    border: "none",
+                    cursor: "pointer",
+                  }}
+                  onMouseEnter={(e) =>
+                    (e.currentTarget.style.color = "#ffb000")
+                  }
+                  onMouseLeave={(e) =>
+                    (e.currentTarget.style.color = "rgba(255,176,0,0.7)")
+                  }
+                >
+                  ×
+                </button>
+              )}
               <div
-                className="text-[10px] sm:text-[11px] tracking-[0.2em] uppercase mb-1"
-                style={{ color: "#ffb000", textShadow: "0 0 6px rgba(255,176,0,0.4)" }}
+                className="text-[10px] sm:text-[11px] tracking-[0.2em] uppercase mb-1.5 pr-6"
+                style={{
+                  color: "#ffb000",
+                  textShadow: "0 0 6px rgba(255,176,0,0.4)",
+                }}
               >
                 ▸ {c.scenes[focused].home}
                 <span style={{ opacity: 0.6 }}> · {c.scenes[focused].agent}</span>
               </div>
               <div
                 className="text-[12px] sm:text-[13px]"
-                style={{ color: "rgba(217,255,224,0.92)", lineHeight: 1.55 }}
+                style={{
+                  color: "rgba(217,255,224,0.94)",
+                  lineHeight: 1.55,
+                }}
               >
                 {c.scenes[focused].intro}
               </div>
@@ -715,10 +750,16 @@ export default function HabitatPage() {
               initial={{ opacity: 0, y: 6 }}
               animate={{ opacity: 1, y: 0 }}
               exit={{ opacity: 0, y: -4 }}
-              transition={{ duration: 0.3 }}
-              className="text-[11px] sm:text-[12px] tracking-[0.2em] uppercase"
+              transition={{ duration: 0.25 }}
+              className="px-4 py-2 backdrop-blur-md pointer-events-auto"
               style={{
-                color: "rgba(255,176,0,0.85)",
+                background: "rgba(4, 2, 8, 0.7)",
+                border: "1px solid rgba(255,176,0,0.35)",
+                borderRadius: 999,
+                color: "rgba(255,176,0,0.9)",
+                fontSize: 11,
+                letterSpacing: "0.18em",
+                textTransform: "uppercase",
                 textShadow: "0 0 8px rgba(255,176,0,0.35)",
               }}
             >

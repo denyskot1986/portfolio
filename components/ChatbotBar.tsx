@@ -12,6 +12,7 @@ import { motion, AnimatePresence } from "framer-motion";
 import { useRouter, usePathname } from "next/navigation";
 import { useLang } from "@/lib/lang-context";
 import type { Lang } from "@/lib/i18n";
+import { isSfxEnabled, setSfxEnabled, play as playSfx } from "@/lib/sfx";
 import { AgentModeOverlay } from "./AgentModeOverlay";
 
 interface ChatMessage {
@@ -296,6 +297,16 @@ export default function ChatbotBar() {
   const [agentDriving, setAgentDriving] = useState(false);
   const [activeTheme, setActiveTheme] = useState<CmdThemeId>("matrix");
   const [chatFullscreen, setChatFullscreen] = useState(false);
+  const [sfxOn, setSfxOn] = useState(false);
+  useEffect(() => {
+    setSfxOn(isSfxEnabled());
+  }, []);
+  const toggleSfx = useCallback(() => {
+    const next = !sfxOn;
+    setSfxEnabled(next);
+    setSfxOn(next);
+    if (next) playSfx("blip"); // confirmation that sound is now on
+  }, [sfxOn]);
   const tourTimeoutRef = useRef<ReturnType<typeof setTimeout> | null>(null);
   // Все setTimeout, которые шедулятся туром/скроллами. Когда пользователь
   // жмёт «забрать управление» / ESC — мы их все глушим, иначе агент
@@ -441,7 +452,26 @@ export default function ChatbotBar() {
           } else if (act.type === "scroll") {
             const el = document.getElementById(act.target);
             if (el) {
-              el.scrollIntoView({ behavior: "smooth", block: "center" });
+              // Center the card in the strip of viewport that's NOT covered
+              // by the chat chrome — top bar above + (input bar + open log
+              // panel + open CMD popup) below. Plain block:"center" puts the
+              // card behind the log on mobile, so the user can't see what
+              // David is showing them.
+              const rect = el.getBoundingClientRect();
+              const cs = getComputedStyle(document.documentElement);
+              const topH =
+                parseFloat(cs.getPropertyValue("--chat-top-h")) || 34;
+              const barH =
+                parseFloat(cs.getPropertyValue("--chat-bar-h")) || 72;
+              const logH = logPanelRef.current?.offsetHeight ?? 0;
+              const cmdH = cmdMenuRef.current?.offsetHeight ?? 0;
+              const bottomOccupied = barH + Math.max(logH, cmdH) + 16;
+              const visibleTop = topH;
+              const visibleBottom = window.innerHeight - bottomOccupied;
+              const visibleCenter = (visibleTop + visibleBottom) / 2;
+              const elCenter = rect.top + rect.height / 2;
+              const shift = elCenter - visibleCenter;
+              window.scrollBy({ top: shift, behavior: "smooth" });
               el.classList.add("chat-scroll-flash");
               schedule(
                 () => el.classList.remove("chat-scroll-flash"),
@@ -461,6 +491,7 @@ export default function ChatbotBar() {
     async (text: string) => {
       const trimmed = text.trim();
       if (!trimmed || loading) return;
+      playSfx("blip");
       setLogOpen(true);
 
       const userMsg: ChatMessage = { role: "user", content: trimmed };
@@ -507,6 +538,7 @@ export default function ChatbotBar() {
           // Даже короткое действие (1 nav или 1 scroll) — чтоб юзер сразу
           // понял, что им управляют, а не сайт сам «прыгнул».
           if (actionCount > 0) {
+            playSfx("beep");
             setAgentDriving(true);
             if (tourTimeoutRef.current) clearTimeout(tourTimeoutRef.current);
             let duration: number;
@@ -528,6 +560,7 @@ export default function ChatbotBar() {
         } else {
           // Tour streaming — emit each beat as its own message with a pause
           // so the user can read + the scroll flash lands before the next.
+          playSfx("beep");
           setAgentDriving(true);
           // A tour scrolls product cards that only exist on "/". If the user
           // is on a product page, force-nav home first and delay the beats
@@ -1465,6 +1498,69 @@ export default function ChatbotBar() {
                     style={{ color: "rgba(var(--accent-rgb), 0.55)", letterSpacing: "0.1em" }}
                   >
                     · {activeTheme}
+                  </span>
+                </div>
+                {/* ── sound row — opt-in SFX (off by default) ── */}
+                <div
+                  className="px-3 py-2 flex items-center gap-3"
+                  style={{
+                    borderTop: "1px solid rgba(var(--accent-rgb), 0.18)",
+                    background: "rgba(var(--accent-rgb), 0.03)",
+                  }}
+                >
+                  <span
+                    className="text-[10px] uppercase shrink-0"
+                    style={{
+                      color: "rgba(var(--accent-rgb), 0.7)",
+                      letterSpacing: "0.18em",
+                    }}
+                  >
+                    {lang === "RU"
+                      ? "звук"
+                      : lang === "UA"
+                      ? "звук"
+                      : "sound"}
+                  </span>
+                  <button
+                    type="button"
+                    onClick={toggleSfx}
+                    aria-pressed={sfxOn}
+                    aria-label={sfxOn ? "Mute sound" : "Enable sound"}
+                    className="px-3 py-1 text-[10px] uppercase transition-all"
+                    style={{
+                      letterSpacing: "0.18em",
+                      borderRadius: 3,
+                      background: sfxOn
+                        ? "rgba(var(--accent-rgb), 0.18)"
+                        : "transparent",
+                      border: `1px solid ${
+                        sfxOn
+                          ? "rgba(var(--accent-rgb), 0.7)"
+                          : "rgba(255,255,255,0.18)"
+                      }`,
+                      color: sfxOn
+                        ? "var(--accent)"
+                        : "rgba(255,255,255,0.6)",
+                      textShadow: sfxOn
+                        ? "0 0 8px rgba(var(--accent-rgb), 0.55)"
+                        : "none",
+                      cursor: "pointer",
+                    }}
+                  >
+                    {sfxOn ? "on" : "off"}
+                  </button>
+                  <span
+                    className="ml-auto text-[10px] hidden sm:inline"
+                    style={{
+                      color: "rgba(var(--accent-rgb), 0.45)",
+                      letterSpacing: "0.05em",
+                    }}
+                  >
+                    {lang === "RU"
+                      ? "тихий SFX на отправку и takeover"
+                      : lang === "UA"
+                      ? "тихі SFX на відправку та takeover"
+                      : "subtle SFX on send + takeover"}
                   </span>
                 </div>
               </div>
