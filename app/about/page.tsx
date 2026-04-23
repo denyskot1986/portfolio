@@ -184,9 +184,29 @@ export default function AboutPage() {
         <div className="mb-10">
           <Link
             href="/"
-            className="text-[11px] sm:text-xs opacity-60 hover:opacity-100 hover:text-[var(--accent)] tracking-widest"
+            className="font-mono uppercase transition-all px-3 py-1.5 text-[10px] sm:text-[11px] tracking-[0.18em] inline-flex items-center gap-1.5"
+            style={{
+              color: "var(--accent)",
+              background: "rgba(var(--accent-rgb), 0.08)",
+              border: "1px solid rgba(var(--accent-rgb), 0.5)",
+              borderRadius: 4,
+              textShadow: "0 0 8px rgba(var(--accent-rgb), 0.6)",
+              boxShadow: "0 0 12px rgba(var(--accent-rgb), 0.18)",
+            }}
+            onMouseEnter={(e) => {
+              e.currentTarget.style.background =
+                "rgba(var(--accent-rgb), 0.18)";
+              e.currentTarget.style.borderColor =
+                "rgba(var(--accent-rgb), 0.85)";
+            }}
+            onMouseLeave={(e) => {
+              e.currentTarget.style.background =
+                "rgba(var(--accent-rgb), 0.08)";
+              e.currentTarget.style.borderColor =
+                "rgba(var(--accent-rgb), 0.5)";
+            }}
           >
-            ← /
+            ← главная
           </Link>
           <div className="mt-4 text-[10px] sm:text-xs opacity-60 tracking-[0.4em]">
             // ABOUT :: FINEKOT SYSTEMS

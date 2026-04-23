@@ -246,7 +246,8 @@ export default function InlineAgentChat({
         role: m.role,
         content: m.content,
       }));
-      setMessages((prev) => [...prev, userMsg]);
+      // Сразу кладём пустое ассистентское сообщение — в него полетят дельты.
+      setMessages((prev) => [...prev, userMsg, { role: "assistant", content: "" }]);
       setInput("");
       setLoading(true);
       if (inputRef.current) inputRef.current.style.height = "auto";
@@ -262,28 +263,88 @@ export default function InlineAgentChat({
             pageUrl: typeof window !== "undefined" ? window.location.pathname : "/",
           }),
         });
-        const data = await res.json();
-        const raw: string =
-          data.reply ||
-          data.error ||
-          "Связь прервана. @shop_by_finekot_bot в Telegram.";
-        const parsed = parseAssistantReply(raw);
-        setMessages((prev) => [
-          ...prev,
-          {
-            role: "assistant",
-            content: parsed.visible || "> online.",
-            replies: parsed.replies.length ? parsed.replies : undefined,
-          },
-        ]);
+
+        if (!res.ok || !res.body) {
+          const fallback = await res.json().catch(() => null);
+          const err =
+            fallback?.error ||
+            "Связь прервана. @shop_by_finekot_bot в Telegram.";
+          setMessages((prev) => {
+            const copy = [...prev];
+            copy[copy.length - 1] = { role: "assistant", content: err };
+            return copy;
+          });
+          return;
+        }
+
+        const reader = res.body.getReader();
+        const decoder = new TextDecoder();
+        let buf = "";
+        let raw = "";
+        let streamErr: string | null = null;
+
+        const applyVisible = () => {
+          const { visible, replies } = parseAssistantReply(raw);
+          setMessages((prev) => {
+            const copy = [...prev];
+            copy[copy.length - 1] = {
+              role: "assistant",
+              content: visible || raw,
+              replies: replies.length ? replies : undefined,
+            };
+            return copy;
+          });
+        };
+
+        while (true) {
+          const { value, done } = await reader.read();
+          if (done) break;
+          buf += decoder.decode(value, { stream: true });
+          let nl: number;
+          while ((nl = buf.indexOf("\n")) !== -1) {
+            const line = buf.slice(0, nl).trim();
+            buf = buf.slice(nl + 1);
+            if (!line) continue;
+            try {
+              const evt = JSON.parse(line) as { t: string; v?: string };
+              if (evt.t === "delta" && typeof evt.v === "string") {
+                raw += evt.v;
+                applyVisible();
+              } else if (evt.t === "error") {
+                streamErr = evt.v || "Сбой связи.";
+              }
+            } catch {
+              // битая строка — пропуск
+            }
+          }
+        }
+
+        if (streamErr) {
+          setMessages((prev) => {
+            const copy = [...prev];
+            copy[copy.length - 1] = { role: "assistant", content: streamErr! };
+            return copy;
+          });
+        } else {
+          applyVisible();
+          // На случай если модель вообще ничего не вернула.
+          if (!raw.trim()) {
+            setMessages((prev) => {
+              const copy = [...prev];
+              copy[copy.length - 1] = { role: "assistant", content: "> online." };
+              return copy;
+            });
+          }
+        }
       } catch {
-        setMessages((prev) => [
-          ...prev,
-          {
+        setMessages((prev) => {
+          const copy = [...prev];
+          copy[copy.length - 1] = {
             role: "assistant",
             content: "Сбой связи. Попробуй ещё раз или напиши @shop_by_finekot_bot.",
-          },
-        ]);
+          };
+          return copy;
+        });
       } finally {
         setLoading(false);
       }
@@ -429,12 +490,15 @@ export default function InlineAgentChat({
         </button>
       </div>
 
-      {/* messages */}
+      {/* messages — sized to its CONTENT (with a max cap), so when the
+          chat has just a greeting the card doesn't reserve a huge empty
+          slab that intercepts touch and blocks page scroll on mobile. */}
       <div
         ref={streamRef}
         className="px-3 sm:px-4 py-3 text-[13px] leading-relaxed overflow-y-auto overscroll-contain"
         style={{
-          height: "clamp(360px, 52vh, 520px)",
+          minHeight: 140,
+          maxHeight: "clamp(360px, 52vh, 520px)",
           color: "rgba(217,255,224,0.92)",
         }}
       >
@@ -470,7 +534,7 @@ export default function InlineAgentChat({
                   {m.content}
                 </span>
               </div>
-              {!isUser && isLast && m.replies?.length && !loading && (
+              {!isUser && isLast && m.replies?.length && (
                 <div className="flex flex-col gap-1.5 mt-2 pl-[44px]">
                   {m.replies.map((r, ri) => (
                     <button
@@ -505,7 +569,9 @@ export default function InlineAgentChat({
             </motion.div>
           );
         })}
-        {loading && (
+        {loading &&
+          messages[messages.length - 1]?.role === "assistant" &&
+          !messages[messages.length - 1]?.content && (
           <div className="flex gap-2 mb-2">
             <span
               className="shrink-0 text-[10px] pt-0.5"
