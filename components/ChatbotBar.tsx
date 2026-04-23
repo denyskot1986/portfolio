@@ -14,6 +14,7 @@ import { useLang } from "@/lib/lang-context";
 import type { Lang } from "@/lib/i18n";
 import { isSfxEnabled, setSfxEnabled, play as playSfx } from "@/lib/sfx";
 import { AgentModeOverlay } from "./AgentModeOverlay";
+import AgentDock from "./AgentDock";
 
 interface ChatMessage {
   role: "user" | "assistant";
@@ -1852,58 +1853,17 @@ export default function ChatbotBar() {
             </div>
           </div>
 
-          {/* PROMPT button */}
-          <button
-            onClick={send}
-            disabled={loading || !input.trim()}
-            className="shrink-0 px-2.5 sm:px-5 h-11 flex items-center justify-center gap-2 transition-all disabled:opacity-70 disabled:cursor-not-allowed"
-            style={{
-              background: loading
-                ? "rgba(var(--accent-rgb), 0.28)"
-                : "rgba(var(--accent-rgb), 0.16)",
-              border: "1px solid var(--accent)",
-              color: "var(--accent)",
-              borderRadius: "4px",
-              letterSpacing: "0.18em",
-              fontSize: "12px",
-              fontWeight: 700,
-              textShadow:
-                "0 0 10px rgba(var(--accent-rgb), 0.95), 0 0 4px rgba(var(--accent-rgb), 0.8)",
-              boxShadow:
-                "0 0 18px rgba(var(--accent-rgb), 0.35), inset 0 0 10px rgba(var(--accent-rgb), 0.08)",
-            }}
-            onPointerEnter={(e) => {
-              if (e.currentTarget.disabled) return;
-              if (e.pointerType !== "mouse") return;
-              e.currentTarget.style.background = "var(--accent)";
-              e.currentTarget.style.color = "#040208";
-              e.currentTarget.style.textShadow = "none";
-              e.currentTarget.style.boxShadow =
-                "0 0 32px rgba(var(--accent-rgb), 0.7)";
-            }}
-            onPointerLeave={(e) => {
-              e.currentTarget.style.background = loading
-                ? "rgba(var(--accent-rgb), 0.28)"
-                : "rgba(var(--accent-rgb), 0.16)";
-              e.currentTarget.style.color = "var(--accent)";
-              e.currentTarget.style.textShadow =
-                "0 0 10px rgba(var(--accent-rgb), 0.95), 0 0 4px rgba(var(--accent-rgb), 0.8)";
-              e.currentTarget.style.boxShadow =
-                "0 0 18px rgba(var(--accent-rgb), 0.35), inset 0 0 10px rgba(var(--accent-rgb), 0.08)";
-            }}
-            onPointerCancel={(e) => {
-              e.currentTarget.style.background = loading
-                ? "rgba(var(--accent-rgb), 0.28)"
-                : "rgba(var(--accent-rgb), 0.16)";
-              e.currentTarget.style.color = "var(--accent)";
-              e.currentTarget.style.textShadow =
-                "0 0 10px rgba(var(--accent-rgb), 0.95), 0 0 4px rgba(var(--accent-rgb), 0.8)";
-              e.currentTarget.style.boxShadow =
-                "0 0 18px rgba(var(--accent-rgb), 0.35), inset 0 0 10px rgba(var(--accent-rgb), 0.08)";
-            }}
-            aria-label="Send prompt"
-          >
-            {loading ? (
+          {/* AGENT DOCK — заменил явную SEND-кнопку. Отправка через Enter
+              (и мобильную keyboard-return). Триггер открывает поповер с
+              аватарками агентов: тёмные = ещё не посещал, подсвеченные =
+              «разблокированы», оранжевый badge — unread. */}
+          <AgentDock asInlineButton />
+          {loading && (
+            <div
+              aria-hidden
+              className="shrink-0 flex items-center justify-center"
+              style={{ width: 44, height: 44 }}
+            >
               <motion.div
                 className="w-3.5 h-3.5 rounded-full"
                 style={{
@@ -1913,29 +1873,8 @@ export default function ChatbotBar() {
                 animate={{ rotate: 360 }}
                 transition={{ duration: 0.8, repeat: Infinity, ease: "linear" }}
               />
-            ) : (
-              <>
-                <span className="hidden sm:inline">PROMPT</span>
-                <span
-                  className="sm:hidden font-bold"
-                  style={{
-                    fontSize: "16px",
-                    lineHeight: 1,
-                    letterSpacing: "-0.02em",
-                  }}
-                  aria-hidden
-                >
-                  SEND
-                </span>
-                <span
-                  className="hidden sm:inline font-bold text-[15px] leading-none"
-                  aria-hidden
-                >
-                  →
-                </span>
-              </>
-            )}
-          </button>
+            </div>
+          )}
         </div>
       </div>
         );

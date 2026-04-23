@@ -1,5 +1,6 @@
 "use client";
 
+import { useEffect } from "react";
 import { useParams } from "next/navigation";
 import Link from "next/link";
 import { motion } from "framer-motion";
@@ -9,6 +10,7 @@ import { useLang } from "@/lib/lang-context";
 import LangSwitcher from "@/components/LangSwitcher";
 import LiveVitals from "@/components/LiveVitals";
 import InlineAgentChat from "@/components/InlineAgentChat";
+import { clearUnread, markVisited } from "@/lib/agent-progression";
 import type { Lang } from "@/lib/i18n";
 
 function botDeepLink(contact: string, id: string, intent: "buy" | "order"): string {
@@ -31,6 +33,14 @@ export default function ProductPageClient() {
   const { lang } = useLang();
   const tp = i18n[lang].pages.product;
   const product = getTranslatedProduct(params.id as string, lang);
+
+  // Разблокировка агента в AgentDock: попадание на страницу карточки
+  // помечает агента как «посещённого» и сбрасывает unread-badge.
+  useEffect(() => {
+    if (!product?.id) return;
+    markVisited(product.id);
+    clearUnread(product.id);
+  }, [product?.id]);
 
   if (!product) {
     return (
