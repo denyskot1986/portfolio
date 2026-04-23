@@ -258,7 +258,11 @@ export default function ChatbotWidget() {
       const historyForApi = messages
         .filter((m) => m !== WELCOME_MESSAGE)
         .concat(userMsg);
-      setMessages((prev) => [...prev, userMsg]);
+      setMessages((prev) => [
+        ...prev,
+        userMsg,
+        { role: "assistant", content: "" },
+      ]);
       setInput("");
       setLoading(true);
       if (inputRef.current) inputRef.current.style.height = "auto";
@@ -273,21 +277,79 @@ export default function ChatbotWidget() {
             sessionId: getSessionId(),
           }),
         });
-        const data = await res.json();
-        const reply: string =
-          data.reply ||
-          data.error ||
-          "Связь прервана. Напиши в Telegram: @shop_by_finekot_bot";
-        setMessages((prev) => [...prev, { role: "assistant", content: reply }]);
+
+        if (!res.ok || !res.body) {
+          const fallback = await res.json().catch(() => null);
+          const err =
+            fallback?.error ||
+            "Связь прервана. Напиши в Telegram: @shop_by_finekot_bot";
+          setMessages((prev) => {
+            const copy = [...prev];
+            copy[copy.length - 1] = { role: "assistant", content: err };
+            return copy;
+          });
+          return;
+        }
+
+        const reader = res.body.getReader();
+        const decoder = new TextDecoder();
+        let buf = "";
+        let acc = "";
+        let streamErr: string | null = null;
+
+        while (true) {
+          const { value, done } = await reader.read();
+          if (done) break;
+          buf += decoder.decode(value, { stream: true });
+          let nl: number;
+          while ((nl = buf.indexOf("\n")) !== -1) {
+            const line = buf.slice(0, nl).trim();
+            buf = buf.slice(nl + 1);
+            if (!line) continue;
+            try {
+              const evt = JSON.parse(line) as { t: string; v?: string };
+              if (evt.t === "delta" && typeof evt.v === "string") {
+                acc += evt.v;
+                setMessages((prev) => {
+                  const copy = [...prev];
+                  copy[copy.length - 1] = { role: "assistant", content: acc };
+                  return copy;
+                });
+              } else if (evt.t === "error") {
+                streamErr = evt.v || "Сбой связи.";
+              }
+            } catch {
+              /* skip */
+            }
+          }
+        }
+
+        if (streamErr) {
+          setMessages((prev) => {
+            const copy = [...prev];
+            copy[copy.length - 1] = { role: "assistant", content: streamErr! };
+            return copy;
+          });
+        } else if (!acc.trim()) {
+          setMessages((prev) => {
+            const copy = [...prev];
+            copy[copy.length - 1] = {
+              role: "assistant",
+              content: "Связь прервана. Напиши в Telegram: @shop_by_finekot_bot",
+            };
+            return copy;
+          });
+        }
       } catch {
-        setMessages((prev) => [
-          ...prev,
-          {
+        setMessages((prev) => {
+          const copy = [...prev];
+          copy[copy.length - 1] = {
             role: "assistant",
             content:
               "Ошибка соединения. Напиши в Telegram: @shop_by_finekot_bot",
-          },
-        ]);
+          };
+          return copy;
+        });
       } finally {
         setLoading(false);
       }

@@ -514,11 +514,47 @@ export default function ChatbotBar() {
             sessionId: getSessionId(),
           }),
         });
-        const data = await res.json();
-        const raw: string =
-          data.reply ||
-          data.error ||
-          "Связь прервана. Напиши в Telegram: @shop_by_finekot_bot";
+
+        // Для tour-режима с beats нельзя рендерить на лету: `===` разделители
+        // и `[nav:/scroll:]` действия должны применяться к ПОЛНОМУ тексту.
+        // Поэтому аккумулируем весь NDJSON-поток и обрабатываем как раньше.
+        let raw = "";
+        if (res.ok && res.body) {
+          const reader = res.body.getReader();
+          const decoder = new TextDecoder();
+          let buf = "";
+          let streamErr: string | null = null;
+          while (true) {
+            const { value, done } = await reader.read();
+            if (done) break;
+            buf += decoder.decode(value, { stream: true });
+            let nl: number;
+            while ((nl = buf.indexOf("\n")) !== -1) {
+              const line = buf.slice(0, nl).trim();
+              buf = buf.slice(nl + 1);
+              if (!line) continue;
+              try {
+                const evt = JSON.parse(line) as { t: string; v?: string };
+                if (evt.t === "delta" && typeof evt.v === "string") {
+                  raw += evt.v;
+                } else if (evt.t === "error") {
+                  streamErr = evt.v || "Сбой связи.";
+                }
+              } catch {
+                /* skip */
+              }
+            }
+          }
+          if (streamErr && !raw) raw = streamErr;
+        } else {
+          const fallback = await res.json().catch(() => null);
+          raw =
+            fallback?.error ||
+            "Связь прервана. Напиши в Telegram: @shop_by_finekot_bot";
+        }
+        if (!raw) {
+          raw = "Связь прервана. Напиши в Telegram: @shop_by_finekot_bot";
+        }
         const beats = parseBeats(raw);
         if (beats.length === 1) {
           const parsed = beats[0];
