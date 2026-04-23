@@ -1853,10 +1853,52 @@ export default function ChatbotBar() {
             </div>
           </div>
 
-          {/* AGENT DOCK — заменил явную SEND-кнопку. Отправка через Enter
-              (и мобильную keyboard-return). Триггер открывает поповер с
-              аватарками агентов: тёмные = ещё не посещал, подсвеченные =
-              «разблокированы», оранжевый badge — unread. */}
+          {/* SEND — Telegram-style paper-plane. Enter тоже работает,
+              но для тапа/мобильного нужна явная кнопка. Gaснет когда
+              инпут пустой или идёт fetch. */}
+          {(() => {
+            const hasText = input.trim().length > 0;
+            const active = hasText && !loading;
+            return (
+              <button
+                type="button"
+                onClick={send}
+                disabled={!active}
+                aria-label={lang === "RU" ? "Отправить" : lang === "UA" ? "Надіслати" : "Send"}
+                className="shrink-0 flex items-center justify-center rounded-full transition-all duration-150 disabled:cursor-not-allowed enabled:hover:brightness-125 enabled:active:scale-95"
+                style={{
+                  width: 40,
+                  height: 40,
+                  background: active
+                    ? "rgba(var(--accent-rgb), 0.18)"
+                    : "rgba(var(--accent-rgb), 0.04)",
+                  border: `1px solid rgba(var(--accent-rgb), ${active ? 0.6 : 0.2})`,
+                  color: active ? "var(--accent)" : "rgba(var(--accent-rgb), 0.35)",
+                  boxShadow: active
+                    ? "0 0 14px rgba(var(--accent-rgb), 0.4), inset 0 0 10px rgba(var(--accent-rgb), 0.08)"
+                    : "none",
+                }}
+              >
+                <svg
+                  width="18"
+                  height="18"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  aria-hidden
+                  style={{ transform: "translateX(1px)" }}
+                >
+                  <path
+                    d="M3.4 11.3 20.5 3.6a.7.7 0 0 1 .9.9L13.7 21.6a.7.7 0 0 1-1.3 0l-2.9-7.1-7.1-2.9a.7.7 0 0 1 0-1.3Z"
+                    fill="currentColor"
+                  />
+                </svg>
+              </button>
+            );
+          })()}
+
+          {/* AGENT DOCK — поповер с аватарками агентов: тёмные = ещё
+              не посещал, подсвеченные = «разблокированы», оранжевый
+              badge — unread. */}
           <AgentDock asInlineButton />
           {loading && (
             <div
