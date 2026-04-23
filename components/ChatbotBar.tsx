@@ -312,6 +312,7 @@ export default function ChatbotBar() {
   const [messages, setMessages] = useState<ChatMessage[]>([WELCOME_MESSAGE]);
   const [input, setInput] = useState("");
   const [loading, setLoading] = useState(false);
+  const [shuffling, setShuffling] = useState(false);
   const [logOpen, setLogOpen] = useState(false);
   const [cmdOpen, setCmdOpen] = useState(false);
   const [agentDriving, setAgentDriving] = useState(false);
@@ -767,6 +768,48 @@ export default function ChatbotBar() {
   const send = useCallback(() => {
     void sendMessage(input);
   }, [input, sendMessage]);
+
+  // Shuffle: юзеру лень печатать — кнопка ↻ рядом с чипами регенерирует
+  // 3 новых варианта quick-reply через /api/chat/replies. Работает только
+  // для LLM-replies (msg.replies есть), fallback-чипы не трогаем.
+  const shuffleReplies = useCallback(
+    async (target: ChatMessage) => {
+      if (shuffling || loading) return;
+      const idx = messages.findIndex((m) => m === target);
+      if (idx < 0) return;
+      setShuffling(true);
+      try {
+        const historyForApi = messages
+          .slice(0, idx + 1)
+          .filter((m) => m !== WELCOME_MESSAGE)
+          .map((m) => ({ role: m.role, content: m.content }));
+        const res = await fetch("/api/chat/replies", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({
+            messages: historyForApi,
+            pageUrl:
+              typeof window !== "undefined" ? window.location.pathname : "/",
+          }),
+        });
+        if (!res.ok) return;
+        const data = (await res.json().catch(() => null)) as
+          | { replies?: string[] }
+          | null;
+        if (!data?.replies?.length) return;
+        setMessages((prev) =>
+          prev.map((m) =>
+            m === target ? { ...m, replies: data.replies!.slice(0, 3) } : m
+          )
+        );
+      } catch {
+        /* тихо */
+      } finally {
+        setShuffling(false);
+      }
+    },
+    [loading, messages, shuffling]
+  );
 
   // «Забрать управление» — останавливает агент-режим: гасим все отложенные
   // beat'ы/скроллы, снимаем оверлей, снимаем loading. После этого юзер снова
@@ -1276,30 +1319,71 @@ export default function ChatbotBar() {
                         </div>
                         {showReplies && (
                           <div
-                            className="flex flex-col gap-1 pl-[60px] mt-1"
+                            className="flex gap-1 pl-[60px] mt-1"
                             role="group"
                             aria-label="Suggested replies"
                           >
-                            {chips.map((c, ri) => (
+                            <div className="flex flex-col gap-1 flex-1 min-w-0">
+                              {chips.map((c, ri) => (
+                                <button
+                                  key={`${ri}-${c.label}`}
+                                  type="button"
+                                  onClick={() => void sendMessage(c.prompt)}
+                                  disabled={loading || agentDriving || shuffling}
+                                  className="group text-left px-2.5 py-1.5 transition-all disabled:opacity-40 disabled:cursor-not-allowed flex items-center gap-2"
+                                  style={{
+                                    background: "rgba(var(--accent2-rgb), 0.05)",
+                                    border: "1px solid rgba(var(--accent2-rgb), 0.35)",
+                                    borderRadius: 3,
+                                    color: "#ffd88a",
+                                    fontSize: 11.5,
+                                    lineHeight: 1.3,
+                                    letterSpacing: "0.01em",
+                                  }}
+                                  onMouseEnter={(e) => {
+                                    if (e.currentTarget.disabled) return;
+                                    e.currentTarget.style.background =
+                                      "rgba(var(--accent2-rgb), 0.14)";
+                                    e.currentTarget.style.borderColor =
+                                      "rgba(var(--accent2-rgb), 0.7)";
+                                  }}
+                                  onMouseLeave={(e) => {
+                                    e.currentTarget.style.background =
+                                      "rgba(var(--accent2-rgb), 0.05)";
+                                    e.currentTarget.style.borderColor =
+                                      "rgba(var(--accent2-rgb), 0.35)";
+                                  }}
+                                >
+                                  <span
+                                    className="shrink-0 font-bold"
+                                    style={{ color: "var(--accent2)", opacity: 0.8 }}
+                                    aria-hidden
+                                  >
+                                    {ri + 1} →
+                                  </span>
+                                  <span className="break-words">{c.label}</span>
+                                </button>
+                              ))}
+                            </div>
+                            {/* Shuffle — только когда чипы из LLM. На
+                                fallback/welcome кнопка бесполезна. */}
+                            {hasLlmReplies && (
                               <button
-                                key={ri}
                                 type="button"
-                                onClick={() => void sendMessage(c.prompt)}
-                                disabled={loading || agentDriving}
-                                className="group text-left px-2.5 py-1.5 transition-all disabled:opacity-40 disabled:cursor-not-allowed flex items-center gap-2"
+                                onClick={() => void shuffleReplies(msg)}
+                                disabled={loading || agentDriving || shuffling}
+                                className="shrink-0 flex items-center justify-center transition-all disabled:opacity-40 disabled:cursor-not-allowed self-stretch"
                                 style={{
+                                  width: 32,
                                   background: "rgba(var(--accent2-rgb), 0.05)",
-                                  border: "1px solid rgba(var(--accent2-rgb), 0.35)",
+                                  border: "1px solid rgba(var(--accent2-rgb), 0.3)",
                                   borderRadius: 3,
-                                  color: "#ffd88a",
-                                  fontSize: 11.5,
-                                  lineHeight: 1.3,
-                                  letterSpacing: "0.01em",
+                                  color: "var(--accent2)",
                                 }}
                                 onMouseEnter={(e) => {
                                   if (e.currentTarget.disabled) return;
                                   e.currentTarget.style.background =
-                                    "rgba(var(--accent2-rgb), 0.14)";
+                                    "rgba(var(--accent2-rgb), 0.16)";
                                   e.currentTarget.style.borderColor =
                                     "rgba(var(--accent2-rgb), 0.7)";
                                 }}
@@ -1307,19 +1391,50 @@ export default function ChatbotBar() {
                                   e.currentTarget.style.background =
                                     "rgba(var(--accent2-rgb), 0.05)";
                                   e.currentTarget.style.borderColor =
-                                    "rgba(var(--accent2-rgb), 0.35)";
+                                    "rgba(var(--accent2-rgb), 0.3)";
                                 }}
+                                title={
+                                  lang === "RU"
+                                    ? "Другие варианты"
+                                    : lang === "UA"
+                                    ? "Інші варіанти"
+                                    : "Shuffle replies"
+                                }
+                                aria-label={
+                                  lang === "RU"
+                                    ? "Новые варианты ответа"
+                                    : lang === "UA"
+                                    ? "Нові варіанти відповіді"
+                                    : "Refresh quick-reply options"
+                                }
                               >
-                                <span
-                                  className="shrink-0 font-bold"
-                                  style={{ color: "var(--accent2)", opacity: 0.8 }}
+                                <motion.span
                                   aria-hidden
+                                  animate={
+                                    shuffling
+                                      ? { rotate: 360 }
+                                      : { rotate: 0 }
+                                  }
+                                  transition={
+                                    shuffling
+                                      ? {
+                                          duration: 0.9,
+                                          repeat: Infinity,
+                                          ease: "linear",
+                                        }
+                                      : { duration: 0.25 }
+                                  }
+                                  style={{
+                                    fontSize: 15,
+                                    lineHeight: 1,
+                                    textShadow:
+                                      "0 0 6px rgba(var(--accent2-rgb), 0.5)",
+                                  }}
                                 >
-                                  {ri + 1} →
-                                </span>
-                                <span className="break-words">{c.label}</span>
+                                  ↻
+                                </motion.span>
                               </button>
-                            ))}
+                            )}
                           </div>
                         )}
                       </motion.div>

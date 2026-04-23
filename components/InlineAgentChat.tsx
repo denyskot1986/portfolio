@@ -145,6 +145,7 @@ export default function InlineAgentChat({
   const [sessionId, setSessionId] = useState<string>("");
   const [input, setInput] = useState("");
   const [loading, setLoading] = useState(false);
+  const [shuffling, setShuffling] = useState(false);
   const [placeholder, setPlaceholder] = useState("");
   const [confirmReset, setConfirmReset] = useState(false);
   const hydrated = useRef(false);
@@ -372,6 +373,50 @@ export default function InlineAgentChat({
     [loading, messages, sessionId, slug]
   );
 
+  // Регенерация quick-reply чипов: дёргаем /api/chat/replies, LLM даёт
+  // 3 новых варианта. Если вернул ошибку — тихо оставляем что было.
+  const shuffleReplies = useCallback(
+    async (msgIndex: number) => {
+      if (shuffling || loading) return;
+      setShuffling(true);
+      try {
+        const target = messages[msgIndex];
+        if (!target || target.role !== "assistant") return;
+        const historyForApi = messages.slice(0, msgIndex + 1).map((m) => ({
+          role: m.role,
+          content: m.content,
+        }));
+        const res = await fetch("/api/chat/replies", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({
+            messages: historyForApi,
+            agentId: slug,
+            pageUrl:
+              typeof window !== "undefined" ? window.location.pathname : "/",
+          }),
+        });
+        if (!res.ok) return;
+        const data = (await res.json().catch(() => null)) as
+          | { replies?: string[] }
+          | null;
+        if (!data?.replies?.length) return;
+        setMessages((prev) => {
+          const copy = [...prev];
+          const msg = copy[msgIndex];
+          if (!msg || msg.role !== "assistant") return prev;
+          copy[msgIndex] = { ...msg, replies: data.replies!.slice(0, 3) };
+          return copy;
+        });
+      } catch {
+        /* тихо */
+      } finally {
+        setShuffling(false);
+      }
+    },
+    [messages, loading, shuffling, slug]
+  );
+
   const adjustTextarea = useCallback(() => {
     const el = inputRef.current;
     if (!el) return;
@@ -555,35 +600,97 @@ export default function InlineAgentChat({
                 </span>
               </div>
               {!isUser && isLast && m.replies?.length && (
-                <div className="flex flex-col gap-1.5 mt-2 pl-[44px]">
-                  {m.replies.map((r, ri) => (
-                    <button
-                      key={ri}
-                      type="button"
-                      onClick={() => void sendMessage(r)}
-                      disabled={loading}
-                      className="group text-left px-2.5 py-1.5 transition-all disabled:opacity-40 disabled:cursor-not-allowed flex items-center gap-2 text-[12px]"
+                <div className="flex gap-1.5 mt-2 pl-[44px]">
+                  <div className="flex flex-col gap-1.5 flex-1 min-w-0">
+                    {m.replies.map((r, ri) => (
+                      <button
+                        key={`${ri}-${r}`}
+                        type="button"
+                        onClick={() => void sendMessage(r)}
+                        disabled={loading || shuffling}
+                        className="group text-left px-2.5 py-1.5 transition-all disabled:opacity-40 disabled:cursor-not-allowed flex items-center gap-2 text-[12px]"
+                        style={{
+                          background: "rgba(var(--accent2-rgb), 0.06)",
+                          border: "1px solid rgba(var(--accent2-rgb), 0.35)",
+                          borderRadius: 3,
+                          color: "#ffd88a",
+                        }}
+                        onMouseEnter={(e) => {
+                          e.currentTarget.style.background = "rgba(var(--accent2-rgb), 0.14)";
+                          e.currentTarget.style.borderColor = "rgba(var(--accent2-rgb), 0.7)";
+                        }}
+                        onMouseLeave={(e) => {
+                          e.currentTarget.style.background = "rgba(var(--accent2-rgb), 0.06)";
+                          e.currentTarget.style.borderColor = "rgba(var(--accent2-rgb), 0.35)";
+                        }}
+                      >
+                        <span className="shrink-0 font-bold" style={{ color: "var(--accent2)" }} aria-hidden>
+                          {ri + 1} →
+                        </span>
+                        <span className="break-words">{r}</span>
+                      </button>
+                    ))}
+                  </div>
+                  {/* Shuffle — регенерирует 3 новых варианта quick-reply.
+                      Юзерам лень печатать; пусть тыкают готовые формулировки. */}
+                  <button
+                    type="button"
+                    onClick={() => void shuffleReplies(i)}
+                    disabled={loading || shuffling}
+                    className="shrink-0 flex items-center justify-center transition-all disabled:opacity-40 disabled:cursor-not-allowed self-stretch"
+                    style={{
+                      width: 34,
+                      background: "rgba(var(--accent2-rgb), 0.05)",
+                      border: "1px solid rgba(var(--accent2-rgb), 0.3)",
+                      borderRadius: 3,
+                      color: "var(--accent2)",
+                    }}
+                    onMouseEnter={(e) => {
+                      if (e.currentTarget.disabled) return;
+                      e.currentTarget.style.background =
+                        "rgba(var(--accent2-rgb), 0.16)";
+                      e.currentTarget.style.borderColor =
+                        "rgba(var(--accent2-rgb), 0.7)";
+                    }}
+                    onMouseLeave={(e) => {
+                      e.currentTarget.style.background =
+                        "rgba(var(--accent2-rgb), 0.05)";
+                      e.currentTarget.style.borderColor =
+                        "rgba(var(--accent2-rgb), 0.3)";
+                    }}
+                    title={
+                      lang === "RU"
+                        ? "Другие варианты"
+                        : lang === "UA"
+                        ? "Інші варіанти"
+                        : "Shuffle replies"
+                    }
+                    aria-label={
+                      lang === "RU"
+                        ? "Новые варианты ответа"
+                        : lang === "UA"
+                        ? "Нові варіанти відповіді"
+                        : "Refresh quick-reply options"
+                    }
+                  >
+                    <motion.span
+                      aria-hidden
+                      animate={shuffling ? { rotate: 360 } : { rotate: 0 }}
+                      transition={
+                        shuffling
+                          ? { duration: 0.9, repeat: Infinity, ease: "linear" }
+                          : { duration: 0.25 }
+                      }
                       style={{
-                        background: "rgba(var(--accent2-rgb), 0.06)",
-                        border: "1px solid rgba(var(--accent2-rgb), 0.35)",
-                        borderRadius: 3,
-                        color: "#ffd88a",
-                      }}
-                      onMouseEnter={(e) => {
-                        e.currentTarget.style.background = "rgba(var(--accent2-rgb), 0.14)";
-                        e.currentTarget.style.borderColor = "rgba(var(--accent2-rgb), 0.7)";
-                      }}
-                      onMouseLeave={(e) => {
-                        e.currentTarget.style.background = "rgba(var(--accent2-rgb), 0.06)";
-                        e.currentTarget.style.borderColor = "rgba(var(--accent2-rgb), 0.35)";
+                        fontSize: 16,
+                        lineHeight: 1,
+                        textShadow:
+                          "0 0 6px rgba(var(--accent2-rgb), 0.5)",
                       }}
                     >
-                      <span className="shrink-0 font-bold" style={{ color: "var(--accent2)" }} aria-hidden>
-                        {ri + 1} →
-                      </span>
-                      <span className="break-words">{r}</span>
-                    </button>
-                  ))}
+                      ↻
+                    </motion.span>
+                  </button>
                 </div>
               )}
             </motion.div>
