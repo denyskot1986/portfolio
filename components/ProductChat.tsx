@@ -75,7 +75,8 @@ export default function ProductChat({ productName, productTagline, productId, la
       if (!content || loading) return;
       const userMsg: ChatMessage = { role: "user", content };
       const newMessages = [...messages, userMsg];
-      setMessages(newMessages);
+      // Сразу добавляем пустое ассистентское — в него стримим дельты.
+      setMessages([...newMessages, { role: "assistant", content: "" }]);
       setInput("");
       setLoading(true);
       if (inputRef.current) inputRef.current.style.height = "auto";
@@ -90,19 +91,78 @@ export default function ProductChat({ productName, productTagline, productId, la
             mode: "sales",
           }),
         });
-        const data = await res.json();
-        setMessages((prev) => [
-          ...prev,
-          {
-            role: "assistant",
-            content: data.reply || "Sorry, I'm having trouble connecting. Message us on Telegram @shop_by_finekot_bot",
-          },
-        ]);
+
+        if (!res.ok || !res.body) {
+          const fallback = await res.json().catch(() => null);
+          const err =
+            fallback?.error ||
+            "Sorry, I'm having trouble connecting. Message us on Telegram @shop_by_finekot_bot";
+          setMessages((prev) => {
+            const copy = [...prev];
+            copy[copy.length - 1] = { role: "assistant", content: err };
+            return copy;
+          });
+          return;
+        }
+
+        const reader = res.body.getReader();
+        const decoder = new TextDecoder();
+        let buf = "";
+        let acc = "";
+        let streamErr: string | null = null;
+
+        while (true) {
+          const { value, done } = await reader.read();
+          if (done) break;
+          buf += decoder.decode(value, { stream: true });
+          let nl: number;
+          while ((nl = buf.indexOf("\n")) !== -1) {
+            const line = buf.slice(0, nl).trim();
+            buf = buf.slice(nl + 1);
+            if (!line) continue;
+            try {
+              const evt = JSON.parse(line) as { t: string; v?: string };
+              if (evt.t === "delta" && typeof evt.v === "string") {
+                acc += evt.v;
+                setMessages((prev) => {
+                  const copy = [...prev];
+                  copy[copy.length - 1] = { role: "assistant", content: acc };
+                  return copy;
+                });
+              } else if (evt.t === "error") {
+                streamErr = evt.v || "Connection error.";
+              }
+            } catch {
+              // skip
+            }
+          }
+        }
+
+        if (streamErr) {
+          setMessages((prev) => {
+            const copy = [...prev];
+            copy[copy.length - 1] = { role: "assistant", content: streamErr! };
+            return copy;
+          });
+        } else if (!acc.trim()) {
+          setMessages((prev) => {
+            const copy = [...prev];
+            copy[copy.length - 1] = {
+              role: "assistant",
+              content: "Sorry, empty response. Try again or Telegram: @shop_by_finekot_bot",
+            };
+            return copy;
+          });
+        }
       } catch {
-        setMessages((prev) => [
-          ...prev,
-          { role: "assistant", content: "Connection error. Try Telegram: @shop_by_finekot_bot" },
-        ]);
+        setMessages((prev) => {
+          const copy = [...prev];
+          copy[copy.length - 1] = {
+            role: "assistant",
+            content: "Connection error. Try Telegram: @shop_by_finekot_bot",
+          };
+          return copy;
+        });
       } finally {
         setLoading(false);
       }
@@ -204,7 +264,9 @@ export default function ProductChat({ productName, productTagline, productId, la
                 </motion.div>
               ))}
             </AnimatePresence>
-            {loading && (
+            {loading &&
+              messages[messages.length - 1]?.role === "assistant" &&
+              !messages[messages.length - 1]?.content && (
               <div className="flex justify-start">
                 <div className="w-5 h-5 rounded-full bg-gradient-to-r from-pink-600 to-purple-600 flex items-center justify-center text-white text-[8px] font-bold mr-2 mt-0.5 shrink-0">
                   AI

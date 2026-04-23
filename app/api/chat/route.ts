@@ -508,12 +508,26 @@ export async function POST(req: NextRequest) {
       },
       body: JSON.stringify({
         model: CHAT_MODEL,
+        // System prompt отправляем как структурированный content-блок
+        // с cache_control: ephemeral. OpenRouter пробрасывает маркер
+        // в Anthropic (explicit кэш 5мин) и Gemini (implicit кэш).
+        // System prompt у нас ~2к токенов — выше порога обеих моделей.
         messages: [
-          { role: "system", content: systemContent },
+          {
+            role: "system",
+            content: [
+              {
+                type: "text",
+                text: systemContent,
+                cache_control: { type: "ephemeral" },
+              },
+            ],
+          },
           ...messages,
         ],
         max_tokens: MAX_REPLY_TOKENS,
         temperature: 0.7,
+        stream: true,
         // Отключаем thinking для всех моделей, которые его поддерживают
         // (Gemini 2.5 *, Claude extended thinking, GPT-5 reasoning и т.д.).
         // Для чистого sales-chat reasoning не нужен, убирает 2-5 сек latency.
@@ -521,8 +535,8 @@ export async function POST(req: NextRequest) {
       }),
     });
 
-    if (!response.ok) {
-      const err = await response.text();
+    if (!response.ok || !response.body) {
+      const err = await response.text().catch(() => "");
       console.error("OpenRouter error:", response.status, err);
       return NextResponse.json(
         { error: "Сервис консультанта временно недоступен. Попробуй позже или напиши в Telegram: @shop_by_finekot_bot" },
@@ -530,24 +544,94 @@ export async function POST(req: NextRequest) {
       );
     }
 
-    const data = await response.json();
-    const reply: string =
-      data.choices?.[0]?.message?.content ||
-      "Не смог собрать ответ. Денис в Telegram всё объяснит лично: @shop_by_finekot_bot";
-
-    // Fire-and-forget log — не блокируем ответ юзеру.
     const ipHash = hashIP(ip);
-    logConversation({
-      ts: Date.now(),
-      ipHash,
-      sessionId,
-      pageUrl,
-      userMessage: last.content,
-      assistantReply: reply,
-      model: CHAT_MODEL,
-    }).catch(() => {});
+    const userMessage = last.content;
 
-    return NextResponse.json({ reply, sessionId });
+    // Стримим OpenRouter SSE → наш NDJSON (по строке JSON на кусок).
+    // Клиент читает построчно и апдейтит UI на каждой дельте.
+    const upstream = response.body;
+    const stream = new ReadableStream<Uint8Array>({
+      async start(controller) {
+        const encoder = new TextEncoder();
+        const decoder = new TextDecoder();
+        const reader = upstream.getReader();
+        let buffer = "";
+        let accumulated = "";
+
+        const emit = (obj: unknown) => {
+          controller.enqueue(encoder.encode(JSON.stringify(obj) + "\n"));
+        };
+
+        try {
+          while (true) {
+            const { value, done } = await reader.read();
+            if (done) break;
+            buffer += decoder.decode(value, { stream: true });
+
+            // OpenRouter шлёт события, разделённые \n\n. Каждое событие —
+            // одна или несколько строк `data: {...}`. Между ними могут быть
+            // keep-alive комментарии `: OPENROUTER PROCESSING`.
+            let sepIdx: number;
+            while ((sepIdx = buffer.indexOf("\n\n")) !== -1) {
+              const event = buffer.slice(0, sepIdx);
+              buffer = buffer.slice(sepIdx + 2);
+              for (const line of event.split("\n")) {
+                if (!line.startsWith("data:")) continue;
+                const payload = line.slice(5).trim();
+                if (!payload || payload === "[DONE]") continue;
+                try {
+                  const parsed = JSON.parse(payload) as {
+                    choices?: Array<{ delta?: { content?: string } }>;
+                  };
+                  const delta = parsed.choices?.[0]?.delta?.content;
+                  if (typeof delta === "string" && delta.length > 0) {
+                    accumulated += delta;
+                    emit({ t: "delta", v: delta });
+                  }
+                } catch {
+                  // битая строка — игнор
+                }
+              }
+            }
+          }
+
+          if (!accumulated) {
+            accumulated =
+              "Не смог собрать ответ. Денис в Telegram всё объяснит лично: @shop_by_finekot_bot";
+            emit({ t: "delta", v: accumulated });
+          }
+
+          emit({ t: "done", sessionId });
+
+          // Fire-and-forget лог полной реплики.
+          logConversation({
+            ts: Date.now(),
+            ipHash,
+            sessionId,
+            pageUrl,
+            userMessage,
+            assistantReply: accumulated,
+            model: CHAT_MODEL,
+          }).catch(() => {});
+        } catch (e) {
+          console.error("chat stream error:", e);
+          emit({
+            t: "error",
+            v: "Сбой связи. Попробуй ещё раз или напиши @shop_by_finekot_bot.",
+          });
+        } finally {
+          controller.close();
+        }
+      },
+    });
+
+    return new Response(stream, {
+      headers: {
+        "Content-Type": "application/x-ndjson; charset=utf-8",
+        "Cache-Control": "no-cache, no-transform",
+        "X-Accel-Buffering": "no",
+      },
+    });
   } catch (e: unknown) {
     const message = e instanceof Error ? e.message : "Unknown error";
     console.error("chat route error:", message);
