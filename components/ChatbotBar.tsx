@@ -1532,14 +1532,15 @@ export default function ChatbotBar() {
             animate={{ opacity: 1, y: 0 }}
             exit={{ opacity: 0, y: 16 }}
             transition={{ duration: 0.18, ease: "easeOut" }}
-            className="fixed left-0 z-[500] pointer-events-none"
+            className="fixed right-0 z-[500] pointer-events-none"
             style={{ bottom: "var(--chat-bar-h, 72px)" }}
           >
-            {/* Quick-command popup — жёстко прижат к ЛЕВОМУ краю (над CMD-
-                кнопкой), ширина меньше log-panel, своё оранжевое обрамление
+            {/* Quick-command popup — жёстко прижат к ПРАВОМУ краю (над CMD-
+                кнопкой, которая теперь стоит между QUERY и SEND), ширина
+                меньше log-panel, своё оранжевое обрамление
                 (var(--accent2)) чтобы однозначно отличалось от AgentDock
                 (синий) и log-panel (зелёный). */}
-            <div className="max-w-[min(22rem,calc(100vw-24px))] pl-3 sm:pl-4 pb-2">
+            <div className="max-w-[min(22rem,calc(100vw-24px))] pr-3 sm:pr-4 pb-2 ml-auto">
               <div
                 ref={cmdMenuRef}
                 className="pointer-events-auto font-mono overflow-hidden"
@@ -1923,51 +1924,11 @@ export default function ChatbotBar() {
               : undefined
           }
         >
-          {/* Combined CMD button — also flashes the green activity dot that
-              used to live on the removed >_ log toggle. Log опен/тугл
-              теперь прячется за "log" button в хедере session-log. */}
-          <button
-            onClick={() => setCmdOpen((v) => !v)}
-            className="relative shrink-0 h-11 px-5 sm:px-6 flex items-center justify-center gap-2 font-mono uppercase"
-            style={{
-              background: cmdOpen
-                ? "var(--accent2)"
-                : "rgba(var(--accent2-rgb), 0.1)",
-              border: "1px solid var(--accent2)",
-              color: cmdOpen ? "#040208" : "var(--accent2)",
-              borderRadius: "4px",
-              fontSize: "15px",
-              fontWeight: 700,
-              letterSpacing: "0.24em",
-              textShadow: cmdOpen
-                ? "none"
-                : "0 0 8px rgba(var(--accent2-rgb), 0.55)",
-              boxShadow: cmdOpen
-                ? "0 -4px 18px rgba(var(--accent2-rgb), 0.5), 0 0 18px rgba(var(--accent2-rgb), 0.3)"
-                : "0 0 16px rgba(var(--accent2-rgb), 0.22), inset 0 0 10px rgba(var(--accent2-rgb), 0.06)",
-              transform: cmdOpen ? "translateY(-25%)" : "translateY(0)",
-              transition:
-                "transform 0.22s cubic-bezier(0.2, 0.8, 0.2, 1), background 0.18s, color 0.18s, box-shadow 0.18s",
-            }}
-            aria-label={cmdOpen ? "Close commands" : "Open commands"}
-            aria-expanded={cmdOpen}
-          >
-            <span>CMD</span>
-            <motion.svg
-              width="12"
-              height="12"
-              viewBox="0 0 24 24"
-              fill="none"
-              stroke="currentColor"
-              strokeWidth="3"
-              strokeLinecap="round"
-              strokeLinejoin="round"
-              animate={{ rotate: cmdOpen ? 180 : 0 }}
-              transition={{ duration: 0.18 }}
-            >
-              <polyline points="6 15 12 9 18 15" />
-            </motion.svg>
-          </button>
+          {/* AGENT DOCK — крайняя левая кнопка bottom-bar. Триггер открывает
+              поповер с аватарками агентов (тот же поповер, теперь
+              прижатый к ЛЕВОМУ краю — см. AgentDock.tsx). Синяя обводка
+              чтобы однозначно отличать от зелёного чата и оранжевого CMD. */}
+          <AgentDock asInlineButton />
 
           {/* Input */}
           <div
@@ -2040,10 +2001,53 @@ export default function ChatbotBar() {
             </div>
           </div>
 
-          {/* AGENT DOCK — слева от SEND. Триггер открывает поповер
-              с аватарками агентов. Синяя обводка — чтобы однозначно
-              отличать от зелёного чата и оранжевого CMD. */}
-          <AgentDock asInlineButton />
+          {/* CMD — справа от input, между QUERY и SEND. Поповер быстрых
+              команд теперь прижат к ПРАВОМУ краю (см. блок «Quick-command
+              popup» выше). Также мигает зелёной точкой активности — она
+              раньше жила на снятой >_ log toggle; log-тугл теперь за
+              "log" button в хедере session-log. */}
+          <button
+            onClick={() => setCmdOpen((v) => !v)}
+            className="relative shrink-0 h-11 px-5 sm:px-6 flex items-center justify-center gap-2 font-mono uppercase"
+            style={{
+              background: cmdOpen
+                ? "var(--accent2)"
+                : "rgba(var(--accent2-rgb), 0.1)",
+              border: "1px solid var(--accent2)",
+              color: cmdOpen ? "#040208" : "var(--accent2)",
+              borderRadius: "4px",
+              fontSize: "15px",
+              fontWeight: 700,
+              letterSpacing: "0.24em",
+              textShadow: cmdOpen
+                ? "none"
+                : "0 0 8px rgba(var(--accent2-rgb), 0.55)",
+              boxShadow: cmdOpen
+                ? "0 -4px 18px rgba(var(--accent2-rgb), 0.5), 0 0 18px rgba(var(--accent2-rgb), 0.3)"
+                : "0 0 16px rgba(var(--accent2-rgb), 0.22), inset 0 0 10px rgba(var(--accent2-rgb), 0.06)",
+              transform: cmdOpen ? "translateY(-25%)" : "translateY(0)",
+              transition:
+                "transform 0.22s cubic-bezier(0.2, 0.8, 0.2, 1), background 0.18s, color 0.18s, box-shadow 0.18s",
+            }}
+            aria-label={cmdOpen ? "Close commands" : "Open commands"}
+            aria-expanded={cmdOpen}
+          >
+            <span>CMD</span>
+            <motion.svg
+              width="12"
+              height="12"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              strokeWidth="3"
+              strokeLinecap="round"
+              strokeLinejoin="round"
+              animate={{ rotate: cmdOpen ? 180 : 0 }}
+              transition={{ duration: 0.18 }}
+            >
+              <polyline points="6 15 12 9 18 15" />
+            </motion.svg>
+          </button>
 
           {/* SEND — терминальный стиль в тон CMD/AgentDock: квадрат
               h-11, uppercase моноспейс, glow в акцент. Гаснет когда

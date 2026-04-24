@@ -308,7 +308,10 @@ export default function AgentDock({ asInlineButton = false }: AgentDockProps) {
             transition={{ duration: 0.18, ease: "easeOut" }}
             className="fixed z-[600] font-mono"
             style={{
-              right: 20,
+              // В inline-режиме AGENTS — крайняя левая кнопка bottom-bar,
+              // поповер прижимаем к ЛЕВОМУ краю. В fixed corner режиме
+              // (нижний правый угол страницы) оставляем поповер справа.
+              ...(asInlineButton ? { left: 20 } : { right: 20 }),
               bottom: asInlineButton ? 72 : 64,
               width: "min(420px, calc(100vw - 40px))",
               background: "var(--chrome-bg)",
