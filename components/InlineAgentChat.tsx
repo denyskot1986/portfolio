@@ -7,7 +7,7 @@ import {
   useRef,
   useState,
 } from "react";
-import { motion, useReducedMotion } from "framer-motion";
+import { AnimatePresence, motion, useReducedMotion } from "framer-motion";
 import AgentFace from "@/components/AgentFace";
 import type { Lang } from "@/lib/i18n";
 
@@ -101,6 +101,8 @@ const UI_COPY: Record<Lang, {
   send: string;
   newChat: string;
   confirm: string;
+  collapse: string;
+  expand: string;
   placeholderCycle: (name: string) => string;
   initChip: string[];
 }> = {
@@ -109,6 +111,8 @@ const UI_COPY: Record<Lang, {
     send: "SEND",
     newChat: "new chat",
     confirm: "confirm?",
+    collapse: "collapse",
+    expand: "expand",
     placeholderCycle: (n) => `${n} online`,
     initChip: ["What do you actually do?", "How much does it cost?", "Show me a typical day"],
   },
@@ -117,6 +121,8 @@ const UI_COPY: Record<Lang, {
     send: "SEND",
     newChat: "новый чат",
     confirm: "подтвердить?",
+    collapse: "свернуть",
+    expand: "развернуть",
     placeholderCycle: (n) => `${n} online`,
     initChip: ["Что ты умеешь?", "Сколько стоишь?", "Покажи типичный день"],
   },
@@ -125,6 +131,8 @@ const UI_COPY: Record<Lang, {
     send: "SEND",
     newChat: "новий чат",
     confirm: "підтвердити?",
+    collapse: "згорнути",
+    expand: "розгорнути",
     placeholderCycle: (n) => `${n} online`,
     initChip: ["Що ти вмієш?", "Скільки коштуєш?", "Покажи типовий день"],
   },
@@ -148,6 +156,9 @@ export default function InlineAgentChat({
   const [shuffling, setShuffling] = useState(false);
   const [placeholder, setPlaceholder] = useState("");
   const [confirmReset, setConfirmReset] = useState(false);
+  // Collapsed = чат сложен в заголовок, описание товара ниже подтягивается вверх.
+  // Persisted per-slug в localStorage, чтобы юзер не разворачивал его каждый раз.
+  const [collapsed, setCollapsed] = useState(false);
   const hydrated = useRef(false);
   const confirmTimerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
   const streamRef = useRef<HTMLDivElement>(null);
@@ -174,6 +185,14 @@ export default function InlineAgentChat({
       const fresh = freshSessionId();
       setSessionId(fresh);
       setMessages([initialGreeting]);
+    }
+    // Подтянуть collapsed-состояние: юзер один раз свернул — больше его не
+    // дёргаем, пока сам не развернёт. Ключ локален по slug.
+    try {
+      const flag = localStorage.getItem(`${STORAGE_PREFIX}:${slug}:collapsed`);
+      if (flag === "1") setCollapsed(true);
+    } catch {
+      /* ignore */
     }
   }, [slug, initialGreeting]);
 
@@ -457,6 +476,21 @@ export default function InlineAgentChat({
     if (confirmTimerRef.current) clearTimeout(confirmTimerRef.current);
   }, []);
 
+  const toggleCollapsed = useCallback(() => {
+    setCollapsed((prev) => {
+      const next = !prev;
+      try {
+        localStorage.setItem(
+          `${STORAGE_PREFIX}:${slug}:collapsed`,
+          next ? "1" : "0"
+        );
+      } catch {
+        /* ignore */
+      }
+      return next;
+    });
+  }, [slug]);
+
   return (
     <motion.div
       initial={reduced ? false : { clipPath: "inset(0 0 100% 0)", opacity: 0 }}
@@ -518,6 +552,50 @@ export default function InlineAgentChat({
         </div>
         <button
           type="button"
+          onClick={toggleCollapsed}
+          className="shrink-0 flex items-center gap-1.5 px-2.5 py-1 rounded uppercase text-[10px] transition-all"
+          style={{
+            color: "var(--accent2)",
+            background: "rgba(var(--accent2-rgb), 0.06)",
+            border: "1px solid rgba(var(--accent2-rgb), 0.45)",
+            letterSpacing: "0.2em",
+            textShadow: "0 0 6px rgba(var(--accent2-rgb), 0.5)",
+          }}
+          title={collapsed ? t.expand : t.collapse}
+          aria-label={collapsed ? t.expand : t.collapse}
+          aria-expanded={!collapsed}
+          onMouseEnter={(e) => {
+            e.currentTarget.style.background = "rgba(var(--accent2-rgb), 0.18)";
+            e.currentTarget.style.borderColor = "rgba(var(--accent2-rgb), 0.75)";
+          }}
+          onMouseLeave={(e) => {
+            e.currentTarget.style.background = "rgba(var(--accent2-rgb), 0.06)";
+            e.currentTarget.style.borderColor = "rgba(var(--accent2-rgb), 0.45)";
+          }}
+        >
+          <svg
+            width="10"
+            height="10"
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="currentColor"
+            strokeWidth="3"
+            strokeLinecap="round"
+            strokeLinejoin="round"
+            aria-hidden
+            style={{
+              transform: collapsed ? "rotate(180deg)" : "rotate(0deg)",
+              transition: "transform 0.25s ease",
+            }}
+          >
+            <polyline points="18 15 12 9 6 15" />
+          </svg>
+          <span className="hidden sm:inline">
+            {collapsed ? t.expand : t.collapse}
+          </span>
+        </button>
+        <button
+          type="button"
           onClick={handleResetClick}
           className="shrink-0 flex items-center gap-1.5 px-2.5 py-1 rounded uppercase text-[10px] transition-all"
           style={{
@@ -555,6 +633,19 @@ export default function InlineAgentChat({
         </button>
       </div>
 
+      {/* Body (messages + input). Свёртывается «низом вверх» через
+          framer-motion: высота анимируется до 0 → описание товара ниже по
+          потоку подтягивается вверх без скачков. */}
+      <AnimatePresence initial={false}>
+      {!collapsed && (
+      <motion.div
+        key="chat-body"
+        initial={reduced ? false : { height: 0, opacity: 0 }}
+        animate={{ height: "auto", opacity: 1 }}
+        exit={reduced ? { opacity: 0 } : { height: 0, opacity: 0 }}
+        transition={{ duration: 0.32, ease: [0.2, 0.8, 0.2, 1] }}
+        style={{ overflow: "hidden" }}
+      >
       {/* messages — sized to its CONTENT (with a max cap), so when the
           chat has just a greeting the card doesn't reserve a huge empty
           slab that intercepts touch and blocks page scroll on mobile. */}
@@ -829,6 +920,9 @@ export default function InlineAgentChat({
           {t.send}
         </button>
       </div>
+      </motion.div>
+      )}
+      </AnimatePresence>
 
       <style>{`
         @keyframes inlineChatPulse {
