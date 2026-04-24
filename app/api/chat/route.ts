@@ -14,8 +14,9 @@ const OPENROUTER_API_KEY = process.env.OPENROUTER_API_KEY || "";
 // - DAVID — веду сайт: tour beats, nav/scroll-директивы, подбор агента, handoff.
 //   Нужен instruction-following уровня Sonnet, чтобы не ломал формат beat'ов.
 // - AGENT — first-person roleplay конкретного агента (Boris, Eva и т.п.) на
-//   карточке продукта. Узкий сценарий, жёсткие правила → Haiku дешевле в ~5×
-//   и отвечает быстрее на sales-chat.
+//   карточке продукта. Haiku 4.5 слипал с китайскими иероглифами на длинных
+//   RU-промптах (language-bleed на 5-6k системных токенов) → ушли на
+//   Gemini 2.5 Flash: чисто мультиязычный, сопоставимая цена, быстрее.
 // Thinking отключаем через reasoning.max_tokens=0 — sales-chat не требует
 // reasoning-токенов, минус 2-5 сек latency.
 // CHAT_MODEL оставлен как legacy-override для A/B и отката.
@@ -26,7 +27,7 @@ const DAVID_MODEL =
 const AGENT_MODEL =
   process.env.AGENT_MODEL ||
   process.env.CHAT_MODEL ||
-  "anthropic/claude-haiku-4.5";
+  "google/gemini-2.5-flash";
 
 // Rate limits — два окна: burst (минута) + hard cap (час). Интерактивный
 // чат + click-to-send чипы легко выжигают старые 5/мин — поднято до уровня
