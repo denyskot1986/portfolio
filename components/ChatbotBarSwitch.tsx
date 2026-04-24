@@ -25,6 +25,7 @@ function ChatbotBarSwitchInner() {
   const { lang } = useLang();
   const v = (searchParams?.get("v") as Variant) || "default";
   const isProduct = pathname?.startsWith("/products/") ?? false;
+  const isLensDemo = pathname === "/lens";
 
   const [expanded, setExpanded] = useState(false);
 
@@ -51,6 +52,7 @@ function ChatbotBarSwitchInner() {
     if (v === "merge") setChromeVars(0, 64);
   }, [isProduct, v, expanded]);
 
+  if (isLensDemo) return null;
   if (!isProduct || v === "default") return <ChatbotBar />;
 
   if (v === "hide") return null;

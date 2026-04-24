@@ -7,6 +7,7 @@ import Link from "next/link";
 import { i18n, langs, type Lang } from "../lib/i18n";
 import { getTranslatedProducts } from "../lib/products-data";
 import { useLang } from "../lib/lang-context";
+import { AuthButton, AuthLockedDialog } from "../components/AuthLockedDialog";
 
 /* ═══════════════════════════════════════════════════════
    DATA
@@ -132,6 +133,7 @@ export default function Home() {
   // Nav scroll state + active section
   const [scrolled, setScrolled] = useState(false);
   const [menuOpen, setMenuOpen] = useState(false);
+  const [authOpen, setAuthOpen] = useState(false);
   const [activeSection, setActiveSection] = useState("hero");
 
   useEffect(() => {
@@ -198,6 +200,9 @@ export default function Home() {
             <span style={{ color: "var(--accent2)", opacity: 0.6 }}>&gt; </span>
             {displayText}
           </p>
+
+          {/* AUTH — amber CTA, closed-beta gate */}
+          <AuthButton onClick={() => setAuthOpen(true)} className="shrink-0" />
 
           {/* Desktop links */}
           <div className="hidden md:flex items-center gap-2">
@@ -523,6 +528,8 @@ export default function Home() {
       </footer>
 
       {/* ChatbotWidget is now global — rendered in layout.tsx */}
+
+      <AuthLockedDialog open={authOpen} onClose={() => setAuthOpen(false)} />
     </div>
   );
 }

@@ -1,9 +1,9 @@
 import type { Metadata } from "next";
 
 export const metadata: Metadata = {
-  title: "HABITAT — Where Finekot agents live",
+  title: "HABITAT — Your agents, side by side",
   description:
-    "Один агент — четыре дома. Telegram, сайт, голос, фон. Анимация показывает где живут агенты Finekot Systems.",
+    "Восемь агентов Finekot, живущих параллельно в собственных окнах чатов. Клик по аватару в доке — окно агента разворачивается и накрывает соседей наполовину.",
   robots: { index: false, follow: false, nocache: true, googleBot: { index: false, follow: false } },
 };
 
