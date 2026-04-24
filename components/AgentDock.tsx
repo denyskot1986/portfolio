@@ -3,6 +3,7 @@
 import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import { AnimatePresence, motion, useReducedMotion } from "framer-motion";
 import Link from "next/link";
+import Image from "next/image";
 import { productsData } from "@/lib/products-data";
 import {
   clearUnread,
@@ -27,12 +28,11 @@ const DOCK_AGENTS = productsData.filter(
 
 const DOCK_SLUGS = DOCK_AGENTS.map((p) => p.id);
 
-// Монограмма агента — <X/> — в стиле тайлов на карточках продуктов.
-// Берём первую букву имени (латиница).
-function monogram(name: string): string {
-  const first = name.trim().charAt(0).toUpperCase();
-  return first || "?";
-}
+// Иконки агентов лежат в /public/agents/<slug>.png (robot-head sprites
+// в site palette — зелёно-жёлтая, лицо + жёлтый маркер роли на лбу).
+const AGENT_ICON_SLUGS = new Set([
+  "boris", "eva", "david", "patrik", "taras", "ada", "hanna",
+]);
 
 interface TileProps {
   agent: (typeof productsData)[number];
@@ -78,9 +78,31 @@ function AgentTile({ agent, visited, unread, onPick }: TileProps) {
           filter: visited ? undefined : "saturate(0.6)",
         }}
       >
-        <span style={{ color: "var(--accent2)", fontSize: 14 }}>&lt;</span>
-        <span style={{ fontSize: 22, margin: "0 1px" }}>{monogram(agent.name)}</span>
-        <span style={{ color: "var(--accent2)", fontSize: 14 }}>/&gt;</span>
+        {AGENT_ICON_SLUGS.has(agent.id) ? (
+          <Image
+            src={`/agents/${agent.id}.png`}
+            alt=""
+            width={128}
+            height={128}
+            aria-hidden
+            style={{
+              width: 52,
+              height: 52,
+              filter: visited
+                ? "drop-shadow(0 0 5px rgba(var(--accent-rgb), 0.55))"
+                : "grayscale(0.35) brightness(0.75)",
+              transition: "filter 0.22s ease",
+            }}
+          />
+        ) : (
+          <>
+            <span style={{ color: "var(--accent2)", fontSize: 14 }}>&lt;</span>
+            <span style={{ fontSize: 22, margin: "0 1px" }}>
+              {agent.name.trim().charAt(0).toUpperCase() || "?"}
+            </span>
+            <span style={{ color: "var(--accent2)", fontSize: 14 }}>/&gt;</span>
+          </>
+        )}
 
         {/* Locked-замок для непосещённых — маленький «заблокирован» маркер */}
         {!visited && (

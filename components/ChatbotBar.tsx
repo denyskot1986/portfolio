@@ -1608,10 +1608,10 @@ export default function ChatbotBar() {
                   >
                     <span className="text-xs leading-tight">
                       {lang === "RU"
-                        ? "Товары"
+                        ? "Попросить провести экскурсию"
                         : lang === "UA"
-                        ? "Товари"
-                        : "Products"}
+                        ? "Попросити провести екскурсію"
+                        : "Ask for a tour"}
                     </span>
                   </button>
                   <button
@@ -1643,10 +1643,10 @@ export default function ChatbotBar() {
                   >
                     <span className="text-xs leading-tight">
                       {lang === "RU"
-                        ? "Сборочный цех"
+                        ? "Демо-сборка агента"
                         : lang === "UA"
-                        ? "Складальний цех"
-                        : "Factory"}
+                        ? "Демо-складання агента"
+                        : "Demo agent assembly"}
                     </span>
                   </button>
                   <button
@@ -1678,10 +1678,10 @@ export default function ChatbotBar() {
                   >
                     <span className="text-xs leading-tight">
                       {lang === "RU"
-                        ? "Genesis · как родилось"
+                        ? "О нас"
                         : lang === "UA"
-                        ? "Genesis · як народилося"
-                        : "Genesis · origin demo"}
+                        ? "Про нас"
+                        : "About us"}
                     </span>
                   </button>
                   <button
@@ -1713,10 +1713,10 @@ export default function ChatbotBar() {
                   >
                     <span className="text-xs leading-tight">
                       {lang === "RU"
-                        ? "Habitat · где живут агенты"
+                        ? "Мои Агенты"
                         : lang === "UA"
-                        ? "Habitat · де живуть агенти"
-                        : "Habitat · where agents live"}
+                        ? "Мої Агенти"
+                        : "My Agents"}
                     </span>
                   </button>
                   {QUICK_COMMANDS.map((cmd) => (
