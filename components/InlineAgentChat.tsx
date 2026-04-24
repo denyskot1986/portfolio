@@ -73,6 +73,19 @@ function load(slug: string): StoredSession | null {
               ((m as Msg).role === "user" || (m as Msg).role === "assistant") &&
               typeof (m as Msg).content === "string"
           )
+          .map((m: Msg) => {
+            // Санитайз старых сессий: если в content затесались [reply:...] /
+            // [nav:...] / [scroll:...] / === из-за прежнего бага — вычищаем.
+            if (m.role !== "assistant") return m;
+            const { visible, replies } = parseAssistantReply(m.content);
+            const cleaned = visible || m.content;
+            const mergedReplies = m.replies?.length ? m.replies : replies;
+            return {
+              ...m,
+              content: cleaned,
+              replies: mergedReplies?.length ? mergedReplies : undefined,
+            };
+          })
           .slice(-40)
       : [];
     if (!sessionId) return null;
@@ -165,14 +178,18 @@ export default function InlineAgentChat({
   const inputRef = useRef<HTMLTextAreaElement>(null);
 
   // First-time greeting seed (only if no prior history for this slug).
-  const initialGreeting: Msg = useMemo(
-    () => ({
+  // Greeting из bot-personalities может содержать inline [reply:...] маркеры —
+  // прогоняем через parseAssistantReply, чтобы они стали чипами, а не остались
+  // литералом в тексте. Если в гритинге чипов нет (UA/EN дефолт) — фолбэк на
+  // общие t.initChip.
+  const initialGreeting: Msg = useMemo(() => {
+    const { visible, replies } = parseAssistantReply(greeting);
+    return {
       role: "assistant",
-      content: greeting,
-      replies: t.initChip.slice(0, 3),
-    }),
-    [greeting, t.initChip]
-  );
+      content: visible || greeting,
+      replies: replies.length ? replies : t.initChip.slice(0, 3),
+    };
+  }, [greeting, t.initChip]);
 
   useEffect(() => {
     if (hydrated.current) return;
