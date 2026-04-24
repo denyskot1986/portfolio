@@ -5,6 +5,7 @@ import { useParams } from "next/navigation";
 import Link from "next/link";
 import { motion } from "framer-motion";
 import { getTranslatedProduct, getTranslatedProducts } from "@/lib/products-data";
+import { BOT_PERSONALITIES } from "@/lib/bot-personalities";
 import { i18n } from "@/lib/i18n";
 import { useLang } from "@/lib/lang-context";
 import LangSwitcher from "@/components/LangSwitcher";
@@ -18,11 +19,18 @@ function botDeepLink(contact: string, id: string, intent: "buy" | "order"): stri
   return `${contact}${sep}start=${intent}_${id}`;
 }
 
-function defaultGreeting(name: string, lang: Lang): string {
+// SKY-155: каждый бот имеет personality.firstMessage с наблюдением и
+// вопросом про юзера — это зеро-латентный welcome перед первым LLM-ходом.
+// Для UA/EN фолбэк — короткий tagline-style вопрос без «Чем могу помочь».
+function defaultGreeting(name: string, lang: Lang, slug: string): string {
+  const personaMsg = BOT_PERSONALITIES[slug.toLowerCase()]?.firstMessage;
+  // RU — используем богатый personality-бриф (OWT + вопрос + reply-чипы)
+  if (lang === "RU" && personaMsg) return personaMsg;
+  // UA / EN — компактный заход без «How can I help?»
   switch (lang) {
-    case "RU": return `${name} · онлайн. Чем могу помочь?`;
-    case "UA": return `${name} · онлайн. Чим можу допомогти?`;
-    default:   return `${name} · online. How can I help?`;
+    case "RU": return `${name} · онлайн. С какой задачей пришёл?`;
+    case "UA": return `${name} · онлайн. З якою задачею прийшов?`;
+    default:   return `${name} · online. What brought you here?`;
   }
 }
 
@@ -53,7 +61,7 @@ export default function ProductPageClient() {
     );
   }
 
-  const greeting = product.firstMessage?.[lang] ?? defaultGreeting(product.name, lang);
+  const greeting = product.firstMessage?.[lang] ?? defaultGreeting(product.name, lang, product.id);
 
   return (
     <main className="min-h-screen bg-[var(--bg)] text-pink-100/80 overflow-x-hidden">

@@ -1954,10 +1954,9 @@ export default function ChatbotBar() {
               {!input && (
                 <div
                   aria-hidden
-                  className="pointer-events-none absolute inset-y-0 left-0 flex items-center"
+                  className="pointer-events-none absolute inset-y-0 left-0 flex items-center text-[16px] sm:text-[13px]"
                   style={{
                     color: "rgba(77, 122, 94, 0.7)",
-                    fontSize: "16px",
                     letterSpacing: "0.01em",
                     paddingLeft: 2,
                   }}
@@ -1986,16 +1985,17 @@ export default function ChatbotBar() {
                 onKeyDown={handleKeyDown}
                 onFocus={() => setLogOpen(true)}
                 rows={1}
-                className="w-full py-2 bg-transparent focus:outline-none resize-none leading-relaxed"
+                // SKY-155: text-[16px] sm:text-[13px] — 16px на мобильном
+                // (iOS Safari не зумит инпут), 13px на desktop (раньше был
+                // 16px — Командир отметил что «огромный»). sm: breakpoint
+                // 640px, iOS Safari viewport <640px даёт 16px → нет зума.
+                className="w-full py-2 bg-transparent focus:outline-none resize-none leading-relaxed text-[16px] sm:text-[13px]"
                 style={{
                   minHeight: 28,
                   maxHeight: 120,
                   color: "rgba(217, 255, 224, 0.95)",
                   caretColor: "var(--accent)",
                   paddingLeft: 2,
-                  // iOS Safari zooms into inputs with font-size < 16px. Keep 16px
-                  // here to block the zoom, then shrink visually on desktop.
-                  fontSize: "16px",
                 }}
               />
             </div>
@@ -2049,30 +2049,36 @@ export default function ChatbotBar() {
             </motion.svg>
           </button>
 
-          {/* SEND / MIN — одна кнопка-слот с двумя ролями:
+          {/* SEND / MIN / OPEN — одна кнопка-слот с тремя ролями (SKY-155):
               - есть текст в инпуте → SEND (зелёный, отправляет)
               - инпут пустой и чат развёрнут → MIN (оранжевый, сворачивает
                 лог-панель — то же что «свернуть» в шапке)
-              - инпут пустой и чат уже свёрнут → SEND disabled (серый)
-              Логика: если юзер ничего не пишет, ему скорее всего нечего
-              отправлять, но он может захотеть убрать панель — и наоборот.
-              Loading рендерит spinner поверх любого режима. */}
+              - инпут пустой и чат свёрнут → OPEN (зелёный, разворачивает
+                лог-панель и фокусит инпут)
+              SEND НЕ показывается пока юзер не печатает — кнопка-слот
+              всегда имеет полезное действие (раскрыть/свернуть чат
+              или отправить набранное). Loading рендерит spinner поверх.  */}
           {(() => {
             const hasText = input.trim().length > 0;
             const sendActive = hasText && !loading;
             const collapseMode = !hasText && !loading && logOpen;
+            const expandMode = !hasText && !loading && !logOpen;
 
-            // Палитра: SEND — зелёный (var(--accent)), MIN — оранжевый
+            // Палитра: SEND/OPEN — зелёный (var(--accent)), MIN — оранжевый
             // (var(--accent2)) в тон CMD/«свернуть» в шапке.
             const palette = collapseMode
               ? { rgb: "var(--accent2-rgb)", solid: "var(--accent2)" }
               : { rgb: "var(--accent-rgb)", solid: "var(--accent)" };
-            const litUp = sendActive || collapseMode;
+            const litUp = sendActive || collapseMode || expandMode;
 
             const handleClick = () => {
               if (collapseMode) {
                 setLogOpen(false);
                 setChatFullscreen(false);
+              } else if (expandMode) {
+                setLogOpen(true);
+                // Фокус на инпут через rAF — после монтирования панели.
+                requestAnimationFrame(() => inputRef.current?.focus());
               } else {
                 send();
               }
@@ -2089,6 +2095,8 @@ export default function ChatbotBar() {
                 aria-label={
                   collapseMode
                     ? labelByLang("Свернуть чат", "Згорнути чат", "Collapse chat")
+                    : expandMode
+                    ? labelByLang("Открыть чат", "Відкрити чат", "Open chat")
                     : labelByLang("Отправить", "Надіслати", "Send")
                 }
                 className="shrink-0 px-3 sm:px-4 h-11 flex items-center justify-center gap-1.5 font-mono transition-all disabled:cursor-not-allowed"
@@ -2150,6 +2158,23 @@ export default function ChatbotBar() {
                       strokeLinejoin="round"
                     >
                       <polyline points="6 9 12 15 18 9" />
+                    </svg>
+                  </>
+                ) : expandMode ? (
+                  <>
+                    <span>OPEN</span>
+                    <svg
+                      aria-hidden
+                      width="11"
+                      height="11"
+                      viewBox="0 0 24 24"
+                      fill="none"
+                      stroke="currentColor"
+                      strokeWidth="3"
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                    >
+                      <polyline points="18 15 12 9 6 15" />
                     </svg>
                   </>
                 ) : (
