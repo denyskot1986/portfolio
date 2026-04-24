@@ -3,7 +3,6 @@
 import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import { AnimatePresence, motion, useReducedMotion } from "framer-motion";
 import Link from "next/link";
-import Image from "next/image";
 import { productsData } from "@/lib/products-data";
 import {
   clearUnread,
@@ -79,11 +78,14 @@ function AgentTile({ agent, visited, unread, onPick }: TileProps) {
         }}
       >
         {AGENT_ICON_SLUGS.has(agent.id) ? (
-          <Image
-            src={`/agents/${agent.id}.png`}
+          // Use a plain <img> so SMIL eye-blink animation inside the SVG runs.
+          // next/image would rasterize/optimize and kill the animation.
+          // eslint-disable-next-line @next/next/no-img-element
+          <img
+            src={`/agents/${agent.id}.svg`}
             alt=""
-            width={128}
-            height={128}
+            width={52}
+            height={52}
             aria-hidden
             style={{
               width: 52,
@@ -118,20 +120,20 @@ function AgentTile({ agent, visited, unread, onPick }: TileProps) {
           </span>
         )}
 
-        {/* Unread badge — оранжевая точка с числом поверх правого верха */}
+        {/* Unread badge — приглушённая, без яркого glow */}
         {unread > 0 && (
           <span
-            className="absolute -top-1.5 -right-1.5 font-mono font-bold flex items-center justify-center"
+            className="absolute -top-1 -right-1 font-mono flex items-center justify-center"
             style={{
-              minWidth: 18,
-              height: 18,
-              padding: "0 5px",
-              borderRadius: 9,
-              background: "var(--accent2)",
-              color: "#1a0f03",
-              fontSize: 11,
+              minWidth: 14,
+              height: 14,
+              padding: "0 4px",
+              borderRadius: 7,
+              background: "rgba(10, 14, 10, 0.9)",
+              border: "1px solid rgba(var(--accent2-rgb), 0.55)",
+              color: "rgba(var(--accent2-rgb), 0.9)",
+              fontSize: 9,
               lineHeight: 1,
-              boxShadow: "0 0 10px rgba(var(--accent2-rgb), 0.65)",
             }}
           >
             {unread > 9 ? "9+" : unread}
@@ -277,17 +279,17 @@ export default function AgentDock({ asInlineButton = false }: AgentDockProps) {
         </span>
         {totalUnreadCount > 0 && !open && (
           <span
-            className="absolute -top-1.5 -right-1.5 font-mono font-bold flex items-center justify-center"
+            className="absolute -top-1 -right-1 font-mono flex items-center justify-center"
             style={{
-              minWidth: 18,
-              height: 18,
-              padding: "0 5px",
-              borderRadius: 9,
-              background: "var(--accent2)",
-              color: "#1a0f03",
-              fontSize: 11,
+              minWidth: 14,
+              height: 14,
+              padding: "0 4px",
+              borderRadius: 7,
+              background: "rgba(4, 10, 18, 0.92)",
+              border: `1px solid rgba(${BLUE_RGB}, 0.55)`,
+              color: `rgba(${BLUE_RGB}, 0.9)`,
+              fontSize: 9,
               lineHeight: 1,
-              boxShadow: "0 0 10px rgba(var(--accent2-rgb), 0.7)",
             }}
           >
             {totalUnreadCount > 9 ? "9+" : totalUnreadCount}

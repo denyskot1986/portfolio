@@ -1,0 +1,17 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100" fill="none" stroke="#00ff41" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+  <g stroke="#ffb000" fill="none">
+      <rect x="36" y="10" width="28" height="14" rx="1.5" />
+      <polyline points="36,12 50,22 64,12" />
+    </g>
+<!-- head -->
+  <rect x="14" y="32" width="72" height="56" rx="8" />
+  <!-- eyes — blink via SMIL (works when loaded as <img>) -->
+  <ellipse cx="36" cy="58" rx="4" ry="4" fill="#00ff41" stroke="none">
+    <animate attributeName="ry" values="4;4;4;0.4;4;4;4" keyTimes="0;0.86;0.9;0.93;0.96;0.99;1" dur="4.6s" repeatCount="indefinite" />
+  </ellipse>
+  <ellipse cx="64" cy="58" rx="4" ry="4" fill="#00ff41" stroke="none">
+    <animate attributeName="ry" values="4;4;4;0.4;4;4;4" keyTimes="0;0.86;0.9;0.93;0.96;0.99;1" dur="4.6s" repeatCount="indefinite" begin="0.08s" />
+  </ellipse>
+  <!-- mouth — single line, not a grill -->
+  <line x1="40" y1="76" x2="60" y2="76" />
+</svg>
