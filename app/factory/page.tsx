@@ -136,16 +136,12 @@ function useBootSequence(reducedMotion: boolean, runId: number) {
     setFinished(false);
 
     if (reducedMotion) {
-      setLines(
-        BOOT_LINES.map((l) => ({ full: l, visible: l, done: true }))
-      );
+      setLines(BOOT_LINES.map((l) => ({ full: l, visible: l, done: true })));
       setFinished(true);
       return;
     }
 
-    setLines(
-      BOOT_LINES.map((l) => ({ full: l, visible: "", done: false }))
-    );
+    setLines(BOOT_LINES.map((l) => ({ full: l, visible: "", done: false })));
 
     let cumulative = 150;
     BOOT_LINES.forEach((line, idx) => {
@@ -176,6 +172,42 @@ function useBootSequence(reducedMotion: boolean, runId: number) {
   }, [reducedMotion, runId]);
 
   return { lines, finished };
+}
+
+// Boot lines are "[00:02] rest-of-line" — we colour the timestamp in accent2
+// (orange) and the body in accent (green) to match the site palette.
+function BootLine({ line, isActive }: { line: TypedLine; isActive: boolean }) {
+  const match = line.visible.match(/^(\[\d{2}:\d{2}\])(\s*)(.*)$/);
+  const caret = isActive ? (
+    <span
+      className="inline-block align-[-2px] ml-[2px]"
+      style={{
+        width: "0.55em",
+        height: "1em",
+        background: "var(--accent)",
+        boxShadow: "0 0 8px rgba(var(--accent-rgb), 0.8)",
+        animation: "factoryBlink 0.9s steps(1) infinite",
+      }}
+    />
+  ) : null;
+
+  if (!match) {
+    return (
+      <div style={{ color: "var(--accent)" }}>
+        {line.visible}
+        {caret}
+      </div>
+    );
+  }
+  const [, ts, sp, rest] = match;
+  return (
+    <div style={{ color: "var(--accent)" }}>
+      <span style={{ color: "var(--accent2)" }}>{ts}</span>
+      <span>{sp}</span>
+      <span>{rest}</span>
+      {caret}
+    </div>
+  );
 }
 
 export default function FactoryPage() {
@@ -288,43 +320,45 @@ export default function FactoryPage() {
 
   const restart = useCallback(() => setRunId((n) => n + 1), []);
 
+  const caret = (
+    <span
+      className="inline-block align-[-2px] ml-[2px]"
+      style={{
+        width: "0.55em",
+        height: "1em",
+        background: "var(--accent)",
+        boxShadow: "0 0 8px rgba(var(--accent-rgb), 0.8)",
+        animation: "factoryBlink 0.9s steps(1) infinite",
+      }}
+    />
+  );
+
   return (
     <div
       className="fixed inset-0 font-mono overflow-hidden"
       style={{
-        background:
-          "radial-gradient(ellipse at 50% 30%, rgba(0, 64, 24, 0.35) 0%, rgba(4, 2, 8, 1) 65%)",
-        color: "#d9ffe0",
+        background: "var(--bg)",
+        color: "var(--fg)",
         paddingTop: "var(--chat-top-h, 0px)",
         paddingBottom: "var(--chat-bar-h, 72px)",
       }}
     >
-      {/* CRT scanlines overlay */}
-      <div
-        aria-hidden
-        className="absolute inset-0 pointer-events-none opacity-[0.18] mix-blend-overlay"
-        style={{
-          backgroundImage:
-            "repeating-linear-gradient(0deg, rgba(0, 255, 65, 0.18) 0px, rgba(0, 255, 65, 0.18) 1px, transparent 1px, transparent 3px)",
-        }}
-      />
-
       <div className="relative h-full w-full flex flex-col">
-        {/* Top bar */}
+        {/* Top bar — same tokens as the rest of the site */}
         <div
           className="shrink-0 flex items-center justify-between px-4 sm:px-6 py-3 text-[11px] uppercase tracking-[0.22em]"
           style={{
-            borderBottom: "1px solid rgba(0, 255, 65, 0.25)",
-            color: "rgba(0, 255, 65, 0.78)",
-            background: "rgba(4, 2, 8, 0.6)",
+            borderBottom: "1px solid var(--glass-border)",
+            color: "var(--accent)",
+            background: "rgba(var(--accent-rgb), 0.03)",
           }}
         >
           <div className="flex items-center gap-2">
             <span
               className="inline-block w-2 h-2 rounded-full"
               style={{
-                background: "#00ff41",
-                boxShadow: "0 0 10px rgba(0, 255, 65, 0.9)",
+                background: "var(--accent)",
+                boxShadow: "0 0 10px rgba(var(--accent-rgb), 0.9)",
               }}
             />
             <span>{t.header}</span>
@@ -332,34 +366,33 @@ export default function FactoryPage() {
           <Link
             href="/"
             className="transition-colors"
-            style={{ color: "rgba(255, 176, 0, 0.9)" }}
+            style={{ color: "var(--accent2)" }}
           >
             {t.backHome}
           </Link>
         </div>
 
-        {/* Stream area */}
+        {/* Stream area wrapped in the site terminal-card */}
         <div className="flex-1 min-h-0 flex items-stretch justify-center px-3 sm:px-6 py-4 sm:py-6">
           <div
-            className="w-full max-w-3xl flex flex-col"
+            className="w-full max-w-3xl flex flex-col rounded-lg overflow-hidden"
             style={{
-              background: "rgba(2, 10, 4, 0.82)",
-              border: "1px solid rgba(0, 255, 65, 0.35)",
-              borderRadius: "6px",
+              background: "var(--glass-bg)",
+              border: "1px solid var(--glass-border)",
               boxShadow:
-                "0 0 32px rgba(0, 255, 65, 0.18), inset 0 0 60px rgba(0, 255, 65, 0.05)",
+                "0 0 28px rgba(var(--accent-rgb), 0.14), inset 0 0 32px rgba(var(--accent-rgb), 0.02)",
             }}
           >
-            <div
-              className="shrink-0 flex items-center justify-between px-3 py-1.5 text-[10px] uppercase"
-              style={{
-                borderBottom: "1px solid rgba(0, 255, 65, 0.25)",
-                color: "rgba(0, 255, 65, 0.7)",
-                letterSpacing: "0.22em",
-              }}
-            >
-              <span>{t.subtitle}</span>
-              <span style={{ color: "rgba(255, 176, 0, 0.7)" }}>
+            {/* Terminal header with site-standard dots (red/orange/green squares) */}
+            <div className="terminal-card-header shrink-0">
+              <span className="term-dot term-dot-r" />
+              <span className="term-dot term-dot-y" />
+              <span className="term-dot term-dot-g" />
+              <span className="term-filename">forge/assembly.log</span>
+              <span
+                className="term-tag term-tag-live ml-auto"
+                style={{ textTransform: "uppercase" }}
+              >
                 {t.caption}
               </span>
             </div>
@@ -367,54 +400,36 @@ export default function FactoryPage() {
             <div
               ref={streamRef}
               className="flex-1 min-h-0 overflow-y-auto px-4 sm:px-5 py-4 text-[13px] sm:text-[14px] leading-[1.65]"
-              style={{
-                color: "#9cffb1",
-                textShadow: "0 0 6px rgba(0, 255, 65, 0.35)",
-              }}
             >
+              {/* Subtitle tucked inside the stream, accent2 for the label */}
+              <div
+                className="text-[10px] uppercase mb-3"
+                style={{
+                  color: "var(--accent2)",
+                  letterSpacing: "0.22em",
+                  opacity: 0.85,
+                }}
+              >
+                // {t.subtitle}
+              </div>
+
               {lines.map((line, idx) => {
+                if (line.visible.length === 0) return null;
                 const isActive =
                   !line.done &&
-                  line.visible.length > 0 &&
                   idx === lines.findIndex((l) => !l.done);
-                if (line.visible.length === 0) return null;
-                const isReady = line.full.includes("⟨READY⟩");
-                return (
-                  <div
-                    key={idx}
-                    style={{
-                      color: isReady ? "#ffffff" : undefined,
-                      textShadow: isReady
-                        ? "0 0 12px rgba(0, 255, 120, 0.95)"
-                        : undefined,
-                      fontWeight: isReady ? 700 : 400,
-                      letterSpacing: isReady ? "0.08em" : undefined,
-                    }}
-                  >
-                    {line.visible}
-                    {isActive && (
-                      <span
-                        className="inline-block align-[-2px] ml-[2px]"
-                        style={{
-                          width: "0.55em",
-                          height: "1em",
-                          background: "#00ff41",
-                          boxShadow: "0 0 8px rgba(0, 255, 65, 0.8)",
-                          animation: "factoryBlink 0.9s steps(1) infinite",
-                        }}
-                      />
-                    )}
-                  </div>
-                );
+                return <BootLine key={idx} line={line} isActive={isActive} />;
               })}
 
               {finished && (
                 <div className="mt-5 mb-2">
+                  {/* Boris greeting — white, the "he's alive" moment */}
                   <div
                     className="text-[14px] sm:text-[15px] italic leading-relaxed"
                     style={{
-                      color: "#fff1c9",
-                      textShadow: "0 0 6px rgba(255, 220, 130, 0.28)",
+                      color: "#ffffff",
+                      textShadow:
+                        "0 0 10px rgba(var(--accent-rgb), 0.35)",
                     }}
                   >
                     {greeting}
@@ -424,9 +439,9 @@ export default function FactoryPage() {
                         style={{
                           width: "0.55em",
                           height: "1em",
-                          background: "#fff1c9",
+                          background: "#ffffff",
                           boxShadow:
-                            "0 0 8px rgba(255, 220, 130, 0.7)",
+                            "0 0 8px rgba(255, 255, 255, 0.55)",
                           animation: "factoryBlink 0.9s steps(1) infinite",
                         }}
                       />
@@ -441,10 +456,10 @@ export default function FactoryPage() {
                     >
                       <div
                         className="mt-3 text-[11px]"
-                        style={{ color: "rgba(217, 255, 224, 0.6)" }}
+                        style={{ color: "var(--muted)" }}
                       >
                         {t.handlePrefix}:{" "}
-                        <span style={{ color: "#ffb000" }}>
+                        <span style={{ color: "var(--accent2)" }}>
                           t.me/{handle}
                         </span>
                       </div>
@@ -452,14 +467,12 @@ export default function FactoryPage() {
                       <div className="mt-4 flex flex-wrap items-center gap-2.5">
                         <Link
                           href="/products/boris"
-                          className="inline-flex items-center gap-2 px-4 h-10 text-[12px] uppercase tracking-[0.2em] transition-all"
+                          className="btn-terminal"
                           style={{
-                            background: "rgba(0, 255, 65, 0.08)",
-                            color: "#00ff41",
-                            border: "1px solid rgba(0, 255, 65, 0.55)",
-                            borderRadius: "4px",
-                            fontWeight: 700,
-                            textShadow: "0 0 6px rgba(0, 255, 65, 0.5)",
+                            fontSize: 12,
+                            padding: "10px 20px",
+                            letterSpacing: "0.18em",
+                            textTransform: "uppercase",
                           }}
                         >
                           <span aria-hidden>✦</span>
@@ -468,14 +481,18 @@ export default function FactoryPage() {
                         <button
                           type="button"
                           onClick={restart}
-                          className="inline-flex items-center gap-2 px-4 h-10 text-[12px] uppercase tracking-[0.2em] transition-all"
+                          className="btn-terminal"
                           style={{
-                            background: "rgba(0, 255, 65, 0.08)",
-                            color: "#00ff41",
-                            border: "1px solid rgba(0, 255, 65, 0.55)",
-                            borderRadius: "4px",
-                            fontWeight: 700,
-                            textShadow: "0 0 6px rgba(0, 255, 65, 0.5)",
+                            fontSize: 12,
+                            padding: "10px 20px",
+                            letterSpacing: "0.18em",
+                            textTransform: "uppercase",
+                            color: "var(--accent2)",
+                            borderColor: "var(--accent2)",
+                            textShadow:
+                              "0 0 6px rgba(var(--accent2-rgb), 0.6)",
+                            boxShadow:
+                              "inset 0 0 14px rgba(var(--accent2-rgb), 0.05), 0 0 12px rgba(var(--accent2-rgb), 0.15)",
                           }}
                         >
                           <span aria-hidden>↻</span>
@@ -487,24 +504,10 @@ export default function FactoryPage() {
                         className="mt-6 pt-5"
                         style={{
                           borderTop:
-                            "1px dashed rgba(0, 255, 65, 0.22)",
+                            "1px dashed rgba(var(--accent-rgb), 0.22)",
                         }}
                       >
                         {(() => {
-                          const caret = (
-                            <span
-                              className="inline-block align-[-2px] ml-[2px]"
-                              style={{
-                                width: "0.55em",
-                                height: "1em",
-                                background: "#00ff41",
-                                boxShadow:
-                                  "0 0 8px rgba(0, 255, 65, 0.8)",
-                                animation:
-                                  "factoryBlink 0.9s steps(1) infinite",
-                              }}
-                            />
-                          );
                           const SPEC_OFFSET = 3;
                           const specCount = t.spec.length;
                           const pricingHeaderIdx = SPEC_OFFSET + specCount;
@@ -516,7 +519,7 @@ export default function FactoryPage() {
                                 <div
                                   className="text-[10px] uppercase"
                                   style={{
-                                    color: "rgba(255, 176, 0, 0.75)",
+                                    color: "var(--accent2)",
                                     letterSpacing: "0.22em",
                                   }}
                                 >
@@ -528,7 +531,7 @@ export default function FactoryPage() {
                               {pitchVisible[1] && (
                                 <div
                                   className="mt-2 text-[13px] sm:text-[14px] leading-relaxed"
-                                  style={{ color: "#d9ffe0" }}
+                                  style={{ color: "#ffffff", opacity: 0.92 }}
                                 >
                                   {pitchVisible[1]}
                                   {pitchActiveIdx === 1 && caret}
@@ -539,9 +542,9 @@ export default function FactoryPage() {
                                 <div
                                   className="mt-4 text-[12px]"
                                   style={{
-                                    color: "rgba(0, 255, 65, 0.85)",
+                                    color: "var(--accent)",
                                     textShadow:
-                                      "0 0 6px rgba(0, 255, 65, 0.35)",
+                                      "0 0 6px rgba(var(--accent-rgb), 0.35)",
                                   }}
                                 >
                                   {pitchVisible[2]}
@@ -557,10 +560,8 @@ export default function FactoryPage() {
                                 if (!anyRow) return null;
                                 return (
                                   <div
-                                    className="mt-1 text-[12px] leading-[1.75]"
-                                    style={{
-                                      color: "rgba(217, 255, 224, 0.88)",
-                                    }}
+                                    className="mt-2 text-[12px] leading-[1.75]"
+                                    style={{ color: "var(--fg)" }}
                                   >
                                     {t.spec.map(([k], idx) => {
                                       const i = SPEC_OFFSET + idx;
@@ -573,14 +574,18 @@ export default function FactoryPage() {
                                         >
                                           <span
                                             style={{
-                                              color: "rgba(0, 255, 65, 0.6)",
+                                              color: "var(--accent2)",
                                               minWidth: "8ch",
                                               display: "inline-block",
+                                              opacity: 0.85,
                                             }}
                                           >
                                             {k}
                                           </span>
-                                          <span className="flex-1">
+                                          <span
+                                            className="flex-1"
+                                            style={{ color: "#ffffff", opacity: 0.88 }}
+                                          >
                                             {v}
                                             {pitchActiveIdx === i && caret}
                                           </span>
@@ -595,9 +600,9 @@ export default function FactoryPage() {
                                 <div
                                   className="mt-4 text-[12px]"
                                   style={{
-                                    color: "rgba(0, 255, 65, 0.85)",
+                                    color: "var(--accent)",
                                     textShadow:
-                                      "0 0 6px rgba(0, 255, 65, 0.35)",
+                                      "0 0 6px rgba(var(--accent-rgb), 0.35)",
                                   }}
                                 >
                                   {pitchVisible[pricingHeaderIdx]}
@@ -609,7 +614,7 @@ export default function FactoryPage() {
                               {pitchVisible[pricingIdx] && (
                                 <div
                                   className="mt-1 text-[13px]"
-                                  style={{ color: "#ffd88a" }}
+                                  style={{ color: "var(--accent2)" }}
                                 >
                                   {pitchVisible[pricingIdx]}
                                   {pitchActiveIdx === pricingIdx && caret}
@@ -622,16 +627,16 @@ export default function FactoryPage() {
                                   className="mt-4 inline-flex items-center gap-2 text-[12px] uppercase tracking-[0.22em] transition-all"
                                   style={{
                                     padding: "8px 14px",
-                                    background: "rgba(255, 176, 0, 0.08)",
+                                    background: "rgba(var(--accent2-rgb), 0.06)",
                                     border:
-                                      "1px solid rgba(255, 176, 0, 0.5)",
+                                      "1px solid rgba(var(--accent2-rgb), 0.5)",
                                     borderRadius: 4,
-                                    color: "#ffd88a",
+                                    color: "var(--accent2)",
                                     fontWeight: 700,
                                     textShadow:
-                                      "0 0 6px rgba(255, 176, 0, 0.5)",
+                                      "0 0 6px rgba(var(--accent2-rgb), 0.5)",
                                     boxShadow:
-                                      "0 0 10px rgba(255, 176, 0, 0.15)",
+                                      "0 0 10px rgba(var(--accent2-rgb), 0.15)",
                                   }}
                                 >
                                   <span>
@@ -648,7 +653,7 @@ export default function FactoryPage() {
                       <div
                         className="mt-5 text-[10px] uppercase"
                         style={{
-                          color: "rgba(217, 255, 224, 0.35)",
+                          color: "var(--muted)",
                           letterSpacing: "0.22em",
                         }}
                       >
