@@ -45,14 +45,18 @@
   textarea[data-chat-input] { font-size: 14px !important; }
 }
 
-/* Flash highlight when the consultant scrolls to a product card */
+/* Flash highlight when the consultant scrolls to a product card.
+   Combined glow + subtle lift so the card "lands softly" after the
+   rAF-eased scroll in ChatbotBar.executeActions. */
 @keyframes chat-scroll-flash {
-  0%   { box-shadow: 0 0 0 0 rgba(var(--accent-rgb), 0), 0 0 0 0 rgba(var(--accent-rgb), 0); border-color: var(--glass-border); }
-  20%  { box-shadow: 0 0 36px 6px rgba(var(--accent-rgb), 0.55), inset 0 0 20px rgba(var(--accent-rgb), 0.18); border-color: rgba(var(--accent-rgb), 0.85); }
-  100% { box-shadow: 0 0 0 0 rgba(var(--accent-rgb), 0), 0 0 0 0 rgba(var(--accent-rgb), 0); border-color: var(--glass-border); }
+  0%   { box-shadow: 0 0 0 0 rgba(var(--accent-rgb), 0), 0 0 0 0 rgba(var(--accent-rgb), 0); border-color: var(--glass-border); transform: scale(1); }
+  25%  { box-shadow: 0 0 36px 6px rgba(var(--accent-rgb), 0.55), inset 0 0 20px rgba(var(--accent-rgb), 0.18); border-color: rgba(var(--accent-rgb), 0.85); transform: scale(1.018); }
+  60%  { box-shadow: 0 0 18px 2px rgba(var(--accent-rgb), 0.28), inset 0 0 10px rgba(var(--accent-rgb), 0.08); transform: scale(1.008); }
+  100% { box-shadow: 0 0 0 0 rgba(var(--accent-rgb), 0), 0 0 0 0 rgba(var(--accent-rgb), 0); border-color: var(--glass-border); transform: scale(1); }
 }
 .chat-scroll-flash {
-  animation: chat-scroll-flash 1.6s ease-out;
+  animation: chat-scroll-flash 1.6s cubic-bezier(0.22, 0.61, 0.36, 1);
+  will-change: transform, box-shadow;
 }
 
 body {

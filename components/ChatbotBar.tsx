@@ -350,6 +350,40 @@ export default function ChatbotBar() {
     for (const id of scheduledTimeoutsRef.current) clearTimeout(id);
     scheduledTimeoutsRef.current = [];
   }, []);
+
+  // rAF-scroll для тура: нативный `behavior:"smooth"` в Chrome ~300-450мс
+  // и с разной длительностью — выглядит рывками. Свой rAF + easeInOutCubic
+  // даёт фиксированные 820мс и шёлковый старт/финиш между карточками.
+  const scrollRafRef = useRef<number | null>(null);
+  const smoothScrollBy = useCallback((dy: number, duration = 820) => {
+    if (scrollRafRef.current !== null) {
+      cancelAnimationFrame(scrollRafRef.current);
+      scrollRafRef.current = null;
+    }
+    if (Math.abs(dy) < 1) return;
+    const startY = window.scrollY;
+    const targetY = startY + dy;
+    const startT = performance.now();
+    const ease = (t: number) =>
+      t < 0.5 ? 4 * t * t * t : 1 - Math.pow(-2 * t + 2, 3) / 2;
+    const step = (now: number) => {
+      const elapsed = now - startT;
+      const t = Math.min(1, elapsed / duration);
+      window.scrollTo(0, startY + (targetY - startY) * ease(t));
+      if (t < 1) {
+        scrollRafRef.current = requestAnimationFrame(step);
+      } else {
+        scrollRafRef.current = null;
+      }
+    };
+    scrollRafRef.current = requestAnimationFrame(step);
+  }, []);
+  const cancelSmoothScroll = useCallback(() => {
+    if (scrollRafRef.current !== null) {
+      cancelAnimationFrame(scrollRafRef.current);
+      scrollRafRef.current = null;
+    }
+  }, []);
   const messagesRef = useRef<HTMLDivElement>(null);
   const inputRef = useRef<HTMLTextAreaElement>(null);
   const logPanelRef = useRef<HTMLDivElement>(null);
@@ -517,7 +551,7 @@ export default function ChatbotBar() {
               const visibleCenter = (visibleTop + visibleBottom) / 2;
               const elCenter = rect.top + rect.height / 2;
               const shift = elCenter - visibleCenter;
-              window.scrollBy({ top: shift, behavior: "smooth" });
+              smoothScrollBy(shift);
               el.classList.add("chat-scroll-flash");
               schedule(
                 () => el.classList.remove("chat-scroll-flash"),
@@ -530,7 +564,7 @@ export default function ChatbotBar() {
         delay += act.type === "nav" ? 300 : stepMs;
       }
     },
-    [router, pathname, schedule]
+    [router, pathname, schedule, smoothScrollBy]
   );
 
   const sendMessage = useCallback(
@@ -825,9 +859,10 @@ export default function ChatbotBar() {
       abortRef.current = null;
     }
     clearAllScheduled();
+    cancelSmoothScroll();
     setAgentDriving(false);
     setLoading(false);
-  }, [clearAllScheduled]);
+  }, [clearAllScheduled, cancelSmoothScroll]);
 
   // ESC → забрать управление, когда агент ведёт или идёт fetch.
   useEffect(() => {
@@ -889,6 +924,10 @@ export default function ChatbotBar() {
       if (tourTimeoutRef.current) clearTimeout(tourTimeoutRef.current);
       for (const id of scheduledTimeoutsRef.current) clearTimeout(id);
       scheduledTimeoutsRef.current = [];
+      if (scrollRafRef.current !== null) {
+        cancelAnimationFrame(scrollRafRef.current);
+        scrollRafRef.current = null;
+      }
     },
     []
   );
