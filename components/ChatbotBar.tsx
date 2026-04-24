@@ -2049,54 +2049,80 @@ export default function ChatbotBar() {
             </motion.svg>
           </button>
 
-          {/* SEND — терминальный стиль в тон CMD/AgentDock: квадрат
-              h-11, uppercase моноспейс, glow в акцент. Гаснет когда
-              инпут пустой или идёт fetch. Enter тоже работает. */}
+          {/* SEND / MIN — одна кнопка-слот с двумя ролями:
+              - есть текст в инпуте → SEND (зелёный, отправляет)
+              - инпут пустой и чат развёрнут → MIN (оранжевый, сворачивает
+                лог-панель — то же что «свернуть» в шапке)
+              - инпут пустой и чат уже свёрнут → SEND disabled (серый)
+              Логика: если юзер ничего не пишет, ему скорее всего нечего
+              отправлять, но он может захотеть убрать панель — и наоборот.
+              Loading рендерит spinner поверх любого режима. */}
           {(() => {
             const hasText = input.trim().length > 0;
-            const active = hasText && !loading;
+            const sendActive = hasText && !loading;
+            const collapseMode = !hasText && !loading && logOpen;
+
+            // Палитра: SEND — зелёный (var(--accent)), MIN — оранжевый
+            // (var(--accent2)) в тон CMD/«свернуть» в шапке.
+            const palette = collapseMode
+              ? { rgb: "var(--accent2-rgb)", solid: "var(--accent2)" }
+              : { rgb: "var(--accent-rgb)", solid: "var(--accent)" };
+            const litUp = sendActive || collapseMode;
+
+            const handleClick = () => {
+              if (collapseMode) {
+                setLogOpen(false);
+                setChatFullscreen(false);
+              } else {
+                send();
+              }
+            };
+
+            const labelByLang = (ru: string, ua: string, en: string) =>
+              lang === "RU" ? ru : lang === "UA" ? ua : en;
+
             return (
               <button
                 type="button"
-                onClick={send}
-                disabled={!active}
-                aria-label={lang === "RU" ? "Отправить" : lang === "UA" ? "Надіслати" : "Send"}
+                onClick={handleClick}
+                disabled={!litUp && !loading}
+                aria-label={
+                  collapseMode
+                    ? labelByLang("Свернуть чат", "Згорнути чат", "Collapse chat")
+                    : labelByLang("Отправить", "Надіслати", "Send")
+                }
                 className="shrink-0 px-3 sm:px-4 h-11 flex items-center justify-center gap-1.5 font-mono transition-all disabled:cursor-not-allowed"
                 style={{
-                  background: active
-                    ? "rgba(var(--accent-rgb), 0.18)"
-                    : "rgba(var(--accent-rgb), 0.04)",
-                  border: `1px solid rgba(var(--accent-rgb), ${active ? 0.7 : 0.2})`,
+                  background: litUp
+                    ? `rgba(${palette.rgb}, 0.18)`
+                    : `rgba(${palette.rgb}, 0.04)`,
+                  border: `1px solid rgba(${palette.rgb}, ${litUp ? 0.7 : 0.2})`,
                   borderRadius: 4,
-                  color: active ? "var(--accent)" : "rgba(var(--accent-rgb), 0.35)",
+                  color: litUp ? palette.solid : `rgba(${palette.rgb}, 0.35)`,
                   letterSpacing: "0.22em",
                   fontSize: "11px",
                   fontWeight: 700,
-                  textShadow: active
-                    ? "0 0 10px rgba(var(--accent-rgb), 0.95), 0 0 4px rgba(var(--accent-rgb), 0.8)"
+                  textShadow: litUp
+                    ? `0 0 10px rgba(${palette.rgb}, 0.95), 0 0 4px rgba(${palette.rgb}, 0.8)`
                     : "none",
-                  boxShadow: active
-                    ? "0 0 18px rgba(var(--accent-rgb), 0.35), inset 0 0 10px rgba(var(--accent-rgb), 0.08)"
+                  boxShadow: litUp
+                    ? `0 0 18px rgba(${palette.rgb}, 0.35), inset 0 0 10px rgba(${palette.rgb}, 0.08)`
                     : "none",
                 }}
                 onPointerEnter={(e) => {
                   if (e.currentTarget.disabled) return;
                   if (e.pointerType !== "mouse") return;
-                  e.currentTarget.style.background = "var(--accent)";
+                  e.currentTarget.style.background = palette.solid;
                   e.currentTarget.style.color = "#040208";
                   e.currentTarget.style.textShadow = "none";
-                  e.currentTarget.style.boxShadow =
-                    "0 0 32px rgba(var(--accent-rgb), 0.7)";
+                  e.currentTarget.style.boxShadow = `0 0 32px rgba(${palette.rgb}, 0.7)`;
                 }}
                 onPointerLeave={(e) => {
-                  if (!active) return;
-                  e.currentTarget.style.background =
-                    "rgba(var(--accent-rgb), 0.18)";
-                  e.currentTarget.style.color = "var(--accent)";
-                  e.currentTarget.style.textShadow =
-                    "0 0 10px rgba(var(--accent-rgb), 0.95), 0 0 4px rgba(var(--accent-rgb), 0.8)";
-                  e.currentTarget.style.boxShadow =
-                    "0 0 18px rgba(var(--accent-rgb), 0.35), inset 0 0 10px rgba(var(--accent-rgb), 0.08)";
+                  if (!litUp) return;
+                  e.currentTarget.style.background = `rgba(${palette.rgb}, 0.18)`;
+                  e.currentTarget.style.color = palette.solid;
+                  e.currentTarget.style.textShadow = `0 0 10px rgba(${palette.rgb}, 0.95), 0 0 4px rgba(${palette.rgb}, 0.8)`;
+                  e.currentTarget.style.boxShadow = `0 0 18px rgba(${palette.rgb}, 0.35), inset 0 0 10px rgba(${palette.rgb}, 0.08)`;
                 }}
               >
                 {loading ? (
@@ -2109,6 +2135,23 @@ export default function ChatbotBar() {
                     animate={{ rotate: 360 }}
                     transition={{ duration: 0.8, repeat: Infinity, ease: "linear" }}
                   />
+                ) : collapseMode ? (
+                  <>
+                    <span>MIN</span>
+                    <svg
+                      aria-hidden
+                      width="11"
+                      height="11"
+                      viewBox="0 0 24 24"
+                      fill="none"
+                      stroke="currentColor"
+                      strokeWidth="3"
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                    >
+                      <polyline points="6 9 12 15 18 9" />
+                    </svg>
+                  </>
                 ) : (
                   <>
                     <span>SEND</span>
